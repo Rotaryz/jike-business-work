@@ -6,7 +6,10 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    console.log(888888)
+  }
 }
 </script>
 
