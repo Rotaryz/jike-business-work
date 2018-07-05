@@ -5,10 +5,17 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'App',
   created() {
     console.log(888888)
+    this.test('123')
+    console.log(this.argument())
+  },
+  methods: {
+    ...mapGetters(['argument']),
+    ...mapActions(['test'])
   }
 }
 </script>
