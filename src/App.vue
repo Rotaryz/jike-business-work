@@ -12,6 +12,7 @@ export default {
     console.log(888888)
     this.test('123')
     console.log(this.argument())
+    console.log(process.env)
   },
   methods: {
     ...mapGetters(['argument']),
