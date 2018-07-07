@@ -3,8 +3,8 @@
     <div class="box">
       <section class="info-box" v-for="(item,index) in dataArray" :key="index" v-if="dataArray.length">
         <div class="title">{{item.title}}</div>
-        <ul class="content" v-for="(dataItem,dataIndex) in item.data" :key="dataIndex">
-          <li class="content-item">{{dataItem}}</li>
+        <ul class="content">
+          <li class="content-item" v-for="(dataItem,dataIndex) in item.data" :key="dataIndex">{{dataItem}}</li>
         </ul>
       </section>
     </div>
@@ -38,6 +38,7 @@
       position: relative
       .info-box
         position: relative
+        padding: 0 15px
         layout()
         .title
           font-family: $font-family-regular
@@ -45,7 +46,17 @@
           color: $color-20202E
         .content
           layout(row, block, wrap)
+          justify-content: space-between
           .content-item
-            width: 30%
+            width: 28.95%
+            height: 30px
+            layout()
+            justify-content: center
+            align-items: center
+            background-color: $color-F0F2F5
+            font-family: $font-family-Medium
+            font-size: $font-size-14
+            color: $color-888888
+
 
 </style>
