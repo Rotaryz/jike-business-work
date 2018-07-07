@@ -39,7 +39,7 @@
         let id = e.target.id
         this.dataArray.map(item => {
           let node = item.data.find(val => val.label_id === id)
-          node && (node.isCheck = 1)
+          node && (node.isCheck = !node.isCheck)
         })
         console.log(this.dataArray)
       },
@@ -79,6 +79,9 @@
             .item
               width: 100%
               height: 100%
+              no-wrap()
+              box-sizing: border-box
+              padding: 5px
               layout()
               justify-content: center
               align-items: center
