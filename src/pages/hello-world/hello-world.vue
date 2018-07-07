@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    123
+    <router-link to="/client-tag">ClientTag</router-link>
   </div>
 </template>
 
@@ -8,8 +8,7 @@
   export default {
     name: 'HelloWorld',
     data() {
-      return {
-      }
+      return {}
     }
   }
 </script>
