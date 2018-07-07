@@ -41,7 +41,7 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
+  @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
 
   .client-set-group
@@ -64,7 +64,7 @@
         color: $color-888888
         &.active
           font-family: $font-family-regular
-          background: $color-56BA15 url("./icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
+          background: $color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
           color: $color-white-fff
           border-color: $color-56BA15
 </style>
