@@ -7,6 +7,9 @@
 <script>
   export default {
     name: 'Client',
+    created() {
+      this.$emit('tabChange', '客户')
+    },
     data() {
       return {
       }

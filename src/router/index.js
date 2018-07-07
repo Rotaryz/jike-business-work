@@ -9,17 +9,14 @@ const Mine = () => import('pages/mine/mine')
 
 Vue.use(Router)
 
-export default new Router({
+const route = new Router({
   routes: [
     {
       path: '/',
       component: Index,
-      meta: {
-        title: '赞播智销'
-      },
       children: [
         {
-          path: '/radar',
+          path: '/',
           component: Radar,
           meta: {
             title: '雷达'
@@ -50,3 +47,10 @@ export default new Router({
     }
   ]
 })
+
+route.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+})
+
+export default route

@@ -22,12 +22,6 @@ export default {
   methods: {
     ...mapGetters(['argument', 'argument1']),
     ...mapActions(['test', 'test1'])
-  },
-  watch: {
-    '$route'(to) {
-      let title = this.$route.meta.title
-      document.title = title
-    }
   }
 }
 </script>

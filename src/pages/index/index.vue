@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="route-box">
-      <router-view/>
+      <router-view v-on:tabChange="_changeTab"/>
     </div>
     <div class="tab-box">
       <div class="tab-item" v-for="item in tabList" :key="item.id">
@@ -16,25 +16,24 @@
 
 <script>
   const TABS = [
-    {text: '雷达', path: 'radar', id: 1, icon: 'icon-radar_tabbar@2x.png', activeIcon: 'icon-radar_selected@2x.png'},
-    {text: '消息', path: 'news', id: 2, icon: 'icon-news_tabbar@2x.png', activeIcon: 'icon-news_selected@2x.png'},
-    {text: '客户', path: 'client', id: 3, icon: 'icon-customer_tabbar@2x.png', activeIcon: 'icon-customer_selected@2x.png'},
-    {text: '我的', path: 'mine', id: 4, icon: 'icon-my_tabbar@2x.png', activeIcon: 'icon-my_selected@2x.png'}
+    {text: '雷达', path: '/', id: 1, icon: 'icon-radar_tabbar@3x.png', activeIcon: 'icon-radar_selected@3x.png'},
+    {text: '消息', path: 'news', id: 2, icon: 'icon-news_tabbar@3x.png', activeIcon: 'icon-news_selected@3x.png'},
+    {text: '客户', path: 'client', id: 3, icon: 'icon-customer_tabbar@3x.png', activeIcon: 'icon-customer_selected@3x.png'},
+    {text: '我的', path: 'mine', id: 4, icon: 'icon-my_tabbar@3x.png', activeIcon: 'icon-my_selected@3x.png'}
   ]
   export default {
     name: 'Index',
     data() {
       return {
         tabList: TABS,
-        tabName: '雷达'
+        tabName: ''
       }
     },
     created() {
     },
-    watch: {
-      '$route'(to) {
-        this.tabName = this.$route.meta.title
-        console.log(this.tabName)
+    methods: {
+      _changeTab(txt) {
+        this.tabName = txt
       }
     }
   }

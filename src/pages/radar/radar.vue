@@ -1,12 +1,15 @@
 <template>
   <div class="radar">
-    radar
+    <div></div>
   </div>
 </template>
 
 <script>
   export default {
     name: 'Radar',
+    created() {
+      this.$emit('tabChange', '雷达')
+    },
     data() {
       return {
       }
@@ -18,5 +21,8 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  .radar
+    width: 100vw
+    height: 100%
 
 </style>

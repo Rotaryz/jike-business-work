@@ -7,6 +7,9 @@
 <script>
   export default {
     name: 'News',
+    created() {
+      this.$emit('tabChange', '消息')
+    },
     data() {
       return {
       }
