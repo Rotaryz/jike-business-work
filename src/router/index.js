@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const eharts = () => import('pages/vue-echarts/vue-echarts')
+const Index = () => import('pages/index/index')
+const Radar = () => import('pages/radar/radar')
+const News = () => import('pages/news/news')
+const Chat = () => import('pages/chat-msg/chat-msg')
+const Client = () => import('pages/client/client')
+const Mine = () => import('pages/mine/mine')
 
 Vue.use(Router)
 
@@ -42,14 +47,17 @@ const route = new Router({
       ]
     },
     {
-      path: '/echarts',
-      component: eharts
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
+      }
     }
   ]
 })
 
 route.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta ? to.meta.title : ''
   next()
 })
 
