@@ -9,7 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: {
+        title: '赞播智销'
+      }
     }
   ]
 })
