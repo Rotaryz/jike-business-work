@@ -3,14 +3,49 @@ import Router from 'vue-router'
 
 const HelloWorld = () => import('pages/hello-world/hello-world')
 const ClientTag = () => import('pages/client-tag/client-tag')
+const Index = () => import('pages/index/index')
+const Radar = () => import('pages/radar/radar')
+const News = () => import('pages/news/news')
+const Client = () => import('pages/client/client')
+const Mine = () => import('pages/mine/mine')
 
 Vue.use(Router)
 
-export default new Router({
+const route = new Router({
   routes: [
     {
       path: '/',
-      component: HelloWorld
+      component: Index,
+      children: [
+        {
+          path: '/',
+          component: Radar,
+          meta: {
+            title: '雷达'
+          }
+        },
+        {
+          path: '/news',
+          component: News,
+          meta: {
+            title: '消息'
+          }
+        },
+        {
+          path: '/client',
+          component: Client,
+          meta: {
+            title: '客户'
+          }
+        },
+        {
+          path: '/mine',
+          component: Mine,
+          meta: {
+            title: '我的'
+          }
+        }
+      ]
     },
     {
       path: '/client-tag',
@@ -21,3 +56,10 @@ export default new Router({
     }
   ]
 })
+
+route.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+})
+
+export default route
