@@ -1,5 +1,6 @@
 const state = {
-  argument: {}
+  argument: {},
+  argument1: 123
 }
 
 export default state
