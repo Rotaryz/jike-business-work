@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
-    <slide-view v-for="(item, index) in list" :key="item.id" :styles="item.style" :index="index" :item="item" v-on:touchBegin="touchBegin" v-on:touchEnd="touchEnd" v-on:touchMove="touchMove" v-on:del="del"></slide-view>
+    <!--<slide-view v-for="(item, index) in list" :key="item.id" :styles="item.style" :index="index" :item="item" v-on:touchBegin="touchBegin" v-on:touchEnd="touchEnd" v-on:touchMove="touchMove" v-on:del="del"></slide-view>-->
   </div>
 </template>
 
