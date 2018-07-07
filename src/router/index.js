@@ -4,6 +4,7 @@ import Router from 'vue-router'
 const Index = () => import('pages/index/index')
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
+const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
 
@@ -44,12 +45,19 @@ const route = new Router({
           }
         }
       ]
+    },
+    {
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
+      }
     }
   ]
 })
 
 route.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta ? to.meta.title : ''
   next()
 })
 
