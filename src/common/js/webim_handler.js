@@ -349,58 +349,32 @@ export default class webimHandler {
     })
   }
 
-  // 获取C2C历史消息
+  // 获取C2C历史消息并设成已读状态
   // id 要拉取的好友id 、count 拉取的条数
-  static getC2CMsgList(id, count) {
-    let LastMsgTime = this.getMsgListInfo[id] ? this.getMsgListInfo[id].LastMsgTime : 0
-    let MsgKey = this.getMsgListInfo[id] ? this.getMsgListInfo[id].MsgKey : ''
+  static getC2CMsgList(id) {
     let options = {
       'Peer_Account': id, // 好友帐号
-      'MaxCnt': count, // 拉取消息条数
-      LastMsgTime, // 最近的消息时间，即从这个时间点向前拉取历史消息
-      MsgKey
+      'MaxCnt': 1, // 拉取消息条数
+      LastMsgTime: 0, // 最近的消息时间，即从这个时间点向前拉取历史消息
+      MsgKey: ''
     }
     return new Promise((resolve, reject) => {
       webim.getC2CHistoryMsgs(
         options,
         resp => {
-          let complete = resp.Complete // 是否还有历史消息可以拉取，1-表示没有，0-表示有
-          let retMsgCount = resp.MsgCount // 返回的消息条数，小于或等于请求的消息条数，小于的时候，说明没有历史消息可拉取了
           if (resp.MsgList.length === 0) {
             webim.Log.error('没有历史消息了:data=' + JSON.stringify(options))
           } else {
             let selSess = resp.MsgList[0].sess
             webim.setAutoRead(selSess, true, true)
           }
-          this.getMsgListInfo[id] = {// 保留服务器返回的最近消息时间和消息Key,用于下次向前拉取历史消息
-            'LastMsgTime': resp.LastMsgTime,
-            'MsgKey': resp.MsgKey
-          }
-          let resList = resp.MsgList.filter((item) => {
-            let type = item.elems[0].getType()
-            return type === webim.MSG_ELEMENT_TYPE.TEXT
-          })
-          if (resList.length < 15 && !complete) {
-            let res = this.getC2CMsgList(id, count)
-            resolve(res)
-            return
-          }
-          let data = {
-            msgList: resList,
-            complete,
-            retMsgCount
-          }
-          resolve(data)
+          resolve('success')
         },
         err => {
           reject(err)
         }
       )
     })
-  }
-
-  static onMsgReadedNotify(res) {
-    console.log(res, 'read')
   }
 
   // 监听连接状态回调变化事件
