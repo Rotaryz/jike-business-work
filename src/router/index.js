@@ -16,7 +16,7 @@ export default new Router({
       path: '/client-tag',
       component: ClientTag,
       meta: {
-        title: '赞播智销'
+        title: '标签'
       }
     }
   ]

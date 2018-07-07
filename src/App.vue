@@ -13,11 +13,11 @@ export default {
     }
   },
   created() {
-    console.log(process.env)
-    console.log(888888)
-    this.test(3443234)
-    this.test1('123345')
-    console.log(this.argument(), this.argument1())
+    // console.log(process.env)
+    // console.log(888888)
+    // this.test(3443234)
+    // this.test1('123345')
+    // console.log(this.argument(), this.argument1())
   },
   methods: {
     ...mapGetters(['argument', 'argument1']),
