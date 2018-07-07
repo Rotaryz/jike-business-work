@@ -1,6 +1,8 @@
 <template>
   <div class="client">
-    client
+    <router-link class="item" to="/client-tag">client-tag</router-link>
+    <router-link class="item" to="/client-set-group">client-set-g</router-link>
+    <router-link class="item" to="/client-create-group">client-c-g</router-link>
   </div>
 </template>
 
@@ -11,8 +13,7 @@
       this.$emit('tabChange', 3)
     },
     data() {
-      return {
-      }
+      return {}
     }
   }
 </script>
@@ -22,4 +23,9 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
 
+  .client
+    layout()
+    .item
+      height: 50px
+      marign: 10px 0
 </style>

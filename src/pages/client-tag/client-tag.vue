@@ -57,6 +57,8 @@
 
   .client-tag
     position: relative
+    background-color: $color-white-fff
+    min-height: 100vh
     .box
       position: relative
       .info-box
@@ -86,7 +88,7 @@
               justify-content: center
               align-items: center
               background-color: $color-F0F2F5
-              font-family: $font-family-Medium
+              font-family: $font-family-meddle
               font-size: $font-size-14
               color: $color-888888
               margin-bottom: 15px
