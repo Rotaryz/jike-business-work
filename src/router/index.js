@@ -6,6 +6,7 @@ const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
+const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
 
 Vue.use(Router)
 
@@ -13,10 +14,14 @@ const route = new Router({
   routes: [
     {
       path: '/',
+      redirect: '/radar'
+    },
+    {
+      path: '/',
       component: Index,
       children: [
         {
-          path: '/',
+          path: '/radar',
           component: Radar,
           meta: {
             title: '雷达'
@@ -44,6 +49,13 @@ const route = new Router({
           }
         }
       ]
+    },
+    {
+      path: '/scroll-demo',
+      component: ScrollDemo,
+      meta: {
+        title: '测试滚动'
+      }
     }
   ]
 })
