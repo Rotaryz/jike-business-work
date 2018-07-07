@@ -1,6 +1,11 @@
 <template>
   <div class="radar">
-    <div></div>
+    <div class="new-msg">
+      <span class="msg-box">
+        <img src="./icon-news_up@3x.png" class="msg-arrow">
+        <span>6条信息</span>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -8,7 +13,7 @@
   export default {
     name: 'Radar',
     created() {
-      this.$emit('tabChange', '雷达')
+      this.$emit('tabChange', 1)
     },
     data() {
       return {
@@ -24,5 +29,21 @@
   .radar
     width: 100vw
     height: 100%
-
+    .new-msg
+      padding-top: 15px
+      width: 100%
+      height: 30px
+      display: flex
+      justify-content: flex-end
+      .msg-box
+        min-width: 92.5px
+        height: 30px
+        background: $color-white
+        border-radius: 15px 0 0 15px
+        line-height: 30px
+        font-size: $font-size-medium
+        .msg-arrow
+          width: 7px
+          height: 8px
+          margin-left: 12px
 </style>

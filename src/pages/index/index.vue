@@ -6,7 +6,7 @@
     <div class="tab-box">
       <div class="tab-item" v-for="item in tabList" :key="item.id">
         <router-link :to="item.path" class="item-container">
-          <img :src="'../../static/img/' + (item.text === tabName ? item.activeIcon : item.icon)" class="icon">
+          <img :src="'../../static/img/' + (item.id * 1 === tabIdx * 1 ? item.activeIcon : item.icon)" class="icon">
           <p class="icon-text">{{item.text}}</p>
         </router-link>
       </div>
@@ -26,14 +26,14 @@
     data() {
       return {
         tabList: TABS,
-        tabName: ''
+        tabIdx: ''
       }
     },
     created() {
     },
     methods: {
-      _changeTab(txt) {
-        this.tabName = txt
+      _changeTab(idx) {
+        this.tabIdx = idx
       }
     }
   }
