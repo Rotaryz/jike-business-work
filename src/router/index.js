@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const HelloWorld = () => import('pages/hello-world/hello-world')
 const eharts = () => import('pages/vue-echarts/vue-echarts')
 
 Vue.use(Router)
@@ -41,7 +40,6 @@ const route = new Router({
           }
         }
       ]
-      component: HelloWorld
     },
     {
       path: '/echarts',
