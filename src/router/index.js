@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Index = () => import('pages/index/index')
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
 const Client = () => import('pages/client/client')
@@ -9,6 +8,7 @@ const Mine = () => import('pages/mine/mine')
 const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
 const Echarts = () => import('pages/vue-echarts/vue-echarts')
 const Cdetail = () => import('pages/client-detail/client-detail')
+const Cdata = () => import('pages/detail-data/detail-data')
 
 Vue.use(Router)
 
@@ -65,6 +65,13 @@ const route = new Router({
       component: Cdetail,
       meta: {
         title: '客户详情'
+      }
+    },
+    {
+      path: '/detail-data',
+      component: Cdata,
+      meta: {
+        title: '客户資料'
       }
     }
   ]
