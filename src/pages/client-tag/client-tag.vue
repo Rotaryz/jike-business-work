@@ -57,6 +57,7 @@
     position: relative
     background-color: $color-white-fff
     min-height: 100vh
+    z-index :10
     .box
       position: relative
       .info-box

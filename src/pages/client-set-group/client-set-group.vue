@@ -45,8 +45,10 @@
   @import "~common/stylus/mixin"
 
   .client-set-group
+    position: relative
     min-height: 100vh
     background-color: $color-white-fff
+    z-index: 10
     .title
       font-family: $font-family-regular
       font-size: $font-size-16

@@ -27,8 +27,10 @@
   @import "~common/stylus/mixin"
 
   .client-create-group
+    position: relative
     min-height: 100vh
     background-color: $color-white-fff
+    z-index: 10
     .title
       font-family: $font-family-regular
       font-size: $font-size-16
@@ -40,21 +42,24 @@
       border-bottom: 0.5px solid $color-col-line
       .input
         width: 100%
-        outline :none
+        outline: none
+        font-family: $font-family-meddle
+        font-size: $font-size-14
+        color: $color-20202E
         &::-webkit-input-placeholder
-          font-family:$font-family-meddle
+          font-family: $font-family-meddle
           font-size: $font-size-14
           color: $color-888888
         &:-moz-placeholder
-          font-family:$font-family-meddle
+          font-family: $font-family-meddle
           font-size: $font-size-14
           color: $color-888888
         &::-moz-placeholder
-          font-family:$font-family-meddle
+          font-family: $font-family-meddle
           font-size: $font-size-14
           color: $color-888888
         &:-ms-input-placeholder
-          font-family:$font-family-meddle
+          font-family: $font-family-meddle
           font-size: $font-size-14
           color: $color-888888
     .btn

@@ -1,7 +1,7 @@
 <template>
   <article class="client-add-user">
     <ul class="user-list">
-      <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(index)">
+      <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(index)" >
         <div :class="['check-box',item.isCheck?'active':'']"></div>
         <img class="user-icon" :src="item.icon" alt="">
         <section class="base-info">
@@ -45,7 +45,6 @@
     methods: {
       check(index) {
         this.dataArray[index].isCheck = !this.dataArray[index].isCheck
-        console.log(this.dataArray)
       },
       submit() {
       }
@@ -58,8 +57,10 @@
   @import "~common/stylus/mixin"
 
   .client-add-user
+    position: relative
     min-height: 100vh
     background-color: $color-white-fff
+    z-index: 10
     .user-list
       position: relative
       padding-left: 15px
