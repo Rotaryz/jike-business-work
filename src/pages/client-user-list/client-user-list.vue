@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <article class="client-user-list">
-      <Search></Search>
+      <search></search>
       <section class="add-user" @click="toAddUser">
         <img class="icon" src="./icon-add@3x.png" alt="">
         <div class="txt">添加成员</div>
