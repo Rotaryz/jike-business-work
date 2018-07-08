@@ -1,6 +1,7 @@
 <template>
   <div class="radar">
-    <div></div>
+    <router-link to="/scroll-demo">测试动画</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -22,7 +23,10 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .radar
-    width: 100vw
-    height: 100%
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 45px
 
 </style>

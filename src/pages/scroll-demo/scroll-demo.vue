@@ -1,20 +1,22 @@
 <template>
-  <div class="simple-scroll-demo">
-    <div class="scroll-list-wrap">
-      <scroll ref="scroll"
-              :data="items"
-              :pullDownRefresh="pullDownRefreshObj"
-              :pullUpLoad="pullUpLoadObj"
-              :startY="parseInt(startY)"
-              @pullingDown="onPullingDown"
-              @pullingUp="onPullingUp"
-              @scroll="scroll">
-        <ul class="list-content">
-          <li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>
-        </ul>
-      </scroll>
+  <transition name="slide">
+    <div class="simple-scroll-demo">
+      <div class="scroll-list-wrap">
+        <scroll ref="scroll"
+                :data="items"
+                :pullDownRefresh="pullDownRefreshObj"
+                :pullUpLoad="pullUpLoadObj"
+                :startY="parseInt(startY)"
+                @pullingDown="onPullingDown"
+                @pullingUp="onPullingUp"
+                @scroll="scroll">
+          <ul class="list-content">
+            <li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>
+          </ul>
+        </scroll>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -142,11 +144,12 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   .simple-scroll-demo
-    position: absolute
+    position: fixed
     left: 0
     top: 0
     right: 0
     bottom: 0
+    z-index: 10
     .scroll-list-wrap
       position relative
       height: 100%
