@@ -2,8 +2,9 @@
   <article class="client-create-group">
     <div class="title">设置分组</div>
     <section class="content">
-      <input class="input" type="text" placeholder="请输入组名">
+      <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
     </section>
+    <div>{{groupName}}</div>
     <footer class="btn">保存</footer>
   </article>
 </template>
@@ -14,7 +15,8 @@
     data() {
       return {
         dataArray: [],
-        preId: -1
+        preId: -1,
+        groupName: ''
       }
     },
     methods: {}
@@ -40,6 +42,22 @@
       .input
         width: 100%
         outline :none
+        &::-webkit-input-placeholder
+          font-family:$font-family-meddle
+          font-size: $font-size-14
+          color: $color-888888
+        &:-moz-placeholder
+          font-family:$font-family-meddle
+          font-size: $font-size-14
+          color: $color-888888
+        &::-moz-placeholder
+          font-family:$font-family-meddle
+          font-size: $font-size-14
+          color: $color-888888
+        &:-ms-input-placeholder
+          font-family:$font-family-meddle
+          font-size: $font-size-14
+          color: $color-888888
     .btn
       height: 45px
       position: fixed

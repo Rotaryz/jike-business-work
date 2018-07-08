@@ -5,7 +5,7 @@
         <div class="title">{{item.name}}</div>
         <ul class="content">
           <li class="item-box" v-for="(dataItem,dataIndex) in item.data" :key="dataIndex" v-if="item.data">
-            <div :id="dataItem.label_id" :class="['item',dataItem.isCheck?'active':'']" @click.prevent="check">{{dataItem.name}}</div>
+            <div :class="['item',dataItem.isCheck?'active':'']" @click.prevent="check(dataItem.label_id)">{{dataItem.name}}</div>
           </li>
         </ul>
       </section>
@@ -35,13 +35,11 @@
           // node && (node.isCheck = 1)
         })
       },
-      check(e) {
-        let id = e.target.id
+      check(id) {
         this.dataArray.map(item => {
           let node = item.data.find(val => val.label_id === id)
           node && (node.isCheck = !node.isCheck)
         })
-        console.log(this.dataArray)
       },
       _updateTag() {
         // todo

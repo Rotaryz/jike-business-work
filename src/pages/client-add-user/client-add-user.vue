@@ -1,0 +1,123 @@
+<template>
+  <article class="client-add-user">
+    <ul class="user-list">
+      <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(index)">
+        <div :class="['check-box',item.isCheck?'active':'']"></div>
+        <img class="user-icon" :src="item.icon" alt="">
+        <section class="base-info">
+          <div class="name">{{item.name}}</div>
+          <div class="status">{{item.status}}</div>
+        </section>
+        <div class="ai">{{item.ai}}</div>
+      </li>
+    </ul>
+    <footer class="btn" @click="submit">确定</footer>
+  </article>
+</template>
+
+<script type="text/ecmascript-6">
+  const listData = [{
+    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+    name: '李木 ',
+    status: '今天跟进',
+    ai: 'AI预计成交率100%',
+    isCheck: false
+  }, {
+    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+    name: '李木 ',
+    status: '今天跟进',
+    ai: 'AI预计成交率100%',
+    isCheck: false
+  }, {
+    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+    name: '李木 ',
+    status: '今天跟进',
+    ai: 'AI预计成交率100%',
+    isCheck: false
+  }]
+  export default {
+    name: 'ClientAddUser',
+    data() {
+      return {
+        dataArray: listData
+      }
+    },
+    methods: {
+      check(index) {
+        this.dataArray[index].isCheck = !this.dataArray[index].isCheck
+        console.log(this.dataArray)
+      },
+      submit() {
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+
+  .client-add-user
+    min-height: 100vh
+    background-color: $color-white-fff
+    .user-list
+      position: relative
+      padding-left: 15px
+      .user-box
+        layout(row, block, no-warp)
+        align-items: center
+        padding: 15px 0
+        border-bottom: 0.5px solid $color-col-line
+        height: 45px
+        .check-box
+          width: 21px
+          height: 21px
+          border-radius: 50%
+          border: 1px solid $color-col-line
+          box-sizing: border-box
+          &.active
+            background: url("icon-selected@3x.png") no-repeat center / 100%
+            border: none
+        .user-icon
+          width: 45px
+          height: 45px
+          opacity: 0.8
+          margin: 0 10px
+        .base-info
+          flex: 1
+          height: 100%
+          layout()
+          justify-content: space-around
+          .name
+            font-family: $font-family-regular
+            font-size: $font-size-16
+            color: $color-20202E
+            letter-spacing: 0.6px
+          .status
+            font-family: $font-family-meddle
+            font-size: $font-size-12
+            color: $color-56BA15
+        .ai
+          width: 105px
+          height: 100%
+          padding-right: 15px
+          padding-top: 5px
+          font-family: $font-family-regular
+          font-size: $font-size-12
+          color: $color-888888
+
+    .btn
+      height: 45px
+      position: fixed
+      bottom: 0
+      left: 0
+      right: 0
+      line-height: 45px
+      text-align: center
+      background-color: $color-20202E
+      font-family: $font-family-meddle
+      font-size: $font-size-16
+      color: $color-white-fff
+      letter-spacing: 0.3px
+      z-index: 2
+</style>

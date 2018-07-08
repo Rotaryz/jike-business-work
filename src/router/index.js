@@ -9,6 +9,7 @@ const Mine = () => import('pages/mine/mine')
 const ClientTag = () => import('pages/client-tag/client-tag')
 const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
 const ClientCreateGroup = () => import('pages/client-create-group/client-create-group')
+const ClientAddUser = () => import('pages/client-add-user/client-add-user')
 
 Vue.use(Router)
 
@@ -67,6 +68,13 @@ const route = new Router({
       component: ClientCreateGroup,
       meta: {
         title: '添加分组'
+      }
+    },
+    {
+      path: '/client-add-user',
+      component: ClientAddUser,
+      meta: {
+        title: '添加成员'
       }
     }
   ]
