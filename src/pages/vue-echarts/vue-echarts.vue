@@ -15,7 +15,7 @@
 
 <script>
   export default {
-    name: 'eharts',
+    name: 'echarts',
     data() {
       return {
         list: '111'
@@ -47,7 +47,7 @@
             {
               name: '访问222来源',
               type: 'pie',
-              radius: '55%',
+              radius: '40%',
               center: ['50%', '60%'],
               data: [
                 {value: 335, name: '对我感兴趣'},

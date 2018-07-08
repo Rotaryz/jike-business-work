@@ -7,6 +7,8 @@ const News = () => import('pages/news/news')
 const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
+const Echarts = () => import('pages/vue-echarts/vue-echarts')
+const Cdetail = () => import('pages/client-detail/client-detail')
 
 Vue.use(Router)
 
@@ -51,6 +53,20 @@ const route = new Router({
       component: Chat,
       meta: {
         title: ''
+      }
+    },
+    {
+      path: '/echarts',
+      component: Echarts,
+      meta: {
+        title: ''
+      }
+    },
+    {
+      path: '/client-detail',
+      component: Cdetail,
+      meta: {
+        title: '客户详情'
       }
     }
   ]

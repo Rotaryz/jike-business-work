@@ -98,3 +98,9 @@ no-wrap()
   text-overflow: ellipsis
   overflow: hidden
   white-space: nowrap
+
+//布局
+layout($direction = column, $inline = block, $wrap = wrap)
+  display: $inline == block ? flex:inline-flex
+  flex-direction: $direction
+  flex-wrap: $wrap
