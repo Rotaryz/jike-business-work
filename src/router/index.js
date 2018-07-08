@@ -5,7 +5,14 @@ const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
+const EditCard = () => import('pages/edit-card/edit-card')
 const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const ChangeAutograph = () => import('pages/change-autograph/change-autograph')
+const ShareCard = () => import('pages/share-card/share-card')
+const GoodsDetail = () => import('pages/goods-detail/goods-detail')
+const GoodsList = () => import('pages/goods-list/goods-list')
+const DynamicList = () => import('pages/dynamic-list/dynamic-list')
+const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 
 Vue.use(Router)
 
@@ -48,6 +55,55 @@ const route = new Router({
       component: ScrollDemo,
       meta: {
         title: '测试滚动'
+      }
+    },
+    {
+      path: '/editCard',
+      component: EditCard,
+      meta: {
+        title: '编辑名片'
+      }
+    },
+    {
+      path: '/changeAutograph',
+      component: ChangeAutograph,
+      meta: {
+        title: '修改签名'
+      }
+    },
+    {
+      path: '/shareCard',
+      component: ShareCard,
+      meta: {
+        title: '分享名片'
+      }
+    },
+    {
+      path: '/goodsDetail',
+      component: GoodsDetail,
+      meta: {
+        title: '产品详情'
+      }
+    },
+    {
+      path: '/goodList',
+      component: GoodsList,
+      meta: {
+        title: '我的产品'
+      }
+    },
+    {
+      path: '/dynamicList',
+      component: DynamicList,
+      meta: {
+        title: '动态'
+      }
+    },
+    {
+      path: '/editDynamic',
+      component: EditDynamic,
+      meta: {
+        title: '发布动态'
       }
     }
   ]
