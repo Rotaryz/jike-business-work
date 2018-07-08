@@ -1,7 +1,7 @@
 <template>
   <div class="news">
     <div class="news-list">
-      <div class="news-item border-bottom-1px">
+      <div class="news-item border-bottom-1px" @click="chatMsg">
         <div class="news-left">
           <img src="" class="left-img">
           <span class="news-count">88</span>
@@ -59,6 +59,11 @@
     data() {
       return {
       }
+    },
+    methods: {
+      chatMsg() {
+        this.$router.push('/chat')
+      }
     }
   }
 </script>
@@ -69,12 +74,13 @@
   @import '~common/stylus/mixin'
 
   .news
-    width: 100%
-    height: 100%
+    width: 100vw
+    height: 100vh
     background: $color-white
     .news-list
       background: $color-white
       padding: 0 15px
+      margin-bottom: 45px
       .news-item
         display: flex
         height: 75px

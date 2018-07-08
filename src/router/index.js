@@ -50,6 +50,13 @@ const route = new Router({
       meta: {
         title: '测试滚动'
       }
+    },
+    {
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
+      }
     }
   ]
 })
