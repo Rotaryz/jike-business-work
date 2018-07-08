@@ -10,6 +10,7 @@ const ClientTag = () => import('pages/client-tag/client-tag')
 const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
 const ClientCreateGroup = () => import('pages/client-create-group/client-create-group')
 const ClientAddUser = () => import('pages/client-add-user/client-add-user')
+const ClientSearch = () => import('pages/client-search/client-search')
 
 Vue.use(Router)
 
@@ -75,6 +76,13 @@ const route = new Router({
       component: ClientAddUser,
       meta: {
         title: '添加成员'
+      }
+    },
+    {
+      path: '/client-search',
+      component: ClientSearch,
+      meta: {
+        title: '搜索'
       }
     }
   ]

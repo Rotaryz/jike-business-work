@@ -4,7 +4,6 @@
     <section class="content">
       <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
     </section>
-    <div>{{groupName}}</div>
     <footer class="btn">保存</footer>
   </article>
 </template>

@@ -4,6 +4,7 @@
     <router-link class="item" to="/client-set-group">client-set-g</router-link>
     <router-link class="item" to="/client-create-group">client-c-g</router-link>
     <router-link class="item" to="/client-add-user">client-add-user</router-link>
+    <router-link class="item" to="/client-search">client-search</router-link>
   </div>
 </template>
 
