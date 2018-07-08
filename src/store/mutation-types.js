@@ -1,2 +1,1 @@
-export const TYPE = 'TYPE'
-export const TYPE1 = 'TYPE1'
+export const SET_TAB_MODE = 'SET_TAB_MODE'

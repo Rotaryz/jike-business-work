@@ -75,6 +75,4 @@
           .icon-text
             font-family: $font-family-light
             font-size: $font-size-small-s
-
-
 </style>

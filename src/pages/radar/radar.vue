@@ -1,11 +1,7 @@
 <template>
   <div class="radar">
-    <div class="new-msg">
-      <span class="msg-box">
-        <img src="./icon-news_up@3x.png" class="msg-arrow">
-        <span>6条信息</span>
-      </span>
-    </div>
+    <router-link to="/scroll-demo">测试动画</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,7 +9,7 @@
   export default {
     name: 'Radar',
     created() {
-      this.$emit('tabChange', 1)
+      this.$emit('tabChange', '雷达')
     },
     data() {
       return {
@@ -27,23 +23,10 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .radar
-    width: 100vw
-    height: 100%
-    .new-msg
-      padding-top: 15px
-      width: 100%
-      height: 30px
-      display: flex
-      justify-content: flex-end
-      .msg-box
-        min-width: 92.5px
-        height: 30px
-        background: $color-white
-        border-radius: 15px 0 0 15px
-        line-height: 30px
-        font-size: $font-size-medium
-        .msg-arrow
-          width: 7px
-          height: 8px
-          margin-left: 12px
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 45px
+
 </style>

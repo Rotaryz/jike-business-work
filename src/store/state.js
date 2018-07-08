@@ -1,6 +1,7 @@
+import {tabMode} from 'common/js/constants'
+
 const state = {
-  argument: {},
-  argument1: 123
+  tabMode: tabMode.show
 }
 
 export default state

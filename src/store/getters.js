@@ -1,2 +1,1 @@
-export const argument = state => state.argument
-export const argument1 = state => state.argument1
+export const tabMode = state => state.tabMode
