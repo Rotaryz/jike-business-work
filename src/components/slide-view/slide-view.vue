@@ -1,9 +1,8 @@
 <template>
   <div class="slide-item" @touchstart="touchBegin" @touchend="touchEnd" @touchmove="touchMove">
     <div class="content">
-      <div class="main-content">
-        <span>123</span>
-        <span>456</span>
+      <div class="main-content" :style="contentStyles">
+        <slot name="content"></slot>
       </div>
     </div>
     <div class="del-box" :style="styles">
@@ -18,12 +17,13 @@
 <script type="text/ecmascript-6">
   export default {
     props: ['index', 'showIdx'],
-    data () {
+    data() {
       return {
         startX: '',
         endX: '',
         moveStart: '',
-        styles: ''
+        styles: '',
+        contentStyles: ''
       }
     },
     methods: {
@@ -44,7 +44,7 @@
             this.styles = 'width: 0px; transition: all .3s'
             this.show = false
           } else {
-            this.styles = 'width: 60px; transition: all .3s'
+            this.styles = 'width: 160px; transition: all .3s'
             this.show = true
           }
         } else {
@@ -53,33 +53,38 @@
             this.styles = 'width: 0px; transition: all .3s'
             this.show = false
           } else {
-            this.styles = 'width: 60px; transition: all .3s'
+            this.styles = 'width: 160px; transition: all .3s'
             this.show = true
           }
         }
       },
       touchMove(e) {
+        console.log(e)
         let moveEnd = e.changedTouches[0].clientX
+        let moveY = e.changedTouches[0].clientY
+        if (moveY >= moveEnd) return
         if (moveEnd === this.moveStart) return
         let differ, width, endWidth, beginWidth
         if (this.show) {
           differ = (moveEnd - this.moveStart) * 2
-          width = 60 - differ
+          width = 160 - differ
           endWidth = 0
-          beginWidth = 60
+          beginWidth = 160
         } else {
           differ = (this.moveStart - moveEnd) / 2
           width = differ
-          endWidth = 60
+          endWidth = 160
           beginWidth = 0
         }
         if (differ < 0) {
           this.styles = `width: ${beginWidth}px`
           this.moveStart = moveEnd
-        } else if (differ > 60) {
+        } else if (differ > 160) {
           this.styles = `width: ${endWidth}px`
+          this.contentStyles = `transform :translate3d(${-endWidth}px,0,0)`
         } else {
           this.styles = `width: ${width}px`
+          this.contentStyles = `transform :translate3d(${-width}px,0,0)`
         }
       },
       del() {
@@ -98,48 +103,49 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import '~common/stylus/variable'
+  @import '~common/stylus/mixin'
 
   .slide-item
-    width: 100vw
-    height: 60px
+    width: 100%
+    height: 100%
     background: white
     overflow: hidden
     display: flex
     .content
-      flex: 1
-      height: 60px
+      width: 100%
+      height: 100%
       justify-content: flex-end
       overflow: hidden
       position: relative
       .main-content
-        width: 100vw
-        height: 60px
-        line-height: 60px
+        width: 100%
+        height: 100%
         white-space: nowrap
-        background: #ccc
         position: absolute
+        left: 0
+        top: 0
         right: 0
         bottom: 0
         display: flex
         justify-content: space-between
+        transform: translate3d(0, 0, 0)
     .del-box
-      width: 0
-      height: 60px
+      width: 0px
+      height: 100%
       background: red
       overflow: hidden
       position: relative
+      layout(row)
       &:last-child
         background: blue
       .del-btn
-        width: 60px
-        height: 60px
-        line-height: 60px
-        font-size: 20px
+        flex: 1
+        height: 100%
+        font-size: 14px
         color: white
-        text-align: center
-        position: absolute
-        left: 0
-        bottom: 0
+        layout()
+        justify-content: center
+        align-items: center
 
 
 </style>
