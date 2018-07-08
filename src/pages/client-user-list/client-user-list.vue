@@ -98,6 +98,9 @@
         // this.$route.push('/client-add-user')
         console.log('to add user')
       },
+      check(obj) {
+        // todo
+      },
       scroll(e) {
         console.log(e)
       },
@@ -245,7 +248,6 @@
 
   .user-list
     position: relative
-    padding-left: 15px
     .user-list-item
       height: 76px
 </style>

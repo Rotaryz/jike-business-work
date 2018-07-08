@@ -27,6 +27,7 @@
 
   .client-user-card
     flex: 1
+    margin-left :15px
     .container
       layout(row, block, no-warp)
       align-items: center
