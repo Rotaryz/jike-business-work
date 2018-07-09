@@ -21,7 +21,7 @@
       </div>
     </scroll>
     <div class="btn">
-      <div class="btn-item btn-dark">取消</div>
+      <div class="btn-item btn-dark" @click="_back">取消</div>
       <div class="btn-item btn-green" @click="_liveLogs">发布</div>
     </div>
     <toast ref="toast"></toast>
@@ -56,7 +56,7 @@
       _upLoad (item) {
         UpLoad.upLoadImage(item).then((res) => {
           if (res.error === ERR_OK) {
-            let imageItem = {id: 1, detail_id: res.data.id, image_url: res.data.url}
+            let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
             this.image.push(imageItem)
             this.image = this.image.slice(0, 9)
           }
@@ -83,8 +83,16 @@
         }
         let data = {content: this.title, live_log_details: this.image}
         Live.liveLogs(data).then((res) => {
-          console.log(res)
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('发布成功')
+            setTimeout(() => {
+              this._back()
+            }, 300)
+          }
         })
+      },
+      _back () {
+        this.$router.back()
       }
     },
     components: {
@@ -97,9 +105,7 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .edit-dynamic
-    background: $color-background
     position: fixed
-    background: edit-dynamic
     z-index: 10
     left: 0
     right: 0

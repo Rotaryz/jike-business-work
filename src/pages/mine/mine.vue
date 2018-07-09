@@ -1,6 +1,6 @@
 <template>
   <div class="mine">
-    <Scroll>
+    <Scroll :bcColor="'#f1f2f5'">
       <div class="ba-dark">
         <!--我的-->
       </div>

@@ -1,5 +1,9 @@
 import * as TYPES from './mutation-types'
 
+export const setSignature = ({commit, state}, signature) => {
+  commit(TYPES.SET_LATELY_LIST, signature)
+}
+
 export const saveList = ({commit, state}, latelyList) => {
   commit(TYPES.SET_LATELY_LIST, latelyList)
 }
