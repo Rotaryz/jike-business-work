@@ -40,5 +40,20 @@ export default {
   delGroup(data, loading) {
     const url = `/api/employee/group/${data.groupId}`
     return request.delete(url, data, loading)
+  },
+  // 标签列表
+  getTagList(data, loading) {
+    const url = `/api/employee/label`
+    return request.get(url, data, loading)
+  },
+  // 用户标签列表
+  getCusomerTagList(data, loading) {
+    const url = `/api/employee/label-relation`
+    return request.get(url, data, loading)
+  },
+  // 更新标签
+  updateTag(data, loading) {
+    const url = `/api/employee/label-relation`
+    return request.put(url, data, loading)
   }
 }

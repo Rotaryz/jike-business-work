@@ -1,6 +1,7 @@
 <template>
   <div class="client">
     <scroll>
+      <div @click="test">to-tag-client</div>
       <search></search>
       <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
@@ -55,7 +56,7 @@
       </div>
     </scroll>
     <!--<router-link class="item" to="/client-tag">client-tag</router-link>-->
-    <!--<router-link class="item" to="/client-set-group">client-set-g</router-link>-->
+    <!--<router-link class="item" to="/client-set-group">client-set-g</、ro、uter-link>-->
     <!--<router-link class="item" to="/client-create-group">client-c-g</router-link>-->
     <!--<router-link class="item" to="/client-add-user">client-add-user</router-link>-->
     <!--<router-link class="item" to="/client-search">client-search</router-link>-->
@@ -154,6 +155,10 @@
       console.log('oooo')
     },
     methods: {
+      test() {
+        const path = `/client-tag`
+        this.$router.push({path, query: {customerId: 2}})
+      },
       toUserList(item) {
         const path = `/client/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
