@@ -20,30 +20,30 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
 
-  const listData = [{
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }]
+  // const listData = [{
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }]
   export default {
     name: 'ClientAddUser',
     data() {
       return {
-        dataArray: listData,
+        dataArray: [],
         currentGroupInfo: null
       }
     },
@@ -58,7 +58,7 @@
         if (res.data) {
           this.dataArray = res.data
         }
-        console.log(res)
+        // console.log(res)
       })
     },
     updated() {
@@ -66,17 +66,12 @@
     methods: {
       check(item) {
         item.isCheck = !item.isCheck
-        console.log(this.dataArray)
         // this.dataArray[index].isCheck = !this.dataArray[index].isCheck
       },
       submit() {
       }
     },
-    watch: {
-      dataArray(curVal, oldVal) {
-        console.log(curVal, oldVal)
-      }
-    }
+    watch: {}
   }
 </script>
 

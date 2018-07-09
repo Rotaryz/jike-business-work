@@ -10,16 +10,17 @@
       </section>
       <ul class="user-list">
         <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-          <img class="user-icon" :src="item.icon" alt="">
-          <article class="user-info">
-            <section class="base-info">
-              <div class="name">{{item.name}}</div>
-              <div class="last-time">{{item.last}}</div>
-            </section>
-            <ul class="tags" v-if="item.tags">
-              <li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>
-            </ul>
-          </article>
+          <user-card :userInfo="item"></user-card>
+          <!--<img class="user-icon" :src="item.icon" alt="">-->
+          <!--<article class="user-info">-->
+          <!--<section class="base-info">-->
+          <!--<div class="name">{{item.name}}</div>-->
+          <!--<div class="last-time">{{item.last}}</div>-->
+          <!--</section>-->
+          <!--<ul class="tags" v-if="item.tags">-->
+          <!--<li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>-->
+          <!--</ul>-->
+          <!--</article>-->
         </li>
       </ul>
     </article>
@@ -27,34 +28,41 @@
 </template>
 
 <script type="text/ecmascript-6">
-  const listData = [{
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    tags: ['有意向', '有资金'],
-    last: '最后跟进: 2018/07/04'
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    tags: ['有意向', '有资金', '有资金2'],
-    last: '最后跟进: 18:58'
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    tags: [],
-    last: ''
-  }]
+  import {Client} from 'api'
+  import UserCard from 'components/client-user-card/client-user-card'
+
   export default {
     name: 'ClientSearch',
     data() {
       return {
         userName: '',
-        dataArray: listData
+        dataArray: [],
+        timeStamp: 0
       }
     },
     methods: {
       cancelHandler() {
         this.userName = ''
+      },
+      check(item) {
+        const path = `/client-detail`
+        this.$router.push({path, query: {id: item.id}})
       }
+    },
+    watch: {
+      userName(curVal, oldVal) {
+        if (curVal && Date.now() - this.timeStamp > 100) {
+          const data = {name: curVal}
+          Client.getCusomerList(data).then(res => {
+            this.dataArray = res.data
+            this.timeStamp = Date.now()
+            console.log(res)
+          })
+        }
+      }
+    },
+    components: {
+      UserCard
     }
   }
 </script>

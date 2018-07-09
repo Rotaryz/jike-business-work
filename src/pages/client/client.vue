@@ -146,7 +146,6 @@
     },
     methods: {
       toUserList(item) {
-        console.log(item, '---')
         const path = `/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },
@@ -154,8 +153,10 @@
         const path = `/client-create-group`
         this.$router.push({path})
       },
-      check() {
-        this.$refs.confirm.show()
+      check(item) {
+        // this.$refs.confirm.show()
+        const path = `/client-detail`
+        this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
         const path = `/client-set-group`
