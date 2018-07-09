@@ -28,7 +28,6 @@
       <section class="user-list-box add-list" @click="toCreateGroup">
         <div class="user-list-item">
           <div class="users-avatar add-list"></div>
-          <!--<img class="users-avatar" src="http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg"/>-->
           <div class="item-name">新建分组</div>
         </div>
       </section>
@@ -40,11 +39,6 @@
         <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
       <div class="scroll-list-wrap">
-        <!--<scroll ref="scroll"-->
-        <!--:data="dataArray">-->
-        <!--<ul class="list-content">-->
-        <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
-        <!--</ul>-->
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
             <slide-view :useType="1" @grouping="groupingHandler" :item="item">
@@ -52,18 +46,11 @@
             </slide-view>
           </li>
         </ul>
-        <!--</scroll>-->
       </div>
     </scroll>
-    <!--<router-link class="item" to="/client-tag">client-tag</router-link>-->
-    <!--<router-link class="item" to="/client-set-group">client-set-g</、ro、uter-link>-->
-    <!--<router-link class="item" to="/client-create-group">client-c-g</router-link>-->
-    <!--<router-link class="item" to="/client-add-user">client-add-user</router-link>-->
-    <!--<router-link class="item" to="/client-search">client-search</router-link>-->
-    <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
+    <router-view></router-view>
     <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -76,36 +63,6 @@
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
   import ActionSheet from 'components/action-sheet/action-sheet'
-
-  // const userListArr = [{
-  //   usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-  //   name: '近期可成交',
-  //   people: 18
-  // }, {
-  //   usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-  //   name: '5期可成交',
-  //   people: 8
-  // }]
-  //
-  // let listData = [{
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }]
 
   const groupList = [{
     orderBy: '',
@@ -139,28 +96,33 @@
       this.$emit('tabChange', 3)
     },
     beforeMount() {
-      Client.getGroupList().then(res => {
-        if (res.data) {
-          this.userListArr = res.data
-        }
-      })
-      const data = {order_by: this.checkedGroup.orderBy}
-      Client.getCusomerList(data).then(res => {
-        if (res.data) {
-          this.dataArray = res.data
-        }
-      })
+      this.getGroupList()
+      this.getCusomerList()
     },
     beforeDestroy() {
-      console.log('oooo')
     },
     methods: {
       test() {
         const path = `/client-tag`
         this.$router.push({path, query: {customerId: 2}})
       },
+      getGroupList() {
+        Client.getGroupList().then(res => {
+          if (res.data) {
+            this.userListArr = res.data
+          }
+        })
+      },
+      getCusomerList() {
+        const data = {order_by: this.checkedGroup.orderBy}
+        Client.getCusomerList(data).then(res => {
+          if (res.data) {
+            this.dataArray = res.data
+          }
+        })
+      },
       toUserList(item) {
-        const path = `/client/client-user-list`
+        const path = `/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
@@ -168,8 +130,7 @@
         this.$router.push({path})
       },
       check(item) {
-        // this.$refs.confirm.show()
-        const path = `/client/client-detail`
+        const path = `/client-detail`
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
@@ -189,7 +150,6 @@
       },
       delHandler(index, item) {
         this.checkedItem = item
-        console.log(item)
         this.$refs.confirm.show()
       },
       msgConfirm() {
@@ -227,7 +187,7 @@
   @import '~common/stylus/mixin'
 
   .client
-    position: absolute
+    position: fixed
     top: 0
     left: 0
     right: 0

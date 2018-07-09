@@ -61,8 +61,7 @@
   @import "~common/stylus/mixin"
 
   .client-set-group
-    position: relative
-    min-height: 100vh
+    fill-box()
     background-color: $color-white-fff
     z-index: 10
     .title

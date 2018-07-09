@@ -116,6 +116,9 @@
     },
     methods: {
       refresh() {
+        console.log(this.currentGroupInfo.name)
+        document.title = this.currentGroupInfo.name
+        console.log(document.title)
         const data = {
           get_group_detail: 1,
           group_id: this.currentGroupInfo.id
@@ -127,7 +130,7 @@
         })
       },
       toAddUser() {
-        const path = `/client/client-user-list/client-add-user`
+        const path = `/client-user-list/client-add-user`
         this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(item) {
@@ -135,7 +138,7 @@
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
-        const path = `/client-set-group`
+        const path = `/client-user-list/client-set-group`
         this.$router.push({path, query: {customerInfo: item}})
       },
       delHandler(index, item) {

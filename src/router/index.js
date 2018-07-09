@@ -59,43 +59,73 @@ const route = new Router({
         title: '客户'
       },
       children: [
+        // {
+        //   path: 'client-user-list',
+        //   component: ClientUserList,
+        //   meta: {
+        //     title: '客户列表'
+        //   },
+        //   children: [
+        //     {
+        //       path: 'client-add-user',
+        //       component: ClientAddUser,
+        //       meta: {
+        //         title: '添加成员'
+        //       }
+        //     }
+        //   ]
+        // },
+        // {
+        //   path: 'client-detail',
+        //   component: Cdetail,
+        //   meta: {
+        //     title: '客户详情'
+        //   }
+        // },
+        // {
+        //   path: 'client-set-group',
+        //   component: ClientSetGroup,
+        //   meta: {
+        //     title: '设置分组'
+        //   }
+        // },
+        // {
+        //   path: 'client-create-group',
+        //   component: ClientCreateGroup,
+        //   meta: {
+        //     title: '添加分组'
+        //   }
+        // }
+      ]
+    },
+    {
+      path: '/client-user-list',
+      component: ClientUserList,
+      meta: {
+        title: '客户列表'
+      },
+      children: [
         {
-          path: 'client-user-list',
-          component: ClientUserList,
+          path: 'client-add-user',
+          component: ClientAddUser,
           meta: {
-            title: '客户列表'
-          },
-          children: [
-            {
-              path: 'client-add-user',
-              component: ClientAddUser,
-              meta: {
-                title: '添加成员'
-              }
-            }
-          ]
+            title: '添加成员'
+          }
         },
         {
-          path: 'client-detail',
-          component: Cdetail,
+          path: 'client-create-group',
+          component: ClientCreateGroup,
           meta: {
-            title: '客户详情'
+            title: '添加分组'
           }
         }
       ]
     },
     {
-      path: '/mine',
-      component: Mine,
+      path: '/client-detail',
+      component: Cdetail,
       meta: {
-        title: '我的'
-      }
-    },
-    {
-      path: '/client-tag',
-      component: ClientTag,
-      meta: {
-        title: '标签'
+        title: '客户详情'
       }
     },
     {
@@ -110,6 +140,20 @@ const route = new Router({
       component: ClientCreateGroup,
       meta: {
         title: '添加分组'
+      }
+    },
+    {
+      path: '/mine',
+      component: Mine,
+      meta: {
+        title: '我的'
+      }
+    },
+    {
+      path: '/client-tag',
+      component: ClientTag,
+      meta: {
+        title: '标签'
       }
     },
     {

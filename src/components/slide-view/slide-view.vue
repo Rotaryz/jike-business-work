@@ -120,6 +120,8 @@
       },
       del(item) {
         this.$emit('del', this.index, item)
+        this.styles = 'width: 0px; transition: all .3s'
+        this.show = false
       },
       grouping(item) {
         this.$emit('grouping', this.index, item)
