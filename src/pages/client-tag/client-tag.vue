@@ -25,13 +25,6 @@
   import {Client} from 'api'
   import Scroll from 'components/scroll/scroll'
 
-  // const tagInfo = [{
-  //   name: `基本信息`,
-  //   data: [{label_id: '1', name: '男', isCheck: 0}, {label_id: '2', name: '女', isCheck: 0}, {label_id: '3', name: '已婚', isCheck: 0}, {label_id: '4', name: '00后', isCheck: 0}, {label_id: '5', name: '90后', isCheck: 0}]
-  // }, {
-  //   name: `关注点`,
-  //   data: [{label_id: '11', name: '男1', isCheck: 0}, {label_id: '12', name: '女1', isCheck: 0}, {label_id: '13', name: '已婚1', isCheck: 0}, {label_id: '14', name: '00后1', isCheck: 0}, {label_id: '15', name: '90后1', isCheck: 0}]
-  // }]
   export default {
     name: 'ClientTag',
     data() {
@@ -41,17 +34,20 @@
       }
     },
     created() {
-      // todo
       this.currentId = this.$route.query.customerId
       Client.getTagList().then(res => {
         if (res.data) {
           let dataArray = res.data
           // 获取员工标签列表
           Client.getCusomerTagList({customer_id: this.currentId}).then(tags => {
-            console.log(tags)
-            this.dataArray = dataArray.map((item)=> {
+            this.dataArray = dataArray.map((item) => {
               item.data.forEach(it => {
-                it.isCheck = false
+                let flag = tags.data.some(val => val.label_id === it.label_id)
+                if (flag) {
+                  it.isCheck = true
+                } else {
+                  it.isCheck = false
+                }
               })
               return item
             })
@@ -84,12 +80,8 @@
           let node = item.data.find(val => val.label_id === it.label_id)
           node && (node.isCheck = !node.isCheck)
         })
-      },
-      _updateTag() {
-        // todo
       }
     },
-    computed: {},
     components: {
       Scroll
     }
