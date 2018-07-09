@@ -12,7 +12,7 @@
               @pullingUp="onPullingUp">
         <div class="msgs-list">
           <div class="msgs-item" v-for="item in list" :key="item" @click="test">
-            <img src="" class="msgs-left">
+            <img src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJBB7iadHLcSzFWsjVIrdPr0NTNKibn9wJPfDV69Bav3QhNsPUxQKBDibTIqia1qc8UyVhUOgj7WSLj3w/132" class="msgs-left">
             <div class="msgs-right">
               <div class="msgs-container">
                 <p class="msgs-p">杨过<span class="green">查看</span>了你的<span class="green">个人动态</span>，看来TA对你感兴趣</p>
