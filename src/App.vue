@@ -7,15 +7,34 @@
 
 <script type="text/ecmascript-6">
   import Tab from 'components/tab/tab'
+  import Oauth from 'common/js/oauth'
+  import {Jwt} from 'api'
+
+  const oauth = new Oauth()
 
   export default {
     name: 'App',
     data() {
       return {}
     },
-    created() {
+    mounted() {
+      this.applyOauth()
     },
-    methods: {},
+    computed: {
+      code() {
+        return this.$route.query.code || ''
+      }
+    },
+    methods: {
+      applyOauth() {
+        Jwt.employeeLogin(this.code).then((res) => {
+          console.log(res)
+        })
+        console.log(this.code)
+        console.log(oauth.oauthUri)
+        // window.location.href = oauth.oauthUri
+      }
+    },
     components: {
       Tab
     }

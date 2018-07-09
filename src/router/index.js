@@ -10,11 +10,12 @@ const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
 Vue.use(Router)
 
 const route = new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '/',
-      redirect: '/radar'
-    },
+    // {
+    //   path: '/',
+    //   component: App
+    // },
     {
       path: '/radar',
       component: Radar,
