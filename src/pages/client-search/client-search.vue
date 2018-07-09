@@ -1,27 +1,29 @@
 <template>
-  <article class="client-search">
-    <section class="search-box">
-      <div class="input-box">
-        <img class="icon" src="./icon-search@3x.png" alt="">
-        <input class="input" type="text" placeholder="请输客户姓名" v-model="userName">
-      </div>
-      <div class="cancel-btn" @click="cancelHandler">取消</div>
-    </section>
-    <ul class="user-list">
-      <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-        <img class="user-icon" :src="item.icon" alt="">
-        <article class="user-info">
-          <section class="base-info">
-            <div class="name">{{item.name}}</div>
-            <div class="last-time">{{item.last}}</div>
-          </section>
-          <ul class="tags" v-if="item.tags">
-            <li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>
-          </ul>
-        </article>
-      </li>
-    </ul>
-  </article>
+  <transition name="slide">
+    <article class="client-search">
+      <section class="search-box">
+        <div class="input-box">
+          <img class="icon" src="./icon-search@3x.png" alt="">
+          <input class="input" type="text" placeholder="请输客户姓名" v-model="userName">
+        </div>
+        <div class="cancel-btn" @click="cancelHandler">取消</div>
+      </section>
+      <ul class="user-list">
+        <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+          <img class="user-icon" :src="item.icon" alt="">
+          <article class="user-info">
+            <section class="base-info">
+              <div class="name">{{item.name}}</div>
+              <div class="last-time">{{item.last}}</div>
+            </section>
+            <ul class="tags" v-if="item.tags">
+              <li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>
+            </ul>
+          </article>
+        </li>
+      </ul>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">

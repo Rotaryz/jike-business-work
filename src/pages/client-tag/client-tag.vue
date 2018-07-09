@@ -1,16 +1,18 @@
 <template>
-  <article class="client-tag">
-    <div class="box">
-      <section class="info-box" v-for="(item,index) in dataArray" :key="index" v-if="dataArray.length">
-        <div class="title">{{item.name}}</div>
-        <ul class="content">
-          <li class="item-box" v-for="(dataItem,dataIndex) in item.data" :key="dataIndex" v-if="item.data">
-            <div :class="['item',dataItem.isCheck?'active':'']" @click.prevent="check(dataItem.label_id)">{{dataItem.name}}</div>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </article>
+  <transition name="slide">
+    <article class="client-tag">
+      <div class="box">
+        <section class="info-box" v-for="(item,index) in dataArray" :key="index" v-if="dataArray.length">
+          <div class="title">{{item.name}}</div>
+          <ul class="content">
+            <li class="item-box" v-for="(dataItem,dataIndex) in item.data" :key="dataIndex" v-if="item.data">
+              <div :class="['item',dataItem.isCheck?'active':'']" @click.prevent="check(dataItem.label_id)">{{dataItem.name}}</div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -57,7 +59,7 @@
     position: relative
     background-color: $color-white-fff
     min-height: 100vh
-    z-index :10
+    z-index: 10
     .box
       position: relative
       .info-box

@@ -95,8 +95,8 @@
     },
     methods: {
       toAddUser() {
-        // this.$route.push('/client-add-user')
-        console.log('to add user')
+        const path = `/client-add-user`
+        this.$router.push({path})
       },
       check(obj) {
         // todo

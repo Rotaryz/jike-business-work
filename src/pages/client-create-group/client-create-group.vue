@@ -1,11 +1,13 @@
 <template>
-  <article class="client-create-group">
-    <div class="title">设置分组</div>
-    <section class="content">
-      <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
-    </section>
-    <footer class="btn">保存</footer>
-  </article>
+  <transition name="slide">
+    <article class="client-create-group">
+      <div class="title">设置分组</div>
+      <section class="content">
+        <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
+      </section>
+      <footer class="btn">保存</footer>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">

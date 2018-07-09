@@ -7,6 +7,7 @@
             v-if="userListArr.length"
             v-for="(item,index) in userListArr"
             :key="index"
+            @click="toUserList"
         >
           <div class="users-avatar">
             <img v-if="item.usersAvatar && item.usersAvatar.length"
@@ -19,9 +20,10 @@
           <div class="item-name">{{item.name}}（{{item.people}}）</div>
         </li>
       </ul>
-      <section class="user-list-box add-list">
+      <section class="user-list-box add-list" @click="toCreateGroup">
         <div class="user-list-item">
-          <img class="users-avatar" src="http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg"/>
+          <div class="users-avatar add-list"></div>
+          <!--<img class="users-avatar" src="http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg"/>-->
           <div class="item-name">新建分组</div>
         </div>
       </section>
@@ -48,13 +50,13 @@
         <!--</scroll>-->
       </div>
     </scroll>
-
     <!--<router-link class="item" to="/client-tag">client-tag</router-link>-->
     <!--<router-link class="item" to="/client-set-group">client-set-g</router-link>-->
     <!--<router-link class="item" to="/client-create-group">client-c-g</router-link>-->
     <!--<router-link class="item" to="/client-add-user">client-add-user</router-link>-->
     <!--<router-link class="item" to="/client-search">client-search</router-link>-->
     <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
+    <confirm-msg ref="confirm"></confirm-msg>
   </div>
 </template>
 
@@ -64,6 +66,7 @@
   import Scroll from 'components/scroll/scroll'
   // import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
 
   const userListArr = [{
     usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
@@ -106,11 +109,30 @@
         dataArray: listData.concat(listData).concat(listData)
       }
     },
+    methods: {
+      toUserList() {
+        const path = `/client-user-list`
+        this.$router.push({path})
+      },
+      toCreateGroup() {
+        const path = `/client-create-group`
+        this.$router.push({path})
+      },
+      check() {
+        this.$refs.confirm.show()
+      }
+    },
+    watch: {
+      cancel() {
+        console.log(222)
+      }
+    },
     components: {
       Search,
       Scroll,
       SlideView,
-      UserCard
+      UserCard,
+      ConfirmMsg
     }
   }
 </script>
@@ -143,12 +165,16 @@
           background-color: $color-f5f7f9
           margin-right: 10px
           overflow: hidden
+          &.add-list
+            opacity: 0.8
+            background: $color-20202E url("./icon-newconstruction@3x.png") no-repeat center / 20px 20px
           .avatar
             float: left
             width: 15px
             height: 15px
             box-sizing: border-box
             border: 1px solid $color-white-fff
+
         .item-name
           font-family: $font-family-regular
           font-size: $font-size-16

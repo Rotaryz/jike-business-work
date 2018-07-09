@@ -1,18 +1,20 @@
 <template>
-  <article class="client-add-user">
-    <ul class="user-list">
-      <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(index)" >
-        <div :class="['check-box',item.isCheck?'active':'']"></div>
-        <img class="user-icon" :src="item.icon" alt="">
-        <section class="base-info">
-          <div class="name">{{item.name}}</div>
-          <div class="status">{{item.status}}</div>
-        </section>
-        <div class="ai">{{item.ai}}</div>
-      </li>
-    </ul>
-    <footer class="btn" @click="submit">确定</footer>
-  </article>
+  <transition name="slide">
+    <article class="client-add-user">
+      <ul class="user-list">
+        <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(index)">
+          <div :class="['check-box',item.isCheck?'active':'']"></div>
+          <img class="user-icon" :src="item.icon" alt="">
+          <section class="base-info">
+            <div class="name">{{item.name}}</div>
+            <div class="status">{{item.status}}</div>
+          </section>
+          <div class="ai">{{item.ai}}</div>
+        </li>
+      </ul>
+      <footer class="btn" @click="submit">确定</footer>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
