@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
+const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
 const EditCard = () => import('pages/edit-card/edit-card')
@@ -59,6 +60,13 @@ const route = new Router({
       }
     },
     {
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
+      }
+    },
+    {
       path: '/editCard',
       component: EditCard,
       meta: {
@@ -111,7 +119,7 @@ const route = new Router({
 })
 
 route.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta ? to.meta.title : ''
   next()
 })
 

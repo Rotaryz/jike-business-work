@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ceiling></ceiling>
     <router-view/>
     <tab></tab>
   </div>
@@ -7,6 +8,7 @@
 
 <script type="text/ecmascript-6">
   import Tab from 'components/tab/tab'
+  import Ceiling from 'components/ceiling/ceiling'
   import Oauth from 'common/js/oauth'
   import {Jwt} from 'api'
   import storage from 'storage-controller'
@@ -64,7 +66,8 @@
       }
     },
     components: {
-      Tab
+      Tab,
+      Ceiling
     }
   }
 </script>

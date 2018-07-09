@@ -8,7 +8,7 @@
   export default {
     name: 'Client',
     created() {
-      this.$emit('tabChange', '客户')
+      this.$emit('tabChange', 3)
     },
     data() {
       return {
