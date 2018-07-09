@@ -50,7 +50,7 @@
 <script>
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapGetters} from 'vuex'
   export default {
     name: 'Chat',
     created() {

@@ -23,9 +23,6 @@ const GoodsDetail = () => import('pages/goods-detail/goods-detail')
 const GoodsList = () => import('pages/goods-list/goods-list')
 const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
-const Echarts = () => import('pages/vue-echarts/vue-echarts')
-const Cdetail = () => import('pages/client-detail/client-detail')
-const Cdata = () => import('pages/detail-data/detail-data')
 
 Vue.use(Router)
 
