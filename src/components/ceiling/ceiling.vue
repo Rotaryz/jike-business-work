@@ -31,8 +31,8 @@
       }
     },
     async created() {
-//      await this.sdkLogin()
-//      await this.getLatelyList()
+      await this.sdkLogin()
+      await this.getLatelyList()
     },
     methods: {
       ...mapActions([

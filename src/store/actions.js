@@ -7,3 +7,7 @@ export const saveList = ({commit, state}, latelyList) => {
 export const setCurrent = ({commit, state}, current) => {
   commit(TYPES.SET_CURRENT, current)
 }
+
+export const setUnreadCount = ({commit, state}, id) => {
+  commit(TYPES.SET_UNREAD_COUNT, id)
+}

@@ -9,6 +9,14 @@ const mutations = {
   },
   [TYPES.SET_CURRENT](state, current) {
     state.currentMsg = current
+  },
+  [TYPES.SET_UNREAD_COUNT](state, id) {
+    state.latelyList = state.latelyList.map((item) => {
+      if (item.sessionId === id) {
+        item.unreadMsgCount = 0
+      }
+      return item
+    })
   }
 }
 

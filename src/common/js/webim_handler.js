@@ -348,7 +348,7 @@ export default class webimHandler {
   }
 
   // 获取C2C历史消息并设成已读状态
-  // id 要拉取的好友id 、count 拉取的条数
+  // id 要拉取的好友id
   static getC2CMsgList(id) {
     let options = {
       'Peer_Account': id, // 好友帐号

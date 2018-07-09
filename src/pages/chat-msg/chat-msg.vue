@@ -51,6 +51,7 @@
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
   import {mapActions, mapGetters} from 'vuex'
+  import webimHandler from 'common/js/webim_handler'
   export default {
     name: 'Chat',
     created() {
@@ -62,8 +63,13 @@
       this.listDom = this.$refs.list
       this.startY = this.chatDom.clientHeight - this.listDom.clientHeight - 30
       document.title = this.currentMsg.nickName
+      webimHandler.getC2CMsgList(this.currentMsg.nickName) // 消息已读处理
+      this.setUnreadCount(this.currentMsg.nickName) // vuex
     },
     methods: {
+      ...mapActions([
+        'setUnreadCount'
+      ]),
       textHeight() {
         let timer = setTimeout(() => {
           this.textareaDom.style.height = 'auto'
@@ -100,8 +106,8 @@
         inputMsg: '',
         list: [1, 2, 3, 4],
         pullDownRefresh: true,
-        pullDownRefreshThreshold: 10,
-        pullDownRefreshStop: 20,
+        pullDownRefreshThreshold: 90,
+        pullDownRefreshStop: 40,
         startY: '',
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce']
