@@ -10,7 +10,7 @@
           <div class="chat-list" ref="list">
             <div class="chat-item" v-for="item in list" :key="item">
               <div class="chat-content">
-                <img src="" class="avatar">
+                <img :src="currentMsg.avatar" class="avatar">
                 <div class="chat-msg-box other" v-if="false">
                   <div class="arrow-box">
                     <div class="gray-arrow">
@@ -50,10 +50,10 @@
 <script>
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
+  import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'Chat',
     created() {
-      document.title = '梅超风'
     },
     mounted() {
       this.textareaDom = this.$refs.inputTxt
@@ -61,6 +61,7 @@
       this.chatDom = this.$refs.chat
       this.listDom = this.$refs.list
       this.startY = this.chatDom.clientHeight - this.listDom.clientHeight - 30
+      document.title = this.currentMsg.nickName
     },
     methods: {
       textHeight() {
@@ -121,6 +122,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'currentMsg'
+      ]),
       pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {
           threshold: parseInt(this.pullDownRefreshThreshold),

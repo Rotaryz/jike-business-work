@@ -12,17 +12,10 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import {tabMode} from 'common/js/constants'
+  import {mapActions} from 'vuex'
   import webimHandler from 'common/js/webim_handler'
 
-  const COMPONENT_NAME = 'Tab'
-  const TABS = [
-    {text: '雷达', path: '/radar', id: 1, icon: 'icon-radar_tabbar@2x.png', activeIcon: 'icon-radar_selected@2x.png'},
-    {text: '消息', path: '/news', id: 2, icon: 'icon-news_tabbar@2x.png', activeIcon: 'icon-news_selected@2x.png'},
-    {text: '客户', path: '/client', id: 3, icon: 'icon-customer_tabbar@2x.png', activeIcon: 'icon-customer_selected@2x.png'},
-    {text: '我的', path: '/mine', id: 4, icon: 'icon-my_tabbar@2x.png', activeIcon: 'icon-my_selected@2x.png'}
-  ]
+  const COMPONENT_NAME = 'Ceiling'
   const Config = {
     sdkappid: 1400104514,
     accountType: 29987,
@@ -32,24 +25,19 @@
     name: COMPONENT_NAME,
     data() {
       return {
-        tabList: TABS,
-        activeIndex: 0,
-        mode: tabMode,
         glideShow: false,
         newMsgIn: false,
         timer: ''
       }
     },
-    computed: {
-      ...mapGetters([
-        'tabMode'
-      ])
-    },
     async created() {
-      await this.sdkLogin()
-      await this.getLatelyList()
+//      await this.sdkLogin()
+//      await this.getLatelyList()
     },
     methods: {
+      ...mapActions([
+        'saveList'
+      ]),
       // IM登录
       async sdkLogin() {
         let loginInfo = {
@@ -82,7 +70,7 @@
 
         let options = {
           'isAccessFormalEnv': true, // 是否访问正式环境，默认访问正式，选填
-          'isLogOn': true// 是否开启控制台打印日志,默认开启，选填
+          'isLogOn': false// 是否开启控制台打印日志,默认开启，选填
         }
 
         let avatar = ''
@@ -92,10 +80,7 @@
       async getLatelyList() {
         let res = await webimHandler.getRecentContact(50)
         let msgList = await webimHandler.initUnread(res)
-        let unLastMsg = msgList.filter((item) => {
-          return item.lastMsg === '[其他]'
-        })
-        console.log(unLastMsg)
+        this.saveList(msgList)
       }
     }
   }
