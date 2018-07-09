@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ceiling></ceiling>
     <router-view/>
     <tab></tab>
   </div>
@@ -7,6 +8,7 @@
 
 <script type="text/ecmascript-6">
   import Tab from 'components/tab/tab'
+  import Ceiling from 'components/ceiling/ceiling'
 
   export default {
     name: 'App',
@@ -17,7 +19,8 @@
     },
     methods: {},
     components: {
-      Tab
+      Tab,
+      Ceiling
     }
   }
 </script>
