@@ -1,7 +1,8 @@
-import {tabMode} from 'common/js/constants'
+import { tabMode } from 'common/js/constants'
 
 const state = {
-  tabMode: tabMode.show
+  tabMode: tabMode.show,
+  signature: 'ah'
 }
 
 export default state
