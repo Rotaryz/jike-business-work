@@ -130,6 +130,7 @@
         width: 60px
         margin-top: 4vw
         overflow: hidden
+        background :$color-white
         border-1px($color-row-line, 0)
         .mine-header
           width: 100%

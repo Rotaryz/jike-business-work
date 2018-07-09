@@ -1,21 +1,19 @@
 <template>
   <div class="dynamic-list">
     <scroll>
-      <div class="dynamic-item">
-        <div class="find-item img-one">
+      <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index">
+        <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
           <div class="find-box">
             <div class="cainter">
               <div class="user">
                 <!-- 头像-->
-                <img class="header">
-                <p class="nickname">姓名</p>
+                <img class="header" :src="item.employee_image_url">
+                <p class="nickname">{{item.live_log_like}}</p>
               </div>
               <!--{{comment?'':'special'}}-->
-              <p class="words">写日志是否已成为我生活中的一部分，我享受其中的乐趣，
-                我也愿意和大家分享我的点滴，只要你们不觉得乏味。回到工作，如果你的工作也像我写日志一样
-                ，能成为你生活的一部分，并且你能享受其中的乐趣，我觉得这就是一份工作的价</p>
+              <p class="words">{{item.content}}</p>
               <div class="one-box">
-                <img class="img-one-item">
+                <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
               </div>
             </div>
             <!--<div class="address">-->
@@ -24,7 +22,7 @@
             <!--</div>-->
             <div class="information">
               <div class="time">
-                2018-07-06 18:12
+                {{item.created_at}}
                 <p class="del">删除</p>
               </div>
               <div class="share">
@@ -36,7 +34,7 @@
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}}-->
                 <div class="share-item">
-                  <img class="find-icon" src="./icon-like@2x.png">
+                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
                   </div>
@@ -45,17 +43,16 @@
             </div>
           </div>
         </div>
-        <div class="find-item img-two">
+        <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
           <div class="find-box">
             <div class="cainter">
               <div class="user">
-                <img class="header">
-                <p class="nickname">姓名</p>
+                <img class="header" :src="item.employee_image_url">
+                <p class="nickname">{{item.live_log_like}}</p>
               </div>
-              <p class="words">内容</p>
+              <p class="words">{{item.content}}</p>
               <div class="img-item-two">
-                <img class="two-item">
-                <img class="two-item">
+                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
               </div>
             </div>
             <!--<div class="address">-->
@@ -64,7 +61,7 @@
             <!--</div>-->
             <div class="information">
               <div class="time">
-                2018-07-06 18:12
+                {{item.created_at}}
                 <p class="del">删除</p>
               </div>
               <div class="share">
@@ -76,7 +73,7 @@
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}} -->
                 <div class="share-item ">
-                  <img class="find-icon" src="./icon-like@2x.png">
+                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
                   </div>
@@ -85,25 +82,17 @@
             </div>
           </div>
         </div>
-        <div class="find-item img-more">
+        <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
           <div class="find-box">
             <div class="cainter">
               <div class="user">
-                <img class="header">
-                <p class="nickname">姓名</p>
+                <img class="header" :src="item.employee_image_url">
+                <p class="nickname">{{item.live_log_like}}</p>
               </div>
               <!--{{comment?'':'special'}}"-->
-              <p class="words">内容</p>
+              <p class="words">{{item.content}}</p>
               <div class="img-item-two">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
-                <img class="two-item">
+                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
               </div>
             </div>
             <!--<div class="address" >-->
@@ -112,7 +101,7 @@
             <!--</div>-->
             <div class="information">
               <div class="time">
-                2018-07-06 18:12
+                {{item.created_at}}
                 <p class="del">删除</p>
               </div>
               <div class="share">
@@ -124,7 +113,7 @@
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}} -->
                 <div class="share-item">
-                  <img class="find-icon" src="./icon-like@2x.png">
+                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
                   </div>
@@ -135,7 +124,9 @@
         </div>
       </div>
     </scroll>
-    <img class="new-dynamic" src="./Oval@2x.png">
+    <router-link to="editDynamic" class="new-dynamic">
+      <img src="./Oval@2x.png" class="new-dynamic-img">
+    </router-link>
   </div>
 </template>
 
@@ -145,6 +136,11 @@
 
   export default {
     name: 'dynamic-list',
+    data () {
+      return {
+        dynamicList: []
+      }
+    },
     components: {
       Scroll
     }
@@ -276,12 +272,14 @@
         margin-top: 1vw
 
   .new-dynamic
-    border-radius :50%
+    border-radius: 50%
     position: absolute
     bottom: 66px
     right: 15px
     z-index: 100
-    box-shadow: 0 8px 7px 0 rgba(211,211,215,0.29)
+    box-shadow: 0 8px 7px 0 rgba(211, 211, 215, 0.29)
     width: 50px
     height: @width
+    .new-dynamic-img
+      width: 100%
 </style>
