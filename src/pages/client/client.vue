@@ -146,6 +146,7 @@
     },
     methods: {
       toUserList(item) {
+        console.log(item, '---')
         const path = `/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },

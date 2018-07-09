@@ -27,6 +27,7 @@
     beforeMount() {
       const customerInfo = this.$route.query.customerInfo
       const data = {customer_id: customerInfo.id}
+      this.customerId = customerInfo.id
       Client.getSetGroupList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data
@@ -36,16 +37,15 @@
     },
     beforeDestroy() {
       let arr = []
-      this.dataArray.map(item => {
-        arr.push({group_id: item.id})
+      this.dataArray.filter(item => {
+        item.is_selecte && arr.push({group_id: item.id})
       })
-      if (!arr.length) return
       const data = {
         customer_id: this.customerId,
         data: arr
       }
       Client.setGroup(data).then(res => {
-        console.log(res)
+        console.log(res, data)
       })
     },
     methods: {
