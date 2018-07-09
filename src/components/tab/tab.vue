@@ -1,5 +1,5 @@
 <template>
-  <div class="tab" v-show="tabMode === mode.show">
+  <div class="tab border-top-1px" v-show="tabMode === mode.show">
     <div class="tab-item" v-for="(item, index) in tabList" :key="index">
       <div class="item-container" @click="changeTab(item, index)">
         <img :src="'../../static/img/' + (index === activeIndex ? item.activeIcon : item.icon)" class="icon">
@@ -43,6 +43,17 @@
         }
         this.activeIndex = index
         this.$router.push(item.path)
+      }
+    },
+    watch: {
+      '$route'(to) {
+        let path = to.path
+        let routeArr = this.tabList.filter((item) => {
+          return item.path === path
+        })
+        if (routeArr.length) {
+          this.activeIndex = routeArr[0].id - 1
+        }
       }
     }
   }

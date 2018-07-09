@@ -1,48 +1,33 @@
 <template>
   <div class="news">
     <div class="news-list">
-      <div class="news-item border-bottom-1px">
+      <div class="news-item border-bottom-1px" v-for="(item, index) in latelyList" :key="index" @click="chatMsg(item)">
         <div class="news-left">
-          <img src="" class="left-img">
-          <span class="news-count">88</span>
+          <img :src="item.avatar" class="left-img">
+          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount}}</span>
         </div>
         <div class="news-right">
           <div class="right-top">
-            <span class="top-name">Pony</span>
-            <span class="top-time">2018/07/08</span>
+            <span class="top-name">{{item.nickName}}</span>
+            <span class="top-time">{{item.msgTimeStamp}}</span>
           </div>
           <div class="right-down">
-            疯狂砍价已上线，快速提升品牌曝光度了解一下就恢复积分兑换
+            {{item.lastMsg}}
           </div>
         </div>
       </div>
-      <div class="news-item border-bottom-1px">
+      <div class="news-item border-bottom-1px" v-for="(item, index) in [1, 2]" :key="index">
         <div class="news-left">
-          <img src="" class="left-img">
-          <span class="news-count">···</span>
+          <img src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJBB7iadHLcSzFWsjVIrdPr0NTNKibn9wJPfDV69Bav3QhNsPUxQKBDibTIqia1qc8UyVhUOgj7WSLj3w/132" class="left-img">
+          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount}}</span>
         </div>
         <div class="news-right">
           <div class="right-top">
-            <span class="top-name">Pony</span>
-            <span class="top-time">2018/07/08</span>
+            <span class="top-name">{{item.nickName}}21321</span>
+            <span class="top-time">{{item.msgTimeStamp}}21212331</span>
           </div>
           <div class="right-down">
-            你好，在吗？
-          </div>
-        </div>
-      </div>
-      <div class="news-item border-bottom-1px">
-        <div class="news-left">
-          <img src="" class="left-img">
-          <span class="news-count">8</span>
-        </div>
-        <div class="news-right">
-          <div class="right-top">
-            <span class="top-name">Pony</span>
-            <span class="top-time">2018/07/08</span>
-          </div>
-          <div class="right-down">
-            疯狂砍价已上线，快速提升品牌曝光度了解一下就恢复积分兑换
+            {{item.lastMsg}}123
           </div>
         </div>
       </div>
@@ -51,6 +36,7 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'News',
     created() {
@@ -59,6 +45,24 @@
     data() {
       return {
       }
+    },
+    methods: {
+      ...mapActions([
+        'setCurrent'
+      ]),
+      chatMsg(item) {
+        let currentMsg = {
+          nickName: item.nickName,
+          avatar: item.avatar
+        }
+        this.setCurrent(currentMsg)
+        this.$router.push('/chat')
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'latelyList'
+      ])
     }
   }
 </script>
@@ -69,12 +73,13 @@
   @import '~common/stylus/mixin'
 
   .news
-    width: 100%
-    height: 100%
+    width: 100vw
+    height: 100vh
     background: $color-white
     .news-list
       background: $color-white
       padding: 0 15px
+      margin-bottom: 45px
       .news-item
         display: flex
         height: 75px
