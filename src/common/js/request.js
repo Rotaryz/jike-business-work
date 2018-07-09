@@ -18,7 +18,7 @@ const http = axios.create({
   headers: COMMON_HEADER
 })
 
-let authorization = storage.get('token', '')
+let authorization = storage.get('token', '82f9f431d38ae6406251861869a85c2123938e79')
 http.defaults.headers.common['Authorization'] = authorization
 http.defaults.baseURL = BASE_URL.api
 

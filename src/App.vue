@@ -2,6 +2,7 @@
   <div id="app">
     <ceiling></ceiling>
     <router-view/>
+    <tab></tab>
   </div>
 </template>
 
@@ -23,7 +24,7 @@
     data() {
       return {}
     },
-    mounted() {
+    created() {
       this._checkAuthorize()
     },
     computed: {
@@ -39,14 +40,15 @@
     },
     methods: {
       _checkAuthorize() {
-        if (this.code && !this.hasToken) {
-          // 有code没有token -> 申请拿token
-          this._applyOauth()
-        } else if (!this.hasToken && !this.code) {
-          this._getCode()
-        } else {
-          this.$router.replace(NORMAL_ROUTE)
-        }
+        this.$router.replace(NORMAL_ROUTE)
+        // if (this.code && !this.hasToken) {
+        //   // 有code没有token -> 申请拿token
+        //   this._applyOauth()
+        // } else if (!this.hasToken && !this.code) {
+        //   this._getCode()
+        // } else {
+        //   this.$router.replace(NORMAL_ROUTE)
+        // }
       },
       _getCode() {
         window.location.href = oauth.oauthUri
