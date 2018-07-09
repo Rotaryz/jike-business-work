@@ -3,10 +3,20 @@ import Router from 'vue-router'
 
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
+const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
-const EditCard = () => import('pages/edit-card/edit-card')
 const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const Echarts = () => import('pages/vue-echarts/vue-echarts')
+const Cdetail = () => import('pages/client-detail/client-detail')
+const Cdata = () => import('pages/detail-data/detail-data')
+const ClientTag = () => import('pages/client-tag/client-tag')
+const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
+const ClientCreateGroup = () => import('pages/client-create-group/client-create-group')
+const ClientAddUser = () => import('pages/client-add-user/client-add-user')
+const ClientSearch = () => import('pages/client-search/client-search')
+const ClientUserList = () => import('pages/client-user-list/client-user-list')
+const EditCard = () => import('pages/edit-card/edit-card')
 const ChangeAutograph = () => import('pages/change-autograph/change-autograph')
 const ShareCard = () => import('pages/share-card/share-card')
 const GoodsDetail = () => import('pages/goods-detail/goods-detail')
@@ -17,11 +27,12 @@ const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 Vue.use(Router)
 
 const route = new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '/',
-      redirect: '/radar'
-    },
+    // {
+    //   path: '/',
+    //   component: App
+    // },
     {
       path: '/radar',
       component: Radar,
@@ -41,7 +52,8 @@ const route = new Router({
       component: Client,
       meta: {
         title: '客户'
-      }
+      },
+      children: []
     },
     {
       path: '/mine',
@@ -51,10 +63,52 @@ const route = new Router({
       }
     },
     {
-      path: '/scroll-demo',
-      component: ScrollDemo,
+      path: '/client-tag',
+      component: ClientTag,
       meta: {
-        title: '测试滚动'
+        title: '标签'
+      }
+    },
+    {
+      path: '/client-set-group',
+      component: ClientSetGroup,
+      meta: {
+        title: '设置分组'
+      }
+    },
+    {
+      path: '/client-create-group',
+      component: ClientCreateGroup,
+      meta: {
+        title: '添加分组'
+      }
+    },
+    {
+      path: '/client-add-user',
+      component: ClientAddUser,
+      meta: {
+        title: '添加成员'
+      }
+    },
+    {
+      path: '/client-search',
+      component: ClientSearch,
+      meta: {
+        title: '搜索'
+      }
+    },
+    {
+      path: '/client-user-list',
+      component: ClientUserList,
+      meta: {
+        title: '客户列表'
+      }
+    },
+    {
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
       }
     },
     {
@@ -105,12 +159,40 @@ const route = new Router({
       meta: {
         title: '发布动态'
       }
+    },
+    {
+      path: '/scroll-demo',
+      component: ScrollDemo,
+      meta: {
+        title: '测试滚动'
+      }
+    },
+    {
+      path: '/echarts',
+      component: Echarts,
+      meta: {
+        title: ''
+      }
+    },
+    {
+      path: '/client-detail',
+      component: Cdetail,
+      meta: {
+        title: '客户详情'
+      }
+    },
+    {
+      path: '/detail-data',
+      component: Cdata,
+      meta: {
+        title: '客户資料'
+      }
     }
   ]
 })
 
 route.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta ? to.meta.title : ''
   next()
 })
 

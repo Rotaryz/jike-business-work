@@ -2,6 +2,11 @@
 import business from './business'
 import upload from './upload'
 import live from './live'
+import client from './client'
+import jwt from './jwt'
+
+// 授权模块
+export const Jwt = jwt
 
 // 名片
 export const Business = business
@@ -11,3 +16,6 @@ export const UpLoad = upload
 
 // 动态
 export const Live = live
+
+// 客户
+export const Client = client
