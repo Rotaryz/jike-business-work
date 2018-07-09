@@ -1,14 +1,14 @@
 <template>
   <div class="dynamic-list">
     <scroll>
-      <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index">
+      <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
         <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
           <div class="find-box">
             <div class="cainter">
               <div class="user">
                 <!-- 头像-->
                 <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.live_log_like}}</p>
+                <p class="nickname">{{item.employee_name}}</p>
               </div>
               <!--{{comment?'':'special'}}-->
               <p class="words">{{item.content}}</p>
@@ -23,7 +23,7 @@
             <div class="information">
               <div class="time">
                 {{item.created_at}}
-                <p class="del">删除</p>
+                <p class="del" @click="_delItem(index)">删除</p>
               </div>
               <div class="share">
                 <div class="share-item comment">
@@ -33,7 +33,7 @@
                   </div>
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                <div class="share-item">
+                <div class="share-item" @click="_goodLike(index)">
                   <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
@@ -48,7 +48,7 @@
             <div class="cainter">
               <div class="user">
                 <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.live_log_like}}</p>
+                <p class="nickname">{{item.employee_name}}</p>
               </div>
               <p class="words">{{item.content}}</p>
               <div class="img-item-two">
@@ -62,7 +62,7 @@
             <div class="information">
               <div class="time">
                 {{item.created_at}}
-                <p class="del">删除</p>
+                <p class="del" @click="_delItem(index)">删除</p>
               </div>
               <div class="share">
                 <div class="share-item comment">
@@ -72,7 +72,7 @@
                   </div>
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}} -->
-                <div class="share-item ">
+                <div class="share-item " @click="_goodLike(index)">
                   <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
@@ -87,7 +87,7 @@
             <div class="cainter">
               <div class="user">
                 <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.live_log_like}}</p>
+                <p class="nickname">{{item.employee_name}}</p>
               </div>
               <!--{{comment?'':'special'}}"-->
               <p class="words">{{item.content}}</p>
@@ -102,7 +102,7 @@
             <div class="information">
               <div class="time">
                 {{item.created_at}}
-                <p class="del">删除</p>
+                <p class="del" @click="_delItem(index)">删除</p>
               </div>
               <div class="share">
                 <div class="share-item comment">
@@ -112,7 +112,7 @@
                   </div>
                 </div>
                 <!--{{find.is_like ? 'thumbs-up' : ''}} -->
-                <div class="share-item">
+                <div class="share-item" @click="_goodLike(index)">
                   <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
                   <div class="find-num">
                     赞
@@ -127,22 +127,59 @@
     <router-link to="editDynamic" class="new-dynamic">
       <img src="./Oval@2x.png" class="new-dynamic-img">
     </router-link>
+    <confirm-msg ref="confirm" @confirm="_sureDel"></confirm-msg>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
-  // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
+  import { Live } from 'api'
+  import { ERR_OK } from '../../common/js/config'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
+  import Toast from 'components/toast/toast'
 
   export default {
     name: 'dynamic-list',
     data () {
       return {
-        dynamicList: []
+        dynamicList: [],
+        delIndex: null
+      }
+    },
+    created () {
+      this._getList()
+    },
+    methods: {
+      _getList () {
+        Live.liveLogsList().then((res) => {
+          if (res.error === ERR_OK) {
+            this.dynamicList = res.data
+            console.log(res.data)
+          }
+        })
+      },
+      _delItem (index) {
+        this.delIndex = index
+        this.$refs.confirm.show({msg: '确定删除该动态？'})
+      },
+      // 是否确认删除
+      _sureDel () {
+        Live.delLogsList(this.dynamicList[this.delIndex].id).then((res) => {
+          if (res.error === ERR_OK) {
+            this.dynamicList.splice(this.delIndex, 1)
+          }
+          this.$refs.toast.show(res.message)
+        })
+      },
+      _goodLike(index) {
+        this.dynamicList[index].is_like = !this.dynamicList[index].is_like
       }
     },
     components: {
-      Scroll
+      Scroll,
+      ConfirmMsg,
+      Toast
     }
   }
 </script>
