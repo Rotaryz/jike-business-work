@@ -6,8 +6,14 @@ const News = () => import('pages/news/news')
 const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
+// const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const ClientTag = () => import('pages/client-tag/client-tag')
+const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
+const ClientCreateGroup = () => import('pages/client-create-group/client-create-group')
+const ClientAddUser = () => import('pages/client-add-user/client-add-user')
+const ClientSearch = () => import('pages/client-search/client-search')
+const ClientUserList = () => import('pages/client-user-list/client-user-list')
 const EditCard = () => import('pages/edit-card/edit-card')
-const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
 const ChangeAutograph = () => import('pages/change-autograph/change-autograph')
 const ShareCard = () => import('pages/share-card/share-card')
 const GoodsDetail = () => import('pages/goods-detail/goods-detail')
@@ -43,7 +49,8 @@ const route = new Router({
       component: Client,
       meta: {
         title: '客户'
-      }
+      },
+      children: []
     },
     {
       path: '/mine',
@@ -53,10 +60,45 @@ const route = new Router({
       }
     },
     {
-      path: '/scroll-demo',
-      component: ScrollDemo,
+      path: '/client-tag',
+      component: ClientTag,
       meta: {
-        title: '测试滚动'
+        title: '标签'
+      }
+    },
+    {
+      path: '/client-set-group',
+      component: ClientSetGroup,
+      meta: {
+        title: '设置分组'
+      }
+    },
+    {
+      path: '/client-create-group',
+      component: ClientCreateGroup,
+      meta: {
+        title: '添加分组'
+      }
+    },
+    {
+      path: '/client-add-user',
+      component: ClientAddUser,
+      meta: {
+        title: '添加成员'
+      }
+    },
+    {
+      path: '/client-search',
+      component: ClientSearch,
+      meta: {
+        title: '搜索'
+      }
+    },
+    {
+      path: '/client-user-list',
+      component: ClientUserList,
+      meta: {
+        title: '客户列表'
       }
     },
     {

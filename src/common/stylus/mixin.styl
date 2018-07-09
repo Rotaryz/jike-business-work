@@ -147,3 +147,16 @@ all-center()
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
+//布局
+layout($direction = column, $inline = block, $wrap = wrap)
+  display: $inline == block ? flex:inline-flex
+  flex-direction: $direction
+  flex-wrap: $wrap
+
+// 填充
+fill-box($pos = fixed)
+  position: $pos
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0

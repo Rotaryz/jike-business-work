@@ -5,7 +5,11 @@ import { BASE_URL } from './config'
 import storage from 'storage-controller'
 
 const TIME_OUT = 10000
-const COMMON_HEADER = {}
+const COMMON_HEADER = {
+  // 'X-Requested-With': 'XMLHttpRequest'
+  // 'Current-merchant': merchantId,
+  //   // 'Authorization': token,
+}
 const ERR_OK = 0
 const ERR_NO = -404
 
