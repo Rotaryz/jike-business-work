@@ -7,31 +7,31 @@
         <div class="txt">添加成员</div>
       </section>
       <section class="total">共 {{dataArray.length}} 位</section>
-      <transition name="slide">
-        <div class="simple-scroll-demo">
-          <div class="scroll-list-wrap">
-            <scroll ref="scroll"
-                    :data="dataArray"
-                    :pullDownRefresh="pullDownRefreshObj"
-                    :pullUpLoad="pullUpLoadObj"
-                    :startY="parseInt(startY)"
-                    @pullingDown="onPullingDown"
-                    @pullingUp="onPullingUp"
-                    @scroll="scroll">
-              <!--<ul class="list-content">-->
-              <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
-              <!--</ul>-->
-              <ul class="user-list">
-                <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-                  <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
-                    <user-card :userInfo="item" slot="content"></user-card>
-                  </slide-view>
-                </li>
-              </ul>
-            </scroll>
-          </div>
+      <div class="simple-scroll-demo">
+        <div class="scroll-list-wrap">
+          <scroll ref="scroll"
+                  :data="dataArray"
+                  :pullDownRefresh="pullDownRefreshObj"
+                  :pullUpLoad="pullUpLoadObj"
+                  :startY="parseInt(startY)"
+                  @pullingDown="onPullingDown"
+                  @pullingUp="onPullingUp"
+                  @scroll="scroll">
+            <!--<ul class="list-content">-->
+            <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
+            <!--</ul>-->
+            <ul class="user-list">
+              <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+                <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
+                  <user-card :userInfo="item" slot="content"></user-card>
+                </slide-view>
+              </li>
+            </ul>
+          </scroll>
         </div>
-      </transition>
+      </div>
+      <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+      <router-view @refresh="refresh"></router-view>
     </article>
   </transition>
 </template>
@@ -42,6 +42,7 @@
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
+  import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
 
   // const listData = [{
@@ -69,6 +70,7 @@
       return {
         dataArray: [],
         currentGroupInfo: null,
+        checkedItem: null,
         scrollbar: true,
         scrollbarFade: true,
         pullDownRefresh: true,
@@ -113,8 +115,19 @@
     mounted() {
     },
     methods: {
+      refresh() {
+        const data = {
+          get_group_detail: 1,
+          group_id: this.currentGroupInfo.id
+        }
+        Client.getCusomerList(data).then(res => {
+          if (res.data) {
+            this.dataArray = res.data
+          }
+        })
+      },
       toAddUser() {
-        const path = `/client-add-user`
+        const path = `/client/client-user-list/client-add-user`
         this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(item) {
@@ -126,13 +139,22 @@
         this.$router.push({path, query: {customerInfo: item}})
       },
       delHandler(index, item) {
+        this.checkedItem = item
+        this.$refs.confirm.show()
+      },
+      msgConfirm() {
         const data = {
           group_id: this.currentGroupInfo.id,
-          customer_id: item.id
+          customer_id: this.checkedItem.id
         }
         Client.delCustomer(data).then(res => {
+          const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
+          this.dataArray.splice(idx, 1)
           console.log(res)
         })
+      },
+      msgCancel() {
+        this.checkedItem = null
       },
       scroll(e) {
         console.log(e)
@@ -223,7 +245,8 @@
       Search,
       Scroll,
       SlideView,
-      UserCard
+      UserCard,
+      ConfirmMsg
     }
   }
 </script>

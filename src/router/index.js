@@ -58,7 +58,31 @@ const route = new Router({
       meta: {
         title: '客户'
       },
-      children: []
+      children: [
+        {
+          path: 'client-user-list',
+          component: ClientUserList,
+          meta: {
+            title: '客户列表'
+          },
+          children: [
+            {
+              path: 'client-add-user',
+              component: ClientAddUser,
+              meta: {
+                title: '添加成员'
+              }
+            }
+          ]
+        },
+        {
+          path: 'client-detail',
+          component: Cdetail,
+          meta: {
+            title: '客户详情'
+          }
+        }
+      ]
     },
     {
       path: '/mine',
@@ -89,24 +113,10 @@ const route = new Router({
       }
     },
     {
-      path: '/client-add-user',
-      component: ClientAddUser,
-      meta: {
-        title: '添加成员'
-      }
-    },
-    {
       path: '/client-search',
       component: ClientSearch,
       meta: {
         title: '搜索'
-      }
-    },
-    {
-      path: '/client-user-list',
-      component: ClientUserList,
-      meta: {
-        title: '客户列表'
       }
     },
     {
@@ -177,13 +187,6 @@ const route = new Router({
       component: Echarts,
       meta: {
         title: ''
-      }
-    },
-    {
-      path: '/client-detail',
-      component: Cdetail,
-      meta: {
-        title: '客户详情'
       }
     },
     {

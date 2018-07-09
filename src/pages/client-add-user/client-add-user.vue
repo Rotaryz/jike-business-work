@@ -3,7 +3,7 @@
     <article class="client-add-user">
       <ul class="user-list">
         <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-          <div :class="['check-box',item.isCheck?'active':'']"></div>
+          <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
           <img class="user-icon" :src="item.image_url" alt="">
           <section class="base-info">
             <div class="name">{{item.name}}</div>
@@ -47,18 +47,18 @@
         currentGroupInfo: null
       }
     },
-    beforeMount() {
+    created() {
       const groupInfo = this.$route.query.groupInfo
       this.currentGroupInfo = groupInfo
       const data = {
-        get_group_detail: 0,
         group_id: groupInfo.id
       }
       Client.getCusomerList(data).then(res => {
         if (res.data) {
-          this.dataArray = res.data
+          this.dataArray = res.data.map(item => {
+            return {...item, isCheck: false}
+          })
         }
-        // console.log(res)
       })
     },
     updated() {
@@ -66,9 +66,21 @@
     methods: {
       check(item) {
         item.isCheck = !item.isCheck
-        // this.dataArray[index].isCheck = !this.dataArray[index].isCheck
+        console.log(this.dataArray)
       },
       submit() {
+        let arr = []
+        this.dataArray.map(item => {
+          item.isCheck && arr.push({customer_id: item.id})
+        })
+        const data = {
+          group_id: this.currentGroupInfo.id,
+          data: arr
+        }
+        Client.addGroupCustomer(data).then(res => {
+          this.$emit('refresh')
+          this.$router.back()
+        })
       }
     },
     watch: {}
@@ -80,8 +92,7 @@
   @import "~common/stylus/mixin"
 
   .client-add-user
-    position: relative
-    min-height: 100vh
+    fill-box()
     background-color: $color-white-fff
     z-index: 10
     .user-list
@@ -100,7 +111,10 @@
           border: 1px solid $color-col-line
           box-sizing: border-box
           &.active
-            background: url("icon-selected@3x.png") no-repeat center / 100%
+            background: url("./icon-selected@3x.png") no-repeat center / 100%
+            border: none
+          &.un-check
+            background: url("./icon-nocheck@3x.png") no-repeat center / 100%
             border: none
         .user-icon
           width: 45px

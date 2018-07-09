@@ -58,6 +58,7 @@
     <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
     <confirm-msg ref="confirm"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -144,9 +145,12 @@
         }
       })
     },
+    beforeDestroy() {
+      console.log('oooo')
+    },
     methods: {
       toUserList(item) {
-        const path = `/client-user-list`
+        const path = `/client/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
@@ -155,7 +159,7 @@
       },
       check(item) {
         // this.$refs.confirm.show()
-        const path = `/client-detail`
+        const path = `/client/client-detail`
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {

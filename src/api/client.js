@@ -30,5 +30,10 @@ export default {
   delCustomer(data, loading) {
     const url = `/api/employee/group-customer`
     return request.delete(url, data, loading)
+  },
+  // 分组内添加用户
+  addGroupCustomer(data, loading) {
+    const url = `/api/employee/group-customer`
+    return request.post(url, data, loading)
   }
 }
