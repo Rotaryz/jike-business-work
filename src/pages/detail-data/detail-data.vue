@@ -5,11 +5,13 @@
         <div class="cliten-con">
           <div class="cliten-img">
             <div class="detail-img-box">
-              <div class="img"></div>
+              <div class="img">
+                <img :src="imgUrl" alt="" class="imgUrl">
+              </div>
               <div class="label-right">
-                <div class="label-name">往事随风</div>
+                <div class="label-name">{{flow.nickname}}</div>
                 <div class="add-text">
-                  2018-06-01 通过扫码加入
+                  {{flow.sources}}
                 </div>
               </div>
             </div>
@@ -23,22 +25,22 @@
         <div class="data-list">
           <div class="left">姓名</div>
           <div class="right">
-            <div class="name">往事</div>
+            <input type="text" placeholder="未完善" class="right-input" v-model="flow.real_name">
           </div>
         </div>
         <div class="data-list">
           <div class="left">手机号码</div>
           <div class="right">
             <input type="number" placeholder="未完善" class="right-input"
-                   oninput="if(value.length > 11)value = value.slice(0, 11)">
-            <img src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone">
+                   oninput="if(value.length > 11)value = value.slice(0, 11)" v-model="flow.mobile">
+            <img v-if="flow.mobile.length > 0" src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone">
           </div>
         </div>
         <div class="data-list">
           <div class="left">微信号</div>
           <div class="right">
-            <input type="text" placeholder="未完善" class="right-input">
-            <img  src="./icon-wechat_khzl@2x.png" alt="" class="right-img-phone right-img-copy">
+            <input type="text" placeholder="未完善" class="right-input" v-model="flow.wx_account">
+            <img v-if="flow.wx_account.length > 0" src="./icon-wechat_khzl@2x.png" alt="" class="right-img-phone right-img-copy">
           </div>
         </div>
         <div class="data-list">
@@ -57,58 +59,130 @@
         <div class="data-list">
           <div class="left">年龄</div>
           <div class="right">
-            <input type="number" placeholder="未完善" class="right-input" oninput="if(value.length > 2)value = value.slice(0, 2)">
+            <input type="number" placeholder="未完善" class="right-input"
+                   oninput="if(value.length > 2)value = value.slice(0, 2)" v-model="flow.age">
           </div>
         </div>
         <div class="data-list">
           <div class="left">所在城市</div>
           <div class="right">
-            <input type="text" placeholder="未完善" class="right-input">
+            <input type="text" placeholder="未完善" class="right-input" v-model="flow.city">
           </div>
         </div>
         <div class="data-list">
           <div class="left">从事职业</div>
           <div class="right">
-            <input type="text" placeholder="未完善" class="right-input">
+            <input type="text" placeholder="未完善" class="right-input" v-model="flow.job">
           </div>
         </div>
         <div class="data-list">
           <div class="left">所属公司</div>
           <div class="right">
-            <input type="text" placeholder="未完善" class="right-input">
+            <input type="text" placeholder="未完善" class="right-input" v-model="flow.company">
           </div>
         </div>
-        <div class="data-list">
+        <div class="data-list" v-if="false">
           <div class="left">屏蔽消息</div>
           <div class="right">
-            <div class="name">不屏蔽</div>
+            <div class="name">{{chooseText}}</div>
+            <div class="right-choose" @click="chooseBtn" :class="bgChoose ? '' : 'right-choose-active'">
+              <div class="choose-btn" :class="choose ? 'choose-btn-active' : ''"></div>
+            </div>
           </div>
         </div>
       </div>
       <div class="data-bottom">
         <div class="title">备注</div>
-        <div class="textarea-number">{{textArea.length}}<span>/500</span></div>
-        <textarea class="data-area" v-model="textArea" maxlength="500" name="" id="" cols="30" rows="10"
+        <div class="textarea-number">{{flow.note.length}}<span>/500</span></div>
+        <textarea class="data-area" v-model="flow.note" maxlength="500" name="" id="" cols="30" rows="10"
                   placeholder="请输入备注"></textarea>
       </div>
     </div>
-    <div class="data-btn">保存</div>
+    <div class="data-btn" @click="saveClientData(1)">保存</div>
     <div class="btn-padding"></div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {ClientDetail} from 'api'
+  import {ERR_OK} from '../../common/js/config'
+  import Toast from 'components/toast/toast'
   export default {
     name: 'detail-data',
     data() {
       return {
-        textArea: '',
         sexSelected: '未完善',
         options: [
-          { text: '男', value: '男' },
-          { text: '女', value: '女' }
-        ]
+          {text: '男', value: '男'},
+          {text: '女', value: '女'}
+        ],
+        imgUrl: '',
+        choose: false,
+        bgChoose: false,
+        chooseText: '屏蔽',
+        flow: {
+          nickname: 'eleven、',
+          real_name: '',
+          mobile: '',
+          age: null,
+          wx_account: '',
+          company: '',
+          sex: '',
+          country: '',
+          city: '',
+          job: '',
+          note: '',
+          progress: '',
+          message_is_abled: '',
+          sources: ''
+        }
       }
+    },
+    created() {
+      this.getClientData(1)
+    },
+    methods: {
+      chooseBtn() {
+        this.choose = !this.choose
+        setTimeout(() => {
+          this.bgChoose = !this.bgChoose
+          if (this.choose) {
+            this.chooseText = '不屏蔽'
+          } else {
+            this.chooseText = '屏蔽'
+          }
+        }, 300)
+      },
+      getClientData(id) {
+        ClientDetail.getClientDetail(id).then((res) => {
+          if (res.error === ERR_OK) {
+            console.log(res)
+            this.imgUrl = res.data.image_url
+            this.flow = res.data.flow
+            if (res.data.flow.sex * 1 === 0) {
+              this.sexSelected = '男'
+            } else if (res.data.flow.sex * 1 === 1) {
+              this.sexSelected = '女'
+            }
+          }
+        })
+      },
+      saveClientData(id) {
+        if (this.sexSelected === '男') {
+          this.flow.sex = 0
+        } else if (this.sexSelected === '女') {
+          this.flow.sex = 1
+        }
+        ClientDetail.saveClientDetail(id, this.flow).then((res) => {
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      }
+    },
+    components: {
+      Toast
     }
   }
 </script>
@@ -150,6 +224,10 @@
               width: 60px
               height: 60px
               background: #333
+              .imgUrl
+                width: 100%
+                height: 100%
+                display: block
             .label-right
               margin-left: 10px
               .label-name
@@ -199,8 +277,8 @@
             top: -12px
             opacity: 0
           .right-input
-            height: 44px
-            line-height: 44px
+            height: 43px
+            line-height: 43px
             width: 90%
             border: none
             font-size: $font-size-medium
@@ -230,6 +308,32 @@
           .right-img-copy
             width: 20px
             height: 20px
+          .right-choose
+            position: absolute
+            background: #56BA15
+            height: 24px
+            width: 45px
+            right: 14px
+            padding: 1px
+            top: 0
+            bottom: 0
+            margin: auto 0
+            border-radius: 100px
+            .choose-btn
+              background: #fff
+              height: 22px
+              width: 22px
+              border-radius: 50%
+              position: absolute
+              top: 0
+              bottom: 0
+              margin: auto 0
+              left: 2px
+              transition: all .5s
+            .choose-btn-active
+              left: 20px
+          .right-choose-active
+            background: #ddd
     .data-top:last-child
       border-bottom: 0
     .data-bottom
