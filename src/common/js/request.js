@@ -3,23 +3,17 @@
 import axios from 'axios'
 import { BASE_URL } from './config'
 import storage from 'storage-controller'
+import _this from '../../main'
 
 const TIME_OUT = 10000
-const COMMON_HEADER = {
-  // 'X-Requested-With': 'XMLHttpRequest'
-  // 'Current-merchant': merchantId,
-  //   // 'Authorization': token,
-}
 const ERR_OK = 0
 const ERR_NO = -404
+const LOSE_EFFICACY = 10000
 
 const http = axios.create({
-  timeout: TIME_OUT,
-  headers: COMMON_HEADER
+  timeout: TIME_OUT
 })
 
-let authorization = storage.get('token', '82f9f431d38ae6406251861869a85c2123938e79')
-http.defaults.headers.common['Authorization'] = authorization
 http.defaults.baseURL = BASE_URL.api
 
 http.interceptors.request.use(config => {
@@ -56,7 +50,15 @@ function checkCode (res) {
   }
   // 如果网络请求成功，而提交的数据，或者是后端的一些未知错误所导致的，可以根据实际情况进行捕获异常
   if (res.data && (res.data.code !== ERR_OK)) {
-    throw requestException(res)
+    const code = res.data.code
+    switch (code) {
+      case LOSE_EFFICACY:
+        _handleLoseEfficacy()
+        break
+      default:
+        break
+    }
+    throw requestException(res.data)
   }
   return res.data
 }
@@ -74,12 +76,22 @@ function requestException (res) {
   return error
 }
 
+function _handleLoseEfficacy() {
+  const currentRoute = _this.$route.path
+  storage.set('beforeLoginRoute', currentRoute)
+  storage.remove('token')
+  _this.$router.replace('/oauth?code=b-ZtFkvBMjwzJEMfd_-x5mo2HYQfWFcTwW_KmN3m57s&state=STATE')
+}
+
 export default {
   post (url, data) {
     return http({
       method: 'post',
       url,
-      data// post 请求时带的参数
+      data, // post 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -90,7 +102,10 @@ export default {
     return http({
       method: 'get',
       url,
-      params // get 请求时带的参数
+      params, // get 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -101,7 +116,10 @@ export default {
     return http({
       method: 'put',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
@@ -112,7 +130,10 @@ export default {
     return http({
       method: 'delete',
       url,
-      data // put 请求时带的参数
+      data, // put 请求时带的参数
+      headers: {
+        Authorization: storage.get('token')
+      }
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {

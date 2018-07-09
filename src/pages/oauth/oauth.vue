@@ -30,7 +30,7 @@
     },
     methods: {
       _checkAuthorize() {
-        this.$router.replace(NORMAL_ROUTE)
+        // this.$router.replace(NORMAL_ROUTE)
         if (this.code && !this.hasToken) {
           // 有code没有token -> 申请拿token
           this._applyOauth()
@@ -55,7 +55,7 @@
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
         })
       }
-    },
+    }
   }
 </script>
 
