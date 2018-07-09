@@ -9,15 +9,19 @@
             :key="index"
             @click="toUserList(item)"
         >
-          <div class="users-avatar">
-            <img v-if="item.icon && item.icon.length"
-                 v-for="(user,i) in item.icon"
-                 class="avatar"
-                 :key="i"
-                 :src="user"
-            />
-          </div>
-          <div class="item-name">{{item.name}}（{{item.number}}）</div>
+          <slide-view :useType="3" @del="delHandler" :item="item">
+            <div slot="content" class="user-list-item">
+              <div class="users-avatar">
+                <img v-if="item.icon && item.icon.length"
+                     v-for="(user,i) in item.icon"
+                     class="avatar"
+                     :key="i"
+                     :src="user"
+                />
+              </div>
+              <div class="item-name">{{item.name}}（{{item.number}}）</div>
+            </div>
+          </slide-view>
         </li>
       </ul>
       <section class="user-list-box add-list" @click="toCreateGroup">
@@ -56,7 +60,7 @@
     <!--<router-link class="item" to="/client-add-user">client-add-user</router-link>-->
     <!--<router-link class="item" to="/client-search">client-search</router-link>-->
     <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
-    <confirm-msg ref="confirm"></confirm-msg>
+    <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
     <router-view></router-view>
   </div>
@@ -126,7 +130,8 @@
       return {
         groupList: groupList,
         userListArr: [],
-        dataArray: []
+        dataArray: [],
+        checkedItem: null // 被选中的分组
       }
     },
     created() {
@@ -176,6 +181,21 @@
             this.dataArray = res.data
           }
         })
+      },
+      delHandler(index, item) {
+        this.checkedItem = item
+        console.log(item)
+        this.$refs.confirm.show()
+      },
+      msgConfirm() {
+        const data = {groupId: this.checkedItem.id}
+        Client.delGroup(data).then(res => {
+          const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
+          this.userListArr.splice(idx, 1)
+        })
+      },
+      msgCancel() {
+        this.checkedItem = null
       }
     },
     watch: {},

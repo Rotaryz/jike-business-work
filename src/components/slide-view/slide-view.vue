@@ -14,6 +14,9 @@
     <div class="del-box" :style="styles" v-if="useType===2">
       <div class="del-btn" @click.stop="del(item)">删除</div>
     </div>
+    <div class="del-box" :style="styles" v-if="useType===3">
+      <div class="del-btn" @click.stop="del(item)">删除</div>
+    </div>
   </div>
 
 </template>
