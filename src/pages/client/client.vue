@@ -2,12 +2,12 @@
   <div class="client">
     <scroll>
       <search></search>
-      <ul class="user-list-box">
+      <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
             v-if="userListArr.length"
             v-for="(item,index) in userListArr"
             :key="index"
-            @click="toUserList"
+            @click="toUserList(item)"
         >
           <div class="users-avatar">
             <img v-if="item.usersAvatar && item.usersAvatar.length"
@@ -17,7 +17,7 @@
                  :src="user"
             />
           </div>
-          <div class="item-name">{{item.name}}（{{item.people}}）</div>
+          <div class="item-name">{{item.name}}（{{item.number}}）</div>
         </li>
       </ul>
       <section class="user-list-box add-list" @click="toCreateGroup">
@@ -27,9 +27,9 @@
           <div class="item-name">新建分组</div>
         </div>
       </section>
-      <section class="status-bar">
+      <section class="status-bar" @click="checkGroup">
         <div class="left">
-          <p>最后跟进时间</p>
+          <p>{{checkedGroup.name}}</p>
           <img class="icon" src="./icon-down@3x.png" alt=""/>
         </div>
         <div class="right">全部 53 位</div>
@@ -57,6 +57,7 @@
     <!--<router-link class="item" to="/client-search">client-search</router-link>-->
     <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
     <confirm-msg ref="confirm"></confirm-msg>
+    <action-sheet ref="sheet" :dataArray="groupList"></action-sheet>
   </div>
 </template>
 
@@ -68,16 +69,17 @@
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
+  import ActionSheet from 'components/action-sheet/action-sheet'
 
-  const userListArr = [{
-    usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-    name: '近期可成交',
-    people: 18
-  }, {
-    usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-    name: '5期可成交',
-    people: 8
-  }]
+  // const userListArr = [{
+  //   usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
+  //   name: '近期可成交',
+  //   people: 18
+  // }, {
+  //   usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
+  //   name: '5期可成交',
+  //   people: 8
+  // }]
 
   let listData = [{
     icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
@@ -99,11 +101,30 @@
     isCheck: false
   }]
 
+  const groupList = [{
+    id: 0,
+    name: '预计成交率',
+    isCheck: true
+  }, {
+    id: 1,
+    name: '最后跟进时间',
+    isCheck: false
+  }, {
+    id: 2,
+    name: '最后活跃时间',
+    isCheck: false
+  }, {
+    id: 3,
+    name: '最新加入时间',
+    isCheck: false
+  }]
+
   export default {
     name: 'Client',
     data() {
       return {
-        userListArr: userListArr,
+        groupList: groupList,
+        userListArr: [],
         dataArray: listData.concat(listData).concat(listData)
       }
     },
@@ -112,13 +133,16 @@
     },
     beforeMount() {
       Client.getGroupList().then(res => {
-        console.log(res, '==')
+        if (res.data) {
+          this.userListArr = res.data
+        }
+        console.log(res.data, '==')
       })
     },
     methods: {
-      toUserList() {
+      toUserList(item) {
         const path = `/client-user-list`
-        this.$router.push({path})
+        this.$router.push({path, query: {title: item.name}})
       },
       toCreateGroup() {
         const path = `/client-create-group`
@@ -130,6 +154,9 @@
       groupingHandler() {
         const path = `/client-set-group`
         this.$router.push({path})
+      },
+      checkGroup() {
+        this.$refs.sheet.show()
       }
     },
     watch: {
@@ -137,12 +164,19 @@
         console.log(222)
       }
     },
+    computed: {
+      checkedGroup() {
+        let node = this.groupList.find(val => val.isCheck)
+        return node
+      }
+    },
     components: {
       Search,
       Scroll,
       SlideView,
       UserCard,
-      ConfirmMsg
+      ConfirmMsg,
+      ActionSheet
     }
   }
 </script>

@@ -91,6 +91,10 @@
         this.items.push(i)
       }
     },
+    beforeMount() {
+      const title = this.$route.query.title
+      document.title = title
+    },
     mounted() {
     },
     methods: {
