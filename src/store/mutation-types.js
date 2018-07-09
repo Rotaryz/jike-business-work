@@ -1,1 +1,2 @@
 export const SET_TAB_MODE = 'SET_TAB_MODE'
+export const SET_SIGNSTURE = 'SET_SIGNSTURE'

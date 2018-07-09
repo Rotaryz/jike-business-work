@@ -1,6 +1,7 @@
 'use strict'
 
 import axios from 'axios'
+import { BASE_URL } from './config'
 
 const TIME_OUT = 10000
 const COMMON_HEADER = {
@@ -29,7 +30,7 @@ http.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
-function checkStatus(response) {
+function checkStatus (response) {
   // loading
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status === 200 || response.status === 304 || response.status === 422)) {
@@ -43,7 +44,7 @@ function checkStatus(response) {
   }
 }
 
-function checkCode(res) {
+function checkCode (res) {
   // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
   if (res.status === ERR_NO) {
     console.warn(res.msg)
@@ -55,7 +56,7 @@ function checkCode(res) {
   return res.data
 }
 
-function requestException(res) {
+function requestException (res) {
   const error = {}
   error.statusCode = res.status
   const serviceData = res.data
@@ -69,18 +70,25 @@ function requestException(res) {
 }
 
 export default {
-  post(url, data) {
+  setDefaults () {
+    let authorization = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = authorization
+    axios.defaults.baseURL = BASE_URL.api
+  },
+  post (url, data) {
+    this.setDefaults()
     return http({
       method: 'post',
       url,
-      data // post 请求时带的参数
+      data// post 请求时带的参数
     }).then((response) => {
       return checkStatus(response)
     }).then((res) => {
       return checkCode(res)
     })
   },
-  get(url, params) {
+  get (url, params) {
+    this.setDefaults()
     return http({
       method: 'get',
       url,
@@ -91,7 +99,8 @@ export default {
       return checkCode(res)
     })
   },
-  put(url, data) {
+  put (url, data) {
+    this.setDefaults()
     return http({
       method: 'put',
       url,
@@ -102,7 +111,8 @@ export default {
       return checkCode(res)
     })
   },
-  delete(url, data) {
+  delete (url, data) {
+    this.setDefaults()
     return http({
       method: 'delete',
       url,

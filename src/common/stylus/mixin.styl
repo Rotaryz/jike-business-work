@@ -1,18 +1,46 @@
 border-top-1px($color)
+  position: relative
   &:before
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
     border-top: 1px solid $color
+    transform: scaleY(.5) translateZ(0)
 
 border-right-1px($color)
+  position: relative
   &:after
+    content: ""
+    position: absolute
+    top: 0
+    height: 100%
+    right: 0
+    transform: scaleX(.5) translateZ(0)
     border-right: 1px solid $color
 
 border-bottom-1px($color)
+  position: relative
   &:after
+    content: ""
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    transform: scaleY(.5) translateZ(0)
     border-bottom: 1px solid $color
 
 border-left-1px($color)
-  &:before
-    border-left: 1px solid $color
+  position: relative
+  &:after
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    height: 100%
+    transform: scaleX(.5) translateZ(0)
+  border-left: 1px solid $color
 
 border-1px($color = #F0EFF5, $radius = 2px, $style = solid)
   position: relative
@@ -42,8 +70,10 @@ border-1px($color = #F0EFF5, $radius = 2px, $style = solid)
 
 border-none()
   &:before
+    content: ''
     display: none
   &:after
+    content: ''
     display: none
 
 flex-fix()
@@ -99,6 +129,24 @@ no-wrap()
   overflow: hidden
   white-space: nowrap
 
+//  水平居中
+row-center()
+  position: absolute
+  left: 50%
+  transform: translateX(-50%)
+
+//垂直居中
+col-center()
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+
+//  全居中
+all-center()
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
 //布局
 layout($direction = column, $inline = block, $wrap = wrap)
   display: $inline == block ? flex:inline-flex

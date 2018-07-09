@@ -12,6 +12,14 @@ const ClientCreateGroup = () => import('pages/client-create-group/client-create-
 const ClientAddUser = () => import('pages/client-add-user/client-add-user')
 const ClientSearch = () => import('pages/client-search/client-search')
 const ClientUserList = () => import('pages/client-user-list/client-user-list')
+const EditCard = () => import('pages/edit-card/edit-card')
+const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const ChangeAutograph = () => import('pages/change-autograph/change-autograph')
+const ShareCard = () => import('pages/share-card/share-card')
+const GoodsDetail = () => import('pages/goods-detail/goods-detail')
+const GoodsList = () => import('pages/goods-list/goods-list')
+const DynamicList = () => import('pages/dynamic-list/dynamic-list')
+const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 
 Vue.use(Router)
 
@@ -50,51 +58,6 @@ const route = new Router({
         title: '我的'
       }
     },
-    // {
-    //   path: '/scroll-demo',
-    //   component: ScrollDemo,
-    //   meta: {
-    //     title: '测试滚动'
-    //   }
-    // },
-    // {
-    //   path: '/scroll-demo',
-    //   component: ScrollDemo,
-    //   meta: {
-    //     title: '测试滚动'
-    //   }
-    //   component: Index,
-    //   children: [
-    //     {
-    //       path: '/',
-    //       component: Radar,
-    //       meta: {
-    //         title: '雷达'
-    //       }
-    //     },
-    //     {
-    //       path: '/news',
-    //       component: News,
-    //       meta: {
-    //         title: '消息'
-    //       }
-    //     },
-    //     {
-    //       path: '/client',
-    //       component: Client,
-    //       meta: {
-    //         title: '客户'
-    //       }
-    //     },
-    //     {
-    //       path: '/mine',
-    //       component: Mine,
-    //       meta: {
-    //         title: '我的'
-    //       }
-    //     }
-    //   ]
-    // },
     {
       path: '/client-tag',
       component: ClientTag,
@@ -135,6 +98,55 @@ const route = new Router({
       component: ClientUserList,
       meta: {
         title: '客户列表'
+      }
+    },
+    {
+      path: '/editCard',
+      component: EditCard,
+      meta: {
+        title: '编辑名片'
+      }
+    },
+    {
+      path: '/changeAutograph',
+      component: ChangeAutograph,
+      meta: {
+        title: '修改签名'
+      }
+    },
+    {
+      path: '/shareCard',
+      component: ShareCard,
+      meta: {
+        title: '分享名片'
+      }
+    },
+    {
+      path: '/goodsDetail',
+      component: GoodsDetail,
+      meta: {
+        title: '产品详情'
+      }
+    },
+    {
+      path: '/goodList',
+      component: GoodsList,
+      meta: {
+        title: '我的产品'
+      }
+    },
+    {
+      path: '/dynamicList',
+      component: DynamicList,
+      meta: {
+        title: '动态'
+      }
+    },
+    {
+      path: '/editDynamic',
+      component: EditDynamic,
+      meta: {
+        title: '发布动态'
       }
     }
   ]

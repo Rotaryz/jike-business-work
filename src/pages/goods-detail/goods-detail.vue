@@ -1,0 +1,92 @@
+<template>
+  <div class="goods-detail">
+    <scroll>
+      <div class="cover-box">
+        <img src="./Snip20180707_18.png" class="cover">
+      </div>
+      <div class="goods-title">
+        <p class="goods-content">卡诗（KERASTASE）新双重菁纯修护液100ml</p>
+        <p class="content-reason">确认过眼神，就是我想要的好物！</p>
+      </div>
+      <div class="goods-icon">
+        <span class="goods-small-box goods-small-tall"></span>
+        <span class="goods-small-box goods-small-width"></span>
+        <span class="goods-small-text">产品详情</span>
+      </div>
+      <img src="./Snip20180707_18.png" class="goods-img">
+      <img src="./Snip20180707_18.png" class="goods-img">
+      <img src="./Snip20180707_18.png" class="goods-img">
+    </scroll>
+  </div>
+</template>
+
+<script>
+  // import { ERR_OK } from 'api/config'
+  import Scroll from 'components/scroll/scroll'
+
+  export default {
+    name: 'goods-detail',
+    components: {
+      Scroll
+    }
+  }
+</script>
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import '~common/stylus/mixin'
+  .goods-detail
+    position: fixed
+    background: goods-detail
+    z-index: 10
+    left: 0
+    background: $color-background
+    right: 0
+    bottom: 0
+    top: 0
+
+  .cover-box
+    overflow: hidden
+    height: 230px
+    .cover
+      width: 100%
+
+  .goods-title
+    position: relative
+    z-index: 40
+    border-radius: 2px
+    border-1px($color-col-line, 2px)
+    background: $color-white
+    height: 112px
+    margin: -30px auto 0
+    width: 92vw
+    padding: 20px 25px
+    box-sizing: border-box
+    .goods-content
+      line-height: 24px
+      color: $color-text
+      font-family: PingFangSC-Semibold
+      font-size: 19px
+    .content-reason
+      font-family: $font-family-regular
+      font-size: $font-size-medium
+      color: $color-text
+      margin-top: 10px
+
+  .goods-icon
+    position: relative
+    height: 63px
+    .goods-small-box
+      border-1px(#CCCCCC, 0px)
+      all-center()
+    .goods-small-tall
+      height: 33px
+      width: 95px
+    .goods-small-width
+      height: 27px
+      width: 101px
+    .goods-small-text
+      all-center()
+  .goods-img
+    width :100vw
+    display :block
+</style>
