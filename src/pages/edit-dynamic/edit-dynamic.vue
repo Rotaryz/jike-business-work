@@ -2,19 +2,19 @@
   <div class="edit-dynamic">
     <scroll>
       <div class="compile">
-       <textarea class="words-span" placeholder="这一刻的想法…"></textarea>
+        <textarea class="words-span" placeholder="这一刻的想法…" v-model="title"></textarea>
         <!--:style="height: {{comHeight}}px"-->
         <div class="com-box">
-          <div class="com-image">
-            <img class="img-item" src="./Group3@2x.png">
-              <div class="close">
-                <div class="close-icon">
-                  <img class="close-icon">
-                </div>
-              </div>
-            <div class="img-add">
-              <img class="add-img">
+          <div class="com-image" v-for="(item, index) in image" :key="index">
+            <img class="img-item" :src="item.image_url">
+            <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
+            <div class="close-icon" @click.stop="_delImage(index)">
+              <img class="close-icon" src="./icon-del@2x.png">
             </div>
+          </div>
+          <div class="com-image" v-show="image.length < 9">
+            <img class="img-item" src="./Group3@2x.png">
+            <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
           </div>
         </div>
         <!--style="bottom: {{height}}px"-->
@@ -22,19 +22,74 @@
     </scroll>
     <div class="btn">
       <div class="btn-item btn-dark">取消</div>
-      <div class="btn-item btn-green">发布</div>
+      <div class="btn-item btn-green" @click="_liveLogs">发布</div>
     </div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
+  import { UpLoad, Live } from 'api'
+  import { ERR_OK } from '../../common/js/config'
+  import Toast from 'components/toast/toast'
 
   export default {
     name: 'edit-dynamic',
+    data () {
+      return {
+        title: '',
+        image: []
+      }
+    },
+    methods: {
+      async _fileImage (e) {
+        // let param = this._infoImage(e.target.files[0])
+        await this._moreImage(e.target.files)
+      },
+      _infoImage (file) {
+        let param = new FormData() // 创建form对象
+        param.append('file', file, file.name)// 通过append向form对象添加数据
+        return param
+      },
+      _upLoad (item) {
+        UpLoad.upLoadImage(item).then((res) => {
+          if (res.error === ERR_OK) {
+            let imageItem = {id: 1, detail_id: res.data.id, image_url: res.data.url}
+            this.image.push(imageItem)
+            this.image = this.image.slice(0, 9)
+          }
+        })
+      },
+      async _moreImage (arr) {
+        // let image = {}
+        // let sequence = Promise.resolve()
+        for (let item of arr) {
+          item = this._infoImage(item)
+          await this._upLoad(item)
+        }
+      },
+      _delImage (index) {
+        this.image.splice(index, 1)
+      },
+      _liveLogs () {
+        if (!this.title) {
+          this.$refs.toast.show('发布内容不能为空')
+          return
+        } else if (!this.image.length) {
+          this.$refs.toast.show('发布图片不能为空')
+          return
+        }
+        let data = {content: this.title, live_log_details: this.image}
+        Live.liveLogs(data).then((res) => {
+          console.log(res)
+        })
+      }
+    },
     components: {
-      Scroll
+      Scroll,
+      Toast
     }
   }
 </script>
@@ -52,21 +107,21 @@
     top: 0
     .words-span
       height: 88px
-      padding :22px 15px
+      padding: 22px 15px
       outline: none
       resize: none
       width: 100vw
-      background :$color-background
+      background: $color-background
       border: none
-      box-sizing :border-box
+      box-sizing: border-box
       font-size: $font-size-medium-x
-      color :$color-text
+      color: $color-text
       &::-webkit-input-placeholder
         font-family: $font-family-regular
         font-size: $font-size-medium-x
         color: #CCCCCC
     .com-box
-      height: 18.5vh
+      height: 19.5vh
       overflow-y: auto
       padding: 0 4vw 0 2.4vw
     .com-words
@@ -137,10 +192,11 @@
     .com-tab-item-active
       opacity: 1 !important
 
-  .com-image, .com-video
+  .com-image
+    position: relative
     display: inline-block
     .img-item
-      height: 29.6vw
+      height: 28.4vw
       margin: 1.6vw 0 0 1.6vw
       width: @height
       position: relative
@@ -148,28 +204,22 @@
         all-center()
         width: 36.363%
         height: @width
-      .close
-        position: absolute
-        top: 0
-        right: 0
-        width: 30px
-        height: 30px
-        z-index: 100
-        .close-icon
-          height: 16.5px
-          width: 16.5px
-          line-height: 16.5px
-          text-align: center
-          background: rgba(0, 0, 0, 0.20)
-          color: $color-white
-          font-size: $font-size-small-s
-          position: absolute
-          right: 0
-          top: 0
-          .close-icon
-            cll-center()
-            height: 16.5px
-            width: 16.5px
+    .close-icon
+      height: 16.5px
+      width: 16.5px
+      line-height: 16.5px
+      text-align: center
+      background: rgba(0, 0, 0, 0.20)
+      color: $color-white
+      font-size: $font-size-small-s
+      position: absolute
+      right: 0px
+      top: 3px
+      background: $color-background
+      .close-icon
+        cll-center()
+        height: 16.5px
+        width: 16.5px
     .img-add
       display: inline-block
       height: 29.6vw
@@ -179,7 +229,6 @@
       .add-image
         height: 98%
         width: @height
-
 
   .btn
     position: relative
@@ -194,7 +243,13 @@
       text-align: center
       flex: 1
     .btn-dark
-      background :$color-text
+      background: $color-text
     .btn-green
       background: $color-56
+
+  .image-file
+    opacity: 0
+    height: 76%
+    width: 76%
+    all-center()
 </style>
