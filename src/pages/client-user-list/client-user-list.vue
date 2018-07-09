@@ -42,31 +42,33 @@
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
+  import {Client} from 'api'
 
-  const listData = [{
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }]
+  // const listData = [{
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }]
   export default {
     name: '',
     data() {
       return {
-        dataArray: listData,
+        dataArray: [],
+        currentGroupInfo: null,
         scrollbar: true,
         scrollbarFade: true,
         pullDownRefresh: true,
@@ -92,15 +94,26 @@
       }
     },
     beforeMount() {
-      const title = this.$route.query.title
-      document.title = title
+      const groupInfo = this.$route.query.groupInfo
+      document.title = groupInfo.name
+      this.currentGroupInfo = groupInfo
+      const data = {
+        get_group_detail: groupInfo.id,
+        group_id: 1
+      }
+      Client.getCusomerList(data).then(res => {
+        if (res.data) {
+          this.dataArray = res.data
+        }
+        console.log(res)
+      })
     },
     mounted() {
     },
     methods: {
       toAddUser() {
         const path = `/client-add-user`
-        this.$router.push({path})
+        this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(obj) {
         // todo

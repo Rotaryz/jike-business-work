@@ -1,13 +1,13 @@
 <template>
   <div class="client-user-card">
     <section class="container">
-      <img class="user-icon" :src="userInfo.icon" alt=""/>
+      <img class="user-icon" :src="userInfo.image_url" alt=""/>
       <article class="user-info">
         <section class="base-info">
           <div class="name">{{userInfo.name}}</div>
-          <div class="last-time">{{userInfo.ai}}</div>
+          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
         </section>
-        <div class="tags">{{userInfo.status}}</div>
+        <div class="tags">{{userInfo.last_follow_day}}</div>
       </article>
     </section>
   </div>

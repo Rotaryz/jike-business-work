@@ -4,12 +4,12 @@
       <ul class="user-list">
         <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(index)">
           <div :class="['check-box',item.isCheck?'active':'']"></div>
-          <img class="user-icon" :src="item.icon" alt="">
+          <img class="user-icon" :src="item.image_url" alt="">
           <section class="base-info">
             <div class="name">{{item.name}}</div>
-            <div class="status">{{item.status}}</div>
+            <div class="status">{{item.last_follow_day}}</div>
           </section>
-          <div class="ai">{{item.ai}}</div>
+          <div class="ai">AI预计成交率{{item.conversion_rate}}%</div>
         </li>
       </ul>
       <footer class="btn" @click="submit">确定</footer>
@@ -18,6 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {Client} from 'api'
   const listData = [{
     icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
     name: '李木 ',
@@ -41,11 +42,27 @@
     name: 'ClientAddUser',
     data() {
       return {
-        dataArray: listData
+        dataArray: listData,
+        currentGroupInfo: null
       }
+    },
+    beforeMount() {
+      const groupInfo = this.$route.query.groupInfo
+      this.currentGroupInfo = groupInfo
+      const data = {
+        get_group_detail: 0,
+        group_id: groupInfo.id
+      }
+      Client.getCusomerList(data).then(res => {
+        if (res.data) {
+          this.dataArray = res.data
+        }
+        console.log(res)
+      })
     },
     methods: {
       check(index) {
+        console.log(index)
         this.dataArray[index].isCheck = !this.dataArray[index].isCheck
       },
       submit() {

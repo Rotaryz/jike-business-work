@@ -135,14 +135,14 @@
       Client.getGroupList().then(res => {
         if (res.data) {
           this.userListArr = res.data
+          console.log(res.data)
         }
-        console.log(res.data, '==')
       })
     },
     methods: {
       toUserList(item) {
         const path = `/client-user-list`
-        this.$router.push({path, query: {title: item.name}})
+        this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
         const path = `/client-create-group`
