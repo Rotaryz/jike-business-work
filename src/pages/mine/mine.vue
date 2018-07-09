@@ -7,14 +7,14 @@
       <div class="mine-card">
         <div class="mine-card-bg">
           <div class="mind-card-left">
-            <p class="buss-name">广州集客网络科技有限公司</p>
-            <p class="peo-name">张三丰</p>
-            <p class="peo-position">产品经理</p>
-            <p class="peo-phone">15920571999</p>
+            <p class="buss-name">{{mine.department}}</p>
+            <p class="peo-name">{{mine.name}}</p>
+            <p class="peo-position">{{mine.position}}</p>
+            <p class="peo-phone">{{mine.mobile}}</p>
           </div>
           <div class="mine-card-right">
             <div class="mine-header-box">
-              <img class="mine-header" src="./Snip20180707_35.png">
+              <img class="mine-header" :src="mine.image_url">
             </div>
             <router-link tag="p" to="editCard" class="card">编辑名片</router-link>
           </div>
@@ -31,17 +31,31 @@
 </template>
 <script>
   import Scroll from 'components/scroll/scroll'
+  import { Business } from 'api'
+  import { ERR_OK } from '../../common/js/config'
 
   const CONTENTLIST = [{title: '分享名片', src: 'shareCard'}, {title: '我的产品', src: 'goodList'}, {title: '我的动态', src: 'dynamicList'}, {title: '我的报表', src: ''}]
 
   export default {
     name: 'Mine',
-    created () {
-      this.$emit('tabChange', '我的')
-    },
     data () {
       return {
-        contentList: CONTENTLIST
+        contentList: CONTENTLIST,
+        mine: {}
+      }
+    },
+    created () {
+      this.$emit('tabChange', '我的')
+      this.getMine()
+    },
+    methods: {
+      getMine () {
+        Business.myBusinessCard().then((res) => {
+          if (res.error === ERR_OK) {
+            this.mine = res.data
+            console.log(this.mine)
+          }
+        })
       }
     },
     components: {

@@ -1,33 +1,34 @@
 <template>
   <div class="edit-card">
     <scroll ref="scroll">
-      <div class="header-icon-box" :style="{backgroundImage: 'url('+ require('./Snip20180707_35.png')+')'}">
+      <!--require('./Snip20180707_35.png')-->
+      <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.image_url+')'}">
         <div class="header-mask"></div>
         <div class="chang-header">
           更换头像
         </div>
-        <input type="file" class="header-icon">
+        <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)">
       </div>
       <div class="mine-msg">
-        <p class="mine-name">张三丰</p>
-        <p class="mine-position">产品经理</p>
-        <p class="mine-company">广州集客网络科技有限公司</p>
+        <p class="mine-name">{{mine.name}}</p>
+        <p class="mine-position">{{mine.position}}</p>
+        <p class="mine-company">{{mine.department}}</p>
         <div class="mine-sign">
-          <p class="mine-sign">“生活，总是把我们打磨的光鲜圆润”</p>
+          <p class="mine-sign">“{{signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
           <router-link tag="span" to="changeAutograph" class="chang-header">更改签名</router-link>
         </div>
         <ul class="mine-status">
           <li class="mine-status-item">
             <img class="mine-status-icon" src="./icon-popularity@2x.png">
-            <span class="mine-status-text">人气 155</span>
+            <span class="mine-status-text">人气 {{mine.like_count}}</span>
           </li>
           <li class="mine-status-item">
             <img class="mine-status-icon" src="./icon-favour@2x.png">
-            <span class="mine-status-text">点赞 155</span>
+            <span class="mine-status-text">点赞 {{mine.click_count}}</span>
           </li>
           <li class="mine-status-item">
             <img class="mine-status-icon" src="./icon-transpond@2x.png">
-            <span class="mine-status-text">转发 155</span>
+            <span class="mine-status-text">转发 {{mine.share_count}}</span>
           </li>
         </ul>
       </div>
@@ -37,32 +38,86 @@
           <ul class="mine-detail-list">
             <li class="mine-detail-item">
               <span class="item-text">手机</span>
-              <span class="item-detail">15920571999</span>
+              <input class="item-detail" type="text" v-model="mine.mobile">
             </li>
             <li class="mine-detail-item">
               <span class="item-text">邮箱</span>
-              <span class="item-detail">weixin@qq.com</span>
+              <input class="item-detail" type="email" v-model="mine.email">
             </li>
             <li class="mine-detail-item">
               <span class="item-text">地址</span>
-              <span class="item-detail">广州市白云区国际单位A5栋4楼</span>
+              <input class="item-detail" type="text" v-model="mine.address">
             </li>
           </ul>
         </div>
       </div>
     </scroll>
-    <div class="btn">保存</div>
+    <div class="btn" @click="_changeMine">保存</div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
-  // import { ERR_OK } from 'api/config'
+  import { ERR_OK } from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
+  import { Business, UpLoad } from 'api'
+  import Toast from 'components/toast/toast'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
     name: 'edit-card',
+    data () {
+      return {
+        mine: {},
+        imageId: null
+      }
+    },
+    created () {
+      this._getMine()
+    },
+    computed: mapState({
+      // 箭头函数可使代码更简练
+      signature: state => state.signature
+    }),
+    methods: {
+      ...mapActions(['setDepartment']),
+      _getMine () {
+        Business.myBusinessCard().then((res) => {
+          if (res.error === ERR_OK) {
+            this.mine = res.data
+            this.setDepartment(this.mine.signature)
+            console.log(this.mine)
+          }
+        })
+      },
+      _changeMine () {
+        let data = {business_card_mobile: this.mine.mobile, mobile: this.mine.mobile, address: this.mine.address, signature: this.mine.signature, image_id: this.imageId}
+        Business.updateMyBusiness(data).then((res) => {
+          console.log(res)
+        })
+      },
+      _infoImage (file) {
+        let param = new FormData() // 创建form对象
+        param.append('file', file, file.name)// 通过append向form对象添加数据
+        return param
+      },
+      _fileChange (e) {
+        document.getElementById('header-logo').click()
+        if (e.target) {
+          let param = this._infoImage(e.target.files[0])
+          UpLoad.upLoadImage(param).then((res) => {
+            if (res.error === ERR_OK) {
+              console.log(res.data)
+              // res = res.data
+              // this.productCover = {image_id: res.id, image_url: res.url}
+            }
+          })
+        }
+      }
+    },
     components: {
-      Scroll
+      Scroll,
+      Toast
     }
   }
 </script>
@@ -123,12 +178,15 @@
     font-family: $font-family-medium
     border-1px($color-col-line, 2px)
     .mine-name
+      height: $font-size-large-xx
       font-family: PingFangSC-Semibold
       font-size: $font-size-large-xx
       color: $color-text
     .mine-position
+      height: $font-size-medium
       margin-top: 12px
     .mine-company
+      height: $font-size-medium
       margin-top: 7px
       color: $color-text-88
     .mine-sign
@@ -181,6 +239,16 @@
       padding-right: 15px
       box-sizing: border-box
       border-bottom-1px($color-row-line)
+      .item-detail
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0)
+        -webkit-user-select: none
+        -moz-user-focus: none
+        -moz-user-select: none
+        -webkit-appearance: none
+        border: none
+        outline: none
+        &::-webkit-inner-spin-button
+          -webkit-appearance: none !important
       .item-text
         width: 48px
         color: $color-text-88
@@ -195,6 +263,7 @@
     font-size: $font-size-medium
     color: $color-white
     background: $color-text
+
   .mine-box
     padding-bottom: 30px
 </style>
