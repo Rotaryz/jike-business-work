@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="list-wrapper">
+  <div ref="wrapper" class="list-wrapper" :style="{background: bcColor}">
     <div class="scroll-content">
       <div ref="listWrapper">
         <slot>
@@ -116,6 +116,10 @@
       },
       zoom: {
         default: false
+      },
+      bcColor: {
+        type: String,
+        default: '#fff'
       }
     },
     data() {

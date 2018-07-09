@@ -3,7 +3,7 @@
     <div class="route-box">
       <router-view v-on:tabChange="_changeTab"/>
     </div>
-    <div class="tab-box">
+    <div class="tab-box border-top-1px">
       <div class="tab-item" v-for="item in tabList" :key="item.id">
         <router-link :to="item.path" class="item-container">
           <img :src="'../../static/img/' + (item.id * 1 === tabIdx * 1 ? item.activeIcon : item.icon)" class="icon">

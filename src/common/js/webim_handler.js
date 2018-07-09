@@ -1,10 +1,9 @@
-import webim from './webim.js'
+import webim from 'common/js/webim'
 
 export default class webimHandler {
   static loginInfo = ''
   static selSess = '' // 当前会话
   static selType = 'C2C' // 会话类型，暂时默认C2C
-  static getMsgListInfo = {} // 保留拉取的C2C历史消息最近时间和msg
   // sdk登录
   static sdkLogin(userInfo, listeners, options, avatar) {
     // web sdk 登录
@@ -91,7 +90,6 @@ export default class webimHandler {
       if (sessMap[name]) {
         let sess = sessMap[name]
         let arr = sess.msgs()
-        console.log(sess.msgs())
         let textArr = arr.filter((item) => {
           let type = item.getElems()[0].type
           return type === webim.MSG_ELEMENT_TYPE.TEXT

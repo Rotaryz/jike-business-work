@@ -29,6 +29,7 @@
     </Scroll>
   </div>
 </template>
+
 <script>
   import Scroll from 'components/scroll/scroll'
   import { Business } from 'api'
@@ -63,7 +64,6 @@
     }
   }
 </script>
-
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">

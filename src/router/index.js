@@ -3,9 +3,13 @@ import Router from 'vue-router'
 
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
+const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
-// const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const Echarts = () => import('pages/vue-echarts/vue-echarts')
+const Cdetail = () => import('pages/client-detail/client-detail')
+const Cdata = () => import('pages/detail-data/detail-data')
 const ClientTag = () => import('pages/client-tag/client-tag')
 const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
 const ClientCreateGroup = () => import('pages/client-create-group/client-create-group')
@@ -23,11 +27,12 @@ const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 Vue.use(Router)
 
 const route = new Router({
+  mode: 'history',
   routes: [
-    {
-      path: '/',
-      redirect: '/radar'
-    },
+    // {
+    //   path: '/',
+    //   component: App
+    // },
     {
       path: '/radar',
       component: Radar,
@@ -100,6 +105,13 @@ const route = new Router({
       }
     },
     {
+      path: '/chat',
+      component: Chat,
+      meta: {
+        title: ''
+      }
+    },
+    {
       path: '/editCard',
       component: EditCard,
       meta: {
@@ -147,12 +159,40 @@ const route = new Router({
       meta: {
         title: '发布动态'
       }
+    },
+    {
+      path: '/scroll-demo',
+      component: ScrollDemo,
+      meta: {
+        title: '测试滚动'
+      }
+    },
+    {
+      path: '/echarts',
+      component: Echarts,
+      meta: {
+        title: ''
+      }
+    },
+    {
+      path: '/client-detail',
+      component: Cdetail,
+      meta: {
+        title: '客户详情'
+      }
+    },
+    {
+      path: '/detail-data',
+      component: Cdata,
+      meta: {
+        title: '客户資料'
+      }
     }
   ]
 })
 
 route.beforeEach((to, from, next) => {
-  document.title = to.meta.title
+  document.title = to.meta ? to.meta.title : ''
   next()
 })
 
