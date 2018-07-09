@@ -42,7 +42,7 @@
         <!--</ul>-->
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <slide-view>
+            <slide-view :useType="1" @grouping="groupingHandler">
               <user-card :userInfo="item" slot="content"></user-card>
             </slide-view>
           </li>
@@ -120,6 +120,10 @@
       },
       check() {
         this.$refs.confirm.show()
+      },
+      groupingHandler() {
+        const path = `/client-set-group`
+        this.$router.push({path})
       }
     },
     watch: {

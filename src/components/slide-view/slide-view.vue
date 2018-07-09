@@ -5,18 +5,30 @@
         <slot name="content"></slot>
       </div>
     </div>
-    <div class="del-box" :style="styles">
+    <div class="del-box" :style="styles" v-if="useType===1">
       <div class="del-btn" @click.stop="grouping">分组</div>
     </div>
-    <div class="del-box" :style="styles">
+    <div class="del-box" :style="styles" v-if="useType===2">
+      <div class="del-btn" @click.stop="grouping">分组</div>
+    </div>
+    <div class="del-box" :style="styles" v-if="useType===2">
       <div class="del-btn" @click.stop="del">删除</div>
     </div>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    props: ['index', 'showIdx'],
+    // props: ['index', 'showIdx'],
+    props: {
+      index: Number,
+      showIdx: Number,
+      useType: {
+        type: Number,
+        default: 2
+      }
+    },
     data() {
       return {
         startX: '',
