@@ -2,6 +2,7 @@
 
 import axios from 'axios'
 import { BASE_URL } from './config'
+import storage from 'storage-controller'
 
 const TIME_OUT = 10000
 const COMMON_HEADER = {}
@@ -12,6 +13,10 @@ const http = axios.create({
   timeout: TIME_OUT,
   headers: COMMON_HEADER
 })
+
+let authorization = storage.get('token', '')
+http.defaults.headers.common['Authorization'] = authorization
+http.defaults.baseURL = BASE_URL.api
 
 http.interceptors.request.use(config => {
   // 请求数据前的拦截
@@ -66,13 +71,7 @@ function requestException (res) {
 }
 
 export default {
-  setDefaults () {
-    let authorization = localStorage.getItem('token')
-    axios.defaults.headers.common['Authorization'] = authorization
-    axios.defaults.baseURL = BASE_URL.api
-  },
   post (url, data) {
-    this.setDefaults()
     return http({
       method: 'post',
       url,
@@ -84,7 +83,6 @@ export default {
     })
   },
   get (url, params) {
-    this.setDefaults()
     return http({
       method: 'get',
       url,
@@ -96,7 +94,6 @@ export default {
     })
   },
   put (url, data) {
-    this.setDefaults()
     return http({
       method: 'put',
       url,
@@ -108,7 +105,6 @@ export default {
     })
   },
   delete (url, data) {
-    this.setDefaults()
     return http({
       method: 'delete',
       url,
