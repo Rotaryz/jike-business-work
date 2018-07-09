@@ -52,11 +52,8 @@
           item.isCheck = false
         })
         this.dataArray[index].isCheck = true
-        // if (this.preId > -1) {
-        //   this.dataArray[this.preId].isCheck = false
-        // }
-        // this.preId = index
         this.isShow = false
+        this.$emit('changeGroup')
       }
     },
     computed: {

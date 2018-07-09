@@ -6,13 +6,13 @@
       </div>
     </div>
     <div class="del-box" :style="styles" v-if="useType===1">
-      <div class="del-btn" @click.stop="grouping">分组</div>
+      <div class="del-btn" @click.stop="grouping(item)">分组</div>
     </div>
     <div class="del-box" :style="styles" v-if="useType===2">
-      <div class="del-btn" @click.stop="grouping">分组</div>
+      <div class="del-btn" @click.stop="grouping(item)">分组</div>
     </div>
     <div class="del-box" :style="styles" v-if="useType===2">
-      <div class="del-btn" @click.stop="del">删除</div>
+      <div class="del-btn" @click.stop="del(item)">删除</div>
     </div>
   </div>
 
@@ -27,6 +27,10 @@
       useType: {
         type: Number,
         default: 2
+      },
+      item: {
+        type: Object,
+        default: {}
       }
     },
     data() {
@@ -111,11 +115,11 @@
           this.styles = `width: ${width}px`
         }
       },
-      del() {
-        this.$emit('del', this.index)
+      del(item) {
+        this.$emit('del', this.index, item)
       },
-      grouping() {
-        this.$emit('grouping', this.index)
+      grouping(item) {
+        this.$emit('grouping', this.index, item)
       },
       _itemInit() {
         this.styles = 'width: 0px; transition: all .3s'

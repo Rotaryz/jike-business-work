@@ -50,7 +50,8 @@
 <script>
   import Scroll from 'components/scroll/scroll'
   import {ease} from 'common/js/ease'
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapGetters} from 'vuex'
+
   export default {
     name: 'Chat',
     created() {
@@ -189,20 +190,20 @@
               height: 45px
               position: relative
               .gray-arrow
-                width:0
-                height:0
+                width: 0
+                height: 0
                 border-width: 5px 6px 5px 0
                 border-style: solid
-                border-color: transparent #D6DCE0 transparent transparent/*透明 灰 透明 透明 */
+                border-color: transparent #D6DCE0 transparent transparent /*透明 灰 透明 透明 */
                 position: absolute
                 right: 0
                 top: 17.5px
                 .white-arrow
-                  width:0
-                  height:0
+                  width: 0
+                  height: 0
                   border-width: 5px 6px 5px 0
                   border-style: solid
-                  border-color: transparent #FFF transparent transparent/*透明 灰 透明 透明 */
+                  border-color: transparent #FFF transparent transparent /*透明 灰 透明 透明 */
                   position: absolute
                   left: 1px
                   top: -5px
@@ -214,18 +215,18 @@
               height: 45px
               position: relative
               .green-arrow
-                width:0
-                height:0
+                width: 0
+                height: 0
                 border-width: 5px 0 5px 6px
                 border-style: solid
-                border-color: transparent transparent transparent $color-green/*透明 灰 透明 透明 */
+                border-color: transparent transparent transparent $color-green /*透明 灰 透明 透明 */
                 position: absolute
                 left: 0
                 top: 17.5px
           .chat-msg-goods
             width: 200px
             height: 150px
-            border: 0.5px solid rgba(0,0,0,0.10)
+            border: 0.5px solid rgba(0, 0, 0, 0.10)
             border-radius: 8px
             background: $color-white
             margin-left: 6px
@@ -254,7 +255,7 @@
       .submit-btn
         width: 50px
         height: 36px
-        border: 1px solid rgba(0,0,0,0.10)
+        border: 1px solid rgba(0, 0, 0, 0.10)
         border-radius: 2px
         background: $color-white
         text-align: center
@@ -265,7 +266,7 @@
       .input-container
         flex: 1
         min-height: 28px
-        border: 1px solid rgba(0,0,0,0.10)
+        border: 1px solid rgba(0, 0, 0, 0.10)
         background: $color-white
         max-height: 100px
         overflow-y: auto
@@ -281,7 +282,6 @@
           overflow-y: visible
           display: block
           font-size: $font-size-medium
-
 
 
 </style>

@@ -10,8 +10,8 @@
             @click="toUserList(item)"
         >
           <div class="users-avatar">
-            <img v-if="item.usersAvatar && item.usersAvatar.length"
-                 v-for="(user,i) in item.usersAvatar"
+            <img v-if="item.icon && item.icon.length"
+                 v-for="(user,i) in item.icon"
                  class="avatar"
                  :key="i"
                  :src="user"
@@ -27,12 +27,12 @@
           <div class="item-name">新建分组</div>
         </div>
       </section>
-      <section class="status-bar" @click="checkGroup">
+      <section class="status-bar" @click="showGroupList">
         <div class="left">
           <p>{{checkedGroup.name}}</p>
           <img class="icon" src="./icon-down@3x.png" alt=""/>
         </div>
-        <div class="right">全部 53 位</div>
+        <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
       <div class="scroll-list-wrap">
         <!--<scroll ref="scroll"-->
@@ -42,7 +42,7 @@
         <!--</ul>-->
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <slide-view :useType="1" @grouping="groupingHandler">
+            <slide-view :useType="1" @grouping="groupingHandler" :item="item">
               <user-card :userInfo="item" slot="content"></user-card>
             </slide-view>
           </li>
@@ -57,7 +57,7 @@
     <!--<router-link class="item" to="/client-search">client-search</router-link>-->
     <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
     <confirm-msg ref="confirm"></confirm-msg>
-    <action-sheet ref="sheet" :dataArray="groupList"></action-sheet>
+    <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
   </div>
 </template>
 
@@ -80,41 +80,41 @@
   //   name: '5期可成交',
   //   people: 8
   // }]
-
-  let listData = [{
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
-    isCheck: false
-  }]
+  //
+  // let listData = [{
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }, {
+  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
+  //   name: '李木 ',
+  //   status: '今天跟进',
+  //   ai: 'AI预计成交率100%',
+  //   isCheck: false
+  // }]
 
   const groupList = [{
-    id: 0,
+    orderBy: '',
     name: '预计成交率',
     isCheck: true
   }, {
-    id: 1,
+    orderBy: 'follow',
     name: '最后跟进时间',
     isCheck: false
   }, {
-    id: 2,
+    orderBy: 'active',
     name: '最后活跃时间',
     isCheck: false
   }, {
-    id: 3,
+    orderBy: 'join',
     name: '最新加入时间',
     isCheck: false
   }]
@@ -125,7 +125,7 @@
       return {
         groupList: groupList,
         userListArr: [],
-        dataArray: listData.concat(listData).concat(listData)
+        dataArray: []
       }
     },
     created() {
@@ -135,7 +135,12 @@
       Client.getGroupList().then(res => {
         if (res.data) {
           this.userListArr = res.data
-          console.log(res.data)
+        }
+      })
+      const data = {order_by: this.checkedGroup.orderBy}
+      Client.getCusomerList(data).then(res => {
+        if (res.data) {
+          this.dataArray = res.data
         }
       })
     },
@@ -151,19 +156,23 @@
       check() {
         this.$refs.confirm.show()
       },
-      groupingHandler() {
+      groupingHandler(index, item) {
         const path = `/client-set-group`
-        this.$router.push({path})
+        this.$router.push({path, query: {customerInfo: item}})
       },
-      checkGroup() {
+      showGroupList() {
         this.$refs.sheet.show()
+      },
+      changeGroup() {
+        const data = {order_by: this.checkedGroup.orderBy}
+        Client.getCusomerList(data).then(res => {
+          if (res.data) {
+            this.dataArray = res.data
+          }
+        })
       }
     },
-    watch: {
-      cancel() {
-        console.log(222)
-      }
-    },
+    watch: {},
     computed: {
       checkedGroup() {
         let node = this.groupList.find(val => val.isCheck)

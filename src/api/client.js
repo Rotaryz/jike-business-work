@@ -15,5 +15,15 @@ export default {
   getCusomerList(data, loading) {
     const url = `/api/employee/employee-customer`
     return request.get(url, data, loading)
+  },
+  // 获取设置分组的客户列表
+  getSetGroupList(data, loading) {
+    const url = `/api/employee/set-group`
+    return request.get(url, data, loading)
+  },
+  // 在设置分组里面为用户更改组
+  setGroup(data, loading) {
+    const url = `/api/employee/set-group`
+    return request.post(url, data, loading)
   }
 }

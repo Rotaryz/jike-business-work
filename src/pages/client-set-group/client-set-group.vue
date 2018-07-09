@@ -3,10 +3,10 @@
     <div class="title">设置分组</div>
     <section class="content">
       <div v-if="dataArray.length"
-           :class="['item',item.isCheck?'active':'']"
+           :class="['item',item.is_selecte?'active':'']"
            v-for="(item,index) in dataArray"
            :key="index"
-           @click="check(index)">
+           @click="check(item)">
         {{item.name}}
       </div>
     </section>
@@ -16,32 +16,41 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
 
-  const listData = [
-    {name: '近期成交', isCheck: false},
-    {name: '5月成交', isCheck: false},
-    {name: '6月成交', isCheck: false},
-    {name: '7月成交', isCheck: false}
-  ]
   export default {
     name: 'ClientSetGroup',
     data() {
       return {
-        dataArray: listData,
-        preId: -1
+        dataArray: [],
+        customerId: 0
       }
     },
     beforeMount() {
-      Client.getGroupList().then(res => {
-        console.log(res, '==')
+      const customerInfo = this.$route.query.customerInfo
+      const data = {customer_id: customerInfo.id}
+      Client.getSetGroupList(data).then(res => {
+        if (res.data) {
+          this.dataArray = res.data
+        }
+        console.log(this.dataArray)
+      })
+    },
+    beforeDestroy() {
+      let arr = []
+      this.dataArray.map(item => {
+        arr.push({group_id: item.id})
+      })
+      if (!arr.length) return
+      const data = {
+        customer_id: this.customerId,
+        data: arr
+      }
+      Client.setGroup(data).then(res => {
+        console.log(res)
       })
     },
     methods: {
-      check(index) {
-        this.dataArray[index].isCheck = !this.dataArray[index].isCheck
-        if (this.preId > -1 && this.preId !== index) {
-          this.dataArray[this.preId].isCheck = false
-        }
-        this.preId = index
+      check(item) {
+        item.is_selecte = !item.is_selecte
       }
     }
   }

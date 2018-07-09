@@ -2,7 +2,7 @@
   <transition name="slide">
     <article class="client-add-user">
       <ul class="user-list">
-        <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(index)">
+        <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
           <div :class="['check-box',item.isCheck?'active':'']"></div>
           <img class="user-icon" :src="item.image_url" alt="">
           <section class="base-info">
@@ -19,6 +19,7 @@
 
 <script type="text/ecmascript-6">
   import {Client} from 'api'
+
   const listData = [{
     icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
     name: '李木 ',
@@ -60,12 +61,20 @@
         console.log(res)
       })
     },
+    updated() {
+    },
     methods: {
-      check(index) {
-        console.log(index)
-        this.dataArray[index].isCheck = !this.dataArray[index].isCheck
+      check(item) {
+        item.isCheck = !item.isCheck
+        console.log(this.dataArray)
+        // this.dataArray[index].isCheck = !this.dataArray[index].isCheck
       },
       submit() {
+      }
+    },
+    watch: {
+      dataArray(curVal, oldVal) {
+        console.log(curVal, oldVal)
       }
     }
   }
