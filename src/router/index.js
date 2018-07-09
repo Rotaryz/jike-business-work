@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+const Oauth = () => import('pages/oauth/oauth')
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
 const Chat = () => import('pages/chat-msg/chat-msg')
@@ -29,10 +30,14 @@ Vue.use(Router)
 const route = new Router({
   mode: 'history',
   routes: [
-    // {
-    //   path: '/',
-    //   component: App
-    // },
+    {
+      path: '/',
+      redirect: '/oauth'
+    },
+    {
+      path: '/oauth',
+      component: Oauth
+    },
     {
       path: '/radar',
       component: Radar,
