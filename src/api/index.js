@@ -7,3 +7,6 @@ export const Business = business
 
 // 上传
 export const UpLoad = upload
+
+// 客户
+export const Client = client

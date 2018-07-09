@@ -5,12 +5,16 @@
       <section class="content">
         <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
       </section>
-      <footer class="btn">保存</footer>
+      <footer class="btn" @click="save">保存</footer>
+      <toast ref="toast"></toast>
     </article>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
+  import Toast from 'components/toast/toast'
+  import {Client} from 'api'
+
   export default {
     name: 'ClientSetGroup',
     data() {
@@ -20,7 +24,20 @@
         groupName: ''
       }
     },
-    methods: {}
+    methods: {
+      save() {
+        if (!this.groupName) {
+          return this.$refs.toast.show('请输入分组名称')
+        }
+        Client.createGroup({name: this.groupName}).then(res => {
+          this.$router.back()
+          console.log(res)
+        })
+      }
+    },
+    components: {
+      Toast
+    }
   }
 </script>
 

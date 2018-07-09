@@ -14,7 +14,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import api from 'api'
+  import {Client} from 'api'
 
   const listData = [
     {name: '近期成交', isCheck: false},
@@ -31,7 +31,7 @@
       }
     },
     beforeMount() {
-      api.clientGetGroupList().then(res => {
+      Client.getGroupList().then(res => {
         console.log(res, '==')
       })
     },

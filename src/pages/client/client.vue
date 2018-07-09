@@ -67,6 +67,7 @@
   // import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
+  import {Client} from 'api'
 
   const userListArr = [{
     usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
@@ -100,14 +101,19 @@
 
   export default {
     name: 'Client',
-    created() {
-      this.$emit('tabChange', 3)
-    },
     data() {
       return {
         userListArr: userListArr,
         dataArray: listData.concat(listData).concat(listData)
       }
+    },
+    created() {
+      this.$emit('tabChange', 3)
+    },
+    beforeMount() {
+      Client.getGroupList().then(res => {
+        console.log(res, '==')
+      })
     },
     methods: {
       toUserList() {
