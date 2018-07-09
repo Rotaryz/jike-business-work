@@ -17,6 +17,9 @@ const mutations = {
       }
       return item
     })
+  },
+  [TYPES.SET_SIGNSTURE](state, department) {
+    state.department = department
   }
 }
 

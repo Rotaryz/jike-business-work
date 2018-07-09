@@ -11,3 +11,8 @@ export const setCurrent = ({commit, state}, current) => {
 export const setUnreadCount = ({commit, state}, id) => {
   commit(TYPES.SET_UNREAD_COUNT, id)
 }
+
+export const setDepartment = ({commit, state}, role) => {
+  console.log()
+  commit(TYPES.SET_SIGNSTURE, role)
+}

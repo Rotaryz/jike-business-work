@@ -300,7 +300,7 @@
     position: relative
     height: 100%
     overflow: hidden
-    background: #fff
+    background: $color-background
     .scroll-content
       position: relative
       z-index: 1

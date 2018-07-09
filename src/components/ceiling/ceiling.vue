@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import {mapActions} from 'vuex'
   import webimHandler from 'common/js/webim_handler'
 
@@ -98,8 +98,8 @@
     top: -60px
     z-index: 999
     background: $color-white
-    border: 0.5px solid rgba(32,32,46,0.10)
-    box-shadow: 0 2px 6px 0 rgba(43,43,145,0.07)
+    border: 0.5px solid rgba(32, 32, 46, 0.10)
+    box-shadow: 0 2px 6px 0 rgba(43, 43, 145, 0.07)
     border-radius: 1px 1px 4px 4px
     display: flex
     align-items: center
@@ -108,7 +108,7 @@
     .ceiling-left
       width: 40px
       height: 40px
-      border: 0.5px solid rgba(32,32,46,0.10)
+      border: 0.5px solid rgba(32, 32, 46, 0.10)
       margin-right: 10px
     .ceiling-right
       flex: 1

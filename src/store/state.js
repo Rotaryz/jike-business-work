@@ -2,6 +2,7 @@ import {tabMode} from 'common/js/constants'
 
 const state = {
   tabMode: tabMode.show,
+  signature: 'ah',
   currentMsg: {}, // 当前聊天对象
   latelyList: [] // 最近联系人列表
 }
