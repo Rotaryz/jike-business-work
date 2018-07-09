@@ -1,6 +1,6 @@
 <template>
   <div class="edit-dynamic">
-    <scroll>
+    <scroll >
       <div class="compile">
         <textarea class="words-span" placeholder="这一刻的想法…" v-model="title"></textarea>
         <!--:style="height: {{comHeight}}px"-->
@@ -97,9 +97,7 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .edit-dynamic
-    background: $color-background
     position: fixed
-    background: edit-dynamic
     z-index: 10
     left: 0
     right: 0

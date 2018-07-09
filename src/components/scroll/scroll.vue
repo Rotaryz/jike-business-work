@@ -119,7 +119,7 @@
       },
       bcColor: {
         type: String,
-        default: '#fff'
+        default: '#f1f2f5'
       }
     },
     data() {
