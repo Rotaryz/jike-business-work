@@ -14,6 +14,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import api from 'api'
+
   const listData = [
     {name: '近期成交', isCheck: false},
     {name: '5月成交', isCheck: false},
@@ -27,6 +29,11 @@
         dataArray: listData,
         preId: -1
       }
+    },
+    beforeMount() {
+      api.clientGetGroupList().then(res => {
+        console.log(res, '==')
+      })
     },
     methods: {
       check(index) {
