@@ -3,9 +3,12 @@ import Router from 'vue-router'
 
 const Radar = () => import('pages/radar/radar')
 const News = () => import('pages/news/news')
-const Chat = () => import('pages/chat-msg/chat-msg')
 const Client = () => import('pages/client/client')
 const Mine = () => import('pages/mine/mine')
+const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
+const Echarts = () => import('pages/vue-echarts/vue-echarts')
+const Cdetail = () => import('pages/client-detail/client-detail')
+const Cdata = () => import('pages/detail-data/detail-data')
 // const ScrollDemo = () => import('pages/scroll-demo/scroll-demo')
 const ClientTag = () => import('pages/client-tag/client-tag')
 const ClientSetGroup = () => import('pages/client-set-group/client-set-group')
@@ -155,6 +158,34 @@ const route = new Router({
       component: EditDynamic,
       meta: {
         title: '发布动态'
+      }
+    },
+    {
+      path: '/scroll-demo',
+      component: ScrollDemo,
+      meta: {
+        title: '测试滚动'
+      }
+    },
+    {
+      path: '/echarts',
+      component: Echarts,
+      meta: {
+        title: ''
+      }
+    },
+    {
+      path: '/client-detail',
+      component: Cdetail,
+      meta: {
+        title: '客户详情'
+      }
+    },
+    {
+      path: '/detail-data',
+      component: Cdata,
+      meta: {
+        title: '客户資料'
       }
     }
   ]

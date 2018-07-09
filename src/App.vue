@@ -2,7 +2,6 @@
   <div id="app">
     <ceiling></ceiling>
     <router-view/>
-    <tab></tab>
   </div>
 </template>
 
