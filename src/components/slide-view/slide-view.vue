@@ -18,7 +18,6 @@
       <div class="del-btn" @click.stop="del(item)">删除</div>
     </div>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
@@ -125,6 +124,8 @@
       },
       grouping(item) {
         this.$emit('grouping', this.index, item)
+        this.styles = 'width: 0px; transition: all .3s'
+        this.show = false
       },
       _itemInit() {
         this.styles = 'width: 0px; transition: all .3s'

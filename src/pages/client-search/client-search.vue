@@ -11,18 +11,9 @@
       <ul class="user-list">
         <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
           <user-card :userInfo="item"></user-card>
-          <!--<img class="user-icon" :src="item.icon" alt="">-->
-          <!--<article class="user-info">-->
-          <!--<section class="base-info">-->
-          <!--<div class="name">{{item.name}}</div>-->
-          <!--<div class="last-time">{{item.last}}</div>-->
-          <!--</section>-->
-          <!--<ul class="tags" v-if="item.tags">-->
-          <!--<li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>-->
-          <!--</ul>-->
-          <!--</article>-->
         </li>
       </ul>
+      <toast ref="toast"></toast>
     </article>
   </transition>
 </template>
@@ -30,6 +21,8 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
   import UserCard from 'components/client-user-card/client-user-card'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientSearch',
@@ -40,6 +33,12 @@
         timeStamp: 0
       }
     },
+    created() {
+      this.searchUser(this.userName)
+    },
+    beforeDestroy() {
+      this.$emit('refresh')
+    },
     methods: {
       cancelHandler() {
         this.userName = ''
@@ -47,22 +46,29 @@
       check(item) {
         const path = `/client-detail`
         this.$router.push({path, query: {id: item.id}})
+      },
+      searchUser(name) {
+        const data = {name}
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          this.timeStamp = Date.now()
+        })
       }
     },
     watch: {
       userName(curVal, oldVal) {
-        if (curVal && Date.now() - this.timeStamp > 100) {
-          const data = {name: curVal}
-          Client.getCusomerList(data).then(res => {
-            this.dataArray = res.data
-            this.timeStamp = Date.now()
-            console.log(res)
-          })
+        if (Date.now() - this.timeStamp > 200) {
+          this.searchUser(curVal)
         }
       }
     },
     components: {
-      UserCard
+      UserCard,
+      Toast
     }
   }
 </script>
@@ -72,8 +78,7 @@
   @import "~common/stylus/mixin"
 
   .client-search
-    position: relative
-    min-height: 100vh
+    fill-box()
     background-color: $color-white-fff
     z-index: 10
     .search-box

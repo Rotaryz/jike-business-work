@@ -1,8 +1,12 @@
 <template>
   <div class="client">
-    <scroll>
-      <div @click="test">to-tag-client</div>
-      <search></search>
+    <scroll bcColor="#fff"
+            ref="scroll"
+            :data="dataArray"
+            :pullUpLoad="pullUpLoadObj"
+            @pullingUp="onPullingUp"
+    >
+      <search @toNav="toSearch"></search>
       <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
             v-if="userListArr.length"
@@ -48,9 +52,10 @@
         </ul>
       </div>
     </scroll>
-    <router-view></router-view>
     <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
+    <toast ref="toast"></toast>
+    <router-view @refresh="refresh"></router-view>
   </div>
 </template>
 
@@ -63,6 +68,8 @@
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
   import ActionSheet from 'components/action-sheet/action-sheet'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   const groupList = [{
     orderBy: '',
@@ -81,7 +88,7 @@
     name: '最新加入时间',
     isCheck: false
   }]
-
+  const LIMIT = 10
   export default {
     name: 'Client',
     data() {
@@ -89,52 +96,67 @@
         groupList: groupList,
         userListArr: [],
         dataArray: [],
-        checkedItem: null // 被选中的分组
+        checkedItem: null, // 被选中的分组
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        page: 1,
+        limit: LIMIT
       }
     },
     created() {
       this.$emit('tabChange', 3)
-    },
-    beforeMount() {
       this.getGroupList()
       this.getCusomerList()
     },
     beforeDestroy() {
     },
     methods: {
-      test() {
-        const path = `/client-tag`
-        this.$router.push({path, query: {customerId: 2}})
+      refresh() {
+        setTimeout(() => {
+          this.getGroupList()
+          this.getCusomerList()
+        }, 300)
+      },
+      toSearch() {
+        const path = `/client/client-search`
+        this.$router.push({path})
       },
       getGroupList() {
         Client.getGroupList().then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.userListArr = res.data
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
       getCusomerList() {
-        const data = {order_by: this.checkedGroup.orderBy}
+        const data = {order_by: this.checkedGroup.orderBy, page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.dataArrayTotal = res.meta.total
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
       toUserList(item) {
-        const path = `/client-user-list`
+        const path = `/client/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
-        const path = `/client-create-group`
+        const path = `/client/client-create-group`
         this.$router.push({path})
       },
       check(item) {
-        const path = `/client-detail`
-        this.$router.push({path, query: {id: item.id}})
+        const path = `/client/client-detail`
+        this.$router.push({path, query: {id: item.id, pageUrl: path}})
       },
       groupingHandler(index, item) {
-        const path = `/client-set-group`
+        const path = `/client/client-set-group`
         this.$router.push({path, query: {customerInfo: item}})
       },
       showGroupList() {
@@ -161,13 +183,50 @@
       },
       msgCancel() {
         this.checkedItem = null
+      },
+      onPullingUp() {
+        // 更新数据
+        console.info('pulling up and load data')
+        let page = ++this.page
+        let limit = this.limit
+        const data = {order_by: this.checkedGroup.orderBy, page, limit}
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
+            }
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
       }
     },
-    watch: {},
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
+    },
     computed: {
       checkedGroup() {
         let node = this.groupList.find(val => val.isCheck)
         return node
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {
@@ -176,7 +235,8 @@
       SlideView,
       UserCard,
       ConfirmMsg,
-      ActionSheet
+      ActionSheet,
+      Toast
     }
   }
 </script>
@@ -187,7 +247,7 @@
   @import '~common/stylus/mixin'
 
   .client
-    position: fixed
+    position: absolute
     top: 0
     left: 0
     right: 0

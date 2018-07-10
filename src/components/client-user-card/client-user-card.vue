@@ -9,9 +9,12 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+          <div class="last-time">最后跟进</div>
         </section>
-        <div class="tags">{{userInfo.last_follow_day}}</div>
+        <div class="tags">
+          <div>{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.last_follow_at}}</div>
+        </div>
       </article>
     </section>
     <!--最近活跃-->
@@ -23,9 +26,12 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+          <div class="last-time">最后活跃</div>
         </section>
-        <div class="tags">{{userInfo.last_follow_day}}</div>
+        <div class="tags">
+          <div>{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.last_active_at}}</div>
+        </div>
       </article>
     </section>
     <!--最新加入-->
@@ -37,7 +43,7 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">{{userInfo.sources}}</div>
+          <div class="last-time">{{userInfo.flow_join_at}}</div>
         </section>
         <div class="tags">
           <div>{{userInfo.last_follow_day}}</div>
@@ -59,38 +65,10 @@
         <div class="tags">{{userInfo.last_follow_day}}</div>
       </article>
     </section>
-    <!--<section class="container">-->
-    <!--<img class="user-icon" :src="userInfo.image_url" alt=""/>-->
-    <!--<article class="user-info">-->
-    <!--<section class="base-info">-->
-    <!--<div class="name">{{userInfo.name}}</div>-->
-    <!--<div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>-->
-    <!--</section>-->
-    <!--<div class="tags">{{userInfo.last_follow_day}}</div>-->
-    <!--</article>-->
-    <!--</section>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  const groupList = [{
-    orderBy: '',
-    name: '预计成交率',
-    isCheck: true
-  }, {
-    orderBy: 'follow',
-    name: '最后跟进时间',
-    isCheck: false
-  }, {
-    orderBy: 'active',
-    name: '最后活跃时间',
-    isCheck: false
-  }, {
-    orderBy: 'join',
-    name: '最新加入时间',
-    isCheck: false
-  }]
-  console.log(groupList)
   export default {
     props: {
       userInfo: Object,
@@ -156,6 +134,6 @@
             font-family: $font-family-regular
             font-size: $font-size-12
             color: $color-888888
-            margin-left: 5px
+            padding-right: 15px
 
 </style>

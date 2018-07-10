@@ -1,28 +1,28 @@
 <template>
-  <article class="action-sheet" v-if="isShow">
-    <transition name="fade">
+  <transition name="fade">
+    <article class="action-sheet" v-if="isShow" @click="hidden">
       <div class="mask"></div>
-    </transition>
-    <transition name="slide">
-      <section class="sheet-box">
-        <ul class="content-box">
-          <li class="content-item"
-              :key="index"
-              v-for="(item,index) in dataArray"
-              v-if="dataArray.length"
-              @click="change(index)"
-          >
-            <div class="item-box">
-              <div class="left">{{item.name}}</div>
-              <div class="right" v-if="item.isCheck"></div>
-            </div>
-          </li>
-        </ul>
-        <div class="place-holder"></div>
-        <div class="btn" @click="hidden">取消</div>
-      </section>
-    </transition>
-  </article>
+      <transition name="slide">
+        <section class="sheet-box" v-if="isShow" @click.stop>
+          <ul class="content-box">
+            <li class="content-item"
+                :key="index"
+                v-for="(item,index) in dataArray"
+                v-if="dataArray.length"
+                @click="change(index)"
+            >
+              <div class="item-box">
+                <div class="left">{{item.name}}</div>
+                <div class="right" v-if="item.isCheck"></div>
+              </div>
+            </li>
+          </ul>
+          <div class="place-holder"></div>
+          <div class="btn" @click="hidden">取消</div>
+        </section>
+      </transition>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">

@@ -1,20 +1,23 @@
 <template>
-  <article class="client-set-group">
-    <div class="title">设置分组</div>
-    <section class="content">
-      <div v-if="dataArray.length"
-           :class="['item',item.is_selecte?'active':'']"
-           v-for="(item,index) in dataArray"
-           :key="index"
-           @click="check(item)">
-        {{item.name}}
-      </div>
-    </section>
-  </article>
+  <transition name="slide">
+    <article class="client-set-group">
+      <div class="title">设置分组</div>
+      <section class="content">
+        <div v-if="dataArray.length"
+             :class="['item',item.is_selecte?'active':'']"
+             v-for="(item,index) in dataArray"
+             :key="index"
+             @click="check(item)">
+          {{item.name}}
+        </div>
+      </section>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import {Client} from 'api'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientSetGroup',
@@ -24,7 +27,7 @@
         customerId: 0
       }
     },
-    beforeMount() {
+    created() {
       const customerInfo = this.$route.query.customerInfo
       const data = {customer_id: customerInfo.id}
       this.customerId = customerInfo.id
@@ -32,7 +35,6 @@
         if (res.data) {
           this.dataArray = res.data
         }
-        console.log(this.dataArray)
       })
     },
     beforeDestroy() {
@@ -45,8 +47,14 @@
         data: arr
       }
       Client.setGroup(data).then(res => {
-        console.log(res, data)
+        if (res.error === ERR_OK) {
+          //
+        } else {
+          //
+        }
+        this.$emit('refresh')
       })
+      this.$emit('refresh')
     },
     methods: {
       check(item) {
