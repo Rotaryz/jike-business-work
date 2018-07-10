@@ -1,23 +1,38 @@
 <template>
-  <div class="share-card">
-    <scroll :bcColor="'#20202E'">
-      <div class="share-box">
-        <p class="peo-name">张三丰</p>
-        <p class="peo-position">产品经理</p>
-        <p class="buss-name">广州集客网络科技有限公司</p>
-        <img class="qr-code" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531042875023&di=f0f23814097a0a3daaac716d3ef4b3bd&imgtype=0&src=http%3A%2F%2Fsrc.onlinedown.net%2Fimages%2Fxcs%2F10%2F2017-07-31_597ea6cf54190.jpg" alt="">
-        <p class="tip">长按识别图中小程序码</p>
-      </div>
-    </scroll>
-  </div>
+  <transition name="slide">
+
+    <div class="share-card">
+      <scroll :bcColor="'#20202E'">
+        <div class="share-box">
+          <p class="peo-name">{{card.name}}</p>
+          <p class="peo-position">{{card.position}}</p>
+          <p class="buss-name">{{card.department}}</p>
+          <img class="qr-code" :src="card.qrcode" alt="">
+          <p class="tip">长按识别图中小程序码</p>
+        </div>
+      </scroll>
+    </div>
+  </transition>
 </template>
 
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
+  import { Business } from 'api'
 
   export default {
     name: 'share-card',
+    data () {
+      return {
+        card: {}
+      }
+    },
+    created () {
+      Business.Myqrcode().then((res) => {
+        this.card = res.data || {}
+        console.log(res)
+      })
+    },
     components: {
       Scroll
     }
@@ -27,7 +42,7 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .share-card
-    background :$color-text
+    background: $color-text
     position: fixed
     background: share-card
     z-index: 10
@@ -36,13 +51,13 @@
     bottom: 0
     top: 0
     .share-box
-      display :flex
+      display: flex
       flex-direction: column
-      align-items :center
+      align-items: center
       height: 108.8vw
       width: 92vw
-      background :$color-white
-      margin : 20px auto
+      background: $color-white
+      margin: 20px auto
       .qr-code
         margin-top: 29px
         width: 56.53%

@@ -25,6 +25,7 @@ const GoodsList = () => import('pages/goods-list/goods-list')
 const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 const AddFlow = () => import('pages/add-flow/add-flow')
+const MyData = () => import('pages/my-data/my-data')
 
 Vue.use(Router)
 
@@ -148,7 +149,63 @@ const route = new Router({
       component: Mine,
       meta: {
         title: '我的'
-      }
+      },
+      children: [{
+        path: 'editCard',
+        component: EditCard,
+        meta: {
+          title: '编辑名片'
+        },
+        children: [{
+          path: 'changeAutograph',
+          component: ChangeAutograph,
+          meta: {
+            title: '修改签名'
+          }
+        }]
+      },
+      {
+        path: '/my-data',
+        component: MyData,
+        meta: {
+          title: '我的图表'
+        }
+      },
+      {
+        path: 'shareCard',
+        component: ShareCard,
+        meta: {
+          title: '分享名片'
+        }
+      },
+      {
+        path: 'goodList',
+        component: GoodsList,
+        meta: {
+          title: '我的产品'
+        },
+        children: [{
+          path: 'goodsDetail',
+          component: GoodsDetail,
+          meta: {
+            title: '产品详情'
+          }
+        }]
+      },
+      {
+        path: 'dynamicList',
+        component: DynamicList,
+        meta: {
+          title: '动态'
+        },
+        children: [ {
+          path: 'editDynamic',
+          component: EditDynamic,
+          meta: {
+            title: '发布动态'
+          }
+        }]
+      }]
     },
     {
       path: '/client-tag',
@@ -169,55 +226,6 @@ const route = new Router({
       component: Chat,
       meta: {
         title: ''
-      }
-    },
-    {
-      path: '/editCard',
-      component: EditCard,
-      meta: {
-        title: '编辑名片'
-      }
-    },
-    {
-      path: '/changeAutograph',
-      component: ChangeAutograph,
-      meta: {
-        title: '修改签名'
-      }
-    },
-    {
-      path: '/shareCard',
-      component: ShareCard,
-      meta: {
-        title: '分享名片'
-      }
-    },
-    {
-      path: '/goodsDetail',
-      component: GoodsDetail,
-      meta: {
-        title: '产品详情'
-      }
-    },
-    {
-      path: '/goodList',
-      component: GoodsList,
-      meta: {
-        title: '我的产品'
-      }
-    },
-    {
-      path: '/dynamicList',
-      component: DynamicList,
-      meta: {
-        title: '动态'
-      }
-    },
-    {
-      path: '/editDynamic',
-      component: EditDynamic,
-      meta: {
-        title: '发布动态'
       }
     },
     {

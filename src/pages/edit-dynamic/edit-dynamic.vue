@@ -1,31 +1,34 @@
 <template>
-  <div class="edit-dynamic">
-    <scroll>
-      <div class="compile">
-        <textarea class="words-span" placeholder="这一刻的想法…" v-model="title"></textarea>
-        <!--:style="height: {{comHeight}}px"-->
-        <div class="com-box">
-          <div class="com-image" v-for="(item, index) in image" :key="index">
-            <img class="img-item" :src="item.image_url">
-            <!--<input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>-->
-            <div class="close-icon" @click.stop="_delImage(index)">
-              <img class="close-icon" src="./icon-del@2x.png">
+  <transition name="slide">
+
+    <div class="edit-dynamic">
+      <scroll>
+        <div class="compile">
+          <textarea class="words-span" placeholder="这一刻的想法…" v-model="title"></textarea>
+          <!--:style="height: {{comHeight}}px"-->
+          <div class="com-box">
+            <div class="com-image" v-for="(item, index) in image" :key="index">
+              <img class="img-item" :src="item.image_url">
+              <!--<input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>-->
+              <div class="close-icon" @click.stop="_delImage(index)">
+                <img class="close-icon" src="./icon-del@2x.png">
+              </div>
+            </div>
+            <div class="com-image" v-show="image.length < 9">
+              <img class="img-item" src="./Group3@2x.png">
+              <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
             </div>
           </div>
-          <div class="com-image" v-show="image.length < 9">
-            <img class="img-item" src="./Group3@2x.png">
-            <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
-          </div>
+          <!--style="bottom: {{height}}px"-->
         </div>
-        <!--style="bottom: {{height}}px"-->
+      </scroll>
+      <div class="btn">
+        <div class="btn-item btn-dark" @click="_back">取消</div>
+        <div class="btn-item btn-green" @click="_liveLogs">发布</div>
       </div>
-    </scroll>
-    <div class="btn">
-      <div class="btn-item btn-dark" @click="_back">取消</div>
-      <div class="btn-item btn-green" @click="_liveLogs">发布</div>
+      <toast ref="toast"></toast>
     </div>
-    <toast ref="toast"></toast>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -90,6 +93,7 @@
           this.send = false
           if (res.error === ERR_OK) {
             this.$refs.toast.show('发布成功')
+            this.$emit('refresh')
             setTimeout(() => {
               this._back()
             }, 300)
@@ -113,7 +117,7 @@
   @import '~common/stylus/mixin'
   .edit-dynamic
     position: fixed
-    z-index: 10
+    z-index: 100
     left: 0
     right: 0
     bottom: 45px

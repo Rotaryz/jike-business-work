@@ -14,9 +14,9 @@
           </div>
           <div class="mine-card-right">
             <div class="mine-header-box">
-              <img class="mine-header" :src="mine.image_url">
+              <img class="mine-header" :src="mine.avatar">
             </div>
-            <router-link tag="p" to="editCard" class="card">编辑名片</router-link>
+            <router-link tag="p" to="mine/editCard" class="card">编辑名片</router-link>
           </div>
         </div>
       </div>
@@ -27,6 +27,7 @@
         </router-link>
       </ul>
     </Scroll>
+    <router-view @refresh="refresh"></router-view>
   </div>
 </template>
 
@@ -34,8 +35,9 @@
   import Scroll from 'components/scroll/scroll'
   import { Business } from 'api'
   import { ERR_OK } from '../../common/js/config'
+  import storage from 'storage-controller'
 
-  const CONTENTLIST = [{title: '分享名片', src: 'shareCard'}, {title: '我的产品', src: 'goodList'}, {title: '我的动态', src: 'dynamicList'}, {title: '我的报表', src: ''}]
+  const CONTENTLIST = [{title: '分享名片', src: 'mine/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
 
   export default {
     name: 'Mine',
@@ -50,7 +52,15 @@
       this.getMine()
     },
     methods: {
+      refresh () {
+        this.mine = storage.get('info', {})
+      },
       getMine () {
+        if (storage.get('info')) {
+          this.mine = storage.get('info')
+          console.log(this.mine)
+          return
+        }
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
             this.mine = res.data
@@ -130,7 +140,7 @@
         width: 60px
         margin-top: 4vw
         overflow: hidden
-        background :$color-white
+        background: $color-white
         border-1px($color-row-line, 0)
         .mine-header
           width: 100%

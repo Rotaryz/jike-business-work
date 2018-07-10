@@ -1,31 +1,52 @@
 <template>
-  <div class="goods-detail">
-    <scroll>
-      <div class="cover-box">
-        <img src="./Snip20180707_18.png" class="cover">
-      </div>
-      <div class="goods-title">
-        <p class="goods-content">卡诗（KERASTASE）新双重菁纯修护液100ml</p>
-        <p class="content-reason">确认过眼神，就是我想要的好物！</p>
-      </div>
-      <div class="goods-icon">
-        <span class="goods-small-box goods-small-tall"></span>
-        <span class="goods-small-box goods-small-width"></span>
-        <span class="goods-small-text">产品详情</span>
-      </div>
-      <img src="./Snip20180707_18.png" class="goods-img">
-      <img src="./Snip20180707_18.png" class="goods-img">
-      <img src="./Snip20180707_18.png" class="goods-img">
-    </scroll>
-  </div>
+  <transition name="slide">
+    <div class="goods-detail">
+      <scroll>
+        <div class="cover-box">
+          <img :src="goods.image_url" class="cover">
+        </div>
+        <div class="goods-title">
+          <p class="goods-content">{{goods.title}}</p>
+          <p class="content-reason">{{goods.subtitle}}</p>
+        </div>
+        <div class="goods-icon">
+          <span class="goods-small-box goods-small-tall"></span>
+          <span class="goods-small-box goods-small-width"></span>
+          <span class="goods-small-text">产品详情</span>
+        </div>
+        <img :src="item.image_url" class="goods-img" v-for="(item, index) in goods.goods_images" :ley="index">
+      </scroll>
+    </div>
+  </transition>
 </template>
 
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
+  import { Goods } from 'api'
+  import { ERR_OK } from '../../common/js/config'
 
   export default {
     name: 'goods-detail',
+    data () {
+      return {
+        goods: {}
+      }
+    },
+    created () {
+      this._goods()
+    },
+    methods: {
+      _goods () {
+        let id = this.$route.query.id
+        console.log(id)
+        Goods.doogsDetail(id).then((res) => {
+          if (res.error === ERR_OK) {
+            this.goods = res.data
+          }
+        })
+      }
+    },
     components: {
       Scroll
     }
@@ -86,7 +107,8 @@
       width: 101px
     .goods-small-text
       all-center()
+
   .goods-img
-    width :100vw
-    display :block
+    width: 100vw
+    display: block
 </style>

@@ -2,11 +2,15 @@
   <div class="client-detail">
     <div class="container">
       <scroll ref="scroll"
+              :data="list"
               :probeType="probeType"
               :bcColor="bcColor"
               :listenScroll="listenScroll"
-              @scroll="scroll">
-        <div class="client-top">
+              @scroll="scroll"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingUp="onPullingUp">
+        <div class="client-top" ref="eleven">
+          <div class="cliten-bg"></div>
           <div class="cliten-box">
             <div class="cliten-con">
               <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
@@ -57,57 +61,54 @@
             </div>
           </div>
         </div>
-        <div class="client-padding"></div>
-        <div class="client-box" v-if="!showBox">
-          <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
-          <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
-            <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index, item)">
-              <div class="left">{{item.text}}{{item.icon}}</div>
-              <div class="right">
-                <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
-              </div>
-            </div>
-            <div class="box-line"></div>
-            <div class="btn" @click="hideModel">取消</div>
-          </div>
-        </div>
-        <div class="select-tab">
-          <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
-          <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-            <div class="chilen-line"></div>
-          </div>
-        </div>
+        <div class="tab-padding"></div>
         <div class="visitor-box" v-if="menuIdx * 1 === 0">
           <div class="box-list">
-            <div class="time">2018年7月3日 12:00</div>
-            <div class="item-list">
-              <div class="left-img">
-                <!--<img src="" alt="" class="img">-->
-              </div>
-              <div class="left-text">
-                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
-              </div>
-            </div>
-            <div class="item-list">
-              <div class="left-img">
-                <!--<img src="" alt="" class="img">-->
-              </div>
-              <div class="left-text">
-                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
-              </div>
-            </div>
-            <div class="item-list">
-              <div class="left-img">
-                <!--<img src="" alt="" class="img">-->
-              </div>
-              <div class="left-text">
-                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
+            <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
+              <img :src="item.image_url" class="msgs-left">
+              <div class="msgs-right">
+                <div class="msgs-container">
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span
+                    class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
+                    class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span
+                    class="green">赞</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span
+                    class="green">邮箱</span>，请留意邮件</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span
+                    class="green">地址</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span
+                    class="green">名片</span>，你的人脉圈正在裂变</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span
+                    class="green">名片海报</span>，看来TA对你感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span
+                    class="green">手机</span>，请记录跟进内容</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span
+                    class="green">电话</span>，可以考虑主动沟通</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
+                    class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
+                    class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
+                    class="green">咨询</span>，请做好准备应答</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span
+                    class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
+                    class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
+                    class="green">点了</span><span class="green">赞</span></p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
+                    class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                  <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
+                    class="green">咨询</span>，请做好准备应答</p>
+                </div>
+                <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
               </div>
             </div>
           </div>
         </div>
         <div class="follow-box" v-if="menuIdx * 1 === 1">
-          <img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow">
           <div class="follow-line"></div>
           <div class="follow-list" v-for="(item, index) in flowList" :key="index">
             <div class="time">{{item.created_at}}</div>
@@ -158,11 +159,31 @@
         </div>
       </scroll>
     </div>
+    <div class="select-tab" :style="'top:' + tabhighgt + 'px'">
+      <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
+      <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+        <div class="chilen-line"></div>
+      </div>
+    </div>
+    <div class="client-box" v-if="!showBox">
+      <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
+      <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
+        <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index, item)">
+          <div class="left">{{item.text}}{{item.icon}}</div>
+          <div class="right">
+            <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
+          </div>
+        </div>
+        <div class="box-line"></div>
+        <div class="btn" @click="hideModel">取消</div>
+      </div>
+    </div>
     <div class="bottom-box">
       <div class="box-btn" @click="phoneCall">
         <img src="./icon-telephone@2x.png" alt="" class="btn-img">
         <div class="text">打电话</div>
       </div>
+      <img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow" v-if="menuIdx * 1 === 1">
       <div class="box-btn message-btn" @click="jumpMessage">
         <img src="./icon-news@2x.png" alt="" class="btn-img">
         <div class="text">发消息</div>
@@ -177,6 +198,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'client-detail',
@@ -229,16 +251,54 @@
         actionPage: 1,
         actionList: [],
         noActionMore: false,
-        mobile: ''
+        mobile: '',
+        list: [],
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: ' ',
+        pullUpLoadNoMoreTxt: ' ',
+        page: 1,
+        twoList: [],
+        tabhighgt: 216,
+        highgt: 216
       }
     },
     created() {
       this.id = this.$route.query.id
       this.getClientId(1)
     },
+    mounted() {
+      this.highgt = this.$refs.eleven.offsetHeight
+      this.tabhighgt = this.$refs.eleven.offsetHeight
+      console.log(this.$refs.eleven.offsetHeight, 111)
+    },
     methods: {
+      ...mapActions([
+        'setCurrent'
+      ]),
+      chatMsg(item) {
+        console.log(item)
+        let currentMsg = {
+          nickName: item.nickName,
+          avatar: item.avatar,
+          account: item
+        }
+        this.setCurrent(currentMsg)
+        let url = '/chat?id=' + item.sessionId
+        this.$router.push(url)
+      },
       scroll(pos) {
-        console.log(pos)
+        // console.log(pos.y)
+        if (pos.y >= 0) {
+          console.log(1111)
+          this.tabhighgt = this.highgt
+          return
+        }
+        let hightPx = pos.y * -1
+        if (this.highgt >= hightPx && hightPx >= 0) {
+          this.tabhighgt = this.highgt - hightPx
+          // console.log(this.tabhighgt)
+        }
       },
       drawPie() {
         let myChart = this.$echarts.init(document.getElementById('myPie'))
@@ -288,7 +348,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['10.11', '10.2', '10.3', '10.4', '10.5', '10.6', '10.7', '10.8', '10.9', '10.10', '10.12', '10.13', '10.14', '10.15', '今天'],
+            data: ['10.11', '10.2', '10.3', '10.4', '10.5', '10.6', '10.7'],
             splitLine: {
               show: true,
               lineStyle: {
@@ -314,7 +374,7 @@
             }
           },
           series: [{
-            data: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5],
+            data: [1, 2, 3, 4, 5, 6, 21],
             type: 'line',
             showSymbol: false,
             itemStyle: {
@@ -431,7 +491,14 @@
             this.drawLine()
             this.drawBar()
           }, 200)
+        } else if (index * 1 === 0) {
+          this.list = this.flowList
+        } else if (index * 0 === 0) {
+          this.list = this.twoList
         }
+        setTimeout(() => {
+          this.$refs.scroll.forceUpdate()
+        }, 20)
       },
       getClientId(id) {
         ClientDetail.getClientId(id).then((res) => {
@@ -454,20 +521,24 @@
       },
       getMoreFlowList(id, flowId) {
         if (this.noMore) return
+        console.log(this.flowPage)
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
-            this.flowList.push(res.data)
+            this.flowList.push(...res.data)
             this._isAflowList(res)
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+            }, 20)
           }
         })
       },
-      _isAflowList (res) {
+      _isAflowList(res) {
         this.flowPage++
         if (this.flowList.length >= res.meta.total * 1) {
           this.noMore = true
         }
       },
-      _isActionList (res) {
+      _isActionList(res) {
         this.actionPage++
         if (this.actionList.length >= res.meta.total * 1) {
           this.noActionMore = true
@@ -477,16 +548,21 @@
         ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
             this.actionList = res.data
-            // this._isActionList(res)
           }
         })
       },
       getMoreActionList(id) {
-        if (this.noActionMore) return
-        ClientDetail.getFlowList(id, this.actionPage).then((res) => {
+        this.actionPage++
+        ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
-            this.actionList.push(res.data)
-            this._isAflowList(res)
+            if (res.data.length * 1 === 0) {
+              this.actionPage--
+            } else {
+              this.actionList.push(...res.data)
+            }
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+            }, 20)
           }
         })
       },
@@ -509,11 +585,59 @@
         let id = this.id
         const path = `/chat?id=${id}`
         this.$router.push({path})
+      },
+      onPullingUp() {
+        if (this.menuIdx * 1 === 1) {
+          this.getMoreFlowList(this.id, this.flowId)
+        }
+        if (this.menuIdx * 1 === 0) {
+          this.getMoreActionList(this.id)
+        }
+        if (this.menuIdx * 1 === 2) {
+          this.$refs.scroll.forceUpdate()
+        }
+        if (this.menuIdx * 1 === 1 && this.noMore) {
+          this.$refs.scroll.forceUpdate()
+        }
+        if (this.menuIdx * 1 === 0 && this.noActionMore) {
+          this.$refs.scroll.forceUpdate()
+        }
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
       }
     },
     components: {
       Toast,
       Scroll
+    },
+    computed: {
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
+      }
+    },
+    filters: {
+      titleCut(val) {
+        if (val.length > 8) {
+          return val.slice(0, 8) + '···'
+        } else {
+          return val
+        }
+      }
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -525,7 +649,8 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
-
+  .tab-padding
+    height: 48px
   .client-detail
     fill-box()
     z-index: 50
@@ -535,15 +660,20 @@
     bottom: 45px
 
   .client-top
-    background: #20202E
-    height: 73px
     position: relative
-    .cliten-box
+    .cliten-bg
       position: absolute
-      padding: 0 15px
-      left: 0
-      top: 20px
+      z-index: 1
+      height: 73px
+      background: #20202E
       width: 100%
+      top: 0
+      left: 0
+    .cliten-box
+      position: relative
+      padding: 20px 15px 0
+      width: 100%
+      z-index: 2
       .cliten-con
         background: #fff
         width: 100%
@@ -658,18 +788,13 @@
                   width: 10px
                   height: 10px
 
-  .client-padding
-    width: 100%
-    height: 0
-    padding-bottom: 39%
-
   .client-box
     position: fixed
     width: 100%
     height: 100%
     left: 0
     top: 0
-    z-index: 11
+    z-index: 31
     .box-bg
       width: 100%
       height: 100%
@@ -724,12 +849,21 @@
 
   .select-tab
     layout(row)
-    padding: 15px 0
+    height: 48px
+    line-height: 47px
     border-bottom: 1px solid rgba(0, 0, 0, .1)
-    position: relative
+    position: fixed
+    width: 100%
+    top: 0
+    left: 0
+    z-index: 11
+    background: #F0F2F5
     .tab
       flex: 1
       text-align: center
+      font-size: $font-size-16
+      color: $color-text
+      font-family: $font-family-regular
     .line
       position: absolute
       width: 33.33%
@@ -937,6 +1071,49 @@
     width: 63px
     height: 66px
     right: 5px
-    bottom: 10px
+    bottom: 50px
 
+  .msgs-item
+    margin-bottom: 15px
+    width: 100%
+    height: 55px
+    background: $color-white
+    border: 0.5px solid rgba(32, 32, 46, 0.10)
+    box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.04)
+    border-radius: 2px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    .msgs-left
+      margin: 0 10px
+      width: 40px
+      height: 40px
+      border: 0.5px solid rgba(32, 32, 46, 0.10)
+    .msgs-right
+      flex: 1
+      overflow: hidden
+      margin-right: 13.5px
+      height: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      .msgs-container
+        flex: 1
+        overflow: hidden
+        height: 100%
+        display: flex
+        align-items: center
+        .msgs-p
+          line-height: 18px
+          font-family: $font-family-meddle
+          font-size: $font-size-medium
+          .green
+            color: $color-text-56
+      .msgs-rt
+        width: 7.5px
+        height: 11.5px
+        margin-left: 33px
+
+  .msgs-item:last-child
+    margin-bottom: 0
 </style>

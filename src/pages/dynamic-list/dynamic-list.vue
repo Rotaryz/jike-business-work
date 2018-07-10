@@ -1,138 +1,142 @@
 <template>
-  <div class="dynamic-list">
-    <scroll ref="scroll"
-            :data="dynamicList"
-            :pullUpLoad="pullUpLoadObj"
-            @pullingUp="onPullingUp">
-      <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
-        <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
-          <div class="find-box">
-            <div class="cainter">
-              <div class="user">
-                <!-- 头像-->
-                <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.employee_name}}</p>
+  <transition name="slide">
+
+    <div class="dynamic-list">
+      <scroll ref="scroll"
+              :data="dynamicList"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingUp="onPullingUp">
+        <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
+          <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
+            <div class="find-box">
+              <div class="cainter">
+                <div class="user">
+                  <!-- 头像-->
+                  <img class="header" :src="item.employee_image_url">
+                  <p class="nickname">{{item.employee_name}}</p>
+                </div>
+                <!--{{comment?'':'special'}}-->
+                <pre class="words">{{item.content}}</pre>
+                <div class="one-box">
+                  <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                </div>
               </div>
-              <!--{{comment?'':'special'}}-->
-              <pre class="words">{{item.content}}</pre>
-              <div class="one-box">
-                <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
-              </div>
-            </div>
-            <!--<div class="address">-->
-            <!--<img class="add-icon">-->
-            <!--地址-->
-            <!--</div>-->
-            <div class="information">
-              <div class="time">
-                {{item.created_at}}
-                <p class="del" @click="_delItem(index)">删除</p>
-              </div>
-              <div class="share">
-                <div class="share-item comment">
-                  <img class="find-icon" src="./icon-comment@2x.png">
-                  <div class="find-num">
-                    评论
+              <!--<div class="address">-->
+              <!--<img class="add-icon">-->
+              <!--地址-->
+              <!--</div>-->
+              <div class="information">
+                <div class="time">
+                  {{item.created_at}}
+                  <p class="del" @click="_delItem(index)">删除</p>
+                </div>
+                <div class="share">
+                  <div class="share-item comment">
+                    <img class="find-icon" src="./icon-comment@2x.png">
+                    <div class="find-num">
+                      评论
+                    </div>
+                  </div>
+                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
+                  <div class="share-item" @click="_goodLike(index)">
+                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
+                    <div class="find-num">
+                      赞
+                    </div>
                   </div>
                 </div>
-                <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                <div class="share-item" @click="_goodLike(index)">
-                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                  <div class="find-num">
-                    赞
+              </div>
+            </div>
+          </div>
+          <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
+            <div class="find-box">
+              <div class="cainter">
+                <div class="user">
+                  <img class="header" :src="item.employee_image_url">
+                  <p class="nickname">{{item.employee_name}}</p>
+                </div>
+                <pre class="words">{{item.content}}</pre>
+                <div class="img-item-two">
+                  <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                </div>
+              </div>
+              <!--<div class="address">-->
+              <!--<img class="add-icon">-->
+              <!--地址-->
+              <!--</div>-->
+              <div class="information">
+                <div class="time">
+                  {{item.created_at}}
+                  <p class="del" @click="_delItem(index)">删除</p>
+                </div>
+                <div class="share">
+                  <div class="share-item comment">
+                    <img class="find-icon" src="./icon-comment@2x.png">
+                    <div class="find-num">
+                      评论
+                    </div>
+                  </div>
+                  <!--{{find.is_like ? 'thumbs-up' : ''}} -->
+                  <div class="share-item " @click="_goodLike(index)">
+                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
+                    <div class="find-num">
+                      赞
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
+            <div class="find-box">
+              <div class="cainter">
+                <div class="user">
+                  <img class="header" :src="item.employee_image_url">
+                  <p class="nickname">{{item.employee_name}}</p>
+                </div>
+                <!--{{comment?'':'special'}}"-->
+                <pre class="words">{{item.content}}</pre>
+                <div class="img-item-two">
+                  <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                </div>
+              </div>
+              <!--<div class="address" >-->
+              <!--<img class="add-icon">-->
+              <!--地址-->
+              <!--</div>-->
+              <div class="information">
+                <div class="time">
+                  {{item.created_at}}
+                  <p class="del" @click="_delItem(index)">删除</p>
+                </div>
+                <div class="share">
+                  <div class="share-item comment">
+                    <img class="find-icon" src="./icon-comment@2x.png">
+                    <div class="find-num">
+                      评论
+                    </div>
+                  </div>
+                  <!--{{find.is_like ? 'thumbs-up' : ''}} -->
+                  <div class="share-item" @click="_goodLike(index)">
+                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
+                    <div class="find-num">
+                      赞
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
-          <div class="find-box">
-            <div class="cainter">
-              <div class="user">
-                <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.employee_name}}</p>
-              </div>
-              <pre class="words">{{item.content}}</pre>
-              <div class="img-item-two">
-                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
-              </div>
-            </div>
-            <!--<div class="address">-->
-            <!--<img class="add-icon">-->
-            <!--地址-->
-            <!--</div>-->
-            <div class="information">
-              <div class="time">
-                {{item.created_at}}
-                <p class="del" @click="_delItem(index)">删除</p>
-              </div>
-              <div class="share">
-                <div class="share-item comment">
-                  <img class="find-icon" src="./icon-comment@2x.png">
-                  <div class="find-num">
-                    评论
-                  </div>
-                </div>
-                <!--{{find.is_like ? 'thumbs-up' : ''}} -->
-                <div class="share-item " @click="_goodLike(index)">
-                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                  <div class="find-num">
-                    赞
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
-          <div class="find-box">
-            <div class="cainter">
-              <div class="user">
-                <img class="header" :src="item.employee_image_url">
-                <p class="nickname">{{item.employee_name}}</p>
-              </div>
-              <!--{{comment?'':'special'}}"-->
-              <pre class="words">{{item.content}}</pre>
-              <div class="img-item-two">
-                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
-              </div>
-            </div>
-            <!--<div class="address" >-->
-            <!--<img class="add-icon">-->
-            <!--地址-->
-            <!--</div>-->
-            <div class="information">
-              <div class="time">
-                {{item.created_at}}
-                <p class="del" @click="_delItem(index)">删除</p>
-              </div>
-              <div class="share">
-                <div class="share-item comment">
-                  <img class="find-icon" src="./icon-comment@2x.png">
-                  <div class="find-num">
-                    评论
-                  </div>
-                </div>
-                <!--{{find.is_like ? 'thumbs-up' : ''}} -->
-                <div class="share-item" @click="_goodLike(index)">
-                  <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                  <div class="find-num">
-                    赞
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </scroll>
-    <router-link to="editDynamic" class="new-dynamic">
-      <img src="./Oval@2x.png" class="new-dynamic-img">
-    </router-link>
-    <confirm-msg ref="confirm" @confirm="_sureDel"></confirm-msg>
-    <toast ref="toast"></toast>
-  </div>
+      </scroll>
+      <router-link to="dynamicList/editDynamic" class="new-dynamic">
+        <img src="./Oval@2x.png" class="new-dynamic-img">
+      </router-link>
+      <confirm-msg ref="confirm" @confirm="_sureDel"></confirm-msg>
+      <toast ref="toast"></toast>
+      <router-view @refresh="_getList"></router-view>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -176,7 +180,7 @@
       }
     },
     methods: {
-      _seeImage(index, image) {
+      _seeImage (index, image) {
         console.log(index, image)
         let imageArr = image.map(item => item.file_url)
         console.log(imageArr[index], imageArr)
@@ -291,7 +295,7 @@
         overflow: hidden
         text-overflow: ellipsis
         display: -webkit-box
-        -webkit-line-clamp:6
+        -webkit-line-clamp: 6
         -webkit-box-orient: vertical
         .p-more
           color: $color-del
