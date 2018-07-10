@@ -7,7 +7,8 @@ const state = {
   latelyList: [], // 最近联系人列表
   newMsg: {}, // 最新消息
   customCount: 0,
-  imInfo: {}
+  imInfo: {},
+  nowChat: [] // 当前会话
 }
 
 export default state

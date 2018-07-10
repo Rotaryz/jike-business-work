@@ -81,6 +81,8 @@
             } else {
               this.addListCount(res)
               this.addListMsg(res)
+              if (res.fromAccount === currentMsg) {
+              }
             }
             let content = webimHandler.transitionMsg(res)
             this.setNewMsg({avatar: res.avatar, content, type: res.type})
@@ -111,7 +113,8 @@
         return storage.get('info')
       },
       ...mapGetters([
-        'newMsg'
+        'newMsg',
+        'currentMsg'
       ])
     }
   }

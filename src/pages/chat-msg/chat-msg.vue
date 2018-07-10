@@ -3,11 +3,11 @@
     <div class="chat">
       <div class="chat-container" ref="chat">
         <scroll ref="scroll"
-                :data="list"
+                :data="nowChat"
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
           <div class="chat-list" ref="list">
-            <div class="chat-item" v-for="(item, index) in list" :key="index">
+            <div class="chat-item" v-for="(item, index) in nowChat" :key="index">
               <div class="chat-content" v-if="item.from_account_id !== imInfo.im_account">
                 <img :src="currentMsg.avatar" class="avatar">
                 <div class="chat-msg-box other" v-if="item.type == 1">
@@ -68,7 +68,8 @@
       }
       Im.getMsgList(data).then((res) => {
         if (res.error === ERR_OK) {
-          this.list = res.data
+          let list = res.data.reverse()
+          this.setNowChat(list)
           let timer = setTimeout(() => {
             let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 10
             this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
@@ -88,12 +89,14 @@
     },
     beforeDestroy() {
       this.setCurrent({})
+      this.setNowChat([])
     },
     methods: {
       ...mapActions([
         'setUnreadCount',
         'setCurrent',
-        'addListMsg'
+        'addListMsg',
+        'setNowChat'
       ]),
       textHeight() {
         let timer = setTimeout(() => {
@@ -115,7 +118,9 @@
         Im.getMsgList(data).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length) {
-              this.list = [...res.data, ...this.list]
+              let resData = res.data.reverse()
+              let list = [...resData, ...this.nowChat]
+              this.setNowChat(list)
               this.$refs.scroll.forceUpdate()
               let timer = setTimeout(() => {
                 let heightEnd = this.listDom.clientHeight
@@ -149,7 +154,8 @@
             content: value,
             time: res.MsgTime
           }
-          this.list.push(msg)
+          let list = [...this.nowChat, msg]
+          this.setNowChat(list)
           this.addListMsg({lastMsg: value, time: res.MsgTime})
           this.inputMsg = ''
           this.$refs.scroll.forceUpdate()
@@ -198,7 +204,8 @@
     computed: {
       ...mapGetters([
         'currentMsg',
-        'imInfo'
+        'imInfo',
+        'nowChat'
       ]),
       pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {

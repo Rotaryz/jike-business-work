@@ -35,3 +35,7 @@ export const addListMsg = ({commit, state}, msg) => {
 export const setImInfo = ({commit, state}, imInfo) => {
   commit(TYPES.SET_IM_INFO, imInfo)
 }
+
+export const setNowChat = ({commit, state}, arr) => {
+  commit(TYPES.SET_NOW_CHAT, arr)
+}

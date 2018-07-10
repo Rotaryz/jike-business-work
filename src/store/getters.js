@@ -9,3 +9,5 @@ export const newMsg = state => state.newMsg
 export const customCount = state => state.customCount
 
 export const imInfo = state => state.imInfo
+
+export const nowChat = state => state.nowChat

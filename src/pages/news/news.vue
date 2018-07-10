@@ -35,9 +35,11 @@
         'setCurrent'
       ]),
       chatMsg(item) {
+        console.log(item)
         let currentMsg = {
           nickName: item.nickName,
-          avatar: item.avatar
+          avatar: item.avatar,
+          account: item
         }
         this.setCurrent(currentMsg)
         let url = '/chat?id=' + item.sessionId

@@ -78,6 +78,9 @@ const mutations = {
   },
   [TYPES.SET_IM_INFO](state, imInfo) {
     state.imInfo = imInfo
+  },
+  [TYPES.SET_NOW_CHAT](state, arr) {
+    state.nowChat = arr
   }
 }
 
