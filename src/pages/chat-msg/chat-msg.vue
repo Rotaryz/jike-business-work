@@ -178,7 +178,7 @@
             clearTimeout(timer)
           }, 20)
         }, err => {
-          console.log(err)
+          this.$refs.toast.show(err)
         })
       }
     },
