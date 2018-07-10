@@ -153,7 +153,11 @@
   @import '~common/stylus/mixin'
   .radar
     width: 100vw
-    height: 100vh
+    position: fixed
+    left: 0
+    top: 0
+    right: 0
+    bottom: 45px
     background: $color-background
     display: flex
     flex-direction: column
