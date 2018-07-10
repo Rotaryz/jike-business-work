@@ -1,6 +1,7 @@
 <template>
   <div class="data-box">
     <div class="client-top">
+      <div class="cliten-bg"></div>
       <div class="cliten-box">
         <div class="cliten-con">
           <div class="cliten-img">
@@ -19,7 +20,6 @@
         </div>
       </div>
     </div>
-    <div class="client-padding"></div>
     <div class="data-con">
       <div class="data-top">
         <div class="data-list">
@@ -215,15 +215,20 @@
     -webkit-box-sizing: border-box
 
   .client-top
-    background: #20202E
-    height: 73px
     position: relative
-    .cliten-box
+    .cliten-bg
       position: absolute
-      padding: 0 15px
-      left: 0
-      top: 20px
+      z-index: 1
+      height: 73px
+      background: #20202E
       width: 100%
+      top: 0
+      left: 0
+    .cliten-box
+      position: relative
+      padding: 20px 15px 0
+      width: 100%
+      z-index: 2
       .cliten-con
         background: #fff
         width: 100%
@@ -259,12 +264,6 @@
                 font-size: $font-size-small
                 color: $color-text-88
                 font-family: $font-family-meddle
-
-  .client-padding
-    width: 100%
-    height: 0
-    padding-bottom: 10%
-
   .data-con
     padding: 15px
     .data-top
