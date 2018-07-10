@@ -105,7 +105,7 @@
           <toast ref="toast"></toast>
         </div>
       </scroll>
-      <div class="data-btn" @click="saveClientData(1)">保存</div>
+      <div class="data-btn" @click="saveClientData()">保存</div>
     </article>
   </transition>
 </template>
@@ -186,7 +186,7 @@
         } else if (this.sexSelected === '女') {
           this.flow.sex = 1
         }
-        ClientDetail.saveClientDetail(id, this.flow).then((res) => {
+        ClientDetail.saveClientDetail(this.id, this.flow).then((res) => {
           if (res.error === ERR_OK) {
             this.$refs.toast.show(res.message)
             setTimeout(() => {
