@@ -1,6 +1,11 @@
 <template>
   <div class="client">
-    <scroll bcColor="#fff">
+    <scroll bcColor="#fff"
+            ref="scroll"
+            :data="dataArray"
+            :pullUpLoad="pullUpLoadObj"
+            @pullingUp="onPullingUp"
+    >
       <div @click="test">to-tag-client</div>
       <search @toNav="toSearch"></search>
       <ul class="user-list-box" v-if="userListArr.length">
@@ -84,7 +89,7 @@
     name: '最新加入时间',
     isCheck: false
   }]
-
+  const LIMIT = 10
   export default {
     name: 'Client',
     data() {
@@ -92,7 +97,13 @@
         groupList: groupList,
         userListArr: [],
         dataArray: [],
-        checkedItem: null // 被选中的分组
+        checkedItem: null, // 被选中的分组
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        page: 1,
+        limit: LIMIT
       }
     },
     created() {
@@ -127,10 +138,11 @@
         })
       },
       getCusomerList() {
-        const data = {order_by: this.checkedGroup.orderBy}
+        const data = {order_by: this.checkedGroup.orderBy, page: 1, limit: LIMIT}
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.dataArrayTotal = res.meta.total
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -176,13 +188,50 @@
       },
       msgCancel() {
         this.checkedItem = null
+      },
+      onPullingUp() {
+        // 更新数据
+        console.info('pulling up and load data')
+        let page = ++this.page
+        let limit = this.limit
+        const data = {order_by: this.checkedGroup.orderBy, page, limit}
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
+            }
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
       }
     },
-    watch: {},
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
+    },
     computed: {
       checkedGroup() {
         let node = this.groupList.find(val => val.isCheck)
         return node
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {

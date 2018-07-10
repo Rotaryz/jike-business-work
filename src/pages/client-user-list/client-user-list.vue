@@ -46,6 +46,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
 
+  const LIMIT = 10
   export default {
     name: 'ClientUserList',
     data() {
@@ -55,7 +56,7 @@
         checkedItem: null,
         scrollbar: true,
         scrollbarFade: true,
-        pullDownRefresh: true,
+        pullDownRefresh: false,
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
         pullUpLoad: true,
@@ -69,7 +70,9 @@
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         items: [],
-        itemIndex: 0
+        itemIndex: 0,
+        page: 1,
+        limit: LIMIT
       }
     },
     created() {
@@ -103,7 +106,9 @@
       getCusonerList() {
         const data = {
           get_group_detail: 1,
-          group_id: this.currentGroupInfo.id
+          group_id: this.currentGroupInfo.id,
+          page: 1,
+          limit: LIMIT
         }
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
@@ -170,19 +175,38 @@
       onPullingUp() {
         // 更新数据
         console.log('pulling up and load data')
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // 如果有新数据
-            let newPage = []
-            for (let i = 0; i < 10; i++) {
-              newPage.push(i)
+        let page = ++this.page
+        let limit = LIMIT
+        const data = {
+          get_group_detail: 1,
+          group_id: this.currentGroupInfo.id,
+          page: page,
+          limit: limit
+        }
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
             }
-            this.items = this.items.concat(newPage)
           } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
+            this.$refs.toast.show(res.message)
           }
-        }, 1500)
+        })
+        // setTimeout(() => {
+        //   if (Math.random() > 0.5) {
+        //     // 如果有新数据
+        //     let newPage = []
+        //     for (let i = 0; i < 10; i++) {
+        //       newPage.push(i)
+        //     }
+        //     this.items = this.items.concat(newPage)
+        //   } else {
+        //     // 如果没有新数据
+        //     this.$refs.scroll.forceUpdate()
+        //   }
+        // }, 1500)
       },
       rebuildScroll() {
         this.nextTick(() => {
