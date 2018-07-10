@@ -1,200 +1,245 @@
 <template>
-  <div class="box">
-    <div class="client-top">
-      <div class="cliten-box">
-        <div class="cliten-con">
-          <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-          <div class="cliten-img">
-            <div class="detail-img-box">
-              <div class="img"></div>
-              <div class="label-right">
-                <div class="label-name">往事随风</div>
-                <div class="label-box">
-                  <div class="label active">80后</div>
-                  <div class="label active">在意价格</div>
-                  <div class="label">添加标签</div>
+  <div class="client-detail">
+    <div class="container">
+      <scroll ref="scroll"
+              :probeType="probeType"
+              :bcColor="bcColor"
+              :listenScroll="listenScroll"
+              @scroll="scroll">
+        <div class="client-top">
+          <div class="cliten-box">
+            <div class="cliten-con">
+              <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+              <div class="cliten-img">
+                <div class="detail-img-box">
+                  <div class="img">
+                    <img :src="clientData.image_url" alt="">
+                  </div>
+                  <div class="label-right">
+                    <div class="label-name">{{clientData.name}}</div>
+                    <div class="label-box">
+                      <div class="label active">80后</div>
+                      <div class="label active">在意价格</div>
+                      <div class="label">添加标签</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-jump" @click="jumpData">
+                  <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                </div>
+              </div>
+              <div class="cliten-bottom">
+                <div class="bottom-number">
+                  <div class="number-top">
+                    <div class="number">{{clientData.conversion_rate}}</div>
+                    <div class="icon">%</div>
+                  </div>
+                  <div class="number-bottom">
+                    <div class="text">预计成交率</div>
+                  </div>
+                </div>
+                <div class="bottom-number">
+                  <div class="number-top" v-if="clientData.progress < 110">
+                    <div class="number">{{clientData.progress}}</div>
+                    <div class="icon">%</div>
+                  </div>
+                  <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
+                    <div class="text">{{clientData.progress}}</div>
+                  </div>
+                  <div class="number-bottom" @click="showModel">
+                    <div class="text">实际跟进阶段</div>
+                    <div class="img-box">
+                      <img class="img" src="./icon-switch@2x.png" alt="">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="detail-jump">
-              <img class="jump-img" src="./icon-pressed@2x.png" alt="">
-            </div>
           </div>
-          <div class="cliten-bottom">
-            <div class="bottom-number">
-              <div class="number-top">
-                <div class="number">38</div>
-                <div class="icon">%</div>
-              </div>
-              <div class="number-bottom">
-                <div class="text">预计成交率</div>
+        </div>
+        <div class="client-padding"></div>
+        <div class="client-box" v-if="!showBox">
+          <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
+          <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
+            <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index, item)">
+              <div class="left">{{item.text}}{{item.icon}}</div>
+              <div class="right">
+                <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
               </div>
             </div>
-            <div class="bottom-number">
-              <div class="number-top">
-                <div class="number">38</div>
-                <div class="icon">%</div>
+            <div class="box-line"></div>
+            <div class="btn" @click="hideModel">取消</div>
+          </div>
+        </div>
+        <div class="select-tab">
+          <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
+          <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+            <div class="chilen-line"></div>
+          </div>
+        </div>
+        <div class="visitor-box" v-if="menuIdx * 1 === 0">
+          <div class="box-list">
+            <div class="time">2018年7月3日 12:00</div>
+            <div class="item-list">
+              <div class="left-img">
+                <!--<img src="" alt="" class="img">-->
               </div>
-              <div class="number-bottom" @click="showModel">
-                <div class="text">实际跟进阶段</div>
-                <div class="img-box">
-                  <img class="img" src="./icon-switch@2x.png" alt="">
-                </div>
+              <div class="left-text">
+                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
+              </div>
+            </div>
+            <div class="item-list">
+              <div class="left-img">
+                <!--<img src="" alt="" class="img">-->
+              </div>
+              <div class="left-text">
+                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
+              </div>
+            </div>
+            <div class="item-list">
+              <div class="left-img">
+                <!--<img src="" alt="" class="img">-->
+              </div>
+              <div class="left-text">
+                杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
               </div>
             </div>
           </div>
         </div>
-      </div>
+        <div class="follow-box" v-if="menuIdx * 1 === 1">
+          <img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow">
+          <div class="follow-line"></div>
+          <div class="follow-list" v-for="(item, index) in flowList" :key="index">
+            <div class="time">{{item.created_at}}</div>
+            <div class="text">{{item.record}}</div>
+            <div class="icon-log" v-if="index * 1 === 0"></div>
+            <div class="icon-cri" v-if="index * 1 !== 0"></div>
+            <div class="icon-img" v-if="index * 1 === 0">
+              <img class="icon-small-img" src="./icon-address@2x.png" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="ai-box" v-if="menuIdx * 1 === 2">
+          <div class="pie-box">
+            <div id="myPie"></div>
+            <div class="title-box">
+              <div class="title">客户兴趣占比</div>
+              <div class="sub-title">(每小时更新)</div>
+            </div>
+            <div class="pie-list">
+              <div class="list">
+                <div class="icon one"></div>
+                <div class="text">对我感兴趣</div>
+              </div>
+              <div class="list">
+                <div class="icon two"></div>
+                <div class="text">对产品感兴趣</div>
+              </div>
+              <div class="list">
+                <div class="icon thr"></div>
+                <div class="text">对公司感兴趣</div>
+              </div>
+            </div>
+          </div>
+          <div class="pie-box line-box">
+            <div id="myLine"></div>
+            <div class="title-box">
+              <div class="title">近30日客户活跃度</div>
+              <div class="sub-title">(每小时更新)</div>
+            </div>
+          </div>
+          <div class="pie-box bar-box">
+            <div id="myBar"></div>
+            <div class="title-box">
+              <div class="title">客户与我的互动</div>
+              <div class="sub-title">(每天0点更新)</div>
+            </div>
+          </div>
+        </div>
+      </scroll>
     </div>
-    <div class="client-padding"></div>
-    <div class="client-box" v-if="!showBox">
-      <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
-      <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
-        <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index)">
-          <div class="left">{{item.text}}</div>
-          <div class="right">
-            <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
-          </div>
-        </div>
-        <div class="box-line"></div>
-        <div class="btn" @click="hideModel">取消</div>
-      </div>
-    </div>
-    <div class="select-tab">
-      <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
-      <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-        <div class="chilen-line"></div>
-      </div>
-    </div>
-    <div class="visitor-box" v-if="menuIdx * 1 === 0">
-      <div class="box-list">
-        <div class="time">2018年7月3日 12:00</div>
-        <div class="item-list">
-          <div class="left-img">
-            <!--<img src="" alt="" class="img">-->
-          </div>
-          <div class="left-text">
-            杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
-          </div>
-        </div>
-        <div class="item-list">
-          <div class="left-img">
-            <!--<img src="" alt="" class="img">-->
-          </div>
-          <div class="left-text">
-            杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
-          </div>
-        </div>
-        <div class="item-list">
-          <div class="left-img">
-            <!--<img src="" alt="" class="img">-->
-          </div>
-          <div class="left-text">
-            杨过<span>查看</span>了你的<span>个人动态</span>，看来TA对你感兴趣
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="follow-box" v-if="menuIdx * 1 === 1">
-      <img src="./icon-write@2x.png" alt="" class="add-jump">
-      <div class="follow-line"></div>
-      <div class="follow-list" v-for="(item, index) in [1,2,3,4,5,6,7,8]" :key="index">
-        <div class="time">2018年7月6日 12:00</div>
-        <div class="text">更新预计成交率为：80%</div>
-        <div class="icon-log" v-if="index * 1 === 0"></div>
-        <div class="icon-cri" v-if="index * 1 !== 0"></div>
-        <div class="icon-img" v-if="index * 1 === 0">
-          <img class="icon-small-img" src="./icon-address@2x.png" alt="">
-        </div>
-      </div>
-    </div>
-    <div class="ai-box" v-if="menuIdx * 1 === 2">
-      <div class="pie-box">
-        <div id="myPie"></div>
-        <div class="title-box">
-          <div class="title">客户兴趣占比</div>
-          <div class="sub-title">(每小时更新)</div>
-        </div>
-        <div class="pie-list">
-          <div class="list">
-            <div class="icon one"></div>
-            <div class="text">对我感兴趣</div>
-          </div>
-          <div class="list">
-            <div class="icon two"></div>
-            <div class="text">对产品感兴趣</div>
-          </div>
-          <div class="list">
-            <div class="icon thr"></div>
-            <div class="text">对公司感兴趣</div>
-          </div>
-        </div>
-      </div>
-      <div class="pie-box line-box">
-        <div id="myLine"></div>
-        <div class="title-box">
-          <div class="title">近30日客户活跃度</div>
-          <div class="sub-title">(每小时更新)</div>
-        </div>
-      </div>
-      <div class="pie-box bar-box">
-        <div id="myBar"></div>
-        <div class="title-box">
-          <div class="title">客户与我的互动</div>
-          <div class="sub-title">(每天0点更新)</div>
-        </div>
-      </div>
-    </div>
-    <div class="padding-bottom"></div>
     <div class="bottom-box">
-      <div class="box-btn">
+      <div class="box-btn" @click="phoneCall">
         <img src="./icon-telephone@2x.png" alt="" class="btn-img">
         <div class="text">打电话</div>
       </div>
-      <div class="box-btn message-btn">
+      <div class="box-btn message-btn" @click="jumpMessage">
         <img src="./icon-news@2x.png" alt="" class="btn-img">
         <div class="text">发消息</div>
       </div>
     </div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {ClientDetail} from 'api'
+  import {ERR_OK} from '../../common/js/config'
+  import Toast from 'components/toast/toast'
+  import Scroll from 'components/scroll/scroll'
+
   export default {
     name: 'client-detail',
     data() {
       return {
+        listenScroll: true,
+        probeType: 3,
+        bcColor: '#F0F2F5',
         barList: [
           {
-            text: '20%'
+            text: '20',
+            icon: '%'
           },
           {
-            text: '40%'
+            text: '40',
+            icon: '%'
           },
           {
-            text: '80%'
+            text: '80',
+            icon: '%'
           },
           {
-            text: '成交'
+            text: '成交',
+            icon: ''
           },
           {
-            text: '无法签单'
+            text: '无法签单',
+            icon: ''
           }
         ],
         tabList: ['来访记录', '跟进记录', 'AI分析'],
         showMode: true,
         showBox: true,
         barIndex: null,
-        menuIdx: 2,
-        dataEcharts: false
+        menuIdx: 0,
+        dataEcharts: false,
+        clientData: {
+          image_url: '',
+          name: ''
+        },
+        flow: {
+          progress: '',
+          create_follow_record: true
+        },
+        flowPage: 1,
+        flowList: [],
+        noMore: false,
+        id: '',
+        flowId: '',
+        actionPage: 1,
+        actionList: [],
+        noActionMore: false,
+        mobile: ''
       }
     },
-    mounted() {
-      this.drawPie()
-      this.drawLine()
-      this.drawBar()
+    created() {
+      this.id = this.$route.query.id
+      this.getClientId(1)
     },
     methods: {
+      scroll(pos) {
+        console.log(pos)
+      },
       drawPie() {
         let myChart = this.$echarts.init(document.getElementById('myPie'))
         // 绘制图表
@@ -359,10 +404,19 @@
           this.showBox = true
         }, 500)
       },
-      selectBar(index) {
+      selectBar(index, item) {
         this.barIndex = index
+        this.flow.progress = item.text
+        console.log(this.progress)
         setTimeout(() => {
           this.showMode = true
+          ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
+            if (res.error === ERR_OK) {
+              this.getClientId(1)
+            } else {
+              this.$refs.toast.show(res.message)
+            }
+          })
         }, 800)
         setTimeout(() => {
           this.showBox = true
@@ -378,7 +432,88 @@
             this.drawBar()
           }, 200)
         }
+      },
+      getClientId(id) {
+        ClientDetail.getClientId(id).then((res) => {
+          if (res.error === ERR_OK) {
+            this.clientData = res.data
+            this.id = res.data.id
+            this.flowId = res.data.flow_id
+            this.getNewFlowList(this.id, this.flowId)
+            this.getNewActionList(this.id)
+          }
+        })
+      },
+      getNewFlowList(id, flowId) {
+        ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.flowList = res.data
+            this._isAflowList(res)
+          }
+        })
+      },
+      getMoreFlowList(id, flowId) {
+        if (this.noMore) return
+        ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.flowList.push(res.data)
+            this._isAflowList(res)
+          }
+        })
+      },
+      _isAflowList (res) {
+        this.flowPage++
+        if (this.flowList.length >= res.meta.total * 1) {
+          this.noMore = true
+        }
+      },
+      _isActionList (res) {
+        this.actionPage++
+        if (this.actionList.length >= res.meta.total * 1) {
+          this.noActionMore = true
+        }
+      },
+      getNewActionList(id) {
+        ClientDetail.getActionList(id, this.actionPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.actionList = res.data
+            // this._isActionList(res)
+          }
+        })
+      },
+      getMoreActionList(id) {
+        if (this.noActionMore) return
+        ClientDetail.getFlowList(id, this.actionPage).then((res) => {
+          if (res.error === ERR_OK) {
+            this.actionList.push(res.data)
+            this._isAflowList(res)
+          }
+        })
+      },
+      phoneCall() {
+        window.location.href = `tel:${this.mobile}`
+      },
+      toAddFlow() {
+        let id = this.id
+        let flowId = this.flowId
+        const path = `/addflow?id=${id}&flowid=${flowId}`
+        this.$router.push({path})
+      },
+      jumpData() {
+        let id = this.id
+        let flowId = this.flowId
+        const path = `/detail-data?id=${id}&flowid=${flowId}`
+        this.$router.push({path})
+      },
+      jumpMessage() {
+        let id = this.id
+        const path = `/chat?id=${id}`
+        this.$router.push({path})
       }
+    },
+    components: {
+      Toast,
+      Scroll
     }
   }
 </script>
@@ -390,6 +525,14 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
+  .client-detail
+    fill-box()
+    z-index: 50
+
+  .container
+    fill-box(absolute)
+    bottom: 45px
 
   .client-top
     background: #20202E
@@ -430,6 +573,10 @@
               width: 60px
               height: 60px
               background: #333
+              img
+                width: 60px
+                height: 60px
+                display: block
             .label-right
               margin-left: 10px
               .label-name
@@ -481,6 +628,13 @@
                 color: $color-text
                 font-family: DINCondensed-Bold
                 line-height: 1
+                height: 40px
+              .text
+                font-size: 24px
+                height: 40px
+                line-height: 43px
+                color: $color-text
+                font-family: DINCondensed-Bold
               .icon
                 font-size: $font-size-small
                 color: $color-text
@@ -638,6 +792,7 @@
         font-size: $font-size-medium
         color: $color-text
         font-family: $font-family-meddle
+        min-height: 10px
       .icon-cri
         position: absolute
         border: 1px solid #ccc
@@ -671,7 +826,7 @@
     .follow-list:last-child
       margin-bottom: 0
     .follow-line
-      width: 2px
+      width: 1px
       position: absolute
       height: 100%
       background: #CCCCCC
@@ -747,16 +902,14 @@
       #myLine
         height: 270px
 
-  .padding-bottom
-    padding-bottom: 45px
-
   .bottom-box
     layout(row)
-    position: fixed
+    position: absolute
     left: 0
     bottom: 0
     height: 45px
     width: 100%
+    z-index: 11
     .box-btn
       layout(row)
       background: #20202E
@@ -784,6 +937,6 @@
     width: 63px
     height: 66px
     right: 5px
-    bottom: 50px
+    bottom: 10px
 
 </style>

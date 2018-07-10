@@ -1,22 +1,100 @@
 <template>
   <div class="client-user-card">
-    <section class="container">
-      <img class="user-icon" :src="userInfo.icon" alt=""/>
+    <!--最后跟进-->
+    <section class="container" v-if="useType==='follow'">
+      <img class="user-icon" :src="userInfo.image_url" alt=""/>
       <article class="user-info">
         <section class="base-info">
-          <div class="name">{{userInfo.name}}</div>
-          <div class="last-time">{{userInfo.ai}}</div>
+          <div class="name">
+            <div class="txt">{{userInfo.name}}</div>
+            <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
+          </div>
+          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
         </section>
-        <div class="tags">{{userInfo.status}}</div>
+        <div class="tags">{{userInfo.last_follow_day}}</div>
       </article>
     </section>
+    <!--最近活跃-->
+    <section class="container" v-else-if="useType==='active'">
+      <img class="user-icon" :src="userInfo.image_url" alt=""/>
+      <article class="user-info">
+        <section class="base-info">
+          <div class="name">
+            <div class="txt">{{userInfo.name}}</div>
+            <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
+          </div>
+          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+        </section>
+        <div class="tags">{{userInfo.last_follow_day}}</div>
+      </article>
+    </section>
+    <!--最新加入-->
+    <section class="container" v-else-if="useType==='join'">
+      <img class="user-icon" :src="userInfo.image_url" alt=""/>
+      <article class="user-info">
+        <section class="base-info">
+          <div class="name">
+            <div class="txt">{{userInfo.name}}</div>
+            <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
+          </div>
+          <div class="last-time">{{userInfo.sources}}</div>
+        </section>
+        <div class="tags">
+          <div>{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.last_follow_day}}</div>
+        </div>
+      </article>
+    </section>
+    <!--通用-->
+    <section class="container" v-else>
+      <img class="user-icon" :src="userInfo.image_url" alt=""/>
+      <article class="user-info">
+        <section class="base-info">
+          <div class="name">
+            <div class="txt">{{userInfo.name}}</div>
+            <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
+          </div>
+          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+        </section>
+        <div class="tags">{{userInfo.last_follow_day}}</div>
+      </article>
+    </section>
+    <!--<section class="container">-->
+    <!--<img class="user-icon" :src="userInfo.image_url" alt=""/>-->
+    <!--<article class="user-info">-->
+    <!--<section class="base-info">-->
+    <!--<div class="name">{{userInfo.name}}</div>-->
+    <!--<div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>-->
+    <!--</section>-->
+    <!--<div class="tags">{{userInfo.last_follow_day}}</div>-->
+    <!--</article>-->
+    <!--</section>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  const groupList = [{
+    orderBy: '',
+    name: '预计成交率',
+    isCheck: true
+  }, {
+    orderBy: 'follow',
+    name: '最后跟进时间',
+    isCheck: false
+  }, {
+    orderBy: 'active',
+    name: '最后活跃时间',
+    isCheck: false
+  }, {
+    orderBy: 'join',
+    name: '最新加入时间',
+    isCheck: false
+  }]
+  console.log(groupList)
   export default {
     props: {
-      userInfo: Object
+      userInfo: Object,
+      useType: String
     }
   }
 </script>
@@ -27,7 +105,7 @@
 
   .client-user-card
     flex: 1
-    margin-left :15px
+    margin-left: 15px
     .container
       layout(row, block, no-warp)
       align-items: center
@@ -55,6 +133,12 @@
             font-size: $font-size-16
             color: $color-20202E
             letter-spacing: 0.6px
+            layout(row)
+            align-items: center
+            .is-new
+              width: 19px
+              height: 13.5px
+              margin-left: 5px
           .last-time
             padding-right: 15px
             font-family: $font-family-regular
@@ -65,5 +149,13 @@
           font-family: $font-family-meddle
           font-size: $font-size-12
           color: $color-56BA15
+          layout(row)
+          justify-content: space-between
+          align-items: flex-start
+          .tags-right
+            font-family: $font-family-regular
+            font-size: $font-size-12
+            color: $color-888888
+            margin-left: 5px
 
 </style>

@@ -24,6 +24,7 @@ const GoodsDetail = () => import('pages/goods-detail/goods-detail')
 const GoodsList = () => import('pages/goods-list/goods-list')
 const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
+const AddFlow = () => import('pages/add-flow/add-flow')
 
 Vue.use(Router)
 
@@ -58,20 +59,74 @@ const route = new Router({
       meta: {
         title: '客户'
       },
-      children: []
+      children: [
+        // {
+        //   path: 'client-user-list',
+        //   component: ClientUserList,
+        //   meta: {
+        //     title: '客户列表'
+        //   },
+        //   children: [
+        //     {
+        //       path: 'client-add-user',
+        //       component: ClientAddUser,
+        //       meta: {
+        //         title: '添加成员'
+        //       }
+        //     }
+        //   ]
+        // },
+        // {
+        //   path: 'client-detail',
+        //   component: Cdetail,
+        //   meta: {
+        //     title: '客户详情'
+        //   }
+        // },
+        // {
+        //   path: 'client-set-group',
+        //   component: ClientSetGroup,
+        //   meta: {
+        //     title: '设置分组'
+        //   }
+        // },
+        // {
+        //   path: 'client-create-group',
+        //   component: ClientCreateGroup,
+        //   meta: {
+        //     title: '添加分组'
+        //   }
+        // }
+      ]
     },
     {
-      path: '/mine',
-      component: Mine,
+      path: '/client-user-list',
+      component: ClientUserList,
       meta: {
-        title: '我的'
-      }
+        title: '客户列表'
+      },
+      children: [
+        {
+          path: 'client-add-user',
+          component: ClientAddUser,
+          meta: {
+            title: '添加成员'
+          }
+        },
+        {
+          path: 'client-create-group',
+          component: ClientCreateGroup,
+          meta: {
+            title: '添加分组'
+          }
+        }
+      ]
     },
     {
-      path: '/client-tag',
-      component: ClientTag,
+      path: '/client-detail',
+      component: Cdetail,
       meta: {
-        title: '标签'
+        title: '客户详情'
       }
     },
     {
@@ -89,10 +144,17 @@ const route = new Router({
       }
     },
     {
-      path: '/client-add-user',
-      component: ClientAddUser,
+      path: '/mine',
+      component: Mine,
       meta: {
-        title: '添加成员'
+        title: '我的'
+      }
+    },
+    {
+      path: '/client-tag',
+      component: ClientTag,
+      meta: {
+        title: '标签'
       }
     },
     {
@@ -100,13 +162,6 @@ const route = new Router({
       component: ClientSearch,
       meta: {
         title: '搜索'
-      }
-    },
-    {
-      path: '/client-user-list',
-      component: ClientUserList,
-      meta: {
-        title: '客户列表'
       }
     },
     {
@@ -180,17 +235,17 @@ const route = new Router({
       }
     },
     {
-      path: '/client-detail',
-      component: Cdetail,
-      meta: {
-        title: '客户详情'
-      }
-    },
-    {
       path: '/detail-data',
       component: Cdata,
       meta: {
         title: '客户資料'
+      }
+    },
+    {
+      path: '/addflow',
+      component: AddFlow,
+      meta: {
+        title: '添加跟进内容'
       }
     }
   ]
