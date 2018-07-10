@@ -130,7 +130,7 @@
         })
       },
       toAddUser() {
-        const path = `/client-user-list/client-add-user`
+        const path = `/client/client-user-list/client-add-user`
         this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(item) {
@@ -138,7 +138,7 @@
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
-        const path = `/client-user-list/client-set-group`
+        const path = `/client/client-user-list/client-set-group`
         this.$router.push({path, query: {customerInfo: item}})
       },
       delHandler(index, item) {
@@ -266,7 +266,6 @@
     bottom: 0
     z-index: 10
     background-color: $color-white-fff
-    min-height: 100vh
     layout()
     .add-user
       height: 49px

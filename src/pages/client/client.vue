@@ -122,19 +122,19 @@
         })
       },
       toUserList(item) {
-        const path = `/client-user-list`
+        const path = `/client/client-user-list`
         this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
-        const path = `/client-create-group`
+        const path = `/client/client-create-group`
         this.$router.push({path})
       },
       check(item) {
-        const path = `/client-detail`
+        const path = `/client/client-detail`
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
-        const path = `/client-set-group`
+        const path = `/client/client-set-group`
         this.$router.push({path, query: {customerInfo: item}})
       },
       showGroupList() {
@@ -187,7 +187,7 @@
   @import '~common/stylus/mixin'
 
   .client
-    position: fixed
+    position: absolute
     top: 0
     left: 0
     right: 0

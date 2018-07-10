@@ -60,57 +60,41 @@ const route = new Router({
         title: '客户'
       },
       children: [
-        // {
-        //   path: 'client-user-list',
-        //   component: ClientUserList,
-        //   meta: {
-        //     title: '客户列表'
-        //   },
-        //   children: [
-        //     {
-        //       path: 'client-add-user',
-        //       component: ClientAddUser,
-        //       meta: {
-        //         title: '添加成员'
-        //       }
-        //     }
-        //   ]
-        // },
-        // {
-        //   path: 'client-detail',
-        //   component: Cdetail,
-        //   meta: {
-        //     title: '客户详情'
-        //   }
-        // },
-        // {
-        //   path: 'client-set-group',
-        //   component: ClientSetGroup,
-        //   meta: {
-        //     title: '设置分组'
-        //   }
-        // },
-        // {
-        //   path: 'client-create-group',
-        //   component: ClientCreateGroup,
-        //   meta: {
-        //     title: '添加分组'
-        //   }
-        // }
-      ]
-    },
-    {
-      path: '/client-user-list',
-      component: ClientUserList,
-      meta: {
-        title: '客户列表'
-      },
-      children: [
         {
-          path: 'client-add-user',
-          component: ClientAddUser,
+          path: 'client-user-list',
+          component: ClientUserList,
           meta: {
-            title: '添加成员'
+            title: '客户列表'
+          },
+          children: [
+            {
+              path: 'client-add-user',
+              component: ClientAddUser,
+              meta: {
+                title: '添加成员'
+              }
+            },
+            {
+              path: 'client-set-group',
+              component: ClientSetGroup,
+              meta: {
+                title: '设置分组'
+              }
+            }
+          ]
+        },
+        {
+          path: 'client-detail',
+          component: Cdetail,
+          meta: {
+            title: '客户详情'
+          }
+        },
+        {
+          path: 'client-set-group',
+          component: ClientSetGroup,
+          meta: {
+            title: '设置分组'
           }
         },
         {
@@ -121,6 +105,43 @@ const route = new Router({
           }
         }
       ]
+    },
+    // {
+    //   path: '/client-user-list',
+    //   component: ClientUserList,
+    //   meta: {
+    //     title: '客户列表'
+    //   },
+    //   children: [
+    //     {
+    //       path: 'client-add-user',
+    //       component: ClientAddUser,
+    //       meta: {
+    //         title: '添加成员'
+    //       }
+    //     },
+    //     {
+    //       path: 'client-create-group',
+    //       component: ClientCreateGroup,
+    //       meta: {
+    //         title: '添加分组'
+    //       }
+    //     }
+    //   ]
+    // },
+    {
+      path: '/client-tag',
+      component: ClientTag,
+      meta: {
+        title: '标签'
+      }
+    },
+    {
+      path: '/client-search',
+      component: ClientSearch,
+      meta: {
+        title: '搜索'
+      }
     },
     {
       path: '/client-detail',
@@ -148,20 +169,6 @@ const route = new Router({
       component: Mine,
       meta: {
         title: '我的'
-      }
-    },
-    {
-      path: '/client-tag',
-      component: ClientTag,
-      meta: {
-        title: '标签'
-      }
-    },
-    {
-      path: '/client-search',
-      component: ClientSearch,
-      meta: {
-        title: '搜索'
       }
     },
     {

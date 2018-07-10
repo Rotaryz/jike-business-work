@@ -1,16 +1,18 @@
 <template>
-  <article class="client-set-group">
-    <div class="title">设置分组</div>
-    <section class="content">
-      <div v-if="dataArray.length"
-           :class="['item',item.is_selecte?'active':'']"
-           v-for="(item,index) in dataArray"
-           :key="index"
-           @click="check(item)">
-        {{item.name}}
-      </div>
-    </section>
-  </article>
+  <transition name="slide">
+    <article class="client-set-group">
+      <div class="title">设置分组</div>
+      <section class="content">
+        <div v-if="dataArray.length"
+             :class="['item',item.is_selecte?'active':'']"
+             v-for="(item,index) in dataArray"
+             :key="index"
+             @click="check(item)">
+          {{item.name}}
+        </div>
+      </section>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">

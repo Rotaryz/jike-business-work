@@ -72,8 +72,7 @@
   @import "~common/stylus/mixin"
 
   .client-search
-    position: relative
-    min-height: 100vh
+    fill-box()
     background-color: $color-white-fff
     z-index: 10
     .search-box
