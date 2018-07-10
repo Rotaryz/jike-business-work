@@ -1,6 +1,9 @@
 <template>
   <div class="dynamic-list">
-    <scroll>
+    <scroll ref="scroll"
+            :data="dynamicList"
+            :pullUpLoad="pullUpLoadObj"
+            @pullingUp="onPullingUp">
       <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
         <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
           <div class="find-box">
@@ -11,9 +14,9 @@
                 <p class="nickname">{{item.employee_name}}</p>
               </div>
               <!--{{comment?'':'special'}}-->
-              <p class="words">{{item.content}}</p>
+              <pre class="words">{{item.content}}</pre>
               <div class="one-box">
-                <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
+                <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
               </div>
             </div>
             <!--<div class="address">-->
@@ -50,9 +53,9 @@
                 <img class="header" :src="item.employee_image_url">
                 <p class="nickname">{{item.employee_name}}</p>
               </div>
-              <p class="words">{{item.content}}</p>
+              <pre class="words">{{item.content}}</pre>
               <div class="img-item-two">
-                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
+                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
               </div>
             </div>
             <!--<div class="address">-->
@@ -90,9 +93,9 @@
                 <p class="nickname">{{item.employee_name}}</p>
               </div>
               <!--{{comment?'':'special'}}"-->
-              <p class="words">{{item.content}}</p>
+              <pre class="words">{{item.content}}</pre>
               <div class="img-item-two">
-                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url">
+                <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
               </div>
             </div>
             <!--<div class="address" >-->
@@ -144,18 +147,66 @@
     data () {
       return {
         dynamicList: [],
-        delIndex: null
+        delIndex: null,
+        page: 1,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        loadMore: true
       }
     },
     created () {
       this._getList()
     },
+    computed: {
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
+      }
+    },
+    watch: {
+      pullUpLoadObj: {
+        handler () {
+          this.rebuildScroll()
+        },
+        deep: true
+      }
+    },
     methods: {
+      _seeImage(index, image) {
+        console.log(index, image)
+        let imageArr = image.map(item => item.file_url)
+        console.log(imageArr[index], imageArr)
+        // 预览图片，正式上面需要打开注释
+        // wx.previewImage({
+        //   current: imageArr[index], // 当前显示图片的http链接
+        //   urls: imageArr // 需要预览的图片http链接列表
+        // })
+      },
+      onPullingUp () {
+        this.page++
+        this._getList()
+      },
       _getList () {
-        Live.liveLogsList().then((res) => {
+        if (!this.loadMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
+        Live.liveLogsList({page: this.page}).then((res) => {
           if (res.error === ERR_OK) {
-            this.dynamicList = res.data
-            console.log(res.data)
+            if (this.page === 1) {
+              this.dynamicList = res.data
+              return
+            }
+            if (res.data.length === 0) {
+              this.$refs.scroll.forceUpdate()
+              this.loadMore = false
+              return
+            }
+            this.dynamicList = this.dynamicList.concat(res.data)
           }
         })
       },
@@ -172,8 +223,21 @@
           this.$refs.toast.show(res.message)
         })
       },
-      _goodLike(index) {
-        this.dynamicList[index].is_like = !this.dynamicList[index].is_like
+      _goodLike (index) {
+        let data = {live_log_id: this.dynamicList[index].id, like: this.dynamicList[index].is_like ? 0 : 1}
+        Live.likeLog(data).then((res) => {
+          if (res.error === ERR_OK) {
+            this.dynamicList[index].is_like = !this.dynamicList[index].is_like
+            return
+          }
+          this.$refs.toast.show(res.message)
+        })
+      },
+      rebuildScroll () {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
       }
     },
     components: {
@@ -224,6 +288,11 @@
         font-size: $font-size-medium
         line-height: 21px
         margin-bottom: 3.5px
+        overflow: hidden
+        text-overflow: ellipsis
+        display: -webkit-box
+        -webkit-line-clamp:6
+        -webkit-box-orient: vertical
         .p-more
           color: $color-del
           margin-left: 12px

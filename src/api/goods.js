@@ -2,12 +2,12 @@ import request from '../common/js/request'
 
 export default {
   /**
-   * 我的名片信息
+   * 商品列表（推荐/全部）
    * @returns {*}
    */
-  liveLogs (data) {
-    let url = 'api/employee/live-logs'
-    return request.post(url, data)
+  goods (data) {
+    let url = 'api/employee/goods'
+    return request.get(url, data)
   },
   /**
    * 我的名片信息

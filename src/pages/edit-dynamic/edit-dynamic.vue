@@ -7,7 +7,7 @@
         <div class="com-box">
           <div class="com-image" v-for="(item, index) in image" :key="index">
             <img class="img-item" :src="item.image_url">
-            <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
+            <!--<input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>-->
             <div class="close-icon" @click.stop="_delImage(index)">
               <img class="close-icon" src="./icon-del@2x.png">
             </div>
@@ -40,7 +40,8 @@
     data () {
       return {
         title: '',
-        image: []
+        image: [],
+        send: true
       }
     },
     methods: {
@@ -74,6 +75,9 @@
         this.image.splice(index, 1)
       },
       _liveLogs () {
+        if (!this.send) {
+          return
+        }
         if (!this.title) {
           this.$refs.toast.show('发布内容不能为空')
           return
@@ -83,12 +87,15 @@
         }
         let data = {content: this.title, live_log_details: this.image}
         Live.liveLogs(data).then((res) => {
+          this.send = false
           if (res.error === ERR_OK) {
             this.$refs.toast.show('发布成功')
             setTimeout(() => {
               this._back()
             }, 300)
+            return
           }
+          this.send = true
         })
       },
       _back () {
