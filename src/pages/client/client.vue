@@ -1,8 +1,8 @@
 <template>
   <div class="client">
-    <scroll>
+    <scroll bcColor="#fff">
       <div @click="test">to-tag-client</div>
-      <search></search>
+      <search @toNav="toSearch"></search>
       <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
             v-if="userListArr.length"
@@ -48,9 +48,9 @@
         </ul>
       </div>
     </scroll>
-    <router-view></router-view>
     <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
+    <router-view @refresh="refresh"></router-view>
   </div>
 </template>
 
@@ -105,6 +105,14 @@
       test() {
         const path = `/client-tag`
         this.$router.push({path, query: {customerId: 2}})
+      },
+      refresh() {
+        this.getGroupList()
+        this.getCusomerList()
+      },
+      toSearch() {
+        const path = `/client/client-search`
+        this.$router.push({path})
       },
       getGroupList() {
         Client.getGroupList().then(res => {

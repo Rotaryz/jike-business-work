@@ -71,7 +71,7 @@
         customer_id: this.currentId
       }
       Client.updateTag(data).then(res => {
-        console.log(res)
+        this.$emit('refresh')
       })
     },
     methods: {

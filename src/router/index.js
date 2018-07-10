@@ -80,6 +80,20 @@ const route = new Router({
               meta: {
                 title: '设置分组'
               }
+            },
+            {
+              path: 'client-search',
+              component: ClientSearch,
+              meta: {
+                title: '搜索'
+              }
+            },
+            {
+              path: 'client-detail',
+              component: Cdetail,
+              meta: {
+                title: '客户详情'
+              }
             }
           ]
         },
@@ -102,6 +116,13 @@ const route = new Router({
           component: ClientCreateGroup,
           meta: {
             title: '添加分组'
+          }
+        },
+        {
+          path: 'client-search',
+          component: ClientSearch,
+          meta: {
+            title: '搜索'
           }
         }
       ]

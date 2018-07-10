@@ -24,6 +24,9 @@
         groupName: ''
       }
     },
+    beforeDestroy() {
+      this.$emit('refresh')
+    },
     methods: {
       save() {
         if (!this.groupName) {

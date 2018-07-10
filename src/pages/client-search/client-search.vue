@@ -11,16 +11,6 @@
       <ul class="user-list">
         <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
           <user-card :userInfo="item"></user-card>
-          <!--<img class="user-icon" :src="item.icon" alt="">-->
-          <!--<article class="user-info">-->
-          <!--<section class="base-info">-->
-          <!--<div class="name">{{item.name}}</div>-->
-          <!--<div class="last-time">{{item.last}}</div>-->
-          <!--</section>-->
-          <!--<ul class="tags" v-if="item.tags">-->
-          <!--<li class="tags-item" v-for="(tag,i) in item.tags" :key="i">{{tag}}</li>-->
-          <!--</ul>-->
-          <!--</article>-->
         </li>
       </ul>
     </article>
@@ -39,6 +29,9 @@
         dataArray: [],
         timeStamp: 0
       }
+    },
+    beforeDestroy() {
+      this.$emit('refresh')
     },
     methods: {
       cancelHandler() {

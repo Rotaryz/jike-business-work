@@ -61,7 +61,8 @@
         }
       })
     },
-    updated() {
+    beforeDestroy() {
+      this.$emit('refresh')
     },
     methods: {
       check(item) {
@@ -78,7 +79,6 @@
           data: arr
         }
         Client.addGroupCustomer(data).then(res => {
-          this.$emit('refresh')
           this.$router.back()
         })
       }

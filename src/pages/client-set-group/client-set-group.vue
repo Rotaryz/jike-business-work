@@ -47,7 +47,7 @@
         data: arr
       }
       Client.setGroup(data).then(res => {
-        console.log(res, data)
+        this.$emit('refresh')
       })
     },
     methods: {

@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <article class="client-user-list">
-      <search></search>
+      <search @toNav="toSearch"></search>
       <section class="add-user" @click="toAddUser">
         <img class="icon" src="./icon-add@3x.png" alt="">
         <div class="txt">添加成员</div>
@@ -10,6 +10,7 @@
       <div class="simple-scroll-demo">
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
+                  bcColor="#fff"
                   :data="dataArray"
                   :pullDownRefresh="pullDownRefreshObj"
                   :pullUpLoad="pullUpLoadObj"
@@ -17,9 +18,6 @@
                   @pullingDown="onPullingDown"
                   @pullingUp="onPullingUp"
                   @scroll="scroll">
-            <!--<ul class="list-content">-->
-            <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
-            <!--</ul>-->
             <ul class="user-list">
               <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
                 <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
@@ -45,25 +43,6 @@
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
 
-  // const listData = [{
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }]
   export default {
     name: 'ClientUserList',
     data() {
@@ -96,29 +75,29 @@
       }
     },
     beforeMount() {
-      const groupInfo = this.$route.query.groupInfo
-      document.title = groupInfo.name
-      groupInfo && (this.currentGroupInfo = groupInfo)
-      const data = {
-        get_group_detail: 1,
-        group_id: this.currentGroupInfo.id
-      }
-      Client.getCusomerList(data).then(res => {
-        if (res.data) {
-          this.dataArray = res.data
-        }
-      })
+      this.getTitle()
+      this.getCusonerList()
     },
     beforeDestroy() {
-      console.log('list')
+      this.$emit('refresh')
     },
     mounted() {
     },
     methods: {
       refresh() {
-        console.log(this.currentGroupInfo.name)
         document.title = this.currentGroupInfo.name
-        console.log(document.title)
+        this.getCusonerList()
+      },
+      toSearch() {
+        const path = `/client/client-user-list/client-search`
+        this.$router.push({path})
+      },
+      getTitle() {
+        const groupInfo = this.$route.query.groupInfo
+        document.title = groupInfo.name
+        groupInfo && (this.currentGroupInfo = groupInfo)
+      },
+      getCusonerList() {
         const data = {
           get_group_detail: 1,
           group_id: this.currentGroupInfo.id
@@ -134,7 +113,7 @@
         this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(item) {
-        const path = `/client-detail`
+        const path = `/client/client-user-list/client-detail`
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
