@@ -70,7 +70,7 @@
             this.goodsList = this.goodsList.concat(res.data)
           }
         })
-      },
+      }
     },
     components: {
       Scroll

@@ -81,7 +81,7 @@
             } else {
               this.addListCount(res)
               this.addListMsg(res)
-              if (res.fromAccount === currentMsg) {
+              if (res.fromAccount === this.currentMsg.sessionId) {
               }
             }
             let content = webimHandler.transitionMsg(res)
