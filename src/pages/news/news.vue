@@ -60,7 +60,10 @@
 
   .news
     width: 100vw
-    height: 100vh
+    position: fixed
+    left: 0
+    top: 0
+    bottom: 45px
     background: $color-white
     .news-list
       background: $color-white
