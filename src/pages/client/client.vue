@@ -97,8 +97,6 @@
     },
     created() {
       this.$emit('tabChange', 3)
-    },
-    beforeMount() {
       this.getGroupList()
       this.getCusomerList()
     },

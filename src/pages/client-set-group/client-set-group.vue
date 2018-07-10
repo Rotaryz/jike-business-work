@@ -27,7 +27,7 @@
         customerId: 0
       }
     },
-    beforeMount() {
+    created() {
       const customerInfo = this.$route.query.customerInfo
       const data = {customer_id: customerInfo.id}
       this.customerId = customerInfo.id
