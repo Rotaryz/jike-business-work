@@ -7,14 +7,14 @@
         <div class="chang-header">
           更换头像
         </div>
-        <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)">
+        <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
       </div>
       <div class="mine-msg">
         <p class="mine-name">{{mine.name}}</p>
         <p class="mine-position">{{mine.position}}</p>
         <p class="mine-company">{{mine.department}}</p>
         <div class="mine-sign">
-          <p class="mine-sign">“{{signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
+          <p class="mine-sign">“{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
           <router-link tag="span" to="changeAutograph" class="chang-header">更改签名</router-link>
         </div>
         <ul class="mine-status">
@@ -62,7 +62,7 @@
   import Scroll from 'components/scroll/scroll'
   import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
-  import { mapActions, mapState } from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'edit-card',
@@ -75,25 +75,28 @@
     created () {
       this._getMine()
     },
-    computed: mapState({
-      // 箭头函数可使代码更简练
-      signature: state => state.signature
-    }),
     methods: {
-      ...mapActions(['setDepartment']),
+      ...mapActions(['setSignature']),
       _getMine () {
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
             this.mine = res.data
-            this.setDepartment(this.mine.signature)
+            this.setSignature(this.mine.signature)
             console.log(this.mine)
           }
         })
       },
       _changeMine () {
-        let data = {business_card_mobile: this.mine.mobile, mobile: this.mine.mobile, address: this.mine.address, signature: this.mine.signature, image_id: this.imageId}
+        let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, address: this.mine.address, image_id: this.mine.image_id}
         Business.updateMyBusiness(data).then((res) => {
-          console.log(res)
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('修改成功')
+            setTimeout(() => {
+              this.$router.back()
+            }, 300)
+            return false
+          }
+          this.$refs.toast.show(res.message)
         })
       },
       _infoImage (file) {
@@ -107,10 +110,12 @@
           let param = this._infoImage(e.target.files[0])
           UpLoad.upLoadImage(param).then((res) => {
             if (res.error === ERR_OK) {
-              console.log(res.data)
-              // res = res.data
-              // this.productCover = {image_id: res.id, image_url: res.url}
+              this.mine.image_url = res.data.url
+              this.mine.image_id = res.data.id
+              this.$refs.toast.show('修改成功')
+              return false
             }
+            this.$refs.toast.show(res.message)
           })
         }
       }
@@ -240,15 +245,7 @@
       box-sizing: border-box
       border-bottom-1px($color-row-line)
       .item-detail
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0)
-        -webkit-user-select: none
-        -moz-user-focus: none
-        -moz-user-select: none
-        -webkit-appearance: none
-        border: none
-        outline: none
-        &::-webkit-inner-spin-button
-          -webkit-appearance: none !important
+        height: 100%
       .item-text
         width: 48px
         color: $color-text-88

@@ -1,22 +1,25 @@
 <template>
   <div class="change-autograph">
     <scroll ref="scroll">
-      <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph" cols="30" rows="10"></textarea>
+      <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph"></textarea>
       <div class="text-num">
         <span class="text-dark">{{title.length}}</span>
         <span class="text-light">/50</span>
       </div>
     </scroll>
     <div class="btn">
-      <div class="btn-item btn-dark">取消</div>
-      <div class="btn-item btn-green">确定</div>
+      <div class="btn-item btn-dark" @click="_back">取消</div>
+      <div class="btn-item btn-green" @click="_submit">确定</div>
     </div>
+    <toast ref="toast"></toast>
   </div>
 </template>
 
 <script>
-  // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
+  import { Business } from 'api'
+  import { ERR_OK } from 'common/js/config'
+  import Toast from 'components/toast/toast'
 
   export default {
     name: 'change-autograph',
@@ -25,8 +28,26 @@
         title: ''
       }
     },
+    created () {
+      this.title = this.$store.state.signature
+    },
+    methods: {
+      _submit () {
+        Business.updateMySignature({signature: this.title}).then((res) => {
+          if (res.error === ERR_OK) {
+            this._back()
+            return
+          }
+          this.$refs.toast.show(res.message)
+        })
+      },
+      _back() {
+        this.$router.back()
+      }
+    },
     components: {
-      Scroll
+      Scroll,
+      Toast
     }
   }
 </script>
@@ -83,7 +104,7 @@
       text-align: center
       flex: 1
     .btn-dark
-      background :$color-text
+      background: $color-text
     .btn-green
       background: $color-56
 </style>

@@ -13,8 +13,16 @@ export default {
    * 我的名片信息
    * @returns {*}
    */
-  updateMyBusiness () {
+  updateMyBusiness (data) {
     let url = 'api/employee/update-my-business'
-    return request.get(url)
+    return request.post(url, data)
+  },
+  /**
+   * 我的名片-个性签名编辑
+   * @returns {*}
+   */
+  updateMySignature (data) {
+    let url = 'api/employee/update-my-signature'
+    return request.post(url, data)
   }
 }
