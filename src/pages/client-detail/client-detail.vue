@@ -72,7 +72,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-padding" v-if="showTab"></div>
+          <div class="tab-padding" :style="'height:' + (highgt + 48)  + 'px'  " v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
             <div class="box-list">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
