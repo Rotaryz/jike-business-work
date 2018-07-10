@@ -30,11 +30,14 @@
       }
     },
     created() {
+      if (!this.hasToken) {
+        return
+      }
       Im.getImInfo().then((res) => {
         if (res.error === ERR_OK) {
           let imInfo = res.data
           this.setImInfo(imInfo)
-          console.log(imInfo)
+          // console.log(imInfo)
           this.sdkLogin(imInfo).then(() => {
 
           })
@@ -131,6 +134,9 @@
       }
     },
     computed: {
+      hasToken() {
+        return storage.has('token')
+      },
       userInfo() {
         return storage.get('info')
       },

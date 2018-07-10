@@ -78,9 +78,11 @@ function requestException (res) {
 
 function _handleLoseEfficacy() {
   const currentRoute = _this.$route.path
-  storage.set('beforeLoginRoute', currentRoute)
+  if (currentRoute !== '/') {
+    storage.set('beforeLoginRoute', currentRoute)
+  }
   storage.remove('token')
-  _this.$router.replace('/oauth?code=b-ZtFkvBMjwzJEMfd_-x5mo2HYQfWFcTwW_KmN3m57s&state=STATE')
+  _this.$router.replace('/oauth')
 }
 
 export default {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import storage from 'storage-controller'
 
 const Oauth = () => import('pages/oauth/oauth')
 const Radar = () => import('pages/radar/radar')
@@ -32,10 +33,10 @@ Vue.use(Router)
 const route = new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/',
-      redirect: '/oauth'
-    },
+    // {
+    //   path: '/',
+    //   redirect: '/oauth'
+    // },
     {
       path: '/oauth',
       component: Oauth
@@ -334,9 +335,19 @@ const route = new Router({
 })
 
 const DEFAULT_TITLE = 'AI雷达'
+const DEFAULT_ROUTE = '/radar'
+const OAUTH_ROUTE = '/oauth'
 
 route.beforeEach((to, from, next) => {
   document.title = to.meta.title ? to.meta.title : DEFAULT_TITLE
+  if (to.path === '/') {
+    const token = storage.get('token', '')
+    if (token) {
+      next(DEFAULT_ROUTE)
+    } else {
+      next(OAUTH_ROUTE)
+    }
+  }
   next()
 })
 
