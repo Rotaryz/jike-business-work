@@ -9,9 +9,12 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+          <div class="last-time">最后跟进</div>
         </section>
-        <div class="tags">{{userInfo.last_follow_day}}</div>
+        <div class="tags">
+          <div>{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.last_follow_at}}</div>
+        </div>
       </article>
     </section>
     <!--最近活跃-->
@@ -23,9 +26,12 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
+          <div class="last-time">最后活跃</div>
         </section>
-        <div class="tags">{{userInfo.last_follow_day}}</div>
+        <div class="tags">
+          <div>{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.last_active_at}}</div>
+        </div>
       </article>
     </section>
     <!--最新加入-->
@@ -37,7 +43,7 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">{{userInfo.sources}}</div>
+          <div class="last-time">{{userInfo.flow_join_at}}</div>
         </section>
         <div class="tags">
           <div>{{userInfo.last_follow_day}}</div>
@@ -156,6 +162,6 @@
             font-family: $font-family-regular
             font-size: $font-size-12
             color: $color-888888
-            margin-left: 5px
+            padding-right: 15px
 
 </style>
