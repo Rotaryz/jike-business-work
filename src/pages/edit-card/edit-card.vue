@@ -1,60 +1,63 @@
 <template>
-  <div class="edit-card">
-    <scroll ref="scroll">
-      <!--require('./Snip20180707_35.png')-->
-      <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.image_url+')'}">
-        <div class="header-mask"></div>
-        <div class="chang-header">
-          更换头像
+  <transition name="slide">
+    <div class="edit-card">
+      <scroll ref="scroll">
+        <!--require('./Snip20180707_35.png')-->
+        <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
+          <div class="header-mask"></div>
+          <div class="chang-header">
+            更换头像
+          </div>
+          <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
         </div>
-        <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
-      </div>
-      <div class="mine-msg">
-        <p class="mine-name">{{mine.name}}</p>
-        <p class="mine-position">{{mine.position}}</p>
-        <p class="mine-company">{{mine.department}}</p>
-        <div class="mine-sign">
-          <p class="mine-sign">“{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
-          <router-link tag="span" to="changeAutograph" class="chang-header">更改签名</router-link>
-        </div>
-        <ul class="mine-status">
-          <li class="mine-status-item">
-            <img class="mine-status-icon" src="./icon-popularity@2x.png">
-            <span class="mine-status-text">人气 {{mine.like_count}}</span>
-          </li>
-          <li class="mine-status-item">
-            <img class="mine-status-icon" src="./icon-favour@2x.png">
-            <span class="mine-status-text">点赞 {{mine.click_count}}</span>
-          </li>
-          <li class="mine-status-item">
-            <img class="mine-status-icon" src="./icon-transpond@2x.png">
-            <span class="mine-status-text">转发 {{mine.share_count}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="mine-box">
-        <div class="mine-detail">
-          <div class="mine-detail-header">个人信息</div>
-          <ul class="mine-detail-list">
-            <li class="mine-detail-item">
-              <span class="item-text">手机</span>
-              <input class="item-detail" type="text" v-model="mine.mobile">
+        <div class="mine-msg">
+          <p class="mine-name">{{mine.name}}</p>
+          <p class="mine-position">{{mine.position}}</p>
+          <p class="mine-company">{{mine.department}}</p>
+          <div class="mine-sign">
+            <p class="mine-sign">“{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
+            <router-link tag="span" to="editCard/changeAutograph" class="chang-header">更改签名</router-link>
+          </div>
+          <ul class="mine-status">
+            <li class="mine-status-item">
+              <img class="mine-status-icon" src="./icon-popularity@2x.png">
+              <span class="mine-status-text">人气 {{mine.like_count}}</span>
             </li>
-            <li class="mine-detail-item">
-              <span class="item-text">邮箱</span>
-              <input class="item-detail" type="email" v-model="mine.email">
+            <li class="mine-status-item">
+              <img class="mine-status-icon" src="./icon-favour@2x.png">
+              <span class="mine-status-text">点赞 {{mine.click_count}}</span>
             </li>
-            <li class="mine-detail-item">
-              <span class="item-text">地址</span>
-              <input class="item-detail" type="text" v-model="mine.address">
+            <li class="mine-status-item">
+              <img class="mine-status-icon" src="./icon-transpond@2x.png">
+              <span class="mine-status-text">转发 {{mine.share_count}}</span>
             </li>
           </ul>
         </div>
-      </div>
-    </scroll>
-    <div class="btn" @click="_changeMine">保存</div>
-    <toast ref="toast"></toast>
-  </div>
+        <div class="mine-box">
+          <div class="mine-detail">
+            <div class="mine-detail-header">个人信息</div>
+            <ul class="mine-detail-list">
+              <li class="mine-detail-item">
+                <span class="item-text">手机</span>
+                <input class="item-detail" type="text" v-model="mine.mobile">
+              </li>
+              <li class="mine-detail-item">
+                <span class="item-text">邮箱</span>
+                <input class="item-detail" type="email" v-model="mine.email">
+              </li>
+              <li class="mine-detail-item">
+                <span class="item-text">地址</span>
+                <input class="item-detail" type="text" v-model="mine.address">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </scroll>
+      <div class="btn" @click="_changeMine">保存</div>
+      <toast ref="toast"></toast>
+      <router-view @getSign="getSign"></router-view>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -63,6 +66,7 @@
   import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions } from 'vuex'
+  import storage from 'storage-controller'
 
   export default {
     name: 'edit-card',
@@ -75,7 +79,13 @@
     created () {
       this._getMine()
     },
+    beforeDestory() {
+      this.$emit('refresh')
+    },
     methods: {
+      getSign() {
+        this.mine.department = this.$store.state.signature
+      },
       ...mapActions(['setSignature']),
       _getMine () {
         Business.myBusinessCard().then((res) => {
@@ -90,9 +100,15 @@
         let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, address: this.mine.address, image_id: this.mine.image_id}
         Business.updateMyBusiness(data).then((res) => {
           if (res.error === ERR_OK) {
+            let obj = storage.get('info', {})
+            obj.email = data.email
+            obj.address = data.address
+            obj.avatar = this.mine.avatar
+            storage.set('info', obj)
             this.$refs.toast.show('修改成功')
             setTimeout(() => {
               this.$router.back()
+              this.$emit('refresh')
             }, 300)
             return false
           }
@@ -110,9 +126,9 @@
           let param = this._infoImage(e.target.files[0])
           UpLoad.upLoadImage(param).then((res) => {
             if (res.error === ERR_OK) {
-              this.mine.image_url = res.data.url
+              this.mine.avatar = res.data.url
               this.mine.image_id = res.data.id
-              this.$refs.toast.show('修改成功')
+              // this.$refs.toast.show('修改成功')
               return false
             }
             this.$refs.toast.show(res.message)

@@ -1,29 +1,69 @@
 <template>
-  <div class="goods-list">
-    <div class="tab">
-      <div class="tab-item" @click="_change(true)">我的推荐</div>
-      <div class="tab-item" @click="_change(false)">全部产品</div>
-      <span class="line" :class="{'line-buss': !tabIndex}"></span>
-    </div>
-    <scroll
-      ref="scroll"
-      @pullingDown="onPullingDown">
-      <div class="goods-item" v-for="(item, index) in goodsList" :key="index">
-        <div class="img-box">
-          <img class="goods-image" src="./Snip20180707_10.png">
-        </div>
-        <div class="goods-content">
-          <p class="goods-text">卡诗（KERASTASE）新双重菁纯修护液100ml</p>
-          <p class="goods-time">发布日期：2018-06-02</p>
-        </div>
-        <div class="goods-use">
-          <p class="tip">公司发布</p>
-          <div class="btn">取消推荐</div>
-          <!--btn-green-->
-        </div>
+  <transition name="slide">
+
+    <div class="goods-list">
+      <div class="tab">
+        <div class="tab-item" @click="_change(1)">我的推荐</div>
+        <div class="tab-item" @click="_change(0)">全部产品</div>
+        <span class="line" :class="{'line-buss': !tabIndex}"></span>
       </div>
-    </scroll>
-  </div>
+      <div class="line"></div>
+      <transition name="slide">
+        <scroll
+          ref="scroll"
+          :data="goodsListMine"
+          v-show="tabIndex"
+          :pullUpLoad="pullUpLoadObj"
+          :pullDownRefresh="pullDownRefreshObj"
+          @pullingUp="onPullingUp"
+          @pullingDown="onPullingDown"
+        >
+          <div class="goods-item" v-for="(item, index) in goodsListMine" :key="index" @click="_goDetail(item.id)">
+            <div class="img-box">
+              <img class="goods-image" :src="item.image_url">
+            </div>
+            <div class="goods-content">
+              <p class="goods-text">{{item.title}}</p>
+              <p class="goods-time">发布日期：{{item.created_at}}</p>
+            </div>
+            <div class="goods-use">
+              <p class="tip">公司发布</p>
+              <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
+              <!--btn-green-->
+            </div>
+          </div>
+        </scroll>
+      </transition>
+      <transition name="right">
+        <scroll
+          ref="scrolls"
+          v-show="!tabIndex"
+          :data="goodsList"
+          :pullUpLoad="pullUpLoadObj"
+          :pullDownRefresh="pullDownRefreshObj"
+          @pullingUp="onPullingUp"
+          @pullingDown="onPullingDown"
+        >
+          <div class="goods-item" v-for="(item, index) in goodsList" :key="index" @click="_goDetail(item.id)">
+            <div class="img-box">
+              <img class="goods-image" :src="item.image_url">
+            </div>
+            <div class="goods-content">
+              <p class="goods-text">{{item.title}}</p>
+              <p class="goods-time">发布日期：{{item.created_at}}</p>
+            </div>
+            <div class="goods-use">
+              <p class="tip">公司发布</p>
+              <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
+              <!--btn-green-->
+            </div>
+          </div>
+        </scroll>
+      </transition>
+      <toast ref="toast"></toast>
+      <router-view></router-view>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -31,49 +71,146 @@
   import Scroll from 'components/scroll/scroll'
   import { Goods } from 'api'
   import { ERR_OK } from '../../common/js/config'
+  import Toast from 'components/toast/toast'
 
   export default {
     name: 'goods-list',
     data () {
       return {
+        startY: 0,
         goodsList: [],
+        goodsListMine: [],
         loadMore: true,
-        tabIndex: true,
-        page: 1
+        tabIndex: 1,
+        page: 1,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        pullDownRefreshThreshold: 90,
+        pullDownRefreshStop: 40,
+        scrollbar: true,
+        scrollbarFade: true,
+        pullDownRefresh: true
       }
     },
     created () {
       this._goodslist()
     },
     methods: {
+      _goDetail (id) {
+        this.$router.push({path: 'goodList/goodsDetail', query: {id}})
+      },
+      onPullingUp () {
+        this.page++
+        this._goodslist()
+      },
+      onPullingDown () {
+        this.page = 1
+        this._goodslist()
+      },
+      _presellGoods (id, status) {
+        let index = this.tabIndex ? this.goodsListMine.findIndex(item => item.id === id) : this.goodsList.findIndex(item => item.id === id)
+        if (status) {
+          Goods.unPresellGoods({goods_id: id}).then((res) => {
+            if (res.error === ERR_OK) {
+              if (this.tabIndex) {
+                this.goodsListMine.splice(index, 1)
+              } else {
+                this.goodsList[index].recommend_status = !this.goodsList[index].recommend_status
+              }
+              this.$refs.toast.show('成功取消推荐')
+              return
+            }
+            this.$refs.toast.show(res.message)
+          })
+          return
+        }
+        Goods.presellGoods({goods_id: id}).then((res) => {
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('成功加入推荐')
+            this.goodsList[index].recommend_status = !this.goodsList[index].recommend_status
+            return
+          }
+          this.$refs.toast.show(res.message)
+        })
+      },
       _change (status) {
+        this.loadMore = true
         this.tabIndex = status
         this.page = 1
         this._goodslist()
       },
-      onPullingDown () {
-      },
       _goodslist () {
         let data = {is_self: this.tabIndex, limit: 15, page: this.page}
         Goods.goods(data).then((res) => {
-          console.log(res.data)
           if (res.error === ERR_OK) {
             if (this.page === 1) {
-              this.goodsList = res.data
+              if (this.tabIndex) {
+                this.goodsListMine = res.data
+              } else {
+                this.goodsList = res.data
+              }
               return
             }
             if (res.data.length === 0) {
               this.$refs.scroll.forceUpdate()
+              this.$refs.scrolls.forceUpdate()
               this.loadMore = false
               return
             }
-            this.goodsList = this.goodsList.concat(res.data)
+            if (this.tabIndex) {
+              this.goodsListMine = this.goodsListMine.concat(res.data)
+            } else {
+              this.goodsList = this.goodsList.concat(res.data)
+            }
           }
         })
       }
     },
+    computed: {
+      scrollbarObj: function () {
+        return this.scrollbar ? {fade: this.scrollbarFade} : false
+      },
+      pullDownRefreshObj: function () {
+        return this.pullDownRefresh ? {
+          threshold: parseInt(this.pullDownRefreshThreshold),
+          stop: parseInt(this.pullDownRefreshStop)
+        } : false
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
+      }
+    },
+    watch: {
+      scrollbarObj: {
+        handler () {
+          this.rebuildScroll()
+        },
+        deep: true
+      },
+      pullDownRefreshObj: {
+        handler () {
+          this.rebuildScroll()
+        },
+        deep: true
+      },
+      pullUpLoadObj: {
+        handler () {
+          this.rebuildScroll()
+        },
+        deep: true
+      },
+      startY () {
+        this.rebuildScroll()
+      }
+    },
     components: {
-      Scroll
+      Scroll,
+      Toast
     }
   }
 </script>
@@ -89,6 +226,10 @@
     background: $color-background
     bottom: 0
     top: 0
+    padding-bottom: 60px
+
+  .line
+    height: 15px
 
   .tab
     height: 45px
@@ -118,7 +259,7 @@
   .goods-item
     width: 92vw
     background: $color-white
-    margin: 15px auto 0
+    margin: 0 auto 15px
     display: flex
     padding: 10px
     box-sizing: border-box
@@ -134,6 +275,7 @@
     .goods-content
       margin-left: 10px
       margin-right: 17px
+      position: relative
       .goods-text
         line-height: 18px
         font-family: $font-family-medium
@@ -147,6 +289,7 @@
       position: relative
       text-align: right
     .btn
+      min-width: 60px
       height: 22px
       line-height: 22px
       padding: 0 6px

@@ -1,18 +1,20 @@
 <template>
-  <div class="change-autograph">
-    <scroll ref="scroll">
-      <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph"></textarea>
-      <div class="text-num">
-        <span class="text-dark">{{title.length}}</span>
-        <span class="text-light">/50</span>
+  <transition name="slide">
+    <div class="change-autograph">
+      <scroll ref="scroll">
+        <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph"></textarea>
+        <div class="text-num">
+          <span class="text-dark">{{title.length}}</span>
+          <span class="text-light">/50</span>
+        </div>
+      </scroll>
+      <div class="btn">
+        <div class="btn-item btn-dark" @click="_back">取消</div>
+        <div class="btn-item btn-green" @click="_submit">确定</div>
       </div>
-    </scroll>
-    <div class="btn">
-      <div class="btn-item btn-dark" @click="_back">取消</div>
-      <div class="btn-item btn-green" @click="_submit">确定</div>
+      <toast ref="toast"></toast>
     </div>
-    <toast ref="toast"></toast>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -20,6 +22,7 @@
   import { Business } from 'api'
   import { ERR_OK } from 'common/js/config'
   import Toast from 'components/toast/toast'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'change-autograph',
@@ -30,18 +33,22 @@
     },
     created () {
       this.title = this.$store.state.signature
+      console.log(this.title)
     },
     methods: {
+      ...mapActions(['setSignature']),
       _submit () {
         Business.updateMySignature({signature: this.title}).then((res) => {
           if (res.error === ERR_OK) {
             this._back()
+            this.setSignature(this.title)
+            this.$emit('getSign')
             return
           }
           this.$refs.toast.show(res.message)
         })
       },
-      _back() {
+      _back () {
         this.$router.back()
       }
     },
