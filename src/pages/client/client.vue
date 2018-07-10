@@ -1,62 +1,56 @@
 <template>
   <div class="client">
     <scroll>
+      <div @click="test">to-tag-client</div>
       <search></search>
-      <ul class="user-list-box">
+      <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
             v-if="userListArr.length"
             v-for="(item,index) in userListArr"
             :key="index"
-            @click="toUserList"
+            @click="toUserList(item)"
         >
-          <div class="users-avatar">
-            <img v-if="item.usersAvatar && item.usersAvatar.length"
-                 v-for="(user,i) in item.usersAvatar"
-                 class="avatar"
-                 :key="i"
-                 :src="user"
-            />
-          </div>
-          <div class="item-name">{{item.name}}（{{item.people}}）</div>
+          <slide-view :useType="3" @del="delHandler" :item="item">
+            <div slot="content" class="user-list-item">
+              <div class="users-avatar">
+                <img v-if="item.icon && item.icon.length"
+                     v-for="(user,i) in item.icon"
+                     class="avatar"
+                     :key="i"
+                     :src="user"
+                />
+              </div>
+              <div class="item-name">{{item.name}}（{{item.number}}）</div>
+            </div>
+          </slide-view>
         </li>
       </ul>
       <section class="user-list-box add-list" @click="toCreateGroup">
         <div class="user-list-item">
           <div class="users-avatar add-list"></div>
-          <!--<img class="users-avatar" src="http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg"/>-->
           <div class="item-name">新建分组</div>
         </div>
       </section>
-      <section class="status-bar">
+      <section class="status-bar" @click="showGroupList">
         <div class="left">
-          <p>最后跟进时间</p>
+          <p>{{checkedGroup.name}}</p>
           <img class="icon" src="./icon-down@3x.png" alt=""/>
         </div>
-        <div class="right">全部 53 位</div>
+        <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
       <div class="scroll-list-wrap">
-        <!--<scroll ref="scroll"-->
-        <!--:data="dataArray">-->
-        <!--<ul class="list-content">-->
-        <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
-        <!--</ul>-->
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <slide-view :useType="1" @grouping="groupingHandler">
-              <user-card :userInfo="item" slot="content"></user-card>
+            <slide-view :useType="1" @grouping="groupingHandler" :item="item">
+              <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
             </slide-view>
           </li>
         </ul>
-        <!--</scroll>-->
       </div>
     </scroll>
-    <!--<router-link class="item" to="/client-tag">client-tag</router-link>-->
-    <!--<router-link class="item" to="/client-set-group">client-set-g</router-link>-->
-    <!--<router-link class="item" to="/client-create-group">client-c-g</router-link>-->
-    <!--<router-link class="item" to="/client-add-user">client-add-user</router-link>-->
-    <!--<router-link class="item" to="/client-search">client-search</router-link>-->
-    <!--<router-link class="item" to="/client-user-list">client-user-list</router-link>-->
-    <confirm-msg ref="confirm"></confirm-msg>
+    <router-view></router-view>
+    <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+    <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
   </div>
 </template>
 
@@ -68,34 +62,23 @@
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
+  import ActionSheet from 'components/action-sheet/action-sheet'
 
-  const userListArr = [{
-    usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-    name: '近期可成交',
-    people: 18
+  const groupList = [{
+    orderBy: '',
+    name: '预计成交率',
+    isCheck: true
   }, {
-    usersAvatar: new Array(13).fill('http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg'),
-    name: '5期可成交',
-    people: 8
-  }]
-
-  let listData = [{
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
+    orderBy: 'follow',
+    name: '最后跟进时间',
     isCheck: false
   }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
+    orderBy: 'active',
+    name: '最后活跃时间',
     isCheck: false
   }, {
-    icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-    name: '李木 ',
-    status: '今天跟进',
-    ai: 'AI预计成交率100%',
+    orderBy: 'join',
+    name: '最新加入时间',
     isCheck: false
   }]
 
@@ -103,38 +86,88 @@
     name: 'Client',
     data() {
       return {
-        userListArr: userListArr,
-        dataArray: listData.concat(listData).concat(listData)
+        groupList: groupList,
+        userListArr: [],
+        dataArray: [],
+        checkedItem: null // 被选中的分组
       }
     },
     created() {
       this.$emit('tabChange', 3)
     },
     beforeMount() {
-      Client.getGroupList().then(res => {
-        console.log(res, '==')
-      })
+      this.getGroupList()
+      this.getCusomerList()
+    },
+    beforeDestroy() {
     },
     methods: {
-      toUserList() {
+      test() {
+        const path = `/client-tag`
+        this.$router.push({path, query: {customerId: 2}})
+      },
+      getGroupList() {
+        Client.getGroupList().then(res => {
+          if (res.data) {
+            this.userListArr = res.data
+          }
+        })
+      },
+      getCusomerList() {
+        const data = {order_by: this.checkedGroup.orderBy}
+        Client.getCusomerList(data).then(res => {
+          if (res.data) {
+            this.dataArray = res.data
+          }
+        })
+      },
+      toUserList(item) {
         const path = `/client-user-list`
-        this.$router.push({path})
+        this.$router.push({path, query: {groupInfo: item}})
       },
       toCreateGroup() {
         const path = `/client-create-group`
         this.$router.push({path})
       },
-      check() {
+      check(item) {
+        const path = `/client-detail`
+        this.$router.push({path, query: {id: item.id}})
+      },
+      groupingHandler(index, item) {
+        const path = `/client-set-group`
+        this.$router.push({path, query: {customerInfo: item}})
+      },
+      showGroupList() {
+        this.$refs.sheet.show()
+      },
+      changeGroup() {
+        const data = {order_by: this.checkedGroup.orderBy}
+        Client.getCusomerList(data).then(res => {
+          if (res.data) {
+            this.dataArray = res.data
+          }
+        })
+      },
+      delHandler(index, item) {
+        this.checkedItem = item
         this.$refs.confirm.show()
       },
-      groupingHandler() {
-        const path = `/client-set-group`
-        this.$router.push({path})
+      msgConfirm() {
+        const data = {groupId: this.checkedItem.id}
+        Client.delGroup(data).then(res => {
+          const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
+          this.userListArr.splice(idx, 1)
+        })
+      },
+      msgCancel() {
+        this.checkedItem = null
       }
     },
-    watch: {
-      cancel() {
-        console.log(222)
+    watch: {},
+    computed: {
+      checkedGroup() {
+        let node = this.groupList.find(val => val.isCheck)
+        return node
       }
     },
     components: {
@@ -142,7 +175,8 @@
       Scroll,
       SlideView,
       UserCard,
-      ConfirmMsg
+      ConfirmMsg,
+      ActionSheet
     }
   }
 </script>
@@ -153,7 +187,7 @@
   @import '~common/stylus/mixin'
 
   .client
-    position: absolute
+    position: fixed
     top: 0
     left: 0
     right: 0

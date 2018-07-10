@@ -46,10 +46,9 @@
   @import "~common/stylus/mixin"
 
   .client-create-group
-    position: relative
-    min-height: 100vh
+    fill-box()
     background-color: $color-white-fff
-    z-index: 10
+    z-index: 200
     .title
       font-family: $font-family-regular
       font-size: $font-size-16

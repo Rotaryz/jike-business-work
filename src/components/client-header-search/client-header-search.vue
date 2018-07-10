@@ -12,7 +12,6 @@
     name: '',
     methods: {
       clickHandler() {
-        console.log(this.$router)
         const path = `/client-search`
         this.$router.push({path})
       }

@@ -4,6 +4,7 @@ import upload from './upload'
 import client from './client'
 import jwt from './jwt'
 import im from './im'
+import live from './live'
 
 // 授权模块
 export const Jwt = jwt
@@ -16,6 +17,8 @@ export const UpLoad = upload
 
 // 客户
 export const Client = client
+
+export const Live = live
 
 // 雷达消息im
 export const Im = im
