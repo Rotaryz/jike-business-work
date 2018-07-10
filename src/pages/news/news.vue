@@ -9,7 +9,7 @@
         <div class="news-right">
           <div class="right-top">
             <span class="top-name">{{item.nickName}}</span>
-            <span class="top-time">{{item.msgTimeStamp}}</span>
+            <span class="top-time">{{item.time}}</span>
           </div>
           <div class="right-down">
             {{item.lastMsg}}
@@ -25,7 +25,6 @@
   export default {
     name: 'News',
     created() {
-      this.$emit('tabChange', 2)
     },
     data() {
       return {
@@ -41,7 +40,8 @@
           avatar: item.avatar
         }
         this.setCurrent(currentMsg)
-        this.$router.push('/chat')
+        let url = '/chat?id=' + item.sessionId
+        this.$router.push(url)
       }
     },
     computed: {

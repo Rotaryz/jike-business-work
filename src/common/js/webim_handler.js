@@ -63,7 +63,7 @@ export default class webimHandler {
                 avatar: info.avatar,
                 nickName: info.name,
                 lastMsg: item.MsgShow,
-                msgTimeStamp: webim.Tool.formatTimeStamp(item.MsgTimeStamp),
+                msgTimeStamp: item.MsgTimeStamp,
                 msgSeq: item.MsgSeq,
                 msgRandom: item.MsgRandom, // 消息随机数
                 unreadMsgCount: item.UnreadMsgCount
@@ -150,7 +150,7 @@ export default class webimHandler {
 
   // 处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
   static handlderMsg(msg) {
-    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend
+    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend, seq, random
     return new Promise(async (resolve, reject) => {
       fromAccount = msg.getFromAccount()
       if (!fromAccount) {
@@ -171,6 +171,8 @@ export default class webimHandler {
       // 会话类型为群聊时，子类型为：webim.GROUP_MSG_SUB_TYPE
       // 会话类型为私聊时，子类型为：webim.C2C_MSG_SUB_TYPE
       subType = msg.getSubType()
+      seq = msg.getSeq()
+      random = msg.getRandom()
       isSelfSend = msg.getIsSend() // 消息是否是自己发送
 
       switch (sessType) {
@@ -187,7 +189,8 @@ export default class webimHandler {
               // }
               // webim.c2CMsgReaded(opts)
               let customer = await this.getCustomerMsg(fromAccount)
-              let data = Object.assign({}, {fromAccountNick, avatar: customer.avatar, isSelfSend, time: msg.getTime()}, content)
+              let data = Object.assign({}, {fromAccount, fromAccountNick, avatar: customer.avatar, isSelfSend, time: msg.getTime()}, content, seq, random)
+              console.log(data)
               resolve(data)
               console.error('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ', 内容=' + content)
               break
@@ -373,6 +376,90 @@ export default class webimHandler {
         }
       )
     })
+  }
+
+  // 解析成雷达消息
+  static transitionMsg(msg) {
+    let resTxt, data, productName
+    if (msg.type === 'chat') {
+      resTxt = msg.text
+    } else if (msg.type === 'custom') {
+      let code = msg.ext * 1
+      let nickName = msg.fromAccountNick
+      switch (code) {
+        case 10000:
+          resTxt = nickName + '正在查看你的名片'
+          break
+        case 10001:
+          resTxt = nickName + '给你点了赞, 看来认可你'
+          break
+        case 10002:
+          resTxt = nickName + '取消了给你点的赞'
+          break
+        case 10003:
+          resTxt = nickName + '复制了你的邮箱, 请留意邮件'
+          break
+        case 10004:
+          resTxt = nickName + '浏览了你的地址'
+          break
+        case 10005:
+          resTxt = nickName + '转发了你的名片, 你的人脉圈正在裂变'
+          break
+        case 10006:
+          resTxt = nickName + '保存了你的名片海报'
+          break
+        case 10007:
+          resTxt = nickName + '拨打了你的手机, 请记录跟进内容'
+          break
+        case 10008:
+          resTxt = nickName + '保存了你的电话, 可以考虑主动沟通'
+          break
+        case 20001:
+          resTxt = nickName + '正在查看你的产品, 请把握商机'
+          break
+        case 20002:
+        case 20005:
+          data = JSON.parse(msg.data)
+          if (data.title.length > 8) {
+            productName = data.title.slice(0, 8) + '···'
+          } else {
+            productName = data.title
+          }
+          resTxt = `${nickName}正在查看${productName}, 可能对该产品感兴趣`
+          break
+        case 20003:
+          data = JSON.parse(msg.data)
+          if (data.title.length > 8) {
+            productName = data.title.slice(0, 8) + '···'
+          } else {
+            productName = data.title
+          }
+          resTxt = `${nickName}正在对${productName}向你咨询, 请做好准备应答`
+          break
+        case 20004:
+          data = JSON.parse(msg.data)
+          if (data.title.length > 8) {
+            productName = data.title.slice(0, 8) + '···'
+          } else {
+            productName = data.title
+          }
+          resTxt = `${nickName}转发了${productName}可能在咨询他人建议`
+          break
+        case 30001:
+          resTxt = nickName + '正在查看你发布的动态'
+          break
+        case 30002:
+          resTxt = nickName + '给你发布的动态点了赞'
+          break
+        case 40001:
+          resTxt = nickName + '正在查看你公司的官网'
+          break
+        case 50001:
+          resTxt = nickName + '正在向你咨询, 请做好准备应答'
+          break
+      }
+    }
+    return resTxt
   }
 
   // 监听连接状态回调变化事件

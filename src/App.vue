@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ceiling></ceiling>
+    <ceiling ref="imDom"></ceiling>
     <router-view/>
     <tab></tab>
   </div>
@@ -41,14 +41,14 @@
     methods: {
       _checkAuthorize() {
         this.$router.replace(NORMAL_ROUTE)
-        // if (this.code && !this.hasToken) {
-        //   // 有code没有token -> 申请拿token
-        //   this._applyOauth()
-        // } else if (!this.hasToken && !this.code) {
-        //   this._getCode()
-        // } else {
-        //   this.$router.replace(NORMAL_ROUTE)
-        // }
+        if (this.code && !this.hasToken) {
+          // 有code没有token -> 申请拿token
+          this._applyOauth()
+        } else if (!this.hasToken && !this.code) {
+          this._getCode()
+        } else {
+          this.$router.replace(NORMAL_ROUTE)
+        }
       },
       _getCode() {
         window.location.href = oauth.oauthUri

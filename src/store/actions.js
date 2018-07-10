@@ -13,6 +13,25 @@ export const setUnreadCount = ({commit, state}, id) => {
 }
 
 export const setDepartment = ({commit, state}, role) => {
-  console.log()
   commit(TYPES.SET_SIGNSTURE, role)
+}
+
+export const setNewMsg = ({commit, state}, msg) => {
+  commit(TYPES.SET_NEW_MSG, msg)
+}
+
+export const setCustomCount = ({commit, state}, type) => {
+  commit(TYPES.SET_CUSTOM_COUNT, type)
+}
+
+export const addListCount = ({commit, state}, id) => {
+  commit(TYPES.ADD_LIST_COUNT, id)
+}
+
+export const addListMsg = ({commit, state}, msg) => {
+  commit(TYPES.ADD_LIST_MSG, msg)
+}
+
+export const setImInfo = ({commit, state}, imInfo) => {
+  commit(TYPES.SET_IM_INFO, imInfo)
 }
