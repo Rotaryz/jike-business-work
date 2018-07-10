@@ -41,7 +41,7 @@
     },
     methods: {
       cancelHandler() {
-        this.userName = ''
+        this.$router.back()
       },
       check(item) {
         const path = `/client-detail`
