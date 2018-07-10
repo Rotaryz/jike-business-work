@@ -68,19 +68,50 @@ const mutations = {
     }
   },
   [TYPES.ADD_LIST_MSG](state, msg) {
-    state.latelyList = state.latelyList.map((item) => {
-      if (item.sessionId === msg.fromAccount) {
-        item.lastMsg = msg.text
-        item.msgTimeStamp = msg.time
-      }
-      return item
+    let hasIn = state.latelyList.filter((item) => {
+      return item.sessionId === msg.fromAccount
     })
+    let notIn = state.latelyList.filter((item) => {
+      return item.sessionId !== msg.fromAccount
+    })
+    let inItem
+    if (hasIn.length) {
+      inItem = Object.assign({}, hasIn[0], {lastMsg: msg.text, msgTimeStamp: msg.msgTimeStamp, time: msg.time})
+    } else {
+      let addMsg = {
+        lastMsg: msg.text,
+        msgTimeStamp: msg.msgTimeStamp ? msg.msgTimeStamp : msg.time,
+        time: msg.time,
+        sessionId: msg.fromAccount,
+        avatar: msg.avatar,
+        nickName: msg.nickName ? msg.nickName : msg.fromAccountNick
+      }
+      inItem = Object.assign({}, addMsg)
+    }
+    state.latelyList = [inItem, ...notIn]
   },
   [TYPES.SET_IM_INFO](state, imInfo) {
     state.imInfo = imInfo
   },
   [TYPES.SET_NOW_CHAT](state, arr) {
     state.nowChat = arr
+  },
+  [TYPES.ADD_NOW_CHAT](state, msg) {
+    if (msg.fromAccount === state.currentMsg.account) {
+      let newMsg = {
+        from_account_id: msg.fromAccount,
+        avatar: state.currentMsg.avatar,
+        content: msg.text,
+        time: msg.time,
+        msgTimeStamp: msg.time,
+        nickName: state.currentMsg.nickName,
+        sessionId: msg.fromAccount,
+        unreadMsgCount: 0,
+        type: 1
+      }
+      state.nowChat = [...state.nowChat, newMsg]
+      console.log(state.nowChat)
+    }
   }
 }
 

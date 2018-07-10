@@ -19,3 +19,5 @@ export const ADD_LIST_MSG = 'ADD_LIST_MSG'
 export const SET_IM_INFO = 'SET_IM_INFO'
 
 export const SET_NOW_CHAT = 'SET_NOW_CHAT'
+
+export const ADD_NOW_CHAT = 'ADD_NOW_CHAT'

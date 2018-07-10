@@ -42,3 +42,7 @@ export const setImInfo = ({commit, state}, imInfo) => {
 export const setNowChat = ({commit, state}, arr) => {
   commit(TYPES.SET_NOW_CHAT, arr)
 }
+
+export const addNowChat = ({commit, state}, msg) => {
+  commit(TYPES.ADD_NOW_CHAT, msg)
+}

@@ -17,6 +17,7 @@
   import webimHandler from 'common/js/webim_handler'
   import {ERR_OK} from '../../common/js/config'
   import storage from 'storage-controller'
+  import Utils from 'common/js/utils'
 
   const COMPONENT_NAME = 'Ceiling'
   export default {
@@ -49,7 +50,8 @@
         'setCustomCount',
         'addListCount',
         'addListMsg',
-        'setImInfo'
+        'setImInfo',
+        'addNowChat'
       ]),
       // IM登录
       async sdkLogin(imInfo) {
@@ -75,13 +77,13 @@
               this.newMsgIn = false
             }, 5000)
             let res = await webimHandler.onMsgNotify(msg)
-            console.log(res)
             if (res.type === 'custom') {
               this.setCustomCount('add')
             } else {
               this.addListCount(res)
               this.addListMsg(res)
-              if (res.fromAccount === this.currentMsg.sessionId) {
+              if (res.fromAccount === this.currentMsg.account) {
+                this.addNowChat(res)
               }
             }
             let content = webimHandler.transitionMsg(res)
@@ -93,16 +95,36 @@
 
         let options = {
           'isAccessFormalEnv': true, // 是否访问正式环境，默认访问正式，选填
-          'isLogOn': true// 是否开启控制台打印日志,默认开启，选填
+          'isLogOn': false// 是否开启控制台打印日志,默认开启，选填
         }
 
         let avatar = this.userInfo.avatar
         await webimHandler.sdkLogin(loginInfo, listeners, options, avatar)
         let res = await webimHandler.getRecentContact(50)
         let msgList = await webimHandler.initUnread(res)
+        let noMsgList = msgList.filter((item) => {
+          return item.lastMsg === '[其他]'
+        })
+        let requireArr = noMsgList.map((item) => {
+          return item.sessionId
+        })
+        Im.getLastMsgObj(requireArr).then((res) => {
+          if (res.error === ERR_OK) {
+            let resObj = res.data
+            msgList = msgList.map((item) => {
+              let account = item.sessionId
+              if (resObj[account]) {
+                item.lastMsg = resObj[account].content
+                item.time = resObj[account]['created_at']
+              }
+              return item
+            })
+          }
+        }, (err) => {
+          console.log(err)
+        })
         msgList = msgList.map((item) => {
-          let times = new Date(item.msgTimeStamp * 1000)
-          item.time = times.toLocaleDateString()
+          item.time = Utils.formatDate(item.msgTimeStamp).date
           return item
         })
         this.saveList(msgList)
