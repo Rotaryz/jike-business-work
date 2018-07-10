@@ -71,7 +71,7 @@
           let list = res.data.reverse()
           this.setNowChat(list)
           let timer = setTimeout(() => {
-            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 10
+            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
             this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
             clearTimeout(timer)
           }, 20)
@@ -152,20 +152,33 @@
             from_account_id: this.imInfo.im_account,
             avatar: this.userInfo.avatar,
             content: value,
-            time: res.MsgTime
+            time: res.MsgTime,
+            msgTimeStamp: res.MsgTime,
+            nickName: this.userInfo.nickName,
+            sessionId: this.userInfo.account,
+            unreadMsgCount: 0,
+            type: 1
           }
           let list = [...this.nowChat, msg]
           this.setNowChat(list)
-          this.addListMsg({lastMsg: value, time: res.MsgTime})
+          let addMsg = {
+            text: value,
+            time: res.MsgTime,
+            msgTimeStamp: res.MsgTime,
+            fromAccount: this.id,
+            unreadMsgCount: 0,
+            avatar: msg.avatar
+          }
+          this.addListMsg(addMsg)
           this.inputMsg = ''
           this.$refs.scroll.forceUpdate()
           let timer = setTimeout(() => {
-            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 10
+            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
             this.$refs.scroll.scrollTo(0, startY, 300, ease[this.scrollToEasing])
             clearTimeout(timer)
           }, 20)
         }, err => {
-          console.log(err)
+          this.$refs.toast.show(err)
         })
       }
     },
@@ -241,7 +254,7 @@
       overflow-y: auto
       position: relative
       .chat-list
-        padding-bottom: 20px
+        padding-bottom: 40px
       .chat-item
         padding: 0 15px
         margin-top: 15px

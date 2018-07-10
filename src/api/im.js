@@ -24,5 +24,11 @@ export default {
   getMsgList(data, loading = true) {
     const url = `/api/employee/message-logs`
     return request.post(url, data, loading)
+  },
+
+  // 最近联系人最后一条聊天记录
+  getLastMsgObj(data, loading = true) {
+    const url = `/api/employee/customers-newest-message`
+    return request.post(url, data, loading)
   }
 }
