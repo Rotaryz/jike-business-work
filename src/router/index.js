@@ -305,8 +305,10 @@ const route = new Router({
   ]
 })
 
+const DEFAULT_TITLE = 'AI雷达'
+
 route.beforeEach((to, from, next) => {
-  document.title = to.meta ? to.meta.title : ''
+  document.title = to.meta.title ? to.meta.title : DEFAULT_TITLE
   next()
 })
 
