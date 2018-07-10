@@ -42,7 +42,7 @@
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
             <slide-view :useType="1" @grouping="groupingHandler" :item="item">
-              <user-card :userInfo="item" slot="content"></user-card>
+              <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
             </slide-view>
           </li>
         </ul>
