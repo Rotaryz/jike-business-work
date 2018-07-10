@@ -25,6 +25,7 @@ const GoodsList = () => import('pages/goods-list/goods-list')
 const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 const AddFlow = () => import('pages/add-flow/add-flow')
+const MyData = () => import('pages/my-data/my-data')
 
 Vue.use(Router)
 
@@ -162,6 +163,13 @@ const route = new Router({
             title: '修改签名'
           }
         }]
+      },
+      {
+        path: 'my-data',
+        component: MyData,
+        meta: {
+          title: '我的图表'
+        }
       },
       {
         path: 'shareCard',
