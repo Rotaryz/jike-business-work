@@ -4,6 +4,9 @@ const mutations = {
   [TYPES.SET_TAB_MODE](state, tabMode) {
     state.tabMode = tabMode
   },
+  [TYPES.SET_SIGNSTURE] (state, signature) {
+    state.signature = signature
+  },
   [TYPES.SET_LATELY_LIST](state, latelyList) {
     state.latelyList = latelyList
   },
@@ -17,9 +20,6 @@ const mutations = {
       }
       return item
     })
-  },
-  [TYPES.SET_SIGNSTURE](state, department) {
-    state.department = department
   },
   [TYPES.SET_NEW_MSG](state, msg) {
     state.newMsg = msg
