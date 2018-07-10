@@ -102,6 +102,20 @@ const route = new Router({
                   meta: {
                     title: '标签'
                   }
+                },
+                {
+                  path: 'detail-data',
+                  component: Cdata,
+                  meta: {
+                    title: '客户資料'
+                  }
+                },
+                {
+                  path: 'addflow',
+                  component: AddFlow,
+                  meta: {
+                    title: '添加跟进内容'
+                  }
                 }
               ]
             }
@@ -119,6 +133,20 @@ const route = new Router({
               component: ClientTag,
               meta: {
                 title: '标签'
+              }
+            },
+            {
+              path: 'detail-data',
+              component: Cdata,
+              meta: {
+                title: '客户資料'
+              }
+            },
+            {
+              path: 'addflow',
+              component: AddFlow,
+              meta: {
+                title: '添加跟进内容'
               }
             }
           ]
@@ -225,7 +253,7 @@ const route = new Router({
         }]
       },
       {
-        path: '/my-data',
+        path: 'my-data',
         component: MyData,
         meta: {
           title: '我的图表'

@@ -10,60 +10,69 @@
                 @scroll="scroll"
                 :pullUpLoad="pullUpLoadObj"
                 @pullingUp="onPullingUp">
-          <div class="client-top" ref="eleven">
-            <div class="cliten-bg"></div>
-            <div class="cliten-box">
-              <div class="cliten-con">
-                <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-                <div class="cliten-img">
-                  <div class="detail-img-box">
-                    <div class="img">
-                      <img :src="clientData.image_url" alt="">
-                    </div>
-                    <div class="label-right">
-                      <div class="label-name">{{clientData.name}}</div>
-                      <div class="label-box">
-                        <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
-                             @click="toClientTag">{{item.label_name}}
+          <div v-if="!showTab">
+            <div class="client-top" ref="eleven">
+              <div class="cliten-bg"></div>
+              <div class="cliten-box">
+                <div class="cliten-con">
+                  <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                  <div class="cliten-img">
+                    <div class="detail-img-box">
+                      <div class="img">
+                        <img :src="clientData.image_url" alt="">
+                      </div>
+                      <div class="label-right">
+                        <div class="label-name">{{clientData.name}}</div>
+                        <div class="label-box">
+                          <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
+                               @click="toClientTag">{{item.label_name}}
+                          </div>
+                          <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
                         </div>
-                        <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
                       </div>
                     </div>
-                  </div>
-                  <div class="detail-jump" @click="jumpData">
-                    <img class="jump-img" src="./icon-pressed@2x.png" alt="">
-                  </div>
-                </div>
-                <div class="cliten-bottom">
-                  <div class="bottom-number">
-                    <div class="number-top">
-                      <div class="number">{{clientData.conversion_rate}}</div>
-                      <div class="icon">%</div>
-                    </div>
-                    <div class="number-bottom">
-                      <div class="text">预计成交率</div>
+                    <div class="detail-jump" @click="jumpData">
+                      <img class="jump-img" src="./icon-pressed@2x.png" alt="">
                     </div>
                   </div>
-                  <div class="bottom-number">
-                    <div class="number-top" v-if="clientData.progress < 110">
-                      <div class="number">{{clientData.progress}}</div>
-                      <div class="icon">%</div>
+                  <div class="cliten-bottom">
+                    <div class="bottom-number">
+                      <div class="number-top">
+                        <div class="number">{{clientData.conversion_rate}}</div>
+                        <div class="icon">%</div>
+                      </div>
+                      <div class="number-bottom">
+                        <div class="text">预计成交率</div>
+                      </div>
                     </div>
-                    <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
-                      <div class="text">{{clientData.progress}}</div>
-                    </div>
-                    <div class="number-bottom" @click="showModel">
-                      <div class="text">实际跟进阶段</div>
-                      <div class="img-box">
-                        <img class="img" src="./icon-switch@2x.png" alt="">
+                    <div class="bottom-number">
+                      <div class="number-top" v-if="clientData.progress < 110">
+                        <div class="number">{{clientData.progress}}</div>
+                        <div class="icon">%</div>
+                      </div>
+                      <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
+                        <div class="text">{{clientData.progress}}</div>
+                      </div>
+                      <div class="number-bottom" @click="showModel">
+                        <div class="text">实际跟进阶段</div>
+                        <div class="img-box">
+                          <img class="img" src="./icon-switch@2x.png" alt="">
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="select-tab select-client">
+              <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
+              </div>
+              <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+                <div class="chilen-line"></div>
+              </div>
+            </div>
           </div>
-          <div class="tab-padding"></div>
+          <div class="tab-padding" v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
             <div class="box-list">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
@@ -156,7 +165,7 @@
             <div class="pie-box line-box">
               <div id="myLine"></div>
               <div class="title-box">
-                <div class="title">近30日客户活跃度</div>
+                <div class="title">近7日客户活跃度</div>
                 <div class="sub-title">(每小时更新)</div>
               </div>
             </div>
@@ -170,7 +179,7 @@
           </div>
         </scroll>
       </div>
-      <div class="select-tab" :style="'top:' + tabhighgt + 'px'">
+      <div class="select-tab" v-if="showTab">
         <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
         <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
           <div class="chilen-line"></div>
@@ -207,7 +216,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {ClientDetail, Client} from 'api'
+  import {ClientDetail, Client, Echart} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
@@ -275,7 +284,21 @@
         tabhighgt: 216,
         highgt: 216,
         pageUrl: '',
-        labelList: []
+        labelList: [],
+        pieData: [
+          {value: 1, name: '对我感兴趣'},
+          {value: 1, name: '对产品感兴趣'},
+          {value: 1, name: '对公司感兴趣'}
+        ],
+        ationLine: {
+          x: [],
+          y: []
+        },
+        barData: {
+          x: [],
+          y: []
+        },
+        showTab: false
       }
     },
     created() {
@@ -283,6 +306,9 @@
       this.pageUrl = this.$route.query.pageUrl
       this.getClientId(this.id)
       this.getCusomerTagList()
+      this.getActionLineData()
+      this.getPieData()
+      this.getBarData()
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
@@ -326,16 +352,11 @@
         this.$router.push(url)
       },
       scroll(pos) {
-        // console.log(pos.y)
-        if (pos.y >= 0) {
-          console.log(1111)
-          this.tabhighgt = this.highgt
-          return
-        }
         let hightPx = pos.y * -1
-        if (this.highgt >= hightPx && hightPx >= 0) {
-          this.tabhighgt = this.highgt - hightPx
-          // console.log(this.tabhighgt)
+        if (hightPx >= this.highgt) {
+          this.showTab = true
+        } else {
+          this.showTab = false
         }
       },
       drawPie() {
@@ -358,11 +379,7 @@
               type: 'pie',
               radius: '40%',
               center: ['50%', '55%'],
-              data: [
-                {value: 335, name: '对我感兴趣'},
-                {value: 235, name: '对产品感兴趣'},
-                {value: 148, name: '对公司感兴趣'}
-              ],
+              data: this.pieData,
               itemStyle: {
                 emphasis: {
                   shadowBlur: 10,
@@ -386,7 +403,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['10.11', '10.2', '10.3', '10.4', '10.5', '10.6', '10.7'],
+            data: this.ationLine.x,
             splitLine: {
               show: true,
               lineStyle: {
@@ -412,7 +429,7 @@
             }
           },
           series: [{
-            data: [1, 2, 3, 4, 5, 6, 21],
+            data: this.ationLine.y,
             type: 'line',
             showSymbol: false,
             itemStyle: {
@@ -465,7 +482,7 @@
           },
           yAxis: {
             type: 'category',
-            data: ['点赞', '转发', '拨打电话', '咨询'],
+            data: this.barData.y,
             axisLabel: {
               interval: 0,
               color: '#20202E',
@@ -473,7 +490,7 @@
             }
           },
           series: [{
-            data: [1, 2, 4, 1],
+            data: this.barData.x,
             type: 'bar',
             showSymbol: false,
             barWidth: 25,
@@ -510,7 +527,7 @@
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
             if (res.error === ERR_OK) {
-              this.getClientId(1)
+              this.getClientId(this.id)
             } else {
               this.$refs.toast.show(res.message)
             }
@@ -544,6 +561,7 @@
             this.clientData = res.data
             this.id = res.data.id
             this.flowId = res.data.flow_id
+            this.mobile = res.data.mobile
             this.getNewFlowList(this.id, this.flowId)
             this.getNewActionList(this.id)
           }
@@ -576,12 +594,6 @@
           this.noMore = true
         }
       },
-      _isActionList(res) {
-        this.actionPage++
-        if (this.actionList.length >= res.meta.total * 1) {
-          this.noActionMore = true
-        }
-      },
       getNewActionList(id) {
         ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
@@ -605,19 +617,19 @@
         })
       },
       phoneCall() {
+        if (this.mobile.length * 1 === 0) {
+          this.$refs.toast.show('还没备注电话号码')
+          return
+        }
         window.location.href = `tel:${this.mobile}`
       },
       toAddFlow() {
-        let id = this.id
-        let flowId = this.flowId
-        const path = `/addflow?id=${id}&flowid=${flowId}`
-        this.$router.push({path})
+        let path = `${this.pageUrl}/addflow`
+        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpData() {
-        let id = this.id
-        let flowId = this.flowId
-        const path = `/detail-data?id=${id}&flowid=${flowId}`
-        this.$router.push({path})
+        let path = `${this.pageUrl}/detail-data`
+        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpMessage() {
         let id = this.id
@@ -645,6 +657,33 @@
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
+        })
+      },
+      getPieData() {
+        Echart.getPie(this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.pieData = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getActionLineData() {
+        Echart.getActionLine(this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.ationLine = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getBarData() {
+        Echart.getBar(this.id).then(res => {
+          if (res.error === ERR_OK) {
+            this.barData = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       }
     },
@@ -915,6 +954,9 @@
         width: 30px
         background: #20202e
         margin: 0 auto
+
+  .select-client
+    position: relative
 
   .visitor-box
     padding: 0 15px

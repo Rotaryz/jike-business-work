@@ -1,113 +1,120 @@
 <template>
-  <div class="data-box">
-    <div class="client-top">
-      <div class="cliten-bg"></div>
-      <div class="cliten-box">
-        <div class="cliten-con">
-          <div class="cliten-img">
-            <div class="detail-img-box">
-              <div class="img">
-                <img :src="imgUrl" alt="" class="imgUrl">
-              </div>
-              <div class="label-right">
-                <div class="label-name">{{flow.nickname}}</div>
-                <div class="add-text">
-                  {{flow.sources}}
+  <transition name="slide">
+    <article class="data-all">
+      <scroll>
+        <div class="data-box">
+          <div class="client-top">
+            <div class="cliten-bg"></div>
+            <div class="cliten-box">
+              <div class="cliten-con">
+                <div class="cliten-img">
+                  <div class="detail-img-box">
+                    <div class="img">
+                      <img :src="imgUrl" alt="" class="imgUrl">
+                    </div>
+                    <div class="label-right">
+                      <div class="label-name">{{flow.nickname}}</div>
+                      <div class="add-text">
+                        {{flow.sources}}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="data-con">
-      <div class="data-top">
-        <div class="data-list">
-          <div class="left">姓名</div>
-          <div class="right">
-            <input type="text" placeholder="未完善" class="right-input" v-model="flow.real_name">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">手机号码</div>
-          <div class="right">
-            <input type="number" placeholder="未完善" class="right-input"
-                   oninput="if(value.length > 11)value = value.slice(0, 11)" v-model="flow.mobile">
-            <img v-if="flow.mobile.length > 0" src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone" @click="phoneCall()">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">微信号</div>
-          <div class="right">
-            <input type="text" placeholder="未完善" class="right-input" v-model="flow.wx_account">
-            <img v-if="flow.wx_account.length > 0" src="./icon-wechat_khzl@2x.png"  v-clipboard:copy="flow.wx_account" v-clipboard:success="onCopy" v-clipboard:error="onError" alt="" class="right-img-phone right-img-copy">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">性别</div>
-          <div class="right">
-            <select v-model='sexSelected' class="right-selected">
-              <option v-for="option in options" v-bind:value="option.value">
-                {{ option.text }}
-              </option>
-            </select>
-            <div class="selected-text" :class="sexSelected === '未完善' ? '':'active'">
-              {{sexSelected}}
+          <div class="data-con">
+            <div class="data-top">
+              <div class="data-list">
+                <div class="left">姓名</div>
+                <div class="right">
+                  <input type="text" placeholder="未完善" class="right-input" v-model="flow.real_name">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">手机号码</div>
+                <div class="right">
+                  <input type="number" placeholder="未完善" class="right-input"
+                         oninput="if(value.length > 11)value = value.slice(0, 11)" v-model="flow.mobile">
+                  <img v-if="flow.mobile.length > 0" src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone" @click="phoneCall()">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">微信号</div>
+                <div class="right">
+                  <input type="text" placeholder="未完善" class="right-input" v-model="flow.wx_account">
+                  <img v-if="flow.wx_account.length > 0" src="./icon-wechat_khzl@2x.png"  v-clipboard:copy="flow.wx_account" v-clipboard:success="onCopy" v-clipboard:error="onError" alt="" class="right-img-phone right-img-copy">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">性别</div>
+                <div class="right">
+                  <select v-model='sexSelected' class="right-selected">
+                    <option v-for="option in options" v-bind:value="option.value">
+                      {{ option.text }}
+                    </option>
+                  </select>
+                  <div class="selected-text" :class="sexSelected === '未完善' ? '':'active'">
+                    {{sexSelected}}
+                  </div>
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">年龄</div>
+                <div class="right">
+                  <input type="number" placeholder="未完善" class="right-input"
+                         oninput="if(value.length > 2)value = value.slice(0, 2)" v-model="flow.age">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">所在城市</div>
+                <div class="right">
+                  <input type="text" placeholder="未完善" class="right-input" v-model="flow.city">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">从事职业</div>
+                <div class="right">
+                  <input type="text" placeholder="未完善" class="right-input" v-model="flow.job">
+                </div>
+              </div>
+              <div class="data-list">
+                <div class="left">所属公司</div>
+                <div class="right">
+                  <input type="text" placeholder="未完善" class="right-input" v-model="flow.company">
+                </div>
+              </div>
+              <div class="data-list" v-if="false">
+                <div class="left">屏蔽消息</div>
+                <div class="right">
+                  <div class="name">{{chooseText}}</div>
+                  <div class="right-choose" @click="chooseBtn" :class="bgChoose ? '' : 'right-choose-active'">
+                    <div class="choose-btn" :class="choose ? 'choose-btn-active' : ''"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="data-bottom">
+              <div class="title">备注</div>
+              <div class="textarea-number">{{flow.note.length}}<span>/500</span></div>
+              <textarea class="data-area" v-model="flow.note" maxlength="500" name="" id="" cols="30" rows="10"
+                        placeholder="请输入备注"></textarea>
             </div>
           </div>
+          <div class="btn-padding"></div>
+          <toast ref="toast"></toast>
         </div>
-        <div class="data-list">
-          <div class="left">年龄</div>
-          <div class="right">
-            <input type="number" placeholder="未完善" class="right-input"
-                   oninput="if(value.length > 2)value = value.slice(0, 2)" v-model="flow.age">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">所在城市</div>
-          <div class="right">
-            <input type="text" placeholder="未完善" class="right-input" v-model="flow.city">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">从事职业</div>
-          <div class="right">
-            <input type="text" placeholder="未完善" class="right-input" v-model="flow.job">
-          </div>
-        </div>
-        <div class="data-list">
-          <div class="left">所属公司</div>
-          <div class="right">
-            <input type="text" placeholder="未完善" class="right-input" v-model="flow.company">
-          </div>
-        </div>
-        <div class="data-list" v-if="false">
-          <div class="left">屏蔽消息</div>
-          <div class="right">
-            <div class="name">{{chooseText}}</div>
-            <div class="right-choose" @click="chooseBtn" :class="bgChoose ? '' : 'right-choose-active'">
-              <div class="choose-btn" :class="choose ? 'choose-btn-active' : ''"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="data-bottom">
-        <div class="title">备注</div>
-        <div class="textarea-number">{{flow.note.length}}<span>/500</span></div>
-        <textarea class="data-area" v-model="flow.note" maxlength="500" name="" id="" cols="30" rows="10"
-                  placeholder="请输入备注"></textarea>
-      </div>
-    </div>
-    <div class="data-btn" @click="saveClientData(1)">保存</div>
-    <div class="btn-padding"></div>
-    <toast ref="toast"></toast>
-  </div>
+      </scroll>
+      <div class="data-btn" @click="saveClientData(1)">保存</div>
+    </article>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import Vue from 'vue'
   import {ClientDetail} from 'api'
   import {ERR_OK} from '../../common/js/config'
+  import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
   import VueClipboard from 'vue-clipboard2'
   Vue.use(VueClipboard)
@@ -201,7 +208,8 @@
       }
     },
     components: {
-      Toast
+      Toast,
+      Scroll
     }
   }
 </script>
@@ -213,7 +221,9 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
-
+  .data-all
+    fill-box()
+    z-index: 70
   .client-top
     position: relative
     .cliten-bg
