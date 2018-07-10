@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <article class="client-user-list">
-      <search></search>
+      <search @toNav="toSearch"></search>
       <section class="add-user" @click="toAddUser">
         <img class="icon" src="./icon-add@3x.png" alt="">
         <div class="txt">添加成员</div>
@@ -10,6 +10,7 @@
       <div class="simple-scroll-demo">
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
+                  bcColor="#fff"
                   :data="dataArray"
                   :pullDownRefresh="pullDownRefreshObj"
                   :pullUpLoad="pullUpLoadObj"
@@ -17,9 +18,6 @@
                   @pullingDown="onPullingDown"
                   @pullingUp="onPullingUp"
                   @scroll="scroll">
-            <!--<ul class="list-content">-->
-            <!--<li @click="clickItem(item)" class="list-item" v-for="item in items">{{item}}</li>-->
-            <!--</ul>-->
             <ul class="user-list">
               <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
                 <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
@@ -31,6 +29,7 @@
         </div>
       </div>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+      <toast ref="toast"></toast>
       <router-view @refresh="refresh"></router-view>
     </article>
   </transition>
@@ -44,26 +43,10 @@
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
-  // const listData = [{
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }]
+  const LIMIT = 10
   export default {
     name: 'ClientUserList',
     data() {
@@ -73,7 +56,7 @@
         checkedItem: null,
         scrollbar: true,
         scrollbarFade: true,
-        pullDownRefresh: true,
+        pullDownRefresh: false,
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
         pullUpLoad: true,
@@ -87,58 +70,64 @@
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         items: [],
-        itemIndex: 0
+        itemIndex: 0,
+        page: 1,
+        limit: LIMIT
       }
     },
     created() {
       for (let i = 0; i < 20; i++) {
         this.items.push(i)
       }
-    },
-    beforeMount() {
-      const groupInfo = this.$route.query.groupInfo
-      document.title = groupInfo.name
-      groupInfo && (this.currentGroupInfo = groupInfo)
-      const data = {
-        get_group_detail: 1,
-        group_id: this.currentGroupInfo.id
-      }
-      Client.getCusomerList(data).then(res => {
-        if (res.data) {
-          this.dataArray = res.data
-        }
-      })
+      this.getTitle()
+      this.getCusonerList()
     },
     beforeDestroy() {
-      console.log('list')
+      this.$emit('refresh')
     },
     mounted() {
     },
     methods: {
       refresh() {
-        console.log(this.currentGroupInfo.name)
         document.title = this.currentGroupInfo.name
-        console.log(document.title)
+        setTimeout(() => {
+          this.getCusonerList()
+        }, 300)
+      },
+      toSearch() {
+        const path = `/client/client-user-list/client-search`
+        this.$router.push({path})
+      },
+      getTitle() {
+        const groupInfo = this.$route.query.groupInfo
+        document.title = groupInfo.name
+        groupInfo && (this.currentGroupInfo = groupInfo)
+      },
+      getCusonerList() {
         const data = {
           get_group_detail: 1,
-          group_id: this.currentGroupInfo.id
+          group_id: this.currentGroupInfo.id,
+          page: 1,
+          limit: LIMIT
         }
         Client.getCusomerList(data).then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
       toAddUser() {
-        const path = `/client-user-list/client-add-user`
+        const path = `/client/client-user-list/client-add-user`
         this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
       },
       check(item) {
-        const path = `/client-detail`
+        const path = `/client/client-user-list/client-detail`
         this.$router.push({path, query: {id: item.id}})
       },
       groupingHandler(index, item) {
-        const path = `/client-user-list/client-set-group`
+        const path = `/client/client-user-list/client-set-group`
         this.$router.push({path, query: {customerInfo: item}})
       },
       delHandler(index, item) {
@@ -151,9 +140,12 @@
           customer_id: this.checkedItem.id
         }
         Client.delCustomer(data).then(res => {
-          const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
-          this.dataArray.splice(idx, 1)
-          console.log(res)
+          if (res.error === ERR_OK) {
+            const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
+            this.dataArray.splice(idx, 1)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       },
       msgCancel() {
@@ -183,19 +175,38 @@
       onPullingUp() {
         // 更新数据
         console.log('pulling up and load data')
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // 如果有新数据
-            let newPage = []
-            for (let i = 0; i < 10; i++) {
-              newPage.push(i)
+        let page = ++this.page
+        let limit = LIMIT
+        const data = {
+          get_group_detail: 1,
+          group_id: this.currentGroupInfo.id,
+          page: page,
+          limit: limit
+        }
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
             }
-            this.items = this.items.concat(newPage)
           } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
+            this.$refs.toast.show(res.message)
           }
-        }, 1500)
+        })
+        // setTimeout(() => {
+        //   if (Math.random() > 0.5) {
+        //     // 如果有新数据
+        //     let newPage = []
+        //     for (let i = 0; i < 10; i++) {
+        //       newPage.push(i)
+        //     }
+        //     this.items = this.items.concat(newPage)
+        //   } else {
+        //     // 如果没有新数据
+        //     this.$refs.scroll.forceUpdate()
+        //   }
+        // }, 1500)
       },
       rebuildScroll() {
         this.nextTick(() => {
@@ -249,7 +260,8 @@
       Scroll,
       SlideView,
       UserCard,
-      ConfirmMsg
+      ConfirmMsg,
+      Toast
     }
   }
 </script>
@@ -266,7 +278,6 @@
     bottom: 0
     z-index: 10
     background-color: $color-white-fff
-    min-height: 100vh
     layout()
     .add-user
       height: 49px

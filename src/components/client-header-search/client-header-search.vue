@@ -12,8 +12,7 @@
     name: '',
     methods: {
       clickHandler() {
-        const path = `/client-search`
-        this.$router.push({path})
+        this.$emit('toNav')
       }
     }
   }

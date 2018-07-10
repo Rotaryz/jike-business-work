@@ -1,196 +1,198 @@
 <template>
-  <div class="client-detail">
-    <div class="container">
-      <scroll ref="scroll"
-              :data="list"
-              :probeType="probeType"
-              :bcColor="bcColor"
-              :listenScroll="listenScroll"
-              @scroll="scroll"
-              :pullUpLoad="pullUpLoadObj"
-              @pullingUp="onPullingUp">
-        <div class="client-top" ref="eleven">
-          <div class="cliten-bg"></div>
-          <div class="cliten-box">
-            <div class="cliten-con">
-              <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-              <div class="cliten-img">
-                <div class="detail-img-box">
-                  <div class="img">
-                    <img :src="clientData.image_url" alt="">
+  <transition name="slide">
+    <div class="client-detail">
+      <div class="container">
+        <scroll ref="scroll"
+                :data="list"
+                :probeType="probeType"
+                :bcColor="bcColor"
+                :listenScroll="listenScroll"
+                @scroll="scroll"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp">
+          <div class="client-top" ref="eleven">
+            <div class="cliten-bg"></div>
+            <div class="cliten-box">
+              <div class="cliten-con">
+                <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                <div class="cliten-img">
+                  <div class="detail-img-box">
+                    <div class="img">
+                      <img :src="clientData.image_url" alt="">
+                    </div>
+                    <div class="label-right">
+                      <div class="label-name">{{clientData.name}}</div>
+                      <div class="label-box">
+                        <div class="label active">80后</div>
+                        <div class="label active">在意价格</div>
+                        <div class="label" @click="toClientTag">添加标签</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="label-right">
-                    <div class="label-name">{{clientData.name}}</div>
-                    <div class="label-box">
-                      <div class="label active">80后</div>
-                      <div class="label active">在意价格</div>
-                      <div class="label">添加标签</div>
+                  <div class="detail-jump" @click="jumpData">
+                    <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                  </div>
+                </div>
+                <div class="cliten-bottom">
+                  <div class="bottom-number">
+                    <div class="number-top">
+                      <div class="number">{{clientData.conversion_rate}}</div>
+                      <div class="icon">%</div>
+                    </div>
+                    <div class="number-bottom">
+                      <div class="text">预计成交率</div>
+                    </div>
+                  </div>
+                  <div class="bottom-number">
+                    <div class="number-top" v-if="clientData.progress < 110">
+                      <div class="number">{{clientData.progress}}</div>
+                      <div class="icon">%</div>
+                    </div>
+                    <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
+                      <div class="text">{{clientData.progress}}</div>
+                    </div>
+                    <div class="number-bottom" @click="showModel">
+                      <div class="text">实际跟进阶段</div>
+                      <div class="img-box">
+                        <img class="img" src="./icon-switch@2x.png" alt="">
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="detail-jump" @click="jumpData">
-                  <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="tab-padding"></div>
+          <div class="visitor-box" v-if="menuIdx * 1 === 0">
+            <div class="box-list">
+              <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
+                <img :src="item.image_url" class="msgs-left">
+                <div class="msgs-right">
+                  <div class="msgs-container">
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span
+                      class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
+                      class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span
+                      class="green">赞</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span
+                      class="green">邮箱</span>，请留意邮件</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span
+                      class="green">地址</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span
+                      class="green">名片</span>，你的人脉圈正在裂变</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span
+                      class="green">名片海报</span>，看来TA对你感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span
+                      class="green">手机</span>，请记录跟进内容</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span
+                      class="green">电话</span>，可以考虑主动沟通</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
+                      class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
+                      class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
+                      class="green">咨询</span>，请做好准备应答</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span
+                      class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
+                      class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
+                      class="green">点了</span><span class="green">赞</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
+                      class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
+                      class="green">咨询</span>，请做好准备应答</p>
+                  </div>
+                  <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
                 </div>
               </div>
-              <div class="cliten-bottom">
-                <div class="bottom-number">
-                  <div class="number-top">
-                    <div class="number">{{clientData.conversion_rate}}</div>
-                    <div class="icon">%</div>
-                  </div>
-                  <div class="number-bottom">
-                    <div class="text">预计成交率</div>
-                  </div>
+            </div>
+          </div>
+          <div class="follow-box" v-if="menuIdx * 1 === 1">
+            <div class="follow-line"></div>
+            <div class="follow-list" v-for="(item, index) in flowList" :key="index">
+              <div class="time">{{item.created_at}}</div>
+              <div class="text">{{item.record}}</div>
+              <div class="icon-log" v-if="index * 1 === 0"></div>
+              <div class="icon-cri" v-if="index * 1 !== 0"></div>
+              <div class="icon-img" v-if="index * 1 === 0">
+                <img class="icon-small-img" src="./icon-address@2x.png" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="ai-box" v-if="menuIdx * 1 === 2">
+            <div class="pie-box">
+              <div id="myPie"></div>
+              <div class="title-box">
+                <div class="title">客户兴趣占比</div>
+                <div class="sub-title">(每小时更新)</div>
+              </div>
+              <div class="pie-list">
+                <div class="list">
+                  <div class="icon one"></div>
+                  <div class="text">对我感兴趣</div>
                 </div>
-                <div class="bottom-number">
-                  <div class="number-top" v-if="clientData.progress < 110">
-                    <div class="number">{{clientData.progress}}</div>
-                    <div class="icon">%</div>
-                  </div>
-                  <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
-                    <div class="text">{{clientData.progress}}</div>
-                  </div>
-                  <div class="number-bottom" @click="showModel">
-                    <div class="text">实际跟进阶段</div>
-                    <div class="img-box">
-                      <img class="img" src="./icon-switch@2x.png" alt="">
-                    </div>
-                  </div>
+                <div class="list">
+                  <div class="icon two"></div>
+                  <div class="text">对产品感兴趣</div>
+                </div>
+                <div class="list">
+                  <div class="icon thr"></div>
+                  <div class="text">对公司感兴趣</div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="tab-padding"></div>
-        <div class="visitor-box" v-if="menuIdx * 1 === 0">
-          <div class="box-list">
-            <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
-              <img :src="item.image_url" class="msgs-left">
-              <div class="msgs-right">
-                <div class="msgs-container">
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span
-                    class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
-                    class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span
-                    class="green">赞</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span
-                    class="green">邮箱</span>，请留意邮件</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span
-                    class="green">地址</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span
-                    class="green">名片</span>，你的人脉圈正在裂变</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span
-                    class="green">名片海报</span>，看来TA对你感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span
-                    class="green">手机</span>，请记录跟进内容</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span
-                    class="green">电话</span>，可以考虑主动沟通</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
-                    class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span
-                    class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
-                    class="green">咨询</span>，请做好准备应答</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span
-                    class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
-                    class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span
-                    class="green">点了</span><span class="green">赞</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span
-                    class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span
-                    class="green">咨询</span>，请做好准备应答</p>
-                </div>
-                <!--<img src="./icon-pressed@2x.png" class="msgs-rt">-->
+            <div class="pie-box line-box">
+              <div id="myLine"></div>
+              <div class="title-box">
+                <div class="title">近30日客户活跃度</div>
+                <div class="sub-title">(每小时更新)</div>
+              </div>
+            </div>
+            <div class="pie-box bar-box">
+              <div id="myBar"></div>
+              <div class="title-box">
+                <div class="title">客户与我的互动</div>
+                <div class="sub-title">(每天0点更新)</div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="follow-box" v-if="menuIdx * 1 === 1">
-          <div class="follow-line"></div>
-          <div class="follow-list" v-for="(item, index) in flowList" :key="index">
-            <div class="time">{{item.created_at}}</div>
-            <div class="text">{{item.record}}</div>
-            <div class="icon-log" v-if="index * 1 === 0"></div>
-            <div class="icon-cri" v-if="index * 1 !== 0"></div>
-            <div class="icon-img" v-if="index * 1 === 0">
-              <img class="icon-small-img" src="./icon-address@2x.png" alt="">
-            </div>
-          </div>
-        </div>
-        <div class="ai-box" v-if="menuIdx * 1 === 2">
-          <div class="pie-box">
-            <div id="myPie"></div>
-            <div class="title-box">
-              <div class="title">客户兴趣占比</div>
-              <div class="sub-title">(每小时更新)</div>
-            </div>
-            <div class="pie-list">
-              <div class="list">
-                <div class="icon one"></div>
-                <div class="text">对我感兴趣</div>
-              </div>
-              <div class="list">
-                <div class="icon two"></div>
-                <div class="text">对产品感兴趣</div>
-              </div>
-              <div class="list">
-                <div class="icon thr"></div>
-                <div class="text">对公司感兴趣</div>
-              </div>
-            </div>
-          </div>
-          <div class="pie-box line-box">
-            <div id="myLine"></div>
-            <div class="title-box">
-              <div class="title">近30日客户活跃度</div>
-              <div class="sub-title">(每小时更新)</div>
-            </div>
-          </div>
-          <div class="pie-box bar-box">
-            <div id="myBar"></div>
-            <div class="title-box">
-              <div class="title">客户与我的互动</div>
-              <div class="sub-title">(每天0点更新)</div>
-            </div>
-          </div>
-        </div>
-      </scroll>
-    </div>
-    <div class="select-tab" :style="'top:' + tabhighgt + 'px'">
-      <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
-      <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-        <div class="chilen-line"></div>
+        </scroll>
       </div>
-    </div>
-    <div class="client-box" v-if="!showBox">
-      <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
-      <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
-        <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index, item)">
-          <div class="left">{{item.text}}{{item.icon}}</div>
-          <div class="right">
-            <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
-          </div>
+      <div class="select-tab" :style="'top:' + tabhighgt + 'px'">
+        <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}</div>
+        <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+          <div class="chilen-line"></div>
         </div>
-        <div class="box-line"></div>
-        <div class="btn" @click="hideModel">取消</div>
       </div>
+      <div class="client-box" v-if="!showBox">
+        <div class="box-bg" :class="showMode ? 'submit-bg-active' : ''" @click="hideModel"></div>
+        <div class="box-bottom" :class="showMode ? 'model-con-active' : ''">
+          <div class="bottom-list" v-for="(item, index) in barList" :key="index" @click="selectBar(index, item)">
+            <div class="left">{{item.text}}{{item.icon}}</div>
+            <div class="right">
+              <img v-if="barIndex === index" class="right-img" src="./icon-selected@2x.png" alt="">
+            </div>
+          </div>
+          <div class="box-line"></div>
+          <div class="btn" @click="hideModel">取消</div>
+        </div>
+      </div>
+      <div class="bottom-box">
+        <div class="box-btn" @click="phoneCall">
+          <img src="./icon-telephone@2x.png" alt="" class="btn-img">
+          <div class="text">打电话</div>
+        </div>
+        <img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow" v-if="menuIdx * 1 === 1">
+        <div class="box-btn message-btn" @click="jumpMessage">
+          <img src="./icon-news@2x.png" alt="" class="btn-img">
+          <div class="text">发消息</div>
+        </div>
+      </div>
+      <toast ref="toast"></toast>
     </div>
-    <div class="bottom-box">
-      <div class="box-btn" @click="phoneCall">
-        <img src="./icon-telephone@2x.png" alt="" class="btn-img">
-        <div class="text">打电话</div>
-      </div>
-      <img src="./icon-write@2x.png" alt="" class="add-jump" @click="toAddFlow" v-if="menuIdx * 1 === 1">
-      <div class="box-btn message-btn" @click="jumpMessage">
-        <img src="./icon-news@2x.png" alt="" class="btn-img">
-        <div class="text">发消息</div>
-      </div>
-    </div>
-    <toast ref="toast"></toast>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -265,17 +267,25 @@
     },
     created() {
       this.id = this.$route.query.id
-      this.getClientId(1)
+      console.log(this.id)
+      this.getClientId(this.id)
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
       console.log(this.$refs.eleven.offsetHeight, 111)
     },
+    beforeDestroy() {
+      this.$emit('refresh')
+    },
     methods: {
       ...mapActions([
         'setCurrent'
       ]),
+      toClientTag() {
+        const path = `/client-tag`
+        this.$router.push({path, query: {customerId: this.id}})
+      },
       chatMsg(item) {
         console.log(item)
         let currentMsg = {
@@ -649,8 +659,10 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
   .tab-padding
     height: 48px
+
   .client-detail
     fill-box()
     z-index: 50

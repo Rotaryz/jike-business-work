@@ -13,32 +13,16 @@
         </li>
       </ul>
       <footer class="btn" @click="submit">确定</footer>
+      <toast ref="toast"></toast>
     </article>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
   import {Client} from 'api'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
-  // const listData = [{
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }, {
-  //   icon: 'http://lol.91danji.com/UploadFile/20141128/1417165228238101.jpg',
-  //   name: '李木 ',
-  //   status: '今天跟进',
-  //   ai: 'AI预计成交率100%',
-  //   isCheck: false
-  // }]
   export default {
     name: 'ClientAddUser',
     data() {
@@ -61,7 +45,8 @@
         }
       })
     },
-    updated() {
+    beforeDestroy() {
+      this.$emit('refresh')
     },
     methods: {
       check(item) {
@@ -78,12 +63,22 @@
           data: arr
         }
         Client.addGroupCustomer(data).then(res => {
-          this.$emit('refresh')
-          this.$router.back()
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('保存成功')
+            setTimeout(() => {
+              this.$emit('refresh')
+              this.$router.back()
+            }, 300)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       }
     },
-    watch: {}
+    watch: {},
+    components: {
+      Toast
+    }
   }
 </script>
 

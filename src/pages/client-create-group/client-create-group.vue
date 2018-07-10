@@ -13,16 +13,18 @@
 
 <script type="text/ecmascript-6">
   import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
   import {Client} from 'api'
 
   export default {
     name: 'ClientSetGroup',
     data() {
       return {
-        dataArray: [],
-        preId: -1,
         groupName: ''
       }
+    },
+    beforeDestroy() {
+      this.$emit('refresh')
     },
     methods: {
       save() {
@@ -30,8 +32,15 @@
           return this.$refs.toast.show('请输入分组名称')
         }
         Client.createGroup({name: this.groupName}).then(res => {
-          this.$router.back()
-          console.log(res)
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('保存成功')
+            setTimeout(() => {
+              this.$emit('refresh')
+              this.$router.back()
+            }, 300)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       }
     },
