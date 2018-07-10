@@ -1,4 +1,5 @@
 import * as TYPES from './mutation-types'
+import Utils from 'common/js/utils'
 
 const mutations = {
   [TYPES.SET_TAB_MODE](state, tabMode) {
@@ -59,7 +60,7 @@ const mutations = {
         avatar: msg.avatar,
         nickName: msg.fromAccountNick,
         lastMsg: msg.text,
-        msgTimeStamp: msg.time,
+        msgTimeStamp: Utils.formatDate(msg.time).date,
         msgSeq: msg.seq,
         msgRandom: msg.random, // 消息随机数
         unreadMsgCount: 1
@@ -76,12 +77,12 @@ const mutations = {
     })
     let inItem
     if (hasIn.length) {
-      inItem = Object.assign({}, hasIn[0], {lastMsg: msg.text, msgTimeStamp: msg.msgTimeStamp, time: msg.time})
+      inItem = Object.assign({}, hasIn[0], {lastMsg: msg.text, msgTimeStamp: msg.msgTimeStamp, time: Utils.formatDate(msg.time).date})
     } else {
       let addMsg = {
         lastMsg: msg.text,
         msgTimeStamp: msg.msgTimeStamp ? msg.msgTimeStamp : msg.time,
-        time: msg.time,
+        time: Utils.formatDate(msg.time).date,
         sessionId: msg.fromAccount,
         avatar: msg.avatar,
         nickName: msg.nickName ? msg.nickName : msg.fromAccountNick
