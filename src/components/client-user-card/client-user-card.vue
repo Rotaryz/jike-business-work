@@ -65,38 +65,10 @@
         <div class="tags">{{userInfo.last_follow_day}}</div>
       </article>
     </section>
-    <!--<section class="container">-->
-    <!--<img class="user-icon" :src="userInfo.image_url" alt=""/>-->
-    <!--<article class="user-info">-->
-    <!--<section class="base-info">-->
-    <!--<div class="name">{{userInfo.name}}</div>-->
-    <!--<div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>-->
-    <!--</section>-->
-    <!--<div class="tags">{{userInfo.last_follow_day}}</div>-->
-    <!--</article>-->
-    <!--</section>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  const groupList = [{
-    orderBy: '',
-    name: '预计成交率',
-    isCheck: true
-  }, {
-    orderBy: 'follow',
-    name: '最后跟进时间',
-    isCheck: false
-  }, {
-    orderBy: 'active',
-    name: '最后活跃时间',
-    isCheck: false
-  }, {
-    orderBy: 'join',
-    name: '最新加入时间',
-    isCheck: false
-  }]
-  console.log(groupList)
   export default {
     props: {
       userInfo: Object,

@@ -17,6 +17,7 @@
 
 <script type="text/ecmascript-6">
   import {Client} from 'api'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientSetGroup',
@@ -34,7 +35,6 @@
         if (res.data) {
           this.dataArray = res.data
         }
-        console.log(this.dataArray)
       })
     },
     beforeDestroy() {
@@ -47,8 +47,14 @@
         data: arr
       }
       Client.setGroup(data).then(res => {
+        if (res.error === ERR_OK) {
+          //
+        } else {
+          //
+        }
         this.$emit('refresh')
       })
+      this.$emit('refresh')
     },
     methods: {
       check(item) {

@@ -29,6 +29,7 @@
         </div>
       </div>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
+      <toast ref="toast"></toast>
       <router-view @refresh="refresh"></router-view>
     </article>
   </transition>
@@ -42,6 +43,8 @@
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientUserList',
@@ -86,7 +89,9 @@
     methods: {
       refresh() {
         document.title = this.currentGroupInfo.name
-        this.getCusonerList()
+        setTimeout(() => {
+          this.getCusonerList()
+        }, 300)
       },
       toSearch() {
         const path = `/client/client-user-list/client-search`
@@ -103,8 +108,10 @@
           group_id: this.currentGroupInfo.id
         }
         Client.getCusomerList(data).then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
@@ -130,9 +137,12 @@
           customer_id: this.checkedItem.id
         }
         Client.delCustomer(data).then(res => {
-          const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
-          this.dataArray.splice(idx, 1)
-          console.log(res)
+          if (res.error === ERR_OK) {
+            const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
+            this.dataArray.splice(idx, 1)
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       },
       msgCancel() {
@@ -228,7 +238,8 @@
       Scroll,
       SlideView,
       UserCard,
-      ConfirmMsg
+      ConfirmMsg,
+      Toast
     }
   }
 </script>

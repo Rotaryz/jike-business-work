@@ -13,6 +13,7 @@
           <user-card :userInfo="item"></user-card>
         </li>
       </ul>
+      <toast ref="toast"></toast>
     </article>
   </transition>
 </template>
@@ -20,6 +21,8 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
   import UserCard from 'components/client-user-card/client-user-card'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientSearch',
@@ -29,6 +32,9 @@
         dataArray: [],
         timeStamp: 0
       }
+    },
+    created() {
+      this.searchUser(this.userName)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -40,22 +46,29 @@
       check(item) {
         const path = `/client-detail`
         this.$router.push({path, query: {id: item.id}})
+      },
+      searchUser(name) {
+        const data = {name}
+        Client.getCusomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+          this.timeStamp = Date.now()
+        })
       }
     },
     watch: {
       userName(curVal, oldVal) {
-        if (curVal && Date.now() - this.timeStamp > 100) {
-          const data = {name: curVal}
-          Client.getCusomerList(data).then(res => {
-            this.dataArray = res.data
-            this.timeStamp = Date.now()
-            console.log(res)
-          })
+        if (Date.now() - this.timeStamp > 200) {
+          this.searchUser(curVal)
         }
       }
     },
     components: {
-      UserCard
+      UserCard,
+      Toast
     }
   }
 </script>

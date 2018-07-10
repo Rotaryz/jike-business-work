@@ -17,6 +17,7 @@
           </section>
         </div>
       </scroll>
+      <toast ref="toast"></toast>
     </article>
   </transition>
 </template>
@@ -24,6 +25,8 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
   import Scroll from 'components/scroll/scroll'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   export default {
     name: 'ClientTag',
@@ -65,12 +68,16 @@
           })
         })
       })
-      console.log(arr)
       const data = {
         data: arr,
         customer_id: this.currentId
       }
       Client.updateTag(data).then(res => {
+        if (res.error === ERR_OK) {
+          //
+        } else {
+          //
+        }
         this.$emit('refresh')
       })
     },
@@ -83,7 +90,8 @@
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Toast
     }
   }
 </script>

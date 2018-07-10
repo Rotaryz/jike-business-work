@@ -50,6 +50,7 @@
     </scroll>
     <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
+    <toast ref="toast"></toast>
     <router-view @refresh="refresh"></router-view>
   </div>
 </template>
@@ -63,6 +64,8 @@
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
   import ActionSheet from 'components/action-sheet/action-sheet'
+  import Toast from 'components/toast/toast'
+  import {ERR_OK} from '../../common/js/config'
 
   const groupList = [{
     orderBy: '',
@@ -107,8 +110,10 @@
         this.$router.push({path, query: {customerId: 2}})
       },
       refresh() {
-        this.getGroupList()
-        this.getCusomerList()
+        setTimeout(() => {
+          this.getGroupList()
+          this.getCusomerList()
+        }, 300)
       },
       toSearch() {
         const path = `/client/client-search`
@@ -116,16 +121,20 @@
       },
       getGroupList() {
         Client.getGroupList().then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.userListArr = res.data
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
       getCusomerList() {
         const data = {order_by: this.checkedGroup.orderBy}
         Client.getCusomerList(data).then(res => {
-          if (res.data) {
+          if (res.error === ERR_OK) {
             this.dataArray = res.data
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
@@ -184,7 +193,8 @@
       SlideView,
       UserCard,
       ConfirmMsg,
-      ActionSheet
+      ActionSheet,
+      Toast
     }
   }
 </script>
