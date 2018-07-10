@@ -35,9 +35,9 @@
           let imInfo = res.data
           this.setImInfo(imInfo)
           console.log(imInfo)
-          // this.sdkLogin(imInfo).then(() => {
-          //
-          // })
+          this.sdkLogin(imInfo).then(() => {
+
+          })
         }
       }, (err) => {
         console.log(err)

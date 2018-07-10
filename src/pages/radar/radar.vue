@@ -162,7 +162,6 @@
     display: flex
     flex-direction: column
     .container
-      margin-bottom: 45px
       flex: 1
       overflow: hidden
       position: relative
