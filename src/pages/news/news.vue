@@ -9,25 +9,10 @@
         <div class="news-right">
           <div class="right-top">
             <span class="top-name">{{item.nickName}}</span>
-            <span class="top-time">{{item.msgTimeStamp}}</span>
+            <span class="top-time">{{item.time}}</span>
           </div>
           <div class="right-down">
             {{item.lastMsg}}
-          </div>
-        </div>
-      </div>
-      <div class="news-item border-bottom-1px" v-for="(item, index) in [1, 2]" :key="index">
-        <div class="news-left">
-          <img src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJBB7iadHLcSzFWsjVIrdPr0NTNKibn9wJPfDV69Bav3QhNsPUxQKBDibTIqia1qc8UyVhUOgj7WSLj3w/132" class="left-img">
-          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount}}</span>
-        </div>
-        <div class="news-right">
-          <div class="right-top">
-            <span class="top-name">{{item.nickName}}21321</span>
-            <span class="top-time">{{item.msgTimeStamp}}21212331</span>
-          </div>
-          <div class="right-down">
-            {{item.lastMsg}}123
           </div>
         </div>
       </div>
@@ -40,7 +25,6 @@
   export default {
     name: 'News',
     created() {
-      this.$emit('tabChange', 2)
     },
     data() {
       return {
@@ -56,7 +40,8 @@
           avatar: item.avatar
         }
         this.setCurrent(currentMsg)
-        this.$router.push('/chat')
+        let url = '/chat?id=' + item.sessionId
+        this.$router.push(url)
       }
     },
     computed: {

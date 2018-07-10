@@ -5,33 +5,32 @@
         <scroll ref="scroll"
                 :data="list"
                 :pullDownRefresh="pullDownRefreshObj"
-                :startY="parseInt(startY)"
                 @pullingDown="onPullingDown">
           <div class="chat-list" ref="list">
-            <div class="chat-item" v-for="item in list" :key="item">
-              <div class="chat-content">
+            <div class="chat-item" v-for="(item, index) in list" :key="index">
+              <div class="chat-content" v-if="item.from_account_id !== imInfo.im_account">
                 <img :src="currentMsg.avatar" class="avatar">
-                <div class="chat-msg-box other" v-if="false">
+                <div class="chat-msg-box other" v-if="item.type == 1">
                   <div class="arrow-box">
                     <div class="gray-arrow">
                       <div class="white-arrow"></div>
                     </div>
                   </div>
-                  <div class="chat-msg-content other">盾根深蒂固当时给的当时给的时代光华好久好久打个盾根深蒂固当时给的当时给的时代光华好久好久打个盾根深蒂固当时给的当时给的时代光华</div>
+                  <div class="chat-msg-content other">{{item.content}}</div>
                 </div>
-                <div class="chat-msg-goods">
-                  <img src="https://picsum.photos/800/800/?image=888" class="goods-img">
-                  <p class="goods-title">几号放假放大镜几号放假放大镜几号放假放大镜</p>
+                <div class="chat-msg-goods" v-if="item.type == 2">
+                  <img :src="item.url" class="goods-img">
+                  <p class="goods-title">{{item.title}}</p>
                 </div>
               </div>
-              <div class="chat-content mine">
+              <div class="chat-content mine" v-if="item.from_account_id === imInfo.im_account">
                 <div class="chat-msg-box mine">
-                  <div class="chat-msg-content mine">jhdjfkdfhdjfjdjhfdjhfjdshfjksdhfjhdfjkhdfjhdfjdhfjkdhjfdhjfkhdjkfhdfjhdfhdhjfhdjhf</div>
+                  <div class="chat-msg-content mine">{{item.content}}</div>
                   <div class="arrow-box">
                     <div class="green-arrow"></div>
                   </div>
                 </div>
-                <img src="" class="avatar">
+                <img :src="userInfo.avatar" class="avatar">
               </div>
             </div>
           </div>
@@ -41,29 +40,61 @@
         <div class="input-container" ref="textBox">
           <textarea class="textarea" type="text" ref="inputTxt" v-model="inputMsg" rows="1"></textarea>
         </div>
-        <div class="submit-btn">发送</div>
+        <div class="submit-btn" @click="sendMsg">发送</div>
       </div>
+      <toast ref="toast"></toast>
     </div>
   </transition>
 </template>
 
 <script>
   import Scroll from 'components/scroll/scroll'
+  import Toast from 'components/toast/toast'
   import {ease} from 'common/js/ease'
-  import {mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
+  import webimHandler from 'common/js/webim_handler'
+  import storage from 'storage-controller'
+  import {Im} from 'api'
+  import {ERR_OK} from 'common/js/config'
   export default {
     name: 'Chat',
     created() {
+      this.id = this.$route.query.id
+      let data = {
+        page: this.page,
+        limit: 30,
+        customer_id: this.id,
+        employee_id: this.imInfo.im_account
+      }
+      Im.getMsgList(data).then((res) => {
+        if (res.error === ERR_OK) {
+          this.list = res.data
+          let timer = setTimeout(() => {
+            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 10
+            this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
+            clearTimeout(timer)
+          }, 20)
+        }
+      })
     },
     mounted() {
       this.textareaDom = this.$refs.inputTxt
       this.textBoxDom = this.$refs.textBox
       this.chatDom = this.$refs.chat
       this.listDom = this.$refs.list
-      this.startY = this.chatDom.clientHeight - this.listDom.clientHeight - 30
       document.title = this.currentMsg.nickName
+      webimHandler.getC2CMsgList(this.currentMsg.nickName) // 消息已读处理
+      this.setUnreadCount(this.currentMsg.nickName) // vuex
+    },
+    beforeDestroy() {
+      this.setCurrent({})
     },
     methods: {
+      ...mapActions([
+        'setUnreadCount',
+        'setCurrent',
+        'addListMsg'
+      ]),
       textHeight() {
         let timer = setTimeout(() => {
           this.textareaDom.style.height = 'auto'
@@ -73,22 +104,62 @@
         }, 20)
       },
       onPullingDown() {
+        if (this.noMore) return
         let heightBegin = this.listDom.clientHeight
-        let timer1 = setTimeout(() => {
-          this.list = [8, ...this.list]
-          this.$refs.scroll.forceUpdate()
-          let timer2 = setTimeout(() => {
-            let heightEnd = this.listDom.clientHeight
-            this.$refs.scroll.scrollTo(0, heightBegin - heightEnd, 10, ease[this.scrollToEasing])
-            clearTimeout(timer2)
-          }, 20)
-          clearTimeout(timer1)
-        }, 1000)
+        let data = {
+          page: this.page++,
+          limit: 30,
+          customer_id: this.id,
+          employee_id: this.imInfo.im_account
+        }
+        Im.getMsgList(data).then((res) => {
+          if (res.error === ERR_OK) {
+            if (res.data.length) {
+              this.list = [...res.data, ...this.list]
+              this.$refs.scroll.forceUpdate()
+              let timer = setTimeout(() => {
+                let heightEnd = this.listDom.clientHeight
+                this.$refs.scroll.scrollTo(0, heightBegin - heightEnd, 10, ease[this.scrollToEasing])
+                clearTimeout(timer)
+              }, 30)
+            } else {
+              this.noMore = true
+              this.page--
+            }
+          }
+        })
       },
       rebuildScroll() {
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
+        })
+      },
+      sendMsg() {
+        console.log(this.inputMsg)
+        let value = this.inputMsg.trim()
+        if (!value) {
+          this.$refs.toast.show('发送消息不能为空')
+          return
+        }
+        webimHandler.onSendMsg(value, this.id).then(res => {
+          let msg = {
+            from_account_id: this.imInfo.im_account,
+            avatar: this.userInfo.avatar,
+            content: value,
+            time: res.MsgTime
+          }
+          this.list.push(msg)
+          this.addListMsg({lastMsg: value, time: res.MsgTime})
+          this.inputMsg = ''
+          this.$refs.scroll.forceUpdate()
+          let timer = setTimeout(() => {
+            let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 10
+            this.$refs.scroll.scrollTo(0, startY, 300, ease[this.scrollToEasing])
+            clearTimeout(timer)
+          }, 20)
+        }, err => {
+          console.log(err)
         })
       }
     },
@@ -98,17 +169,20 @@
         heightBoxDom: '',
         txtHeight: '36px',
         inputMsg: '',
-        list: [1, 2, 3, 4],
+        list: [],
         pullDownRefresh: true,
-        pullDownRefreshThreshold: 10,
-        pullDownRefreshStop: 20,
+        pullDownRefreshThreshold: 90,
+        pullDownRefreshStop: 40,
         startY: '',
         scrollToEasing: 'bounce',
-        scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce']
+        scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
+        id: '',
+        page: 1
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Toast
     },
     watch: {
       inputMsg() {
@@ -123,7 +197,8 @@
     },
     computed: {
       ...mapGetters([
-        'currentMsg'
+        'currentMsg',
+        'imInfo'
       ]),
       pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {
@@ -131,6 +206,9 @@
           stop: parseInt(this.pullDownRefreshStop),
           txt: ' '
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
       }
     }
   }
@@ -150,11 +228,13 @@
     display: flex
     flex-direction: column
     justify-content: space-between
-    z-index: 10
+    z-index: 200
     .chat-container
       flex: 1
       overflow-y: auto
       position: relative
+      .chat-list
+        padding-bottom: 20px
       .chat-item
         padding: 0 15px
         margin-top: 15px

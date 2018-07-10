@@ -1,8 +1,8 @@
 <template>
   <div class="radar">
-    <span class="msg-box" :class="newMsgShow ? 'show' : ''">
+    <span class="msg-box" :class="customCount ? '' : 'show'" @click.stop="clearNum">
       <img src="./icon-news_up@3x.png" class="msg-arrow">
-      <span class="msg-hint">6条信息</span>
+      <span class="msg-hint">{{customCount}}条信息</span>
     </span>
     <div class="container">
       <scroll ref="scroll"
@@ -11,11 +11,27 @@
               :pullUpLoad="pullUpLoadObj"
               @pullingUp="onPullingUp">
         <div class="msgs-list">
-          <div class="msgs-item" v-for="item in list" :key="item" @click="test">
-            <img src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJBB7iadHLcSzFWsjVIrdPr0NTNKibn9wJPfDV69Bav3QhNsPUxQKBDibTIqia1qc8UyVhUOgj7WSLj3w/132" class="msgs-left">
+          <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
+            <img :src="item.image_url" class="msgs-left">
             <div class="msgs-right">
               <div class="msgs-container">
-                <p class="msgs-p">杨过<span class="green">查看</span>了你的<span class="green">个人动态</span>，看来TA对你感兴趣</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span class="green">赞</span></p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span class="green">邮箱</span>，请留意邮件</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span class="green">地址</span></p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span class="green">名片</span>，你的人脉圈正在裂变</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span>，看来TA对你感兴趣</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span class="green">手机</span>，请记录跟进内容</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">电话</span>，可以考虑主动沟通</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span class="green">咨询</span>，请做好准备应答</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span class="green">点了</span><span class="green">赞</span></p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span class="green">咨询</span>，请做好准备应答</p>
               </div>
               <img src="./icon-pressed@2x.png" class="msgs-rt">
             </div>
@@ -28,27 +44,67 @@
 
 <script>
   import Scroll from 'components/scroll/scroll'
+  import {mapActions, mapGetters} from 'vuex'
+  import {Im} from 'api'
+  import {ERR_OK} from 'common/js/config'
+  import {ease} from 'common/js/ease'
   export default {
     name: 'Radar',
     created() {
-      this.$emit('tabChange', 1)
+      Im.getRadarList(this.page).then((res) => {
+        if (res.error === ERR_OK) {
+          this.list = res.data
+        }
+      })
     },
     data() {
       return {
-        newMsgShow: false,
-        list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        list: [],
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
-        pullUpLoadNoMoreTxt: '没有更多了'
+        pullUpLoadNoMoreTxt: '没有更多了',
+        page: 1,
+        scrollToEasing: 'bounce'
       }
     },
     methods: {
-      test() {
-        this.newMsgShow = !this.newMsgShow
+      ...mapActions([
+        'setCustomCount'
+      ]),
+      toDetail(item) {
+        let url = '/client-detail?id' + item.customer_id
+        this.$router.push(url)
+      },
+      clearNum() {
+        this.page = 1
+        let limit = this.list.length + this.customCount
+        Im.getRadarList(this.page, limit).then((res) => {
+          if (res.error === ERR_OK) {
+            this.list = res.data
+            this.setCustomCount('clear')
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+              this.$refs.scroll.scrollTo(0, 0, 300, ease[this.scrollToEasing])
+            }, 20)
+          }
+        })
       },
       onPullingUp() {
-        console.log(77777)
+        this.page++
+        Im.getRadarList(this.page).then((res) => {
+          if (res.error === ERR_OK) {
+            let list = res.data
+            if (!list.length) {
+              this.page--
+            } else {
+              this.list = [...this.list, ...list]
+            }
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+            }, 20)
+          }
+        })
       },
       rebuildScroll() {
         this.nextTick(() => {
@@ -57,7 +113,19 @@
         })
       }
     },
+    filters: {
+      titleCut(val) {
+        if (val.length > 8) {
+          return val.slice(0, 8) + '···'
+        } else {
+          return val
+        }
+      }
+    },
     computed: {
+      ...mapGetters([
+        'customCount'
+      ]),
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
