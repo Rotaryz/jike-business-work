@@ -24,7 +24,7 @@
                     <div class="label-box">
                       <div class="label active">80后</div>
                       <div class="label active">在意价格</div>
-                      <div class="label">添加标签</div>
+                      <div class="label" @click="toClientTag">添加标签</div>
                     </div>
                   </div>
                 </div>
@@ -265,17 +265,25 @@
     },
     created() {
       this.id = this.$route.query.id
-      this.getClientId(1)
+      console.log(this.id)
+      this.getClientId(this.id)
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
       console.log(this.$refs.eleven.offsetHeight, 111)
     },
+    beforeDestroy() {
+      this.$emit('refresh')
+    },
     methods: {
       ...mapActions([
         'setCurrent'
       ]),
+      toClientTag() {
+        const path = `/client-tag`
+        this.$router.push({path, query: {customerId: this.id}})
+      },
       chatMsg(item) {
         console.log(item)
         let currentMsg = {
@@ -649,8 +657,10 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
   .tab-padding
     height: 48px
+
   .client-detail
     fill-box()
     z-index: 50
