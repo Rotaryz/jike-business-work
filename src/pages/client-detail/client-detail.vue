@@ -119,7 +119,7 @@
             </div>
           </div>
         </div>
-        <div class="ai-box" v-if="menuIdx * 1 === 2">
+        <div class="ai-box" v-if="menuIdx * 1 === 1">
           <div class="pie-box">
             <div id="myPie"></div>
             <div class="title-box">
