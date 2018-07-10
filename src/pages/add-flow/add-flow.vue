@@ -1,20 +1,23 @@
 <template>
-  <div>
-    <div class="data-bottom">
-      <div class="textarea-number">{{note.length}}<span>/500</span></div>
-      <textarea class="data-area" v-model="note" maxlength="500" name="" id="" cols="30" rows="10"
-                placeholder="请输入备注"></textarea>
-    </div>
-    <div class="bottom-box">
-      <div class="box-btn" @click="toBack">
-        <div class="text">取消</div>
+  <transition name="slide">
+    <div class="add-box">
+      <div class="bottom-bg"></div>
+      <div class="data-bottom">
+        <div class="textarea-number">{{note.length}}<span>/500</span></div>
+        <textarea class="data-area" v-model="note" maxlength="500" name="" id="" cols="30" rows="10"
+                  placeholder="请输入备注"></textarea>
       </div>
-      <div class="box-btn message-btn" @click="addFlow">
-        <div class="text" >确定</div>
+      <div class="bottom-box">
+        <div class="box-btn" @click="toBack">
+          <div class="text">取消</div>
+        </div>
+        <div class="box-btn message-btn" @click="addFlow">
+          <div class="text" >确定</div>
+        </div>
       </div>
+      <toast ref="toast"></toast>
     </div>
-    <toast ref="toast"></toast>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -71,9 +74,21 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+  .bottom-bg
+    position: fixed
+    width: 100%
+    height: 100%
+    z-index: 70
+    top: 0
+    left: 0
+    background: #F0F2F5
+  .add-box
+    fill-box()
+    z-index: 71
   .data-bottom
     padding: 15px
     position: relative
+    z-index: 71
     .title
       font-size: $font-size-medium
       color: $color-text-88
@@ -106,7 +121,7 @@
     bottom: 0
     height: 45px
     width: 100%
-    z-index: 11
+    z-index: 71
     .box-btn
       layout(row)
       background: #20202E
