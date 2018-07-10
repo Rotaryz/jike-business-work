@@ -6,7 +6,6 @@
             :pullUpLoad="pullUpLoadObj"
             @pullingUp="onPullingUp"
     >
-      <div @click="test">to-tag-client</div>
       <search @toNav="toSearch"></search>
       <ul class="user-list-box" v-if="userListArr.length">
         <li class="user-list-item"
@@ -114,10 +113,6 @@
     beforeDestroy() {
     },
     methods: {
-      test() {
-        const path = `/client-tag`
-        this.$router.push({path, query: {customerId: 2}})
-      },
       refresh() {
         setTimeout(() => {
           this.getGroupList()
