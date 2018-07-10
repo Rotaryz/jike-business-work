@@ -24,5 +24,13 @@ export default {
   updateMySignature (data) {
     let url = 'api/employee/update-my-signature'
     return request.post(url, data)
+  },
+  /**
+   * 我的名片-个性签名编辑
+   * @returns {*}
+   */
+  Myqrcode (data) {
+    let url = 'api/employee/my-qrcode'
+    return request.get(url, data)
   }
 }
