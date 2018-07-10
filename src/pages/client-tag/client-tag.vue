@@ -80,6 +80,7 @@
         }
         this.$emit('refresh')
       })
+      this.$emit('refresh')
     },
     methods: {
       check(it) {
@@ -103,7 +104,7 @@
   .client-tag
     fill-box()
     background-color: $color-white-fff
-    z-index: 10
+    z-index: 70
     .box
       position: relative
       .info-box

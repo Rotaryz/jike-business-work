@@ -23,9 +23,10 @@
                     <div class="label-right">
                       <div class="label-name">{{clientData.name}}</div>
                       <div class="label-box">
-                        <div class="label active">80后</div>
-                        <div class="label active">在意价格</div>
-                        <div class="label" @click="toClientTag">添加标签</div>
+                        <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
+                             @click="toClientTag">{{item.label_name}}
+                        </div>
+                        <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
                       </div>
                     </div>
                   </div>
@@ -69,23 +70,31 @@
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
                   <div class="msgs-container">
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span
+                      class="green">查看</span>了<span
                       class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span
                       class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span
+                      class="green">取消</span>给你点的<span
                       class="green">赞</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span
+                      class="green">复制</span>了你的<span
                       class="green">邮箱</span>，请留意邮件</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span
+                      class="green">浏览</span>了你的<span
                       class="green">地址</span></p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span
+                      class="green">转发</span>了你的<span
                       class="green">名片</span>，你的人脉圈正在裂变</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span
+                      class="green">保存</span>了你的<span
                       class="green">名片海报</span>，看来TA对你感兴趣</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span
+                      class="green">拨打</span>了你的<span
                       class="green">手机</span>，请记录跟进内容</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span
+                      class="green">保存</span>了你的<span
                       class="green">电话</span>，可以考虑主动沟通</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span
                       class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
@@ -93,7 +102,8 @@
                       class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span
                       class="green">咨询</span>，请做好准备应答</p>
-                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span
+                      class="green">转发</span>了<span
                       class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
                     <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span
                       class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
@@ -190,13 +200,14 @@
           <div class="text">发消息</div>
         </div>
       </div>
+      <router-view @refresh="refresh"></router-view>
       <toast ref="toast"></toast>
     </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
-  import {ClientDetail} from 'api'
+  import {ClientDetail, Client} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
@@ -262,13 +273,16 @@
         page: 1,
         twoList: [],
         tabhighgt: 216,
-        highgt: 216
+        highgt: 216,
+        pageUrl: '',
+        labelList: []
       }
     },
     created() {
       this.id = this.$route.query.id
-      console.log(this.id)
+      this.pageUrl = this.$route.query.pageUrl
       this.getClientId(this.id)
+      this.getCusomerTagList()
     },
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
@@ -282,8 +296,22 @@
       ...mapActions([
         'setCurrent'
       ]),
+      refresh() {
+        setTimeout(() => {
+          this.getCusomerTagList()
+        }, 300)
+      },
+      getCusomerTagList() {
+        Client.getCusomerTagList({customer_id: this.id}).then(res => {
+          // console.log(res)
+          if (res.error === ERR_OK) {
+            let arr = res.data.slice(0, 3)
+            this.labelList = arr
+          }
+        })
+      },
       toClientTag() {
-        const path = `/client-tag`
+        let path = `${this.pageUrl}/client-tag`
         this.$router.push({path, query: {customerId: this.id}})
       },
       chatMsg(item) {

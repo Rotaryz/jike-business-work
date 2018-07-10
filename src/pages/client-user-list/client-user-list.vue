@@ -124,7 +124,7 @@
       },
       check(item) {
         const path = `/client/client-user-list/client-detail`
-        this.$router.push({path, query: {id: item.id}})
+        this.$router.push({path, query: {id: item.id, pageUrl: path}})
       },
       groupingHandler(index, item) {
         const path = `/client/client-user-list/client-set-group`

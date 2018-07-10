@@ -94,7 +94,16 @@ const route = new Router({
               component: Cdetail,
               meta: {
                 title: '客户详情'
-              }
+              },
+              children: [
+                {
+                  path: 'client-tag',
+                  component: ClientTag,
+                  meta: {
+                    title: '标签'
+                  }
+                }
+              ]
             }
           ]
         },
@@ -103,7 +112,16 @@ const route = new Router({
           component: Cdetail,
           meta: {
             title: '客户详情'
-          }
+          },
+          children: [
+            {
+              path: 'client-tag',
+              component: ClientTag,
+              meta: {
+                title: '标签'
+              }
+            }
+          ]
         },
         {
           path: 'client-set-group',
