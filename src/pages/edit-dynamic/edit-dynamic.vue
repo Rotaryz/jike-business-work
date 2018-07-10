@@ -7,7 +7,7 @@
         <div class="com-box">
           <div class="com-image" v-for="(item, index) in image" :key="index">
             <img class="img-item" :src="item.image_url">
-            <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>
+            <!--<input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>-->
             <div class="close-icon" @click.stop="_delImage(index)">
               <img class="close-icon" src="./icon-del@2x.png">
             </div>
@@ -21,7 +21,7 @@
       </div>
     </scroll>
     <div class="btn">
-      <div class="btn-item btn-dark">取消</div>
+      <div class="btn-item btn-dark" @click="_back">取消</div>
       <div class="btn-item btn-green" @click="_liveLogs">发布</div>
     </div>
     <toast ref="toast"></toast>
@@ -40,7 +40,8 @@
     data () {
       return {
         title: '',
-        image: []
+        image: [],
+        send: true
       }
     },
     methods: {
@@ -56,7 +57,7 @@
       _upLoad (item) {
         UpLoad.upLoadImage(item).then((res) => {
           if (res.error === ERR_OK) {
-            let imageItem = {id: 1, detail_id: res.data.id, image_url: res.data.url}
+            let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
             this.image.push(imageItem)
             this.image = this.image.slice(0, 9)
           }
@@ -74,6 +75,9 @@
         this.image.splice(index, 1)
       },
       _liveLogs () {
+        if (!this.send) {
+          return
+        }
         if (!this.title) {
           this.$refs.toast.show('发布内容不能为空')
           return
@@ -83,8 +87,19 @@
         }
         let data = {content: this.title, live_log_details: this.image}
         Live.liveLogs(data).then((res) => {
-          console.log(res)
+          this.send = false
+          if (res.error === ERR_OK) {
+            this.$refs.toast.show('发布成功')
+            setTimeout(() => {
+              this._back()
+            }, 300)
+            return
+          }
+          this.send = true
         })
+      },
+      _back () {
+        this.$router.back()
       }
     },
     components: {
@@ -97,9 +112,7 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .edit-dynamic
-    background: $color-background
     position: fixed
-    background: edit-dynamic
     z-index: 10
     left: 0
     right: 0

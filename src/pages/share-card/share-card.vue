@@ -1,6 +1,6 @@
 <template>
   <div class="share-card">
-    <scroll>
+    <scroll :bcColor="'#20202E'">
       <div class="share-box">
         <p class="peo-name">张三丰</p>
         <p class="peo-position">产品经理</p>
