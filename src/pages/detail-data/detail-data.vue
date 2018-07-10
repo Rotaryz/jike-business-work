@@ -33,14 +33,14 @@
           <div class="right">
             <input type="number" placeholder="未完善" class="right-input"
                    oninput="if(value.length > 11)value = value.slice(0, 11)" v-model="flow.mobile">
-            <img v-if="flow.mobile.length > 0" src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone">
+            <img v-if="flow.mobile.length > 0" src="./icon-telephone_khzl@2x.png" alt="" class="right-img-phone" @click="phoneCall()">
           </div>
         </div>
         <div class="data-list">
           <div class="left">微信号</div>
           <div class="right">
             <input type="text" placeholder="未完善" class="right-input" v-model="flow.wx_account">
-            <img v-if="flow.wx_account.length > 0" src="./icon-wechat_khzl@2x.png" alt="" class="right-img-phone right-img-copy">
+            <img v-if="flow.wx_account.length > 0" src="./icon-wechat_khzl@2x.png"  v-clipboard:copy="flow.wx_account" v-clipboard:success="onCopy" v-clipboard:error="onError" alt="" class="right-img-phone right-img-copy">
           </div>
         </div>
         <div class="data-list">
@@ -105,9 +105,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Vue from 'vue'
   import {ClientDetail} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
+  import VueClipboard from 'vue-clipboard2'
+  Vue.use(VueClipboard)
+
   export default {
     name: 'detail-data',
     data() {
@@ -122,7 +126,7 @@
         bgChoose: false,
         chooseText: '屏蔽',
         flow: {
-          nickname: 'eleven、',
+          nickname: '',
           real_name: '',
           mobile: '',
           age: null,
@@ -133,14 +137,15 @@
           city: '',
           job: '',
           note: '',
-          progress: '',
           message_is_abled: '',
           sources: ''
-        }
+        },
+        id: ''
       }
     },
     created() {
-      this.getClientData(1)
+      this.id = this.$route.query.id
+      this.getClientData(this.id)
     },
     methods: {
       chooseBtn() {
@@ -177,8 +182,22 @@
         ClientDetail.saveClientDetail(id, this.flow).then((res) => {
           if (res.error === ERR_OK) {
             this.$refs.toast.show(res.message)
+            setTimeout(() => {
+              this.$router.back()
+            }, 500)
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
+      },
+      phoneCall() {
+        window.location.href = `tel:${this.flow.mobile}`
+      },
+      onCopy(e) {
+        this.$refs.toast.show('复制成功')
+      },
+      onError(e) {
+        console.log('无法复制文本！')
       }
     },
     components: {
@@ -284,6 +303,7 @@
             font-size: $font-size-medium
             color: #20202e
             font-family: $font-family-meddle
+            outline:none
           .right-input::-webkit-input-placeholder
             color: #ccc
           .right-input::-ms-input-placeholder
@@ -355,6 +375,7 @@
         color: #20202e
         font-family: $font-family-meddle
         height: 185px
+        outline:none
       .textarea-number
         position: absolute
         bottom: 25px

@@ -24,6 +24,7 @@ const GoodsDetail = () => import('pages/goods-detail/goods-detail')
 const GoodsList = () => import('pages/goods-list/goods-list')
 const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
+const AddFlow = () => import('pages/add-flow/add-flow')
 
 Vue.use(Router)
 
@@ -191,6 +192,13 @@ const route = new Router({
       component: Cdata,
       meta: {
         title: '客户資料'
+      }
+    },
+    {
+      path: '/addflow',
+      component: AddFlow,
+      meta: {
+        title: '添加跟进内容'
       }
     }
   ]

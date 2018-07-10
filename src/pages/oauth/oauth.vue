@@ -55,7 +55,7 @@
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
         })
       }
-    },
+    }
   }
 </script>
 
