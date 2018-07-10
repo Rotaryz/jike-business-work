@@ -73,7 +73,7 @@
         'setCustomCount'
       ]),
       toDetail(item) {
-        let url = '/client-detail?id' + item.customer_id
+        let url = '/client-detail?id=' + item.customer_id
         this.$router.push(url)
       },
       clearNum() {
