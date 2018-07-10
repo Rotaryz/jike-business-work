@@ -165,7 +165,7 @@ const route = new Router({
         }]
       },
       {
-        path: 'my-data',
+        path: '/my-data',
         component: MyData,
         meta: {
           title: '我的图表'
