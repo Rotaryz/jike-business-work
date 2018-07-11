@@ -110,7 +110,7 @@
           page: 1,
           limit: LIMIT
         }
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
           } else {
@@ -135,14 +135,14 @@
         this.$refs.confirm.show()
       },
       msgConfirm() {
+        const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
+        this.dataArray.splice(idx, 1)
         const data = {
           group_id: this.currentGroupInfo.id,
           customer_id: this.checkedItem.id
         }
         Client.delCustomer(data).then(res => {
           if (res.error === ERR_OK) {
-            const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
-            this.dataArray.splice(idx, 1)
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -183,7 +183,7 @@
           page: page,
           limit: limit
         }
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               this.dataArray.concat(res.data)
