@@ -73,8 +73,8 @@
         'setCustomCount'
       ]),
       toDetail(item) {
-        let url = '/client-detail?id=' + item.customer_id
-        this.$router.push(url)
+        let url = '/client-detail'
+        this.$router.push({url, query: {id: item.customer_id, pageUrl: url}})
       },
       clearNum() {
         this.page = 1
@@ -153,7 +153,11 @@
   @import '~common/stylus/mixin'
   .radar
     width: 100vw
-    height: 100vh
+    position: fixed
+    left: 0
+    top: 0
+    right: 0
+    bottom: 45px
     background: $color-background
     display: flex
     flex-direction: column

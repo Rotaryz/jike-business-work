@@ -151,7 +151,7 @@
     position: fixed
     left: 0
     right: 0
-    top: -60px
+    top: -70px
     z-index: 999
     background: $color-white
     border: 0.5px solid rgba(32, 32, 46, 0.10)
