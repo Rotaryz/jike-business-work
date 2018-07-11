@@ -10,6 +10,7 @@
       <div class="simple-scroll-demo">
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
+                  v-if="dataArray.length"
                   bcColor="#fff"
                   :data="dataArray"
                   :pullDownRefresh="pullDownRefreshObj"
@@ -194,19 +195,6 @@
             this.$refs.toast.show(res.message)
           }
         })
-        // setTimeout(() => {
-        //   if (Math.random() > 0.5) {
-        //     // 如果有新数据
-        //     let newPage = []
-        //     for (let i = 0; i < 10; i++) {
-        //       newPage.push(i)
-        //     }
-        //     this.items = this.items.concat(newPage)
-        //   } else {
-        //     // 如果没有新数据
-        //     this.$refs.scroll.forceUpdate()
-        //   }
-        // }, 1500)
       },
       rebuildScroll() {
         this.nextTick(() => {
