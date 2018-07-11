@@ -58,6 +58,8 @@
           const {access_token: token, employee_info: info} = res.data
           storage.set('token', token)
           storage.set('info', info)
+          alert(this.beforeLoginRoute)
+          alert(token)
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
         })
       }
