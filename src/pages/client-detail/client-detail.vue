@@ -671,7 +671,7 @@
         })
       },
       getPieData() {
-        Echart.getPie(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
           } else {
@@ -680,7 +680,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
           } else {
@@ -689,7 +689,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
           } else {
