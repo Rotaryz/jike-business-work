@@ -342,8 +342,8 @@
         })
       },
       toClientTag() {
-        let path = `${this.pageUrl}/client-tag`
-        this.$router.push({path, query: {customerId: this.id}})
+        let path = `${this.pageUrl}/client-tag?customerId=${this.id}`
+        this.$router.push(path)
       },
       chatMsg(item) {
         console.log(item)
@@ -629,12 +629,12 @@
         window.location.href = `tel:${this.mobile}`
       },
       toAddFlow() {
-        let path = `${this.pageUrl}/addflow`
-        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
+        let path = `${this.pageUrl}/addflow?id=${this.id}&flowId=${this.flowId}`
+        this.$router.push(path)
       },
       jumpData() {
-        let path = `${this.pageUrl}/detail-data`
-        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
+        let path = `${this.pageUrl}/detail-data?id=${this.id}&flowId=${this.flowId}`
+        this.$router.push(path)
       },
       jumpMessage() {
         let currentMsg = {
