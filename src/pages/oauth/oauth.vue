@@ -49,7 +49,14 @@
         Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
-            this.$router.replace('/page-error')
+            /*
+            * '404': '网络异常，请刷新重试',
+              'delcard': '名片被删除，请联系公司管理员',
+              'disablecard':'名片被禁用，请联系公司管理员',
+            * */
+            const path = `/page-error`
+            const useType = `404`
+            this.$router.replace({path, query: {useType}})
             return
           }
           const {access_token: token, employee_info: info} = res.data

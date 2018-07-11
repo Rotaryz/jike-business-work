@@ -2,9 +2,9 @@
   <article class="page-error">
     <div>
       <section class="exception-box">
-        <exception errType="404"></exception>
+        <exception :errType="useType"></exception>
       </section>
-      <div class="btn" @click="_refresh">刷新</div>
+      <div v-if="useType==='404'" class="btn" @click="_refresh">刷新</div>
     </div>
   </article>
 </template>
@@ -14,6 +14,14 @@
 
   export default {
     name: 'PageError',
+    data() {
+      return {
+        useType: '404'
+      }
+    },
+    created() {
+      this.$route.query.useType && (this.useType = this.$route.query.useType)
+    },
     methods: {
       _refresh() {
         this.$router.replace('/')
