@@ -38,7 +38,7 @@
           // 有code没有token -> 申请拿token
           this._applyOauth()
         } else if (!this.hasToken && !this.code) {
-          alert('getCode')
+          this._getCode()
         } else {
           this.$router.replace(NORMAL_ROUTE)
         }
