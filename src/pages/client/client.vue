@@ -112,7 +112,7 @@
     created() {
       this.$emit('tabChange', 3)
       this.getGroupList()
-      this.getCusomerList()
+      this.getCustomerList()
     },
     beforeDestroy() {
     },
@@ -120,7 +120,7 @@
       refresh() {
         setTimeout(() => {
           this.getGroupList()
-          this.getCusomerList()
+          this.getCustomerList()
         }, 300)
       },
       toSearch() {
@@ -136,9 +136,9 @@
           }
         })
       },
-      getCusomerList() {
+      getCustomerList() {
         const data = {order_by: this.checkedGroup.orderBy, page: 1, limit: LIMIT}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
           } else {
@@ -167,7 +167,7 @@
       },
       changeGroup() {
         const data = {order_by: this.checkedGroup.orderBy}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.data) {
             this.dataArray = res.data
           }
@@ -193,7 +193,7 @@
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               this.dataArray.concat(res.data)

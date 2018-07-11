@@ -53,7 +53,7 @@
       },
       searchUser(name) {
         const data = {name}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
           } else {

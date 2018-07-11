@@ -37,7 +37,7 @@
       const data = {
         group_id: groupInfo.id
       }
-      Client.getCusomerList(data).then(res => {
+      Client.getCustomerList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data.map(item => {
             return {...item, isCheck: false}
