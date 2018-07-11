@@ -24,6 +24,7 @@
     name: COMPONENT_NAME,
     data() {
       return {
+        isLogin: false,
         glideShow: false,
         newMsgIn: false,
         timer: ''
@@ -33,18 +34,8 @@
       if (!this.hasToken) {
         return
       }
-      Im.getImInfo().then((res) => {
-        if (res.error === ERR_OK) {
-          let imInfo = res.data
-          this.setImInfo(imInfo)
-          alert('IM LOGIN')
-          this.sdkLogin(imInfo).then(() => {
-
-          })
-        }
-      }, (err) => {
-        console.log(err)
-      })
+      this.isLogin = true
+      this._getImInfo()
     },
     methods: {
       ...mapActions([
@@ -56,6 +47,20 @@
         'setImInfo',
         'addNowChat'
       ]),
+      _getImInfo() {
+        Im.getImInfo().then((res) => {
+          if (res.error === ERR_OK) {
+            let imInfo = res.data
+            this.setImInfo(imInfo)
+            alert('IM LOGIN')
+            this.sdkLogin(imInfo).then(() => {
+
+            })
+          }
+        }, (err) => {
+          console.log(err)
+        })
+      },
       // IM登录
       async sdkLogin(imInfo) {
         let loginInfo = {
@@ -144,6 +149,15 @@
         'newMsg',
         'currentMsg'
       ])
+    },
+    watch: {
+      hasToken(newVal) {
+        if (newVal && this.isLogin) {
+          return
+        }
+        this.isLogin = true
+        this._getImInfo()
+      }
     }
   }
 </script>
