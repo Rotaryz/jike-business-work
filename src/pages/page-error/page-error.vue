@@ -16,11 +16,12 @@
     name: 'PageError',
     data() {
       return {
-        useType: '404'
+        useType: ''
       }
     },
     created() {
-      this.$route.query.useType && (this.useType = this.$route.query.useType)
+      const useType = this.$route.query.useType
+      useType && (this.useType = useType)
     },
     methods: {
       _refresh() {
