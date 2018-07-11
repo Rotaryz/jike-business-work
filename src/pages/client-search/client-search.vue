@@ -8,11 +8,14 @@
         </div>
         <div class="cancel-btn" @click="cancelHandler">取消</div>
       </section>
-      <ul class="user-list">
+      <ul class="user-list" v-if="dataArray.length">
         <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
           <user-card :userInfo="item"></user-card>
         </li>
       </ul>
+      <section class="exception-box" v-else>
+        <exception errType="noresult"></exception>
+      </section>
       <toast ref="toast"></toast>
     </article>
   </transition>
@@ -22,7 +25,8 @@
   import {Client} from 'api'
   import UserCard from 'components/client-user-card/client-user-card'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  import {ERR_OK} from 'common/js/config'
+  import Exception from 'components/exception/exception'
 
   export default {
     name: 'ClientSearch',
@@ -68,7 +72,8 @@
     },
     components: {
       UserCard,
-      Toast
+      Toast,
+      Exception
     }
   }
 </script>
@@ -76,6 +81,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
+
+  .exception-box
+    padding-top :92px
 
   .client-search
     fill-box()

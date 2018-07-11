@@ -47,6 +47,7 @@
         Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
+            this.$router.replace('/page-error')
             return
           }
           const {access_token: token, employee_info: info} = res.data
