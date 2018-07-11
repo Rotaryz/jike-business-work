@@ -71,7 +71,10 @@
               </div>
             </div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
-            <div class="box-list">
+            <section class="exception-box" v-if="actionList.length * 1 === 0">
+              <exception errType="nodata"></exception>
+            </section>
+            <div class="box-list" v-if="actionList.length * 1 !== 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
@@ -125,7 +128,10 @@
               </div>
             </div>
           </div>
-          <div class="follow-box" v-if="menuIdx * 1 === 1">
+          <section class="exception-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 === 0">
+            <exception errType="nodata"></exception>
+          </section>
+          <div class="follow-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 !== 0">
             <div class="follow-line"></div>
             <div class="follow-list" v-for="(item, index) in flowList" :key="index">
               <div class="time">{{item.created_at}}</div>
@@ -217,6 +223,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import Exception from 'components/exception/exception'
   import {mapActions} from 'vuex'
 
   export default {
@@ -691,6 +698,7 @@
     },
     components: {
       Toast,
+      Exception,
       Scroll
     },
     computed: {
@@ -729,6 +737,8 @@
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
 
+  .exception-box
+    padding-top :70px
   .tab-padding
     height: 48px
 
