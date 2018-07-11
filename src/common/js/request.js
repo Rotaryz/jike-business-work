@@ -84,6 +84,8 @@ export default {
     }).then((res) => {
       alert(JSON.stringify(res))
       return checkCode(res)
+    }).catch(err => {
+      alert(JSON.stringify(err))
     })
   },
   get (url, params) {
