@@ -804,7 +804,7 @@
               .label-name
                 font-size: $font-size-medium-x
                 color: $color-text
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
                 padding-top: 5px
                 margin-bottom: 15px
               .label-box
@@ -816,7 +816,7 @@
                   text-align: center
                   font-size: $font-size-medium
                   color: $color-text-88
-                  font-family: $font-family-meddle
+                  font-family: $font-family-regular
                   background: #F0F2F5
                   margin-right: 5px
                 .active
@@ -870,7 +870,7 @@
               .text
                 font-size: $font-size-medium
                 color: $color-text
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
               .img-box
                 width: 10px
                 height: 10px
@@ -917,7 +917,7 @@
         .left
           font-size: $font-size-medium
           color: $color-text
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .right
           width: 20px
           height: 20px
@@ -932,7 +932,7 @@
       .btn
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         padding: 15px 0
         text-align: center
     .model-con-active
@@ -978,7 +978,7 @@
       .time
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
       .item-list
         layout(row)
         margin-top: 15px
@@ -999,7 +999,7 @@
           flex: 1
           font-size: $font-size-medium
           color: $color-text
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           span
             color: #56BA15
 
@@ -1020,7 +1020,7 @@
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         min-height: 10px
       .icon-cri
         position: absolute
@@ -1093,12 +1093,12 @@
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
       .pie-list
         layout(row)
         position: absolute
@@ -1152,7 +1152,7 @@
         margin-right: 4px
       .text
         font-size: $font-size-medium-x
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         color: #fff
     .message-btn
       background: #56BA15
@@ -1200,7 +1200,7 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-medium
           .green
             color: $color-text-56

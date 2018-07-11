@@ -92,7 +92,7 @@
     .title
       font-size: $font-size-medium
       color: $color-text-88
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
     .data-area
       margin-top: 10px
       width: 100%
@@ -100,7 +100,7 @@
       padding: 10px 15px
       font-size: $font-size-medium
       color: #20202e
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
       height: 185px
       outline:none
     .textarea-number
@@ -108,7 +108,7 @@
       bottom: 25px
       right: 25px
       font-size: $font-size-small
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
       color: #202020 e
       span
         color: #ddd
@@ -130,7 +130,7 @@
       align-items: center
       .text
         font-size: $font-size-medium-x
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         color: #fff
     .message-btn
       background: #56BA15

@@ -80,7 +80,7 @@
       padding: 15px
       border: none
       box-sizing: border-box
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
       border-1px($color-col-line, 2px)
       &::-webkit-input-placeholder
@@ -104,7 +104,7 @@
     display: flex
     height: 45px
     .btn-item
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
       color: $color-white
       line-height: 45px

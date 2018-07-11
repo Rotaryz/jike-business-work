@@ -99,7 +99,7 @@
             justify-content: space-between
             padding: 0 15px
             .left
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               font-size: $font-size-14
               color: $color-20202E
             .right

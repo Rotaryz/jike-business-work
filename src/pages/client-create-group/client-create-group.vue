@@ -71,23 +71,23 @@
         width: 100%
         outline: none
         overflow:hidden
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-20202E
         &::-webkit-input-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &:-moz-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &::-moz-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &:-ms-input-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
     .btn
@@ -99,7 +99,7 @@
       line-height: 45px
       text-align: center
       background-color: $color-20202E
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
       font-size: $font-size-16
       color: $color-white-fff
       letter-spacing: 0.3px

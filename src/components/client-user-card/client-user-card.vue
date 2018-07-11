@@ -124,7 +124,7 @@
             color: $color-888888
             no-wrap()
         .tags
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-12
           color: $color-56BA15
           layout(row)

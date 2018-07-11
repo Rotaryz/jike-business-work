@@ -196,7 +196,7 @@
     text-indent: 30px
     font-size: $font-size-medium
     color: $color-text
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     border-1px($color-col-line, 2px)
     .mine-name
       height: $font-size-large-xx
@@ -244,7 +244,7 @@
     margin: 10px auto 0
     padding-left: 15px
     box-sizing border-box
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     font-size: $font-size-medium
     border-1px($color-row-line)
     .mine-detail-header
@@ -272,7 +272,7 @@
     line-height: 45px
     text-align: center
     height: 45px
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     font-size: $font-size-medium
     color: $color-white
     background: $color-text

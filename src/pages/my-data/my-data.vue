@@ -571,7 +571,7 @@
             height: 30px
             font-size: $font-size-14
             color: #20202E
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             line-height: 30px
             width: 25%
             text-align: center
@@ -596,7 +596,7 @@
             .text
               font-size: $font-size-12
               color: #20202e
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               margin-top: 5px
 
   .ai-box
@@ -640,12 +640,12 @@
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
       .bottom-des
         position: absolute
         bottom: 10px

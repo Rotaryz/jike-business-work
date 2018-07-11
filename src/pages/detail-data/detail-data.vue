@@ -267,13 +267,13 @@
               .label-name
                 font-size: $font-size-medium-x
                 color: $color-text
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
                 padding-top: 5px
                 margin-bottom: 15px
               .add-text
                 font-size: $font-size-small
                 color: $color-text-88
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
   .data-con
     padding: 15px
     .data-top
@@ -288,12 +288,12 @@
         .left
           font-size: $font-size-medium
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           width: 83px
         .name
           font-size: $font-size-medium
           color: #20202e
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .right
           flex: 1
           position: relative
@@ -311,7 +311,7 @@
             border: none
             font-size: $font-size-medium
             color: #20202e
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             outline:none
           .right-input::-webkit-input-placeholder
             color: #ccc
@@ -321,7 +321,7 @@
             color: #ccc
           .selected-text
             font-size: $font-size-medium
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             color: #ccc
           .active
             color: #20202e
@@ -374,7 +374,7 @@
       .title
         font-size: $font-size-medium
         color: $color-text-88
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
       .data-area
         margin-top: 10px
         width: 100%
@@ -382,7 +382,7 @@
         padding: 10px 15px
         font-size: $font-size-medium
         color: #20202e
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         height: 185px
         outline:none
       .textarea-number
@@ -390,7 +390,7 @@
         bottom: 25px
         right: 25px
         font-size: $font-size-small
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         color: #202020 e
         span
           color: #ddd
@@ -407,7 +407,7 @@
     text-align: center
     z-index: 11
     font-size: $font-size-medium-x
-    font-family: $font-family-meddle
+    font-family: $font-family-regular
 
   .btn-padding
     height: 45px

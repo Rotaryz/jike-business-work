@@ -72,7 +72,7 @@
         font-size: $font-size-large-xx
         color: $color-text
       .peo-position
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
         margin-top: 10px

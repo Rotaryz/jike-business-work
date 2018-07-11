@@ -128,7 +128,7 @@
             color: $color-20202E
             letter-spacing: 0.6px
           .status
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-12
             color: $color-56BA15
         .ai
@@ -149,7 +149,7 @@
       line-height: 45px
       text-align: center
       background-color: $color-20202E
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
       font-size: $font-size-16
       color: $color-white-fff
       letter-spacing: 0.3px

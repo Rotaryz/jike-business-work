@@ -93,7 +93,7 @@
         padding: 8px 15px 8px 14px
         border: 1px solid $color-ccc
         margin: 0 10px 10px 0
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-888888
         background:$color-white-fff

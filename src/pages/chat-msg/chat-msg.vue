@@ -281,7 +281,7 @@
               border-radius: 8px
               line-height: 19px
               font-size: $font-size-medium
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               word-wrap: break-word
               word-break: break-all
             .chat-msg-content.other
@@ -369,7 +369,7 @@
         text-align: center
         line-height: 36px
         font-size: $font-size-medium
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         margin-left: 5px
       .input-container
         flex: 1

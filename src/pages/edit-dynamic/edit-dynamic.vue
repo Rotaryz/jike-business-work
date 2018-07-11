@@ -253,7 +253,7 @@
     display: flex
     height: 45px
     .btn-item
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
       color: $color-white
       line-height: 45px

@@ -116,29 +116,29 @@
           overflow:hidden
           overflow-x: visible
           display: block
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-20202E
           &::-webkit-input-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &:-moz-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &::-moz-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &:-ms-input-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
       .cancel-btn
         width: 60px
         height: 100%
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-56BA15
         layout()
@@ -183,7 +183,7 @@
           .tags
             layout(row, block, nowrap)
             .tags-item
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               font-size: $font-size-14
               color: $color-ccc
               padding: 3px 9px

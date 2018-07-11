@@ -242,7 +242,7 @@
     .tab-item
       text-align: center
       flex: 1
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
     .line
       height: 3px
@@ -278,7 +278,7 @@
       position: relative
       .goods-text
         line-height: 18px
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
         width: 45.07vw

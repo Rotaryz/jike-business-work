@@ -71,7 +71,7 @@
         layout()
         justify-content: center
         align-items: center
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-16
         color: $color-20202E
         letter-spacing: 0.8px
@@ -85,7 +85,7 @@
           height: 100%
           text-align: center
           line-height: 45px
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-20202E
           letter-spacing: 0.6px
