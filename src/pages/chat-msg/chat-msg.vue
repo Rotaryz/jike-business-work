@@ -238,6 +238,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  @import '~common/stylus/base'
   .chat
     width: 100vw
     height: 100vh
