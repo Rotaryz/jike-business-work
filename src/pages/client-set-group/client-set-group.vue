@@ -1,15 +1,20 @@
 <template>
   <transition name="slide">
     <article class="client-set-group">
-      <div class="title">设置分组</div>
-      <section class="content">
-        <div v-if="dataArray.length"
-             :class="['item',item.is_selecte?'active':'']"
-             v-for="(item,index) in dataArray"
-             :key="index"
-             @click="check(item)">
-          {{item.name}}
-        </div>
+      <div v-if="dataArray.length">
+        <div class="title" >设置分组</div>
+        <section class="content">
+          <div v-if="dataArray.length"
+               :class="['item',item.is_selecte?'active':'']"
+               v-for="(item,index) in dataArray"
+               :key="index"
+               @click="check(item)">
+            {{item.name}}
+          </div>
+        </section>
+      </div>
+      <section class="exception-box" v-else>
+        <exception errType="nogroup"></exception>
       </section>
     </article>
   </transition>
@@ -18,6 +23,7 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
   import {ERR_OK} from '../../common/js/config'
+  import Exception from 'components/exception/exception'
 
   export default {
     name: 'ClientSetGroup',
@@ -60,6 +66,9 @@
       check(item) {
         item.is_selecte = !item.is_selecte
       }
+    },
+    components: {
+      Exception
     }
   }
 </script>
@@ -92,4 +101,8 @@
           background: $color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
           color: $color-white-fff
           border-color: $color-56BA15
+
+  .exception-box
+    fill-box(absolute)
+    padding-top :137px
 </style>

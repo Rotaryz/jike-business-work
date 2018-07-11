@@ -42,7 +42,7 @@
         </div>
         <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
-      <div class="scroll-list-wrap">
+      <div class="scroll-list-wrap" v-if="dataArray.length">
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
             <slide-view :useType="1" @grouping="groupingHandler" :item="item">
@@ -51,6 +51,9 @@
           </li>
         </ul>
       </div>
+      <section class="exception-box" v-else>
+        <exception errType="customer"></exception>
+      </section>
     </scroll>
     <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
     <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
@@ -70,6 +73,8 @@
   import ActionSheet from 'components/action-sheet/action-sheet'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
+  import Exception from 'components/exception/exception'
+  import NoMore from 'components/no-more/no-more'
 
   const groupList = [{
     orderBy: '',
@@ -137,7 +142,6 @@
         Client.getCusomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
-            this.dataArrayTotal = res.meta.total
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -236,7 +240,9 @@
       UserCard,
       ConfirmMsg,
       ActionSheet,
-      Toast
+      Toast,
+      Exception,
+      NoMore
     }
   }
 </script>
@@ -245,6 +251,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top :70px
 
   .client
     position: absolute

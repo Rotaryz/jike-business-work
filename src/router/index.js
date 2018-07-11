@@ -27,6 +27,7 @@ const DynamicList = () => import('pages/dynamic-list/dynamic-list')
 const EditDynamic = () => import('pages/edit-dynamic/edit-dynamic')
 const AddFlow = () => import('pages/add-flow/add-flow')
 const MyData = () => import('pages/my-data/my-data')
+const PageError = () => import('pages/page-error/page-error')
 
 Vue.use(Router)
 
@@ -40,6 +41,13 @@ const route = new Router({
     {
       path: '/oauth',
       component: Oauth
+    },
+    {
+      path: '/page-error',
+      component: PageError,
+      meta: {
+        title: '异常'
+      }
     },
     {
       path: '/radar',
@@ -175,29 +183,6 @@ const route = new Router({
         }
       ]
     },
-    // {
-    //   path: '/client-user-list',
-    //   component: ClientUserList,
-    //   meta: {
-    //     title: '客户列表'
-    //   },
-    //   children: [
-    //     {
-    //       path: 'client-add-user',
-    //       component: ClientAddUser,
-    //       meta: {
-    //         title: '添加成员'
-    //       }
-    //     },
-    //     {
-    //       path: 'client-create-group',
-    //       component: ClientCreateGroup,
-    //       meta: {
-    //         title: '添加分组'
-    //       }
-    //     }
-    //   ]
-    // },
     {
       path: '/client-tag',
       component: ClientTag,
