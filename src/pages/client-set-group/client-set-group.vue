@@ -2,7 +2,7 @@
   <transition name="slide">
     <article class="client-set-group">
       <div v-if="dataArray.length">
-        <div class="title" >设置分组</div>
+        <div class="title">设置分组</div>
         <section class="content">
           <div v-if="dataArray.length"
                :class="['item',item.is_selecte?'active':'']"
@@ -30,13 +30,12 @@
     data() {
       return {
         dataArray: [],
-        customerId: 0
+        id: 0
       }
     },
     created() {
-      const customerInfo = this.$route.query.customerInfo
-      const data = {customer_id: customerInfo.id}
-      this.customerId = customerInfo.id
+      this.id = this.$route.query.id // 分组id
+      const data = {customer_id: this.id}
       Client.getSetGroupList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data
@@ -49,7 +48,7 @@
         item.is_selecte && arr.push({group_id: item.id})
       })
       const data = {
-        customer_id: this.customerId,
+        customer_id: this.id, // 分组id
         data: arr
       }
       Client.setGroup(data).then(res => {
@@ -96,15 +95,15 @@
         font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-888888
-        background:$color-white-fff
-        transition : background-color 0.6s
+        background: $color-white-fff
+        transition: background-color 0.6s
         &.active
           font-family: $font-family-regular
-          background:$color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
+          background: $color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
           color: $color-white-fff
           border-color: $color-56BA15
 
   .exception-box
     fill-box(absolute)
-    padding-top :137px
+    padding-top: 137px
 </style>

@@ -28,14 +28,13 @@
     data() {
       return {
         dataArray: [],
-        currentGroupInfo: null
+        id: null
       }
     },
     created() {
-      const groupInfo = this.$route.query.groupInfo
-      this.currentGroupInfo = groupInfo
+      this.id = this.$route.query.id
       const data = {
-        group_id: groupInfo.id
+        group_id: this.id
       }
       Client.getCustomerList(data).then(res => {
         if (res.data) {
@@ -58,7 +57,7 @@
           item.isCheck && arr.push({customer_id: item.id})
         })
         const data = {
-          group_id: this.currentGroupInfo.id,
+          group_id: this.id,
           data: arr
         }
         Client.addGroupCustomer(data).then(res => {
