@@ -39,7 +39,7 @@
             <ul class="mine-detail-list">
               <li class="mine-detail-item">
                 <span class="item-text">手机</span>
-                <input class="item-detail" type="text" v-model="mine.mobile">
+                <input class="item-detail" type="mobile" v-model="mine.mobile" maxlength="11">
               </li>
               <li class="mine-detail-item">
                 <span class="item-text">邮箱</span>
