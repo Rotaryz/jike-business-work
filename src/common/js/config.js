@@ -5,7 +5,7 @@ const DEV_URL = {
 }
 
 const TEST_URL = {
-  api: 'https://admin-api.jkweixin.net'
+  api: 'https://business-api.jerryf.cn'
 }
 
 const PROD_URL = {
