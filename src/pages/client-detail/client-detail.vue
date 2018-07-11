@@ -9,6 +9,7 @@
                 :listenScroll="listenScroll"
                 @scroll="scroll"
                 :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
                 @pullingUp="onPullingUp">
             <div class="client-top" ref="eleven">
               <div class="cliten-bg"></div>

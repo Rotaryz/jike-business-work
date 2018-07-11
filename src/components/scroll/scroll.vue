@@ -9,7 +9,7 @@
             :pullUpLoad="pullUpLoad"
             :isPullUpLoad="isPullUpLoad"
       >
-        <div class="pullup-wrapper" v-if="pullUpLoad">
+        <div class="pullup-wrapper" :class="showNoMore ? '' : 'nopullup-wrapper'" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullUpLoad">
             <no-more v-if="showNoMore">
               <span>{{pullUpTxt}}</span>
@@ -344,4 +344,7 @@
     justify-content center
     align-items center
     padding: 16px 0
+
+  .nopullup-wrapper
+    padding: 0
 </style>
