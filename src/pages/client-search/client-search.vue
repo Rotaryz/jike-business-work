@@ -83,7 +83,7 @@
   @import "~common/stylus/mixin"
 
   .exception-box
-    padding-top :92px
+    padding-top: 92px
 
   .client-search
     fill-box()
@@ -108,6 +108,14 @@
         .input
           flex: 1
           outline: none
+          height: auto
+          padding: 0
+          margin: 0
+          resize: none
+          border: 0 none
+          overflow:hidden
+          overflow-x: visible
+          display: block
           font-family: $font-family-meddle
           font-size: $font-size-14
           color: $color-20202E
