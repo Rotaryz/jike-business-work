@@ -320,19 +320,9 @@ const route = new Router({
 })
 
 const DEFAULT_TITLE = 'AI雷达'
-const DEFAULT_ROUTE = '/radar'
-const OAUTH_ROUTE = '/oauth'
 
 route.beforeEach((to, from, next) => {
   document.title = to.meta.title ? to.meta.title : DEFAULT_TITLE
-  if (to.path === '/') {
-    const token = storage.get('token', '')
-    if (token) {
-      next(DEFAULT_ROUTE)
-    } else {
-      next(OAUTH_ROUTE)
-    }
-  }
   next()
 })
 
