@@ -238,6 +238,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  @import '~common/stylus/base'
   .chat
     width: 100vw
     height: 100vh
@@ -253,13 +254,19 @@
       flex: 1
       overflow-y: auto
       position: relative
+      width: 100%
+      overflow-x: hidden
       .chat-list
+        width: 100%
         padding-bottom: 40px
       .chat-item
+        width: 100%
+        box-sizing: border-box
         padding: 0 15px
         margin-top: 15px
         .chat-content
           display: flex
+          width: 100%
           .avatar
             width: 45px
             height: 45px
@@ -268,8 +275,6 @@
             overflow: hidden
             display: flex
             .chat-msg-content
-              flex: 1
-              overflow: hidden
               padding: 13px 15px
               border-radius: 8px
               line-height: 19px
@@ -346,6 +351,8 @@
           justify-content: flex-end
 
     .chat-input
+      width: 100%
+      box-sizing: border-box
       min-height: 38px
       background: $color-background-f9
       padding: 6px 15px
@@ -364,6 +371,7 @@
         margin-left: 5px
       .input-container
         flex: 1
+        overflow-x: hidden
         min-height: 28px
         border: 1px solid rgba(0,0,0,0.10)
         background: $color-white

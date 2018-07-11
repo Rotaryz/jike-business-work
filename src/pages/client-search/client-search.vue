@@ -83,7 +83,7 @@
   @import "~common/stylus/mixin"
 
   .exception-box
-    padding-top :92px
+    padding-top: 92px
 
   .client-search
     fill-box()
