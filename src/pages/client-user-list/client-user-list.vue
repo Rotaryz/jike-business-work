@@ -110,7 +110,7 @@
           page: 1,
           limit: LIMIT
         }
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
           } else {
@@ -183,7 +183,7 @@
           page: page,
           limit: limit
         }
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               this.dataArray.concat(res.data)

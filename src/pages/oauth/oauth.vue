@@ -9,6 +9,7 @@
   import {Jwt} from 'api'
   import storage from 'storage-controller'
   import {ERR_OK} from 'common/js/config'
+  import utils from 'common/js/utils'
 
   const NORMAL_ROUTE = '/radar'
   const COMPONENT_NAME = 'Oauth'
@@ -49,14 +50,7 @@
         Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
-            /*
-            * '404': '网络异常，请刷新重试',
-              'delcard': '名片被删除，请联系公司管理员',
-              'disablecard':'名片被禁用，请联系公司管理员',
-            * */
-            const path = `/page-error`
-            const useType = `404`
-            this.$router.replace({path, query: {useType}})
+            utils._handleErrorType(this.code)
             return
           }
           const {access_token: token, employee_info: info} = res.data

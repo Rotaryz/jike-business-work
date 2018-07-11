@@ -12,7 +12,7 @@ export default {
     return request.post(url, data, loading)
   },
   // 获取客户列表
-  getCusomerList(data, loading) {
+  getCustomerList(data, loading) {
     const url = `/api/employee/employee-customer`
     return request.get(url, data, loading)
   },
