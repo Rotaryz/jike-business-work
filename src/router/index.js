@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import storage from 'storage-controller'
 
 const Oauth = () => import('pages/oauth/oauth')
 const Radar = () => import('pages/radar/radar')
