@@ -68,7 +68,6 @@
     .news-list
       background: $color-white
       padding: 0 15px
-      margin-bottom: 45px
       .news-item
         display: flex
         height: 75px
