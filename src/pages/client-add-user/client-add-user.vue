@@ -51,7 +51,6 @@
     methods: {
       check(item) {
         item.isCheck = !item.isCheck
-        console.log(this.dataArray)
       },
       submit() {
         let arr = []
@@ -105,6 +104,8 @@
           border-radius: 50%
           border: 1px solid $color-col-line
           box-sizing: border-box
+          background :url("")
+          transition :all 0.1s
           &.active
             background: url("./icon-selected@3x.png") no-repeat center / 100%
             border: none

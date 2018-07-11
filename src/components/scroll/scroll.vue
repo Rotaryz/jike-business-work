@@ -11,7 +11,7 @@
       >
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullUpLoad">
-            <no-more>
+            <no-more v-if="showNoMore">
               <span>{{pullUpTxt}}</span>
             </no-more>
           </div>
@@ -37,7 +37,7 @@
             <loading></loading>
           </div>
           <div v-else>
-            <no-more>
+            <no-more v-if="showNoMore">
               <span>{{refreshTxt}}</span>
             </no-more>
           </div>
@@ -127,6 +127,10 @@
       bcColor: {
         type: String,
         default: '#f1f2f5'
+      },
+      showNoMore: {
+        type: Boolean,
+        default: true
       }
     },
     data() {

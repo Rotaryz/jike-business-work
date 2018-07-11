@@ -96,9 +96,11 @@
         font-family: $font-family-meddle
         font-size: $font-size-14
         color: $color-888888
+        background:$color-white-fff
+        transition : background-color 0.6s
         &.active
           font-family: $font-family-regular
-          background: $color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
+          background:$color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
           color: $color-white-fff
           border-color: $color-56BA15
 
