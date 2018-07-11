@@ -80,12 +80,10 @@ export default {
       }
     }).then((response) => {
       alert(JSON.stringify(response))
-      return checkStatus(response)
+      // return checkStatus(response)
     }).then((res) => {
-      alert(JSON.stringify(res))
+      // alert(JSON.stringify(res))
       return checkCode(res)
-    }).catch(err => {
-      alert(JSON.stringify(err))
     })
   },
   get (url, params) {
