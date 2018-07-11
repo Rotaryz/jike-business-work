@@ -116,6 +116,8 @@
     },
     beforeDestroy() {
     },
+    mounted() {
+    },
     methods: {
       refresh() {
         setTimeout(() => {
@@ -141,6 +143,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -194,6 +197,7 @@
       onPullingUp() {
         // 更新数据
         console.info('pulling up and load data')
+        if (!this.pullUpLoad) return
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
@@ -219,6 +223,7 @@
     watch: {
       pullUpLoadObj: {
         handler() {
+          if (!this.pullUpLoad) return // 防止下拉报错
           this.rebuildScroll()
         },
         deep: true
@@ -255,7 +260,7 @@
   @import '~common/stylus/mixin'
 
   .exception-box
-    padding-top :70px
+    padding-top: 70px
 
   .client
     position: absolute
