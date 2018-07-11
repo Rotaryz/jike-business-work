@@ -10,7 +10,6 @@
   import storage from 'storage-controller'
   import Tab from 'components/tab/tab'
   import Ceiling from 'components/ceiling/ceiling'
-
   const COMPONENT_NAME = 'App'
   const DEFAULT_ROUTE = '/radar'
   const OAUTH_ROUTE = '/oauth'
