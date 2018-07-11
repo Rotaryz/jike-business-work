@@ -63,10 +63,10 @@
 </template>
 
 <script>
+  // import {ease} from 'common/js/ease'
   import Search from 'components/client-header-search/client-header-search'
   import SlideView from 'components/slide-view/slide-view'
   import Scroll from 'components/scroll/scroll'
-  // import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
@@ -74,7 +74,6 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
-  import NoMore from 'components/no-more/no-more'
 
   const groupList = [{
     orderBy: '',
@@ -241,8 +240,7 @@
       ConfirmMsg,
       ActionSheet,
       Toast,
-      Exception,
-      NoMore
+      Exception
     }
   }
 </script>
