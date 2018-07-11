@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-user-list">
       <search @toNav="toSearch"></search>
       <section class="add-user" @click="toAddUser">
@@ -52,6 +52,7 @@
     name: 'ClientUserList',
     data() {
       return {
+        slide: '',
         dataArray: [],
         currentGroupInfo: null,
         checkedItem: null,
