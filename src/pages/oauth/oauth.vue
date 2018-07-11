@@ -49,7 +49,7 @@
       },
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {
-          alert(JSON.stringify(res))
+          alert(this.code)
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
             utils._handleErrorType(this.code)
