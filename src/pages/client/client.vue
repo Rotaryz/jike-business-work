@@ -42,6 +42,7 @@
         </div>
         <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
+      <no-more></no-more>
       <div class="scroll-list-wrap" v-if="dataArray.length">
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
@@ -74,6 +75,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
+  import NoMore from 'components/no-more/no-more'
 
   const groupList = [{
     orderBy: '',
@@ -240,7 +242,8 @@
       ConfirmMsg,
       ActionSheet,
       Toast,
-      Exception
+      Exception,
+      NoMore
     }
   }
 </script>
