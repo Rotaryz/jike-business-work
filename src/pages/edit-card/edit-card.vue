@@ -262,6 +262,7 @@
       border-bottom-1px($color-row-line)
       .item-detail
         height: 100%
+        width : 70%
         outline: none
       .item-text
         width: 48px
