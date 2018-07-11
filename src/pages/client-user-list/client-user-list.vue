@@ -37,6 +37,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapGetters} from 'vuex'
   import Search from 'components/client-header-search/client-header-search'
   import SlideView from 'components/slide-view/slide-view'
   import Scroll from 'components/scroll/scroll'
@@ -45,14 +46,13 @@
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  import {ERR_OK} from 'common/js/config'
 
   const LIMIT = 10
   export default {
     name: 'ClientUserList',
     data() {
       return {
-        slide: '',
         dataArray: [],
         currentGroupInfo: null,
         checkedItem: null,
@@ -90,6 +90,9 @@
     mounted() {
     },
     methods: {
+      ...mapGetters([
+        'ios'
+      ]),
       refresh() {
         document.title = this.currentGroupInfo.name
         setTimeout(() => {
@@ -242,6 +245,9 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      slide() {
+        return this.ios() ? '' : 'slide'
       }
     },
     components: {
