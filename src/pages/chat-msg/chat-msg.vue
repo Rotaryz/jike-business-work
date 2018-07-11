@@ -253,13 +253,19 @@
       flex: 1
       overflow-y: auto
       position: relative
+      width: 100%
+      overflow-x: hidden
       .chat-list
+        width: 100%
         padding-bottom: 40px
       .chat-item
+        width: 100%
+        box-sizing: border-box
         padding: 0 15px
         margin-top: 15px
         .chat-content
           display: flex
+          width: 100%
           .avatar
             width: 45px
             height: 45px
