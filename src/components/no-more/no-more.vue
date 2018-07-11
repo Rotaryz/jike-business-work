@@ -18,12 +18,6 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props: {
-      msg: {
-        type: String,
-        default: '没有更多数据'
-      }
-    }
   }
 </script>
 
