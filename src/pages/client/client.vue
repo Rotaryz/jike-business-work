@@ -42,7 +42,6 @@
         </div>
         <div class="right">全部 {{dataArray.length}} 位</div>
       </section>
-      <no-more></no-more>
       <div class="scroll-list-wrap" v-if="dataArray.length">
         <ul class="user-list">
           <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">

@@ -5,7 +5,9 @@
         <div class="line-one"></div>
         <div class="line-two"></div>
       </div>
-      <div class="msg-txt">{{msg}}</div>
+      <div class="msg-txt">
+        <slot></slot>
+      </div>
       <div class="line-wrap right">
         <div class="line-one"></div>
         <div class="line-two"></div>

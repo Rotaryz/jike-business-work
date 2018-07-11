@@ -11,7 +11,9 @@
       >
         <div class="pullup-wrapper" v-if="pullUpLoad">
           <div class="before-trigger" v-if="!isPullUpLoad">
-            <span>{{pullUpTxt}}</span>
+            <no-more>
+              <span>{{pullUpTxt}}</span>
+            </no-more>
           </div>
           <div class="after-trigger" v-else>
             <loading></loading>
@@ -46,6 +48,7 @@
   import Loading from 'components/loading/loading'
   import Bubble from 'components/bubble/bubble.vue'
   import {getRect} from 'common/js/dom'
+  import NoMore from 'components/no-more/no-more'
 
   const COMPONENT_NAME = 'scroll'
   const DIRECTION_H = 'horizontal'
@@ -290,7 +293,8 @@
     },
     components: {
       Loading,
-      Bubble
+      Bubble,
+      NoMore
     }
   }
 </script>
