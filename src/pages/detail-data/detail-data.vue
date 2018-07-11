@@ -393,7 +393,7 @@
         right: 25px
         font-size: $font-size-small
         font-family: $font-family-meddle
-        color: #202020 e
+        color: #202020
         span
           color: #ddd
 
