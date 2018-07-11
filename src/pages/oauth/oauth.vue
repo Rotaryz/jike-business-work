@@ -39,15 +39,17 @@
           this._applyOauth()
         } else if (!this.hasToken && !this.code) {
           this._getCode()
+          alert('getCode')
         } else {
           this.$router.replace(NORMAL_ROUTE)
         }
       },
       _getCode() {
-        window.location.href = oauth.oauthUri
+        window.location.replace(oauth.oauthUri)
       },
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {
+          alert(this.code)
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
             utils._handleErrorType(this.code)
