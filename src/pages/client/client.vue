@@ -179,9 +179,13 @@
       },
       msgConfirm() {
         const data = {groupId: this.checkedItem.id}
+        const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
+        this.userListArr.splice(idx, 1)
         Client.delGroup(data).then(res => {
-          const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
-          this.userListArr.splice(idx, 1)
+          if (res.error === ERR_OK) {
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       },
       msgCancel() {
