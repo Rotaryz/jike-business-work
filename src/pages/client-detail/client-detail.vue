@@ -9,8 +9,8 @@
                 :listenScroll="listenScroll"
                 @scroll="scroll"
                 :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
                 @pullingUp="onPullingUp">
-          <div v-if="!showTab">
             <div class="client-top" ref="eleven">
               <div class="cliten-bg"></div>
               <div class="cliten-box">
@@ -71,10 +71,11 @@
                 <div class="chilen-line"></div>
               </div>
             </div>
-          </div>
-          <div class="tab-padding" :style="'height:' + (highgt + 48)  + 'px'  " v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
-            <div class="box-list">
+            <section class="exception-box" v-if="actionList.length * 1 === 0">
+              <exception errType="nodata"></exception>
+            </section>
+            <div class="box-list" v-if="actionList.length * 1 !== 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
@@ -128,7 +129,10 @@
               </div>
             </div>
           </div>
-          <div class="follow-box" v-if="menuIdx * 1 === 1">
+          <section class="exception-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 === 0">
+            <exception errType="nodata"></exception>
+          </section>
+          <div class="follow-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 !== 0">
             <div class="follow-line"></div>
             <div class="follow-list" v-for="(item, index) in flowList" :key="index">
               <div class="time">{{item.created_at}}</div>
@@ -220,6 +224,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import Scroll from 'components/scroll/scroll'
+  import Exception from 'components/exception/exception'
   import {mapActions} from 'vuex'
 
   export default {
@@ -313,7 +318,6 @@
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
-      console.log(this.$refs.eleven.offsetHeight, 111)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -522,7 +526,6 @@
       selectBar(index, item) {
         this.barIndex = index
         this.flow.progress = item.text
-        console.log(this.progress)
         setTimeout(() => {
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
@@ -539,6 +542,8 @@
         }, 1500)
       },
       switchTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.scroll(0)
         this.menuIdx = index
         if (index * 1 === 2) {
           setTimeout(() => {
@@ -577,7 +582,6 @@
       },
       getMoreFlowList(id, flowId) {
         if (this.noMore) return
-        console.log(this.flowPage)
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
             this.flowList.push(...res.data)
@@ -632,9 +636,15 @@
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpMessage() {
-        let id = this.id
-        const path = `/chat?id=${id}`
-        this.$router.push({path})
+        let currentMsg = {
+          nickName: this.clientData.name,
+          avatar: this.clientData.image_url,
+          account: this.clientData.im_account
+        }
+        console.log(currentMsg)
+        this.setCurrent(currentMsg)
+        let url = '/chat?id=' + this.clientData.im_account
+        this.$router.push(url)
       },
       onPullingUp() {
         if (this.menuIdx * 1 === 1) {
@@ -689,6 +699,7 @@
     },
     components: {
       Toast,
+      Exception,
       Scroll
     },
     computed: {
@@ -727,6 +738,8 @@
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
 
+  .exception-box
+    padding-top :70px
   .tab-padding
     height: 48px
 
