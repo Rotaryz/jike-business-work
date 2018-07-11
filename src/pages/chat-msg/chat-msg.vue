@@ -352,6 +352,8 @@
           justify-content: flex-end
 
     .chat-input
+      width: 100%
+      box-sizing: border-box
       min-height: 38px
       background: $color-background-f9
       padding: 6px 15px
@@ -370,6 +372,7 @@
         margin-left: 5px
       .input-container
         flex: 1
+        overflow-x: hidden
         min-height: 28px
         border: 1px solid rgba(0,0,0,0.10)
         background: $color-white
