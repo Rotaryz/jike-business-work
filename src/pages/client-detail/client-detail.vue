@@ -10,7 +10,6 @@
                 @scroll="scroll"
                 :pullUpLoad="pullUpLoadObj"
                 @pullingUp="onPullingUp">
-          <div v-if="!showTab">
             <div class="client-top" ref="eleven">
               <div class="cliten-bg"></div>
               <div class="cliten-box">
@@ -71,8 +70,6 @@
                 <div class="chilen-line"></div>
               </div>
             </div>
-          </div>
-          <div class="tab-padding" :style="'height:' + (highgt + 48)  + 'px'  " v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
             <div class="box-list">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
@@ -313,7 +310,6 @@
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
-      console.log(this.$refs.eleven.offsetHeight, 111)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -522,7 +518,6 @@
       selectBar(index, item) {
         this.barIndex = index
         this.flow.progress = item.text
-        console.log(this.progress)
         setTimeout(() => {
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
@@ -539,6 +534,8 @@
         }, 1500)
       },
       switchTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.scroll(0)
         this.menuIdx = index
         if (index * 1 === 2) {
           setTimeout(() => {
@@ -577,7 +574,6 @@
       },
       getMoreFlowList(id, flowId) {
         if (this.noMore) return
-        console.log(this.flowPage)
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
             this.flowList.push(...res.data)
@@ -632,9 +628,15 @@
         this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
       },
       jumpMessage() {
-        let id = this.id
-        const path = `/chat?id=${id}`
-        this.$router.push({path})
+        let currentMsg = {
+          nickName: this.clientData.name,
+          avatar: this.clientData.image_url,
+          account: this.clientData.im_account
+        }
+        console.log(currentMsg)
+        this.setCurrent(currentMsg)
+        let url = '/chat?id=' + this.clientData.im_account
+        this.$router.push(url)
       },
       onPullingUp() {
         if (this.menuIdx * 1 === 1) {
