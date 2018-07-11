@@ -37,7 +37,7 @@
         if (res.error === ERR_OK) {
           let imInfo = res.data
           this.setImInfo(imInfo)
-          // console.log(imInfo)
+          alert('IM LOGIN')
           this.sdkLogin(imInfo).then(() => {
 
           })

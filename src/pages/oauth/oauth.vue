@@ -38,7 +38,6 @@
           // 有code没有token -> 申请拿token
           this._applyOauth()
         } else if (!this.hasToken && !this.code) {
-          this._getCode()
           alert('getCode')
         } else {
           this.$router.replace(NORMAL_ROUTE)
@@ -49,7 +48,6 @@
       },
       _applyOauth() {
         Jwt.employeeLogin(this.code).then((res) => {
-          alert(this.code)
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
             utils._handleErrorType(this.code)
@@ -58,7 +56,6 @@
           const {access_token: token, employee_info: info} = res.data
           storage.set('token', token)
           storage.set('info', info)
-          alert(this.beforeLoginRoute)
           alert(token)
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
         })
