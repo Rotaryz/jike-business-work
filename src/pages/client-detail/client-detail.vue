@@ -11,66 +11,66 @@
                 :pullUpLoad="pullUpLoadObj"
                 :showNoMore="false"
                 @pullingUp="onPullingUp">
-            <div class="client-top" ref="eleven">
-              <div class="cliten-bg"></div>
-              <div class="cliten-box">
-                <div class="cliten-con">
-                  <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-                  <div class="cliten-img">
-                    <div class="detail-img-box">
-                      <div class="img">
-                        <img :src="clientData.image_url" alt="">
-                      </div>
-                      <div class="label-right">
-                        <div class="label-name">{{clientData.name}}</div>
-                        <div class="label-box">
-                          <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
-                               @click="toClientTag">{{item.label_name}}
-                          </div>
-                          <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
-                        </div>
-                      </div>
+          <div class="client-top" ref="eleven">
+            <div class="cliten-bg"></div>
+            <div class="cliten-box">
+              <div class="cliten-con">
+                <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                <div class="cliten-img">
+                  <div class="detail-img-box">
+                    <div class="img">
+                      <img :src="clientData.image_url" alt="">
                     </div>
-                    <div class="detail-jump" @click="jumpData">
-                      <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                    <div class="label-right">
+                      <div class="label-name">{{clientData.name}}</div>
+                      <div class="label-box">
+                        <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
+                             @click="toClientTag">{{item.label_name}}
+                        </div>
+                        <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
+                      </div>
                     </div>
                   </div>
-                  <div class="cliten-bottom">
-                    <div class="bottom-number">
-                      <div class="number-top">
-                        <div class="number">{{clientData.conversion_rate}}</div>
-                        <div class="icon">%</div>
-                      </div>
-                      <div class="number-bottom">
-                        <div class="text">预计成交率</div>
-                      </div>
+                  <div class="detail-jump" @click="jumpData">
+                    <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                  </div>
+                </div>
+                <div class="cliten-bottom">
+                  <div class="bottom-number">
+                    <div class="number-top">
+                      <div class="number">{{clientData.conversion_rate}}</div>
+                      <div class="icon">%</div>
                     </div>
-                    <div class="bottom-number">
-                      <div class="number-top" v-if="clientData.progress < 110">
-                        <div class="number">{{clientData.progress}}</div>
-                        <div class="icon">%</div>
-                      </div>
-                      <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
-                        <div class="text">{{clientData.progress}}</div>
-                      </div>
-                      <div class="number-bottom" @click="showModel">
-                        <div class="text">实际跟进阶段</div>
-                        <div class="img-box">
-                          <img class="img" src="./icon-switch@2x.png" alt="">
-                        </div>
+                    <div class="number-bottom">
+                      <div class="text">预计成交率</div>
+                    </div>
+                  </div>
+                  <div class="bottom-number">
+                    <div class="number-top" v-if="clientData.progress < 110">
+                      <div class="number">{{clientData.progress}}</div>
+                      <div class="icon">%</div>
+                    </div>
+                    <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
+                      <div class="text">{{clientData.progress}}</div>
+                    </div>
+                    <div class="number-bottom" @click="showModel">
+                      <div class="text">实际跟进阶段</div>
+                      <div class="img-box">
+                        <img class="img" src="./icon-switch@2x.png" alt="">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="select-tab select-client">
-              <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
-              </div>
-              <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-                <div class="chilen-line"></div>
-              </div>
+          </div>
+          <div class="select-tab select-client">
+            <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
             </div>
+            <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+              <div class="chilen-line"></div>
+            </div>
+          </div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
             <section class="exception-box" v-if="actionList.length * 1 === 0">
               <exception errType="nodata"></exception>
@@ -223,6 +223,7 @@
   import {ClientDetail, Client, Echart} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
+  import storage from 'storage-controller'
   import Scroll from 'components/scroll/scroll'
   import Exception from 'components/exception/exception'
   import {mapActions} from 'vuex'
@@ -670,7 +671,7 @@
         })
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
           } else {
@@ -679,7 +680,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
           } else {
@@ -688,7 +689,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.userInfo.emloyee_id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
           } else {
@@ -708,6 +709,9 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
       }
     },
     filters: {
@@ -739,7 +743,8 @@
     -webkit-box-sizing: border-box
 
   .exception-box
-    padding-top :70px
+    padding-top: 70px
+
   .tab-padding
     height: 48px
 
