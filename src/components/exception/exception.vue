@@ -11,11 +11,11 @@
   const imgJson = {
     '404': ['pic-404', '网络异常，请刷新重试'],
     'customer': ['pic-customer', '暂无客户'],
-    'delcard': ['pic-delcard', 'todo'],
+    'delcard': ['pic-delcard', '名片被删除，请联系公司管理员'],
     'disablecard': ['pic-disablecard', '名片被禁用，请联系公司管理员'],
     'nodata': ['pic-nodata', '暂无数据'],
     'nogroup': ['pic-nogroup', '暂无分组'],
-    'nonews': ['pic-nonews', 'todo'],
+    'nonews': ['pic-nonews', '暂无消息'],
     'noresult': ['pic-noresult', '找不到您所要的结果']
   }
   export default {
