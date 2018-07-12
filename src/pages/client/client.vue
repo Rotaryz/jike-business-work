@@ -107,7 +107,8 @@
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
@@ -121,6 +122,9 @@
     },
     methods: {
       refresh() {
+        this.isAll = false
+        this.page = 1
+        this.limit = LIMIT
         this.getGroupList()
         this.getCustomerList()
       },
@@ -198,6 +202,8 @@
         // 更新数据
         console.info('pulling up and load data')
         if (!this.pullUpLoad) return
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
+
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
@@ -208,6 +214,7 @@
               this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)

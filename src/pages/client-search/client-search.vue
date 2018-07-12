@@ -53,7 +53,8 @@
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
@@ -72,6 +73,7 @@
         this.$router.push({path, query: {id: item.id}})
       },
       searchUser(name) {
+        this.isAll = false
         const data = {name, page: 1, limit: LIMIT}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
@@ -83,10 +85,14 @@
           this.timeStamp = Date.now()
         })
       },
+      scrollTop() {
+        this.$refs.scroll.scrollTo(0, 0)
+      },
       onPullingUp() {
         // 更新数据
         console.info('pulling up and load data')
-        // if (!this.pullUpLoad) return
+        if (!this.pullUpLoad) return // 防止下拉报错
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
         let page = ++this.page
         let limit = this.limit
         const data = {name: this.userName, page, limit}
@@ -97,6 +103,7 @@
               this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)
@@ -113,12 +120,13 @@
     watch: {
       userName(curVal, oldVal) {
         if (Date.now() - this.timeStamp > 200) {
+          this.scrollTop()
           this.searchUser(curVal)
         }
       },
       pullUpLoadObj: {
         handler() {
-          // if (!this.pullUpLoad) return // 防止下拉报错
+          if (!this.pullUpLoad) return // 防止下拉报错
           this.rebuildScroll()
         },
         deep: true
