@@ -58,8 +58,9 @@
     created() {
       this.searchUser(this.userName)
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
+      next(true)
     },
     methods: {
       cancelHandler() {

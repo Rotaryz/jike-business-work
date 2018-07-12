@@ -4,7 +4,7 @@
       <div class="news-item border-bottom-1px" v-for="(item, index) in latelyList" :key="index" @click="chatMsg(item)">
         <div class="news-left">
           <img :src="item.avatar" class="left-img">
-          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount}}</span>
+          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount > 99 ? '···' : item.unreadMsgCount}}</span>
         </div>
         <div class="news-right">
           <div class="right-top">

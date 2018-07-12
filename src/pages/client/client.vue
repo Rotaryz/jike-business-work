@@ -120,10 +120,8 @@
     },
     methods: {
       refresh() {
-        setTimeout(() => {
-          this.getGroupList()
-          this.getCustomerList()
-        }, 300)
+        this.getGroupList()
+        this.getCustomerList()
       },
       toSearch() {
         const path = `/client/client-search`

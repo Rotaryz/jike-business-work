@@ -111,7 +111,6 @@ const mutations = {
         type: 1
       }
       state.nowChat = [...state.nowChat, newMsg]
-      console.log(state.nowChat)
     }
   }
 }

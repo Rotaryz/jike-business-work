@@ -54,7 +54,39 @@ const route = new Router({
       component: Radar,
       meta: {
         title: '雷达'
-      }
+      },
+      children: [
+        {
+          path: 'client-detail',
+          component: Cdetail,
+          meta: {
+            title: '客户详情'
+          },
+          children: [
+            {
+              path: 'client-tag',
+              component: ClientTag,
+              meta: {
+                title: '标签'
+              }
+            },
+            {
+              path: 'detail-data',
+              component: Cdata,
+              meta: {
+                title: '客户資料'
+              }
+            },
+            {
+              path: 'addflow',
+              component: AddFlow,
+              meta: {
+                title: '添加跟进内容'
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       path: '/news',

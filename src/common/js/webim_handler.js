@@ -414,6 +414,9 @@ export default class webimHandler {
         case 10008:
           resTxt = nickName + '保存了你的电话, 可以考虑主动沟通'
           break
+        case 10009:
+          resTxt = nickName + '保存了你的名片海报'
+          break
         case 20001:
           resTxt = nickName + '正在查看你的产品, 请把握商机'
           break

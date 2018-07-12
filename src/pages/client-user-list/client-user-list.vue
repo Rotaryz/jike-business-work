@@ -78,17 +78,16 @@
       this.getCustomerList()
       document.title = this.title
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
+      next(true)
     },
     mounted() {
     },
     methods: {
       refresh() {
         document.title = this.title
-        setTimeout(() => {
-          this.getCustomerList()
-        }, 300)
+        this.getCustomerList()
       },
       toSearch() {
         const path = `/client/client-user-list/client-search`
