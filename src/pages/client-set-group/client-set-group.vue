@@ -43,7 +43,25 @@
         }
       })
     },
-    beforeDestroy() {
+    // beforeDestroy() {
+    //   let arr = []
+    //   this.dataArray.filter(item => {
+    //     item.is_selecte && arr.push({group_id: item.id})
+    //   })
+    //   const data = {
+    //     customer_id: this.id, // 分组id
+    //     data: arr
+    //   }
+    //   Client.setGroup(data).then(res => {
+    //     if (res.error === ERR_OK) {
+    //       //
+    //     } else {
+    //       //
+    //     }
+    //     this.$emit('refresh')
+    //   })
+    // },
+    beforeRouteLeave(to, from, next) {
       let arr = []
       this.dataArray.filter(item => {
         item.is_selecte && arr.push({group_id: item.id})
@@ -54,13 +72,10 @@
       }
       Client.setGroup(data).then(res => {
         if (res.error === ERR_OK) {
-          //
-        } else {
-          //
+          this.$emit('refresh')
         }
-        this.$emit('refresh')
+        next(true)
       })
-      this.$emit('refresh')
     },
     methods: {
       check(item) {
