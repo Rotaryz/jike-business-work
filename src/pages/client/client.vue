@@ -51,7 +51,7 @@
           </li>
         </ul>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="customer"></exception>
       </section>
     </scroll>
@@ -100,6 +100,7 @@
         groupList: groupList,
         userListArr: [],
         dataArray: [],
+        isEmpty: false,
         checkedItem: null, // 被选中的分组
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
@@ -141,6 +142,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.isEmpty = !this.dataArray.length
             this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
             this.$refs.toast.show(res.message)
@@ -202,7 +204,8 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
             }

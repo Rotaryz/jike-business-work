@@ -22,7 +22,7 @@
           </ul>
         </scroll>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="noresult"></exception>
       </section>
       <toast ref="toast"></toast>
@@ -46,6 +46,7 @@
       return {
         userName: '',
         dataArray: [],
+        isEmpty: false,
         timeStamp: 0,
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
@@ -75,6 +76,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = [...res.data]
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -91,7 +93,8 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
             }

@@ -13,7 +13,7 @@
           </div>
         </section>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="nogroup"></exception>
       </section>
     </article>
@@ -31,7 +31,8 @@
     data() {
       return {
         dataArray: [],
-        id: 0
+        id: 0,
+        isEmpty: false
       }
     },
     created() {
@@ -40,6 +41,7 @@
       Client.getSetGroupList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data
+          this.isEmpty = !this.dataArray.length
         }
       })
     },
