@@ -22,20 +22,20 @@
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientAddUser',
     data() {
       return {
         dataArray: [],
-        currentGroupInfo: null
+        id: null
       }
     },
     created() {
-      const groupInfo = this.$route.query.groupInfo
-      this.currentGroupInfo = groupInfo
+      this.id = this.$route.query.id
       const data = {
-        group_id: groupInfo.id
+        group_id: this.id
       }
       Client.getCustomerList(data).then(res => {
         if (res.data) {
@@ -58,7 +58,7 @@
           item.isCheck && arr.push({customer_id: item.id})
         })
         const data = {
-          group_id: this.currentGroupInfo.id,
+          group_id: this.id,
           data: arr
         }
         Client.addGroupCustomer(data).then(res => {
@@ -72,6 +72,12 @@
             this.$refs.toast.show(res.message)
           }
         })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     watch: {},

@@ -27,6 +27,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientSearch',
@@ -68,6 +69,12 @@
         if (Date.now() - this.timeStamp > 200) {
           this.searchUser(curVal)
         }
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

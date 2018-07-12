@@ -13,12 +13,8 @@
                   v-if="dataArray.length"
                   bcColor="#fff"
                   :data="dataArray"
-                  :pullDownRefresh="pullDownRefreshObj"
                   :pullUpLoad="pullUpLoadObj"
-                  :startY="parseInt(startY)"
-                  @pullingDown="onPullingDown"
-                  @pullingUp="onPullingUp"
-                  @scroll="scroll">
+                  @pullingUp="onPullingUp">
             <ul class="user-list">
               <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
                 <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
@@ -41,7 +37,6 @@
   import Search from 'components/client-header-search/client-header-search'
   import SlideView from 'components/slide-view/slide-view'
   import Scroll from 'components/scroll/scroll'
-  import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
@@ -54,7 +49,8 @@
     data() {
       return {
         dataArray: [],
-        currentGroupInfo: null,
+        title: null, // 分组名称
+        id: null, // 分组ID
         checkedItem: null,
         scrollbar: true,
         scrollbarFade: true,
@@ -78,11 +74,9 @@
       }
     },
     created() {
-      for (let i = 0; i < 20; i++) {
-        this.items.push(i)
-      }
-      this.getTitle()
-      this.getCusonerList()
+      this.getParams()
+      this.getCustomerList()
+      document.title = this.title
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -90,28 +84,24 @@
     mounted() {
     },
     methods: {
-      ...mapGetters([
-        'ios'
-      ]),
       refresh() {
-        document.title = this.currentGroupInfo.name
+        document.title = this.title
         setTimeout(() => {
-          this.getCusonerList()
+          this.getCustomerList()
         }, 300)
       },
       toSearch() {
         const path = `/client/client-user-list/client-search`
         this.$router.push({path})
       },
-      getTitle() {
-        const groupInfo = this.$route.query.groupInfo
-        document.title = groupInfo.name
-        groupInfo && (this.currentGroupInfo = groupInfo)
+      getParams() {
+        this.title = this.$route.query.title
+        this.id = this.$route.query.id
       },
-      getCusonerList() {
+      getCustomerList() {
         const data = {
           get_group_detail: 1,
-          group_id: this.currentGroupInfo.id,
+          group_id: this.id,
           page: 1,
           limit: LIMIT
         }
@@ -125,7 +115,7 @@
       },
       toAddUser() {
         const path = `/client/client-user-list/client-add-user`
-        this.$router.push({path, query: {groupInfo: this.currentGroupInfo}})
+        this.$router.push({path, query: {id: this.id}}) // 分组id
       },
       check(item) {
         const path = `/client/client-user-list/client-detail`
@@ -133,7 +123,7 @@
       },
       groupingHandler(index, item) {
         const path = `/client/client-user-list/client-set-group`
-        this.$router.push({path, query: {customerInfo: item}})
+        this.$router.push({path, query: {id: item.id}}) // 客户id
       },
       delHandler(index, item) {
         this.checkedItem = item
@@ -143,7 +133,7 @@
         const idx = this.dataArray.findIndex(val => val.id === this.checkedItem.id)
         this.dataArray.splice(idx, 1)
         const data = {
-          group_id: this.currentGroupInfo.id,
+          group_id: this.id, // 分组id
           customer_id: this.checkedItem.id
         }
         Client.delCustomer(data).then(res => {
@@ -156,27 +146,6 @@
       msgCancel() {
         this.checkedItem = null
       },
-      scroll(e) {
-        console.log(e)
-      },
-      clickItem(item) {
-        console.log(item)
-      },
-      scrollTo() {
-        this.$refs.scroll.scrollTo(this.scrollToX, this.scrollToY, this.scrollToTime, ease[this.scrollToEasing])
-      },
-      onPullingDown() {
-        // 模拟更新数据
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // 如果有新数据
-            this.items.unshift(1)
-          } else {
-            // 如果没有新数据
-            this.$refs.scroll.forceUpdate()
-          }
-        }, 2000)
-      },
       onPullingUp() {
         // 更新数据
         console.log('pulling up and load data')
@@ -184,7 +153,7 @@
         let limit = LIMIT
         const data = {
           get_group_detail: 1,
-          group_id: this.currentGroupInfo.id,
+          group_id: this.id,
           page: page,
           limit: limit
         }
@@ -208,46 +177,23 @@
       }
     },
     watch: {
-      scrollbarObj: {
-        handler() {
-          this.rebuildScroll()
-        },
-        deep: true
-      },
-      pullDownRefreshObj: {
-        handler() {
-          this.rebuildScroll()
-        },
-        deep: true
-      },
       pullUpLoadObj: {
         handler() {
           this.rebuildScroll()
         },
         deep: true
-      },
-      startY() {
-        this.rebuildScroll()
       }
     },
     computed: {
-      scrollbarObj: function () {
-        return this.scrollbar ? {fade: this.scrollbarFade} : false
-      },
-      pullDownRefreshObj: function () {
-        return this.pullDownRefresh ? {
-          threshold: parseInt(this.pullDownRefreshThreshold),
-          stop: parseInt(this.pullDownRefreshStop)
-        } : false
-      },
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
       },
+      ...mapGetters(['ios']),
       slide() {
-        return this.ios() ? '' : 'slide'
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

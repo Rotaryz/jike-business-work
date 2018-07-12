@@ -24,6 +24,7 @@
   import {ClientDetail} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'add-flow',
@@ -59,6 +60,12 @@
       },
       toBack() {
         this.$router.back()
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

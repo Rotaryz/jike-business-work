@@ -65,7 +65,7 @@
   import Scroll from 'components/scroll/scroll'
   import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import storage from 'storage-controller'
 
   export default {
@@ -134,6 +134,12 @@
             this.$refs.toast.show(res.message)
           })
         }
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

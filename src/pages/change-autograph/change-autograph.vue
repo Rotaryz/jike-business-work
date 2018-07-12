@@ -22,7 +22,7 @@
   import { Business } from 'api'
   import { ERR_OK } from 'common/js/config'
   import Toast from 'components/toast/toast'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     name: 'change-autograph',
@@ -50,6 +50,12 @@
       },
       _back () {
         this.$router.back()
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

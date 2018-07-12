@@ -218,7 +218,8 @@
       ...mapGetters([
         'currentMsg',
         'imInfo',
-        'nowChat'
+        'nowChat',
+        'ios'
       ]),
       pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {
@@ -229,6 +230,9 @@
       },
       userInfo() {
         return storage.get('info')
+      },
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     }
   }

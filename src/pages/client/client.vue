@@ -151,7 +151,7 @@
       },
       toUserList(item) {
         const path = `/client/client-user-list`
-        this.$router.push({path, query: {groupInfo: item}})
+        this.$router.push({path, query: {title: item.name, id: item.id}}) // 分组名称 和 分组id
       },
       toCreateGroup() {
         const path = `/client/client-create-group`
@@ -163,7 +163,7 @@
       },
       groupingHandler(index, item) {
         const path = `/client/client-set-group`
-        this.$router.push({path, query: {customerInfo: item}})
+        this.$router.push({path, query: {id: item.id}}) // 客户id
       },
       showGroupList() {
         this.$refs.sheet.show()

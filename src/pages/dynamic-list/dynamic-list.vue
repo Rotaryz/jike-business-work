@@ -145,6 +145,7 @@
   import { ERR_OK } from '../../common/js/config'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Toast from 'components/toast/toast'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'dynamic-list',
@@ -169,6 +170,10 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     watch: {

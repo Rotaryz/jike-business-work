@@ -120,6 +120,7 @@
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
   import storage from 'storage-controller'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'my-data',
@@ -515,6 +516,10 @@
     computed: {
       userInfo() {
         return storage.get('info')
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

@@ -27,6 +27,7 @@
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientTag',
@@ -88,6 +89,12 @@
           let node = item.data.find(val => val.label_id === it.label_id)
           node && (node.isCheck = !node.isCheck)
         })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
