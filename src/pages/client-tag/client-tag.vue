@@ -59,7 +59,7 @@
         }
       })
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       let arr = []
       this.dataArray.map(item => {
         item.data.forEach(val => {
@@ -75,13 +75,10 @@
       }
       Client.updateTag(data).then(res => {
         if (res.error === ERR_OK) {
-          //
-        } else {
-          //
+          this.$emit('refresh')
         }
-        this.$emit('refresh')
+        next(true)
       })
-      this.$emit('refresh')
     },
     methods: {
       check(it) {
