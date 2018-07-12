@@ -1,7 +1,7 @@
 <template>
   <transition :name="slide">
     <article class="client-tag">
-      <scroll >
+      <scroll bcColor="#fff">
         <div class="box">
           <section class="info-box" v-for="(item,index) in dataArray" :key="index" v-if="dataArray.length">
             <div class="title">{{item.name}}</div>
