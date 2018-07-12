@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="goods-detail">
-      <scroll>
+      <scroll ref="scroll">
         <div class="cover-box">
           <img :src="goods.image_url" class="cover">
         </div>
@@ -14,7 +14,7 @@
           <span class="goods-small-box goods-small-width"></span>
           <span class="goods-small-text">产品详情</span>
         </div>
-        <img :src="item.image_url" class="goods-img" v-for="(item, index) in goods.goods_images" :ley="index">
+        <img :src="item.image_url" class="goods-img" v-for="(item, index) in goods.goods_images" :key="index" @load="loadImage">
       </scroll>
     </div>
   </transition>
@@ -31,7 +31,8 @@
     name: 'goods-detail',
     data () {
       return {
-        goods: {}
+        goods: {},
+        imageLength: 0
       }
     },
     created () {
@@ -46,6 +47,15 @@
             this.goods = res.data
           }
         })
+      },
+      loadImage() {
+        if (this.imageLength < this.goods.goods_images.length) {
+          this.imageLength += 1
+          console.log(this.imageLength)
+          setTimeout(() => {
+            this.$refs.scroll.refresh()
+          }, 20)
+        }
       }
     },
     computed: {

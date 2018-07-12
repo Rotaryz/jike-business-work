@@ -18,17 +18,17 @@
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
-  import { Business } from 'api'
+  import {Business} from 'api'
   import {mapGetters} from 'vuex'
 
   export default {
     name: 'share-card',
-    data () {
+    data() {
       return {
         card: {}
       }
     },
-    created () {
+    created() {
       Business.Myqrcode().then((res) => {
         this.card = res.data || {}
         console.log(res)
@@ -66,8 +66,8 @@
       background: $color-white
       margin: 20px auto
       .qr-code
-        margin-top: 29px
-        width: 56.53%
+        width: 195.5px
+        height: 195.5px
       .buss-name
         margin-top: 15px
         font-family: $font-family-regular
