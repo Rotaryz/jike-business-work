@@ -55,6 +55,9 @@
   export default {
     name: 'Radar',
     created() {
+      if (!this.imIng) {
+        this.$emit('login')
+      }
       Im.getRadarList(this.page).then((res) => {
         if (res.error === ERR_OK) {
           this.list = res.data
@@ -74,7 +77,9 @@
     },
     methods: {
       ...mapActions([
-        'setCustomCount'
+        'setCustomCount',
+        'setImIng',
+        'setImInfo'
       ]),
       toDetail(item) {
         let url = '/radar/client-detail'
@@ -128,7 +133,8 @@
     },
     computed: {
       ...mapGetters([
-        'customCount'
+        'customCount',
+        'imIng'
       ]),
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {

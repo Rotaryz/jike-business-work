@@ -30,21 +30,7 @@
       }
     },
     created() {
-      if (!this.hasToken) {
-        return
-      }
-      Im.getImInfo().then((res) => {
-        if (res.error === ERR_OK) {
-          let imInfo = res.data
-          this.setImInfo(imInfo)
-          // console.log(imInfo)
-          this.sdkLogin(imInfo).then(() => {
-
-          })
-        }
-      }, (err) => {
-        console.log(err)
-      })
+      this.login()
     },
     methods: {
       ...mapActions([
@@ -54,8 +40,26 @@
         'addListCount',
         'addListMsg',
         'setImInfo',
-        'addNowChat'
+        'addNowChat',
+        'setImIng'
       ]),
+      async login() {
+        if (!this.hasToken) {
+          return
+        }
+        Im.getImInfo(this.userInfo.im_account).then((res) => {
+          if (res.error === ERR_OK) {
+            let imInfo = res.data
+            this.setImInfo(imInfo)
+            // console.log(imInfo)
+            this.sdkLogin(imInfo).then(() => {
+              this.setImIng(true)
+            })
+          }
+        }, (err) => {
+          console.log(err)
+        })
+      },
       // IM登录
       async sdkLogin(imInfo) {
         let loginInfo = {
@@ -82,6 +86,14 @@
             let res = await webimHandler.onMsgNotify(msg)
             if (res.type === 'custom') {
               this.setCustomCount('add')
+              if (res.ext * 1 === 20005 && res.fromAccount === this.currentMsg.account) {
+                let goods = JSON.parse(res.data)
+                let url = goods.url ? goods.url : ''
+                let title = goods.title ? goods.title : ''
+                let goodsId = goods.goods_id
+                let goodsRes = Object.assign({}, res, {url, title, goods_id: goodsId})
+                this.addNowChat(goodsRes)
+              }
             } else {
               this.addListCount(res)
               this.addListMsg(res)

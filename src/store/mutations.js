@@ -112,6 +112,9 @@ const mutations = {
       }
       state.nowChat = [...state.nowChat, newMsg]
     }
+  },
+  [TYPES.SET_IM_ING](state, boolean) {
+    state.imIng = boolean
   }
 }
 

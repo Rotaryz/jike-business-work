@@ -13,3 +13,5 @@ export const imInfo = state => state.imInfo
 export const nowChat = state => state.nowChat
 
 export const ios = state => state.platform === 'ios'
+
+export const imIng = state => state.imIng
