@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-add-user">
       <ul class="user-list">
         <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">

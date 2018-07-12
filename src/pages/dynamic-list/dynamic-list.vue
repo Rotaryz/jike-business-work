@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
 
     <div class="dynamic-list">
       <scroll ref="scroll"

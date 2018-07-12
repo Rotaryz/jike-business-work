@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-search">
       <section class="search-box">
         <div class="input-box">

@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-create-group">
       <div class="title">设置分组</div>
       <section class="content">

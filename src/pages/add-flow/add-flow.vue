@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="add-box">
       <div class="bottom-bg"></div>
       <div class="data-bottom">
