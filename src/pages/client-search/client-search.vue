@@ -74,6 +74,8 @@
       },
       searchUser(name) {
         this.isAll = false
+        this.page = 1
+        this.limit = LIMIT
         const data = {name, page: 1, limit: LIMIT}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
