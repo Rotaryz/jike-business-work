@@ -1,7 +1,7 @@
 <template>
   <transition :name="slide">
     <article class="client-tag">
-      <scroll >
+      <scroll bcColor="#fff">
         <div class="box">
           <section class="info-box" v-for="(item,index) in dataArray" :key="index" v-if="dataArray.length">
             <div class="title">{{item.name}}</div>
@@ -59,7 +59,7 @@
         }
       })
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       let arr = []
       this.dataArray.map(item => {
         item.data.forEach(val => {
@@ -75,13 +75,10 @@
       }
       Client.updateTag(data).then(res => {
         if (res.error === ERR_OK) {
-          //
-        } else {
-          //
+          this.$emit('refresh')
         }
-        this.$emit('refresh')
+        next(true)
       })
-      this.$emit('refresh')
     },
     methods: {
       check(it) {

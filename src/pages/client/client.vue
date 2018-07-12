@@ -51,7 +51,7 @@
           </li>
         </ul>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="customer"></exception>
       </section>
     </scroll>
@@ -100,13 +100,15 @@
         groupList: groupList,
         userListArr: [],
         dataArray: [],
+        isEmpty: false,
         checkedItem: null, // 被选中的分组
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
@@ -120,10 +122,11 @@
     },
     methods: {
       refresh() {
-        setTimeout(() => {
-          this.getGroupList()
-          this.getCustomerList()
-        }, 300)
+        this.isAll = false
+        this.page = 1
+        this.limit = LIMIT
+        this.getGroupList()
+        this.getCustomerList()
       },
       toSearch() {
         const path = `/client/client-search`
@@ -143,6 +146,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.isEmpty = !this.dataArray.length
             this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
             this.$refs.toast.show(res.message)
@@ -198,15 +202,19 @@
         // 更新数据
         console.info('pulling up and load data')
         if (!this.pullUpLoad) return
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
+
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)

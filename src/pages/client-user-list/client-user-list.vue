@@ -70,7 +70,8 @@
         items: [],
         itemIndex: 0,
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
@@ -78,17 +79,19 @@
       this.getCustomerList()
       document.title = this.title
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
+      next(true)
     },
     mounted() {
     },
     methods: {
       refresh() {
+        this.page = 1
+        this.limit = LIMIT
+        this.isAll = false
         document.title = this.title
-        setTimeout(() => {
-          this.getCustomerList()
-        }, 300)
+        this.getCustomerList()
       },
       toSearch() {
         const path = `/client/client-user-list/client-search`
@@ -149,6 +152,8 @@
       onPullingUp() {
         // 更新数据
         console.log('pulling up and load data')
+        if (!this.pullUpLoad) return // 防止下拉报错
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
         let page = ++this.page
         let limit = LIMIT
         const data = {
@@ -163,6 +168,7 @@
               this.dataArray.concat(res.data)
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)
@@ -179,6 +185,7 @@
     watch: {
       pullUpLoadObj: {
         handler() {
+          if (!this.pullUpLoad) return // 防止下拉报错
           this.rebuildScroll()
         },
         deep: true

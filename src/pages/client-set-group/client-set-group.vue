@@ -13,7 +13,7 @@
           </div>
         </section>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="nogroup"></exception>
       </section>
     </article>
@@ -31,7 +31,8 @@
     data() {
       return {
         dataArray: [],
-        id: 0
+        id: 0,
+        isEmpty: false
       }
     },
     created() {
@@ -40,10 +41,29 @@
       Client.getSetGroupList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data
+          this.isEmpty = !this.dataArray.length
         }
       })
     },
-    beforeDestroy() {
+    // beforeDestroy() {
+    //   let arr = []
+    //   this.dataArray.filter(item => {
+    //     item.is_selecte && arr.push({group_id: item.id})
+    //   })
+    //   const data = {
+    //     customer_id: this.id, // 分组id
+    //     data: arr
+    //   }
+    //   Client.setGroup(data).then(res => {
+    //     if (res.error === ERR_OK) {
+    //       //
+    //     } else {
+    //       //
+    //     }
+    //     this.$emit('refresh')
+    //   })
+    // },
+    beforeRouteLeave(to, from, next) {
       let arr = []
       this.dataArray.filter(item => {
         item.is_selecte && arr.push({group_id: item.id})
@@ -54,13 +74,10 @@
       }
       Client.setGroup(data).then(res => {
         if (res.error === ERR_OK) {
-          //
-        } else {
-          //
+          this.$emit('refresh')
         }
-        this.$emit('refresh')
+        next(true)
       })
-      this.$emit('refresh')
     },
     methods: {
       check(item) {

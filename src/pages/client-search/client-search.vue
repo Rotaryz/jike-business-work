@@ -22,7 +22,7 @@
           </ul>
         </scroll>
       </div>
-      <section class="exception-box" v-else>
+      <section class="exception-box" v-if="isEmpty">
         <exception errType="noresult"></exception>
       </section>
       <toast ref="toast"></toast>
@@ -46,20 +46,23 @@
       return {
         userName: '',
         dataArray: [],
+        isEmpty: false,
         timeStamp: 0,
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
-        limit: LIMIT
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
       this.searchUser(this.userName)
     },
-    beforeDestroy() {
+    beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
+      next(true)
     },
     methods: {
       cancelHandler() {
@@ -70,29 +73,39 @@
         this.$router.push({path, query: {id: item.id}})
       },
       searchUser(name) {
+        this.isAll = false
+        this.page = 1
+        this.limit = LIMIT
         const data = {name, page: 1, limit: LIMIT}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = [...res.data]
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
           this.timeStamp = Date.now()
         })
       },
+      scrollTop() {
+        this.$refs.scroll.scrollTo(0, 0)
+      },
       onPullingUp() {
         // 更新数据
         console.info('pulling up and load data')
-        // if (!this.pullUpLoad) return
+        if (!this.pullUpLoad) return // 防止下拉报错
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
         let page = ++this.page
         let limit = this.limit
         const data = {name: this.userName, page, limit}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
-              this.dataArray.concat(res.data)
+              let newArr = this.dataArray.concat(res.data)
+              this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
+              this.isAll = true
             }
           } else {
             this.$refs.toast.show(res.message)
@@ -109,12 +122,13 @@
     watch: {
       userName(curVal, oldVal) {
         if (Date.now() - this.timeStamp > 200) {
+          this.scrollTop()
           this.searchUser(curVal)
         }
       },
       pullUpLoadObj: {
         handler() {
-          // if (!this.pullUpLoad) return // 防止下拉报错
+          if (!this.pullUpLoad) return // 防止下拉报错
           this.rebuildScroll()
         },
         deep: true
