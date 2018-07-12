@@ -22,6 +22,7 @@
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientAddUser',
@@ -71,6 +72,12 @@
             this.$refs.toast.show(res.message)
           }
         })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     watch: {},

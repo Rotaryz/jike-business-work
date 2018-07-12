@@ -226,7 +226,7 @@
   import storage from 'storage-controller'
   import Scroll from 'components/scroll/scroll'
   import Exception from 'components/exception/exception'
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: 'client-detail',
@@ -712,6 +712,10 @@
       },
       userInfo() {
         return storage.get('info')
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     filters: {

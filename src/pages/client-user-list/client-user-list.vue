@@ -84,9 +84,6 @@
     mounted() {
     },
     methods: {
-      ...mapGetters([
-        'ios'
-      ]),
       refresh() {
         document.title = this.title
         setTimeout(() => {
@@ -194,8 +191,9 @@
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
       },
+      ...mapGetters(['ios']),
       slide() {
-        return this.ios() ? '' : 'slide'
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

@@ -24,6 +24,7 @@
   import {Client} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientSetGroup',
@@ -64,6 +65,12 @@
     methods: {
       check(item) {
         item.is_selecte = !item.is_selecte
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
