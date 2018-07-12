@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="data-all">
       <scroll>
         <div class="data-top">

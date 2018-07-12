@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-search">
       <section class="search-box">
         <div class="input-box">
@@ -8,11 +8,20 @@
         </div>
         <div class="cancel-btn" @click="cancelHandler">取消</div>
       </section>
-      <ul class="user-list" v-if="dataArray.length">
-        <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-          <user-card :userInfo="item"></user-card>
-        </li>
-      </ul>
+      <div class="content" v-if="dataArray.length">
+        <scroll bcColor="#fff"
+                ref="scroll"
+                :data="dataArray"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp"
+        >
+          <ul class="user-list">
+            <li class="user-box" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+              <user-card :userInfo="item"></user-card>
+            </li>
+          </ul>
+        </scroll>
+      </div>
       <section class="exception-box" v-else>
         <exception errType="noresult"></exception>
       </section>
@@ -28,14 +37,22 @@
   import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
   import {mapGetters} from 'vuex'
+  import Scroll from 'components/scroll/scroll'
 
+  const LIMIT = 10
   export default {
     name: 'ClientSearch',
     data() {
       return {
         userName: '',
         dataArray: [],
-        timeStamp: 0
+        timeStamp: 0,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        page: 1,
+        limit: LIMIT
       }
     },
     created() {
@@ -53,14 +70,39 @@
         this.$router.push({path, query: {id: item.id}})
       },
       searchUser(name) {
-        const data = {name}
+        const data = {name, page: 1, limit: LIMIT}
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
-            this.dataArray = res.data
+            this.dataArray = [...res.data]
           } else {
             this.$refs.toast.show(res.message)
           }
           this.timeStamp = Date.now()
+        })
+      },
+      onPullingUp() {
+        // 更新数据
+        console.info('pulling up and load data')
+        // if (!this.pullUpLoad) return
+        let page = ++this.page
+        let limit = this.limit
+        const data = {name: this.userName, page, limit}
+        Client.getCustomerList(data).then(res => {
+          if (res.error === ERR_OK) {
+            if (res.data && res.data.length) {
+              this.dataArray.concat(res.data)
+            } else {
+              this.$refs.scroll.forceUpdate()
+            }
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
         })
       }
     },
@@ -69,18 +111,32 @@
         if (Date.now() - this.timeStamp > 200) {
           this.searchUser(curVal)
         }
+      },
+      pullUpLoadObj: {
+        handler() {
+          // if (!this.pullUpLoad) return // 防止下拉报错
+          this.rebuildScroll()
+        },
+        deep: true
       }
     },
     computed: {
       ...mapGetters(['ios']),
       slide() {
         return this.ios ? '' : 'slide'
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
     components: {
       UserCard,
       Toast,
-      Exception
+      Exception,
+      Scroll
     }
   }
 </script>
@@ -96,6 +152,7 @@
     fill-box()
     background-color: $color-white-fff
     z-index: 10
+    layout(column, block, nowrap)
     .search-box
       height: 45px
       background-color: $color-F0F2F5
@@ -143,50 +200,19 @@
         layout()
         justify-content: center
         align-items: center
-    .user-list
-      position: relative
-      padding-left: 15px
-      .user-box
-        layout(row, block, no-warp)
-        align-items: center
-        padding: 15px 0
-        border-bottom: 0.5px solid $color-col-line
-        height: 45px
-        overflow: hidden
-        .user-icon
-          width: 45px
+    .content
+      flex: 1
+      overflow: hidden
+
+      .user-list
+        position: relative
+        padding-left: 15px
+        .user-box
+          layout(row, block, nowrap)
+          align-items: center
+          padding: 15px 0
+          border-bottom: 0.5px solid $color-col-line
           height: 45px
-          opacity: 0.8
-          margin-right: 10px
-        .user-info
-          flex: 1
-          layout()
-          justify-content: space-around
-          height: 100%
-          .base-info
-            box-sizing: border-box
-            layout(row, block, nowrap)
-            justify-content: space-between
-            align-items: flex-start
-            .name
-              font-family: $font-family-regular
-              font-size: $font-size-16
-              color: $color-20202E
-              letter-spacing: 0.6px
-            .last-time
-              padding-right: 15px
-              font-family: $font-family-regular
-              font-size: $font-size-12
-              color: $color-888888
-              no-wrap()
-          .tags
-            layout(row, block, nowrap)
-            .tags-item
-              font-family: $font-family-regular
-              font-size: $font-size-14
-              color: $color-ccc
-              padding: 3px 9px
-              margin-right: 5px
-              background-color: $color-F0F2F5
-              no-wrap()
+          overflow: hidden
+
 </style>

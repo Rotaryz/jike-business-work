@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="edit-card">
       <scroll ref="scroll">
         <!--require('./Snip20180707_35.png')-->

@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="change-autograph">
       <scroll ref="scroll">
         <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph"></textarea>
