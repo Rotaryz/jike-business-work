@@ -27,6 +27,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from 'common/js/config'
   import Exception from 'components/exception/exception'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientSearch',
@@ -53,7 +54,7 @@
       },
       searchUser(name) {
         const data = {name}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
           } else {
@@ -70,6 +71,12 @@
         }
       }
     },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
+    },
     components: {
       UserCard,
       Toast,
@@ -83,7 +90,7 @@
   @import "~common/stylus/mixin"
 
   .exception-box
-    padding-top :92px
+    padding-top: 92px
 
   .client-search
     fill-box()
@@ -112,25 +119,25 @@
           font-size: $font-size-14
           color: $color-20202E
           &::-webkit-input-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &:-moz-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &::-moz-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
           &:-ms-input-placeholder
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-14
             color: $color-888888
       .cancel-btn
         width: 60px
         height: 100%
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-56BA15
         layout()
@@ -175,7 +182,7 @@
           .tags
             layout(row, block, nowrap)
             .tags-item
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               font-size: $font-size-14
               color: $color-ccc
               padding: 3px 9px

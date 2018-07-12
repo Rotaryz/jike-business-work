@@ -109,11 +109,11 @@
             justify-content: space-between
             align-items: center
             .top-name
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               font-size: $font-size-medium-x
               letter-spacing: 0.6px
             .top-time
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               font-size: $font-size-small
               color: $color-text-99
           .right-down
@@ -121,7 +121,7 @@
             overflow: hidden
             text-overflow: ellipsis
             white-space: nowrap
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             font-size: $font-size-small
             color: $color-text-88
 

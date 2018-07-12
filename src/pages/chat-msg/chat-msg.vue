@@ -218,7 +218,8 @@
       ...mapGetters([
         'currentMsg',
         'imInfo',
-        'nowChat'
+        'nowChat',
+        'ios'
       ]),
       pullDownRefreshObj: function () {
         return this.pullDownRefresh ? {
@@ -229,6 +230,9 @@
       },
       userInfo() {
         return storage.get('info')
+      },
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     }
   }
@@ -238,6 +242,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  @import '~common/stylus/base'
   .chat
     width: 100vw
     height: 100vh
@@ -274,13 +279,11 @@
             overflow: hidden
             display: flex
             .chat-msg-content
-              flex: 1
-              overflow: hidden
               padding: 13px 15px
               border-radius: 8px
               line-height: 19px
               font-size: $font-size-medium
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               word-wrap: break-word
               word-break: break-all
             .chat-msg-content.other
@@ -352,6 +355,8 @@
           justify-content: flex-end
 
     .chat-input
+      width: 100%
+      box-sizing: border-box
       min-height: 38px
       background: $color-background-f9
       padding: 6px 15px
@@ -366,10 +371,11 @@
         text-align: center
         line-height: 36px
         font-size: $font-size-medium
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         margin-left: 5px
       .input-container
         flex: 1
+        overflow-x: hidden
         min-height: 28px
         border: 1px solid rgba(0,0,0,0.10)
         background: $color-white

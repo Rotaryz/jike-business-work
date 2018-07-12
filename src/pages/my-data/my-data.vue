@@ -119,6 +119,8 @@
   import {ERR_OK} from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
   import Toast from 'components/toast/toast'
+  import storage from 'storage-controller'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'my-data',
@@ -440,10 +442,10 @@
             ]
           }]
         })
-        myChart.on('click', this.eConsole)
+        // myChart.on('click', this.eConsole)
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
             this.drawPie()
@@ -453,7 +455,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
             this.drawLine()
@@ -463,7 +465,7 @@
         })
       },
       getAddActionLineData() {
-        Echart.getAddLine(this.id).then(res => {
+        Echart.getAddLine(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.addationLine = res.data
             this.drawAddLine()
@@ -473,7 +475,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
             this.drawBar()
@@ -483,7 +485,7 @@
         })
       },
       getSuccessData() {
-        Echart.getSuccess(this.id).then(res => {
+        Echart.getSuccess(this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.successData = res.data
             this.fourdraw()
@@ -498,7 +500,7 @@
         }
       },
       getAllDataObj(time) {
-        Echart.getAllData(time, this.id).then(res => {
+        Echart.getAllData(time, this.userInfo.merchant_id, this.userInfo.id).then(res => {
           if (res.error === ERR_OK) {
             this.allDatas = res.data
           } else {
@@ -509,6 +511,15 @@
       getAllTab(item, index) {
         this.getAllDataObj(item.value)
         this.tabNumber = index
+      }
+    },
+    computed: {
+      userInfo() {
+        return storage.get('info')
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
@@ -571,7 +582,7 @@
             height: 30px
             font-size: $font-size-14
             color: #20202E
-            font-family: $font-family-meddle
+            font-family: $font-family-regular
             line-height: 30px
             width: 25%
             text-align: center
@@ -596,7 +607,7 @@
             .text
               font-size: $font-size-12
               color: #20202e
-              font-family: $font-family-meddle
+              font-family: $font-family-regular
               margin-top: 5px
 
   .ai-box
@@ -640,12 +651,12 @@
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
       .bottom-des
         position: absolute
         bottom: 10px

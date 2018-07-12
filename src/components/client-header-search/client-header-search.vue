@@ -42,7 +42,7 @@
         height: 13.2px
         margin-right: 5px
       .txt
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-ccc
 

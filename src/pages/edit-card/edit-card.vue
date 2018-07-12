@@ -39,7 +39,7 @@
             <ul class="mine-detail-list">
               <li class="mine-detail-item">
                 <span class="item-text">手机</span>
-                <input class="item-detail" type="text" v-model="mine.mobile">
+                <input class="item-detail" type="mobile" v-model="mine.mobile" maxlength="11">
               </li>
               <li class="mine-detail-item">
                 <span class="item-text">邮箱</span>
@@ -65,7 +65,7 @@
   import Scroll from 'components/scroll/scroll'
   import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import storage from 'storage-controller'
 
   export default {
@@ -136,6 +136,12 @@
         }
       }
     },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
+    },
     components: {
       Scroll,
       Toast
@@ -196,7 +202,7 @@
     text-indent: 30px
     font-size: $font-size-medium
     color: $color-text
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     border-1px($color-col-line, 2px)
     .mine-name
       height: $font-size-large-xx
@@ -244,7 +250,7 @@
     margin: 10px auto 0
     padding-left: 15px
     box-sizing border-box
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     font-size: $font-size-medium
     border-1px($color-row-line)
     .mine-detail-header
@@ -262,6 +268,8 @@
       border-bottom-1px($color-row-line)
       .item-detail
         height: 100%
+        width : 70%
+        outline: none
       .item-text
         width: 48px
         color: $color-text-88
@@ -272,7 +280,7 @@
     line-height: 45px
     text-align: center
     height: 45px
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     font-size: $font-size-medium
     color: $color-white
     background: $color-text

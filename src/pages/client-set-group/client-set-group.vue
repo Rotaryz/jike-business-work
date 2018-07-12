@@ -2,7 +2,7 @@
   <transition name="slide">
     <article class="client-set-group">
       <div v-if="dataArray.length">
-        <div class="title" >设置分组</div>
+        <div class="title">设置分组</div>
         <section class="content">
           <div v-if="dataArray.length"
                :class="['item',item.is_selecte?'active':'']"
@@ -24,19 +24,19 @@
   import {Client} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientSetGroup',
     data() {
       return {
         dataArray: [],
-        customerId: 0
+        id: 0
       }
     },
     created() {
-      const customerInfo = this.$route.query.customerInfo
-      const data = {customer_id: customerInfo.id}
-      this.customerId = customerInfo.id
+      this.id = this.$route.query.id // 分组id
+      const data = {customer_id: this.id}
       Client.getSetGroupList(data).then(res => {
         if (res.data) {
           this.dataArray = res.data
@@ -49,7 +49,7 @@
         item.is_selecte && arr.push({group_id: item.id})
       })
       const data = {
-        customer_id: this.customerId,
+        customer_id: this.id, // 分组id
         data: arr
       }
       Client.setGroup(data).then(res => {
@@ -65,6 +65,12 @@
     methods: {
       check(item) {
         item.is_selecte = !item.is_selecte
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {
@@ -93,9 +99,11 @@
         padding: 8px 15px 8px 14px
         border: 1px solid $color-ccc
         margin: 0 10px 10px 0
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-888888
+        background: $color-white-fff
+        transition: background-color 0.6s
         &.active
           font-family: $font-family-regular
           background: $color-56BA15 url("icon-selectgroup@3x.png") no-repeat bottom right / 13px 15px
@@ -104,5 +112,5 @@
 
   .exception-box
     fill-box(absolute)
-    padding-top :137px
+    padding-top: 137px
 </style>

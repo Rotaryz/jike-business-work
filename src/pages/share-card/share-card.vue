@@ -19,6 +19,7 @@
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
   import { Business } from 'api'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'share-card',
@@ -32,6 +33,12 @@
         this.card = res.data || {}
         console.log(res)
       })
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
     },
     components: {
       Scroll
@@ -72,7 +79,7 @@
         font-size: $font-size-large-xx
         color: $color-text
       .peo-position
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
         margin-top: 10px

@@ -180,14 +180,14 @@
       .time
         font-size: $font-size-small
         color: $color-text-88
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         margin-left: 30px
       .content
         flex: 1
         overflow: hidden
         .msgs-p
           line-height: 18px
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-medium
           .green
             color: $color-text-56
@@ -197,7 +197,7 @@
           text-overflow: ellipsis
           white-space: nowrap
           font-size: $font-size-medium
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
 
   .show.ceiling
     top: 0

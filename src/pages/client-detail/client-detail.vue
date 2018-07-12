@@ -9,72 +9,73 @@
                 :listenScroll="listenScroll"
                 @scroll="scroll"
                 :pullUpLoad="pullUpLoadObj"
+                :showNoMore="false"
                 @pullingUp="onPullingUp">
-          <div v-if="!showTab">
-            <div class="client-top" ref="eleven">
-              <div class="cliten-bg"></div>
-              <div class="cliten-box">
-                <div class="cliten-con">
-                  <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
-                  <div class="cliten-img">
-                    <div class="detail-img-box">
-                      <div class="img">
-                        <img :src="clientData.image_url" alt="">
-                      </div>
-                      <div class="label-right">
-                        <div class="label-name">{{clientData.name}}</div>
-                        <div class="label-box">
-                          <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
-                               @click="toClientTag">{{item.label_name}}
-                          </div>
-                          <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
-                        </div>
-                      </div>
+          <div class="client-top" ref="eleven">
+            <div class="cliten-bg"></div>
+            <div class="cliten-box">
+              <div class="cliten-con">
+                <img class="cliten-con-bg" src="./bg-customer_details@2x.png" alt="">
+                <div class="cliten-img">
+                  <div class="detail-img-box">
+                    <div class="img">
+                      <img :src="clientData.image_url" alt="">
                     </div>
-                    <div class="detail-jump" @click="jumpData">
-                      <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                    <div class="label-right">
+                      <div class="label-name">{{clientData.name}}</div>
+                      <div class="label-box">
+                        <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
+                             @click="toClientTag">{{item.label_name}}
+                        </div>
+                        <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
+                      </div>
                     </div>
                   </div>
-                  <div class="cliten-bottom">
-                    <div class="bottom-number">
-                      <div class="number-top">
-                        <div class="number">{{clientData.conversion_rate}}</div>
-                        <div class="icon">%</div>
-                      </div>
-                      <div class="number-bottom">
-                        <div class="text">预计成交率</div>
-                      </div>
+                  <div class="detail-jump" @click="jumpData">
+                    <img class="jump-img" src="./icon-pressed@2x.png" alt="">
+                  </div>
+                </div>
+                <div class="cliten-bottom">
+                  <div class="bottom-number">
+                    <div class="number-top">
+                      <div class="number">{{clientData.conversion_rate}}</div>
+                      <div class="icon">%</div>
                     </div>
-                    <div class="bottom-number">
-                      <div class="number-top" v-if="clientData.progress < 110">
-                        <div class="number">{{clientData.progress}}</div>
-                        <div class="icon">%</div>
-                      </div>
-                      <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
-                        <div class="text">{{clientData.progress}}</div>
-                      </div>
-                      <div class="number-bottom" @click="showModel">
-                        <div class="text">实际跟进阶段</div>
-                        <div class="img-box">
-                          <img class="img" src="./icon-switch@2x.png" alt="">
-                        </div>
+                    <div class="number-bottom">
+                      <div class="text">预计成交率</div>
+                    </div>
+                  </div>
+                  <div class="bottom-number">
+                    <div class="number-top" v-if="clientData.progress < 110">
+                      <div class="number">{{clientData.progress}}</div>
+                      <div class="icon">%</div>
+                    </div>
+                    <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
+                      <div class="text">{{clientData.progress}}</div>
+                    </div>
+                    <div class="number-bottom" @click="showModel">
+                      <div class="text">实际跟进阶段</div>
+                      <div class="img-box">
+                        <img class="img" src="./icon-switch@2x.png" alt="">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="select-tab select-client">
-              <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
-              </div>
-              <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
-                <div class="chilen-line"></div>
-              </div>
+          </div>
+          <div class="select-tab select-client">
+            <div class="tab" v-for="(item, index) in tabList" v-bind:key="index" @click="switchTab(index)">{{item}}
+            </div>
+            <div class="line" :style="'transform:translate3d('+ (100 * menuIdx) + '%, 0, 0)'">
+              <div class="chilen-line"></div>
             </div>
           </div>
-          <div class="tab-padding" :style="'height:' + (highgt + 48)  + 'px'  " v-if="showTab"></div>
           <div class="visitor-box" v-if="menuIdx * 1 === 0">
-            <div class="box-list">
+            <section class="exception-box" v-if="actionList.length * 1 === 0">
+              <exception errType="nodata"></exception>
+            </section>
+            <div class="box-list" v-if="actionList.length * 1 !== 0">
               <div class="msgs-item" v-for="(item, index) in actionList" :key="index">
                 <img :src="item.image_url" class="msgs-left">
                 <div class="msgs-right">
@@ -128,7 +129,10 @@
               </div>
             </div>
           </div>
-          <div class="follow-box" v-if="menuIdx * 1 === 1">
+          <section class="exception-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 === 0">
+            <exception errType="nodata"></exception>
+          </section>
+          <div class="follow-box" v-if="menuIdx * 1 === 1 && flowList.length * 1 !== 0">
             <div class="follow-line"></div>
             <div class="follow-list" v-for="(item, index) in flowList" :key="index">
               <div class="time">{{item.created_at}}</div>
@@ -219,8 +223,10 @@
   import {ClientDetail, Client, Echart} from 'api'
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
+  import storage from 'storage-controller'
   import Scroll from 'components/scroll/scroll'
-  import {mapActions} from 'vuex'
+  import Exception from 'components/exception/exception'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: 'client-detail',
@@ -313,7 +319,6 @@
     mounted() {
       this.highgt = this.$refs.eleven.offsetHeight
       this.tabhighgt = this.$refs.eleven.offsetHeight
-      console.log(this.$refs.eleven.offsetHeight, 111)
     },
     beforeDestroy() {
       this.$emit('refresh')
@@ -337,8 +342,8 @@
         })
       },
       toClientTag() {
-        let path = `${this.pageUrl}/client-tag`
-        this.$router.push({path, query: {customerId: this.id}})
+        let path = `${this.pageUrl}/client-tag?customerId=${this.id}`
+        this.$router.push(path)
       },
       chatMsg(item) {
         console.log(item)
@@ -522,7 +527,6 @@
       selectBar(index, item) {
         this.barIndex = index
         this.flow.progress = item.text
-        console.log(this.progress)
         setTimeout(() => {
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
@@ -539,6 +543,8 @@
         }, 1500)
       },
       switchTab(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.scroll(0)
         this.menuIdx = index
         if (index * 1 === 2) {
           setTimeout(() => {
@@ -577,7 +583,6 @@
       },
       getMoreFlowList(id, flowId) {
         if (this.noMore) return
-        console.log(this.flowPage)
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
             this.flowList.push(...res.data)
@@ -624,17 +629,23 @@
         window.location.href = `tel:${this.mobile}`
       },
       toAddFlow() {
-        let path = `${this.pageUrl}/addflow`
-        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
+        let path = `${this.pageUrl}/addflow?id=${this.id}&flowId=${this.flowId}`
+        this.$router.push(path)
       },
       jumpData() {
-        let path = `${this.pageUrl}/detail-data`
-        this.$router.push({path, query: {id: this.id, flowId: this.flowId}})
+        let path = `${this.pageUrl}/detail-data?id=${this.id}&flowId=${this.flowId}`
+        this.$router.push(path)
       },
       jumpMessage() {
-        let id = this.id
-        const path = `/chat?id=${id}`
-        this.$router.push({path})
+        let currentMsg = {
+          nickName: this.clientData.name,
+          avatar: this.clientData.image_url,
+          account: this.clientData.im_account
+        }
+        console.log(currentMsg)
+        this.setCurrent(currentMsg)
+        let url = '/chat?id=' + this.clientData.im_account
+        this.$router.push(url)
       },
       onPullingUp() {
         if (this.menuIdx * 1 === 1) {
@@ -660,7 +671,7 @@
         })
       },
       getPieData() {
-        Echart.getPie(this.id).then(res => {
+        Echart.getPie(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.pieData = res.data
           } else {
@@ -669,7 +680,7 @@
         })
       },
       getActionLineData() {
-        Echart.getActionLine(this.id).then(res => {
+        Echart.getActionLine(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.ationLine = res.data
           } else {
@@ -678,7 +689,7 @@
         })
       },
       getBarData() {
-        Echart.getBar(this.id).then(res => {
+        Echart.getBar(this.userInfo.merchant_id, this.userInfo.id, this.id).then(res => {
           if (res.error === ERR_OK) {
             this.barData = res.data
           } else {
@@ -689,6 +700,7 @@
     },
     components: {
       Toast,
+      Exception,
       Scroll
     },
     computed: {
@@ -697,6 +709,13 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     filters: {
@@ -726,6 +745,9 @@
     box-sizing: border-box
     -moz-box-sizing: border-box
     -webkit-box-sizing: border-box
+
+  .exception-box
+    padding-top: 70px
 
   .tab-padding
     height: 48px
@@ -791,7 +813,7 @@
               .label-name
                 font-size: $font-size-medium-x
                 color: $color-text
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
                 padding-top: 5px
                 margin-bottom: 15px
               .label-box
@@ -803,7 +825,7 @@
                   text-align: center
                   font-size: $font-size-medium
                   color: $color-text-88
-                  font-family: $font-family-meddle
+                  font-family: $font-family-regular
                   background: #F0F2F5
                   margin-right: 5px
                 .active
@@ -857,7 +879,7 @@
               .text
                 font-size: $font-size-medium
                 color: $color-text
-                font-family: $font-family-meddle
+                font-family: $font-family-regular
               .img-box
                 width: 10px
                 height: 10px
@@ -904,7 +926,7 @@
         .left
           font-size: $font-size-medium
           color: $color-text
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .right
           width: 20px
           height: 20px
@@ -919,7 +941,7 @@
       .btn
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         padding: 15px 0
         text-align: center
     .model-con-active
@@ -965,7 +987,7 @@
       .time
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
       .item-list
         layout(row)
         margin-top: 15px
@@ -986,7 +1008,7 @@
           flex: 1
           font-size: $font-size-medium
           color: $color-text
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           span
             color: #56BA15
 
@@ -1007,7 +1029,7 @@
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         min-height: 10px
       .icon-cri
         position: absolute
@@ -1080,12 +1102,12 @@
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
       .pie-list
         layout(row)
         position: absolute
@@ -1139,7 +1161,7 @@
         margin-right: 4px
       .text
         font-size: $font-size-medium-x
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         color: #fff
     .message-btn
       background: #56BA15
@@ -1187,7 +1209,7 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-medium
           .green
             color: $color-text-56

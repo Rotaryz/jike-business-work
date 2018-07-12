@@ -94,7 +94,7 @@
     color: $color-white
     width: 100vw
     font-size: $font-size-large
-    font-family: $font-family-medium
+    font-family: $font-family-regular
     height: 105.5px
 
   .mine-card
@@ -117,7 +117,7 @@
         height: 100%
       .buss-name
         margin-top: 5.33vw
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
       .peo-name
@@ -132,7 +132,7 @@
         margin-top: 2.67vw
       .peo-phone
         margin-top: 9.33vw
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
       .mine-header-box
@@ -145,7 +145,7 @@
         .mine-header
           width: 100%
       .card
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: #56BA15
         text-decoration: underline
@@ -156,9 +156,11 @@
     width: 92vw
     margin: 15px auto 0
     padding-left: 15px
+    box-sizing :border-box
+    border-radius: 2px
     border-1px($color-row-line)
     .content-item
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
       color: $color-text
       height: 45px

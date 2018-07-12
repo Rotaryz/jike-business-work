@@ -63,10 +63,10 @@
 </template>
 
 <script>
+  // import {ease} from 'common/js/ease'
   import Search from 'components/client-header-search/client-header-search'
   import SlideView from 'components/slide-view/slide-view'
   import Scroll from 'components/scroll/scroll'
-  // import {ease} from 'common/js/ease'
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import {Client} from 'api'
@@ -74,7 +74,6 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import Exception from 'components/exception/exception'
-  import NoMore from 'components/no-more/no-more'
 
   const groupList = [{
     orderBy: '',
@@ -113,15 +112,17 @@
     created() {
       this.$emit('tabChange', 3)
       this.getGroupList()
-      this.getCusomerList()
+      this.getCustomerList()
     },
     beforeDestroy() {
+    },
+    mounted() {
     },
     methods: {
       refresh() {
         setTimeout(() => {
           this.getGroupList()
-          this.getCusomerList()
+          this.getCustomerList()
         }, 300)
       },
       toSearch() {
@@ -137,11 +138,12 @@
           }
         })
       },
-      getCusomerList() {
+      getCustomerList() {
         const data = {order_by: this.checkedGroup.orderBy, page: 1, limit: LIMIT}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -149,7 +151,7 @@
       },
       toUserList(item) {
         const path = `/client/client-user-list`
-        this.$router.push({path, query: {groupInfo: item}})
+        this.$router.push({path, query: {title: item.name, id: item.id}}) // 分组名称 和 分组id
       },
       toCreateGroup() {
         const path = `/client/client-create-group`
@@ -161,14 +163,14 @@
       },
       groupingHandler(index, item) {
         const path = `/client/client-set-group`
-        this.$router.push({path, query: {customerInfo: item}})
+        this.$router.push({path, query: {id: item.id}}) // 客户id
       },
       showGroupList() {
         this.$refs.sheet.show()
       },
       changeGroup() {
         const data = {order_by: this.checkedGroup.orderBy}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.data) {
             this.dataArray = res.data
           }
@@ -180,9 +182,13 @@
       },
       msgConfirm() {
         const data = {groupId: this.checkedItem.id}
+        const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
+        this.userListArr.splice(idx, 1)
         Client.delGroup(data).then(res => {
-          const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
-          this.userListArr.splice(idx, 1)
+          if (res.error === ERR_OK) {
+          } else {
+            this.$refs.toast.show(res.message)
+          }
         })
       },
       msgCancel() {
@@ -191,10 +197,11 @@
       onPullingUp() {
         // 更新数据
         console.info('pulling up and load data')
+        if (!this.pullUpLoad) return
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
-        Client.getCusomerList(data).then(res => {
+        Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               this.dataArray.concat(res.data)
@@ -216,6 +223,7 @@
     watch: {
       pullUpLoadObj: {
         handler() {
+          if (!this.pullUpLoad) return // 防止下拉报错
           this.rebuildScroll()
         },
         deep: true
@@ -241,8 +249,7 @@
       ConfirmMsg,
       ActionSheet,
       Toast,
-      Exception,
-      NoMore
+      Exception
     }
   }
 </script>
@@ -253,7 +260,7 @@
   @import '~common/stylus/mixin'
 
   .exception-box
-    padding-top :70px
+    padding-top: 70px
 
   .client
     position: absolute

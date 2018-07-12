@@ -3,7 +3,7 @@
     <article class="client-create-group">
       <div class="title">设置分组</div>
       <section class="content">
-        <input class="input" type="text" placeholder="请输入组名" v-model="groupName" oninput="if(value.length > 11)value = value.slice(0, 11)">
+        <input class="input" type="text" placeholder="请输入组名" v-model="groupName" maxlength="11"/>
       </section>
       <footer class="btn" @click="save">保存</footer>
       <toast ref="toast"></toast>
@@ -15,6 +15,7 @@
   import Toast from 'components/toast/toast'
   import {ERR_OK} from '../../common/js/config'
   import {Client} from 'api'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'ClientSetGroup',
@@ -44,6 +45,12 @@
         })
       }
     },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
+    },
     components: {
       Toast
     }
@@ -70,23 +77,23 @@
       .input
         width: 100%
         outline: none
-        font-family: $font-family-meddle
+        font-family: $font-family-regular
         font-size: $font-size-14
         color: $color-20202E
         &::-webkit-input-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &:-moz-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &::-moz-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
         &:-ms-input-placeholder
-          font-family: $font-family-meddle
+          font-family: $font-family-regular
           font-size: $font-size-14
           color: $color-888888
     .btn
@@ -98,7 +105,7 @@
       line-height: 45px
       text-align: center
       background-color: $color-20202E
-      font-family: $font-family-meddle
+      font-family: $font-family-regular
       font-size: $font-size-16
       color: $color-white-fff
       letter-spacing: 0.3px

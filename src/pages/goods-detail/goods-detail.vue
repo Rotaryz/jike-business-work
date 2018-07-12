@@ -25,6 +25,7 @@
   import Scroll from 'components/scroll/scroll'
   import { Goods } from 'api'
   import { ERR_OK } from '../../common/js/config'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'goods-detail',
@@ -45,6 +46,12 @@
             this.goods = res.data
           }
         })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     components: {

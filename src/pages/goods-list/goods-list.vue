@@ -69,13 +69,14 @@
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
-  import { Goods } from 'api'
-  import { ERR_OK } from '../../common/js/config'
+  import {Goods} from 'api'
+  import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'goods-list',
-    data () {
+    data() {
       return {
         startY: 0,
         goodsList: [],
@@ -94,22 +95,22 @@
         pullDownRefresh: true
       }
     },
-    created () {
+    created() {
       this._goodslist()
     },
     methods: {
-      _goDetail (id) {
+      _goDetail(id) {
         this.$router.push({path: 'goodList/goodsDetail', query: {id}})
       },
-      onPullingUp () {
+      onPullingUp() {
         this.page++
         this._goodslist()
       },
-      onPullingDown () {
+      onPullingDown() {
         this.page = 1
         this._goodslist()
       },
-      _presellGoods (id, status) {
+      _presellGoods(id, status) {
         let index = this.tabIndex ? this.goodsListMine.findIndex(item => item.id === id) : this.goodsList.findIndex(item => item.id === id)
         if (status) {
           Goods.unPresellGoods({goods_id: id}).then((res) => {
@@ -135,13 +136,13 @@
           this.$refs.toast.show(res.message)
         })
       },
-      _change (status) {
+      _change(status) {
         this.loadMore = true
         this.tabIndex = status
         this.page = 1
         this._goodslist()
       },
-      _goodslist () {
+      _goodslist() {
         let data = {is_self: this.tabIndex, limit: 15, page: this.page}
         Goods.goods(data).then((res) => {
           if (res.error === ERR_OK) {
@@ -183,28 +184,32 @@
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
       }
     },
     watch: {
       scrollbarObj: {
-        handler () {
+        handler() {
           this.rebuildScroll()
         },
         deep: true
       },
       pullDownRefreshObj: {
-        handler () {
+        handler() {
           this.rebuildScroll()
         },
         deep: true
       },
       pullUpLoadObj: {
-        handler () {
+        handler() {
           this.rebuildScroll()
         },
         deep: true
       },
-      startY () {
+      startY() {
         this.rebuildScroll()
       }
     },
@@ -242,7 +247,7 @@
     .tab-item
       text-align: center
       flex: 1
-      font-family: $font-family-medium
+      font-family: $font-family-regular
       font-size: $font-size-medium
     .line
       height: 3px
@@ -278,7 +283,7 @@
       position: relative
       .goods-text
         line-height: 18px
-        font-family: $font-family-medium
+        font-family: $font-family-regular
         font-size: $font-size-medium
         color: $color-text
         width: 45.07vw
