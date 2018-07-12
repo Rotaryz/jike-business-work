@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <article class="client-set-group">
       <div v-if="dataArray.length">
         <div class="title">设置分组</div>

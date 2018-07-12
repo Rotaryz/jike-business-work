@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
 
     <div class="share-card">
       <scroll :bcColor="'#20202E'">

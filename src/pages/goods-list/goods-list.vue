@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
 
     <div class="goods-list">
       <div class="tab">
@@ -8,7 +8,7 @@
         <span class="line" :class="{'line-buss': !tabIndex}"></span>
       </div>
       <div class="line"></div>
-      <transition name="slide">
+      <transition :name="slide">
         <scroll
           ref="scroll"
           :data="goodsListMine"

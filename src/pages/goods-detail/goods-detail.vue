@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="slide">
     <div class="goods-detail">
       <scroll>
         <div class="cover-box">
