@@ -31,6 +31,7 @@ http.interceptors.response.use(response => {
 function checkStatus (response) {
   // loading
   // 如果http状态码正常，则直接返回数据
+  alert(response.status)
   if (response && (response.status === 200 || response.status === 304 || response.status === 422)) {
     return response
     // 如果不需要除了data之外的数据，可以直接 return response.data
@@ -82,7 +83,7 @@ export default {
       // alert(JSON.stringify(response))
       return checkStatus(response)
     }).then((res) => {
-      alert(JSON.stringify(res))
+      // alert(JSON.stringify(res))
       return checkCode(res)
     })
   },
