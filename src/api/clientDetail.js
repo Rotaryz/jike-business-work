@@ -1,4 +1,5 @@
 import request from '../common/js/request'
+import storage from 'storage-controller'
 
 export default {
   /**
@@ -57,8 +58,11 @@ export default {
    * @returns {*}
    */
   getActionList(customer_id = 0, page = 1, limit = 10) {
+    const info = storage.get('info', {})
+    const employeeId = info.employee_id
     let url = `api/employee/action-logs`
     let data = {
+      employee_id: employeeId,
       customer_id,
       page,
       limit
