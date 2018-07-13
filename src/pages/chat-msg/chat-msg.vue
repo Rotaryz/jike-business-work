@@ -354,6 +354,8 @@
         .chat-content.mine
           justify-content: flex-end
 
+      .chat-item:first-child
+        margin-top: 30px
     .chat-input
       width: 100%
       box-sizing: border-box
