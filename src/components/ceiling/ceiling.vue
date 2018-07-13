@@ -1,5 +1,8 @@
 <template>
-  <div class="ceiling" :class="newMsgIn ? 'show' : ''">
+  <div class="ceiling" :class="newMsgIn ? 'show' : ''"
+       @touchstart.prevent="touchStart"
+       @touchmove.prevent="touchMove"
+       @touchend="touchEnd">
     <img :src="newMsg.avatar" class="ceiling-left">
     <div class="ceiling-right">
       <div class="content">
@@ -30,6 +33,7 @@
       }
     },
     created() {
+      this.touch = {}
       this.login()
     },
     methods: {
@@ -143,6 +147,37 @@
         }, (err) => {
           console.log(err)
         })
+      },
+      touchStart(e) {
+        this.touch.initiated = true
+        // 用来判断是否是一次移动
+        this.touch.moved = false
+        const touch = e.touches[0]
+        this.touch.startX = touch.pageX
+        this.touch.startY = touch.pageY
+      },
+      touchMove(e) {
+        if (!this.touch.initiated) {
+          return
+        }
+        const touch = e.touches[0]
+        const deltaY = touch.pageY - this.touch.startY
+        if (deltaY > 0) {
+          return
+        }
+        if (!this.touch.moved) {
+          this.touch.moved = true
+        }
+        this.touch.hide = true
+      },
+      touchEnd() {
+        if (!this.touch.moved) {
+          return
+        }
+        if (this.touch.hide) {
+          this.touch.hide = false
+          this.newMsgIn = false
+        }
       }
     },
     computed: {
