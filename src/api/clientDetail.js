@@ -67,6 +67,7 @@ export default {
       page,
       limit
     }
+    alert(JSON.stringify(data))
     return request.post(url, data)
   }
 }
