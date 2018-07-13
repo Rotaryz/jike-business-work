@@ -12,7 +12,6 @@ export default {
       code,
       suite_alias: 'ai_radar'
     }
-    alert(JSON.stringify(data))
     return request.post(url, data)
   }
 }

@@ -7,6 +7,7 @@
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
           <div class="chat-list" ref="list">
+            <div class="list-line"></div>
             <div class="chat-item" v-for="(item, index) in nowChat" :key="index">
               <div class="chat-content" v-if="item.from_account_id !== imInfo.im_account">
                 <img :src="currentMsg.avatar" class="avatar">
@@ -263,6 +264,8 @@
       .chat-list
         width: 100%
         padding-bottom: 40px
+        .list-line
+          height: 20px
       .chat-item
         width: 100%
         box-sizing: border-box

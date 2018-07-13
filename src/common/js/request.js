@@ -79,7 +79,6 @@ export default {
         Authorization: storage.get('token')
       }
     }).then((response) => {
-      // alert(JSON.stringify(response))
       return checkStatus(response)
     }).then((res) => {
       // alert(JSON.stringify(res))
