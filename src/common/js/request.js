@@ -82,7 +82,7 @@ export default {
       // alert(JSON.stringify(response))
       return checkStatus(response)
     }).then((res) => {
-      // alert(JSON.stringify(res))
+      alert(JSON.stringify(res))
       return checkCode(res)
     })
   },
