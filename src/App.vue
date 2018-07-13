@@ -17,6 +17,9 @@
     data() {
       return {}
     },
+    created() {
+      console.log(process.env)
+    },
     methods: {
       login() {
         this.$refs.celing.login()
