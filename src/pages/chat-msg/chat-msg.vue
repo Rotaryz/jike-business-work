@@ -63,8 +63,8 @@
       let data = {
         page: this.page,
         limit: 30,
-        customer_id: this.id,
-        employee_id: this.imInfo.im_account
+        customer_im_account: this.id,
+        employee_im_account: this.imInfo.im_account
       }
       Im.getMsgList(data).then((res) => {
         if (res.error === ERR_OK) {
@@ -112,8 +112,8 @@
         let data = {
           page: this.page++,
           limit: 30,
-          customer_id: this.id,
-          employee_id: this.imInfo.im_account
+          customer_im_account: this.id,
+          employee_im_account: this.imInfo.im_account
         }
         Im.getMsgList(data).then((res) => {
           if (res.error === ERR_OK) {
