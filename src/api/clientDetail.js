@@ -59,7 +59,7 @@ export default {
    */
   getActionList(customer_id = 0, page = 1, limit = 10) {
     const info = storage.get('info', {})
-    const employeeId = info.employee_id
+    const employeeId = info.id
     let url = `api/employee/action-logs`
     let data = {
       employee_id: employeeId,
