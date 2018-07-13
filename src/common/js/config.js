@@ -9,7 +9,7 @@ const DEV_URL = {
 }
 
 const TEST_URL = {
-  api: 'https://business-api.jkweixin.net'
+  api: 'http://business-api.jkweixin.net'
 }
 
 const PROD_URL = {
