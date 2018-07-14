@@ -38,6 +38,7 @@
   import Exception from 'components/exception/exception'
   import {mapGetters} from 'vuex'
   import Scroll from 'components/scroll/scroll'
+  import utils from 'common/js/utils'
 
   const LIMIT = 10
   export default {
@@ -47,7 +48,6 @@
         userName: '',
         dataArray: [],
         isEmpty: false,
-        timeStamp: 0,
         pullUpLoad: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
@@ -59,6 +59,12 @@
     },
     created() {
       this.searchUser(this.userName)
+    },
+    mounted() {
+      this.$watch('userName', utils.debounce((userName) => {
+        this.scrollTop()
+        this.searchUser(userName)
+      }, 200))
     },
     beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
@@ -84,11 +90,10 @@
           } else {
             this.$refs.toast.show(res.message)
           }
-          this.timeStamp = Date.now()
         })
       },
       scrollTop() {
-        this.$refs.scroll.scrollTo(0, 0)
+        this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0)
       },
       onPullingUp() {
         // 更新数据
@@ -120,12 +125,13 @@
       }
     },
     watch: {
-      userName(curVal, oldVal) {
-        if (Date.now() - this.timeStamp > 200) {
-          this.scrollTop()
-          this.searchUser(curVal)
-        }
-      },
+      // userName(newVal) {
+      //   utils.debounce((newVal) => {
+      //     console.log(newVal)
+      //     this.scrollTop()
+      //     this.searchUser(newVal)
+      //   }, 200)
+      // },
       pullUpLoadObj: {
         handler() {
           if (!this.pullUpLoad) return // 防止下拉报错
@@ -223,10 +229,4 @@
         padding-left: 15px
         .user-box
           layout(row, block, nowrap)
-          align-items: center
-          padding: 15px 0
-          border-bottom: 0.5px solid $color-col-line
-          height: 45px
-          overflow: hidden
-
 </style>
