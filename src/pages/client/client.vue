@@ -63,7 +63,7 @@
 </template>
 
 <script>
-  // import {ease} from 'common/js/ease'
+  import {ease} from 'common/js/ease'
   import Search from 'components/client-header-search/client-header-search'
   import SlideView from 'components/slide-view/slide-view'
   import Scroll from 'components/scroll/scroll'
@@ -197,6 +197,9 @@
       },
       msgCancel() {
         this.checkedItem = null
+      },
+      scrollTop() {
+        this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0)
       },
       onPullingUp() {
         // 更新数据
