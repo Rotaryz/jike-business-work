@@ -85,8 +85,8 @@
       this.chatDom = this.$refs.chat
       this.listDom = this.$refs.list
       document.title = this.currentMsg.nickName
-      webimHandler.getC2CMsgList(this.currentMsg.nickName) // 消息已读处理
-      this.setUnreadCount(this.currentMsg.nickName) // vuex
+      webimHandler.getC2CMsgList(this.currentMsg.account) // 消息已读处理
+      this.setUnreadCount(this.currentMsg.account) // vuex
     },
     beforeDestroy() {
       this.setCurrent({})
@@ -357,8 +357,6 @@
         .chat-content.mine
           justify-content: flex-end
 
-      .chat-item:first-child
-        margin-top: 30px
     .chat-input
       width: 100%
       box-sizing: border-box

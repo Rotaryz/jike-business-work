@@ -52,20 +52,6 @@ const mutations = {
           return item
         })
       }
-    } else {
-      let item = {
-        type: 1,
-        typeZn: '私聊',
-        sessionId: msg.fromAccount,
-        avatar: msg.avatar,
-        nickName: msg.fromAccountNick,
-        lastMsg: msg.text,
-        msgTimeStamp: Utils.formatDate(msg.time).date,
-        msgSeq: msg.seq,
-        msgRandom: msg.random, // 消息随机数
-        unreadMsgCount: 1
-      }
-      state.latelyList.push(item)
     }
   },
   [TYPES.ADD_LIST_MSG](state, msg) {
@@ -85,7 +71,8 @@ const mutations = {
         time: Utils.formatDate(msg.time).date,
         sessionId: msg.fromAccount,
         avatar: msg.avatar,
-        nickName: msg.nickName ? msg.nickName : msg.fromAccountNick
+        nickName: msg.nickName ? msg.nickName : msg.fromAccountNick,
+        unreadMsgCount: 1
       }
       inItem = Object.assign({}, addMsg)
     }
