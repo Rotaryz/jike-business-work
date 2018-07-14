@@ -1,5 +1,8 @@
 <template>
-  <div class="ceiling" :class="newMsgIn ? 'show' : ''">
+  <div class="ceiling" :class="newMsgIn ? 'show' : ''"
+       @touchstart.prevent="touchStart"
+       @touchmove.prevent="touchMove"
+       @touchend="touchEnd">
     <img :src="newMsg.avatar" class="ceiling-left">
     <div class="ceiling-right">
       <div class="content">
@@ -30,21 +33,8 @@
       }
     },
     created() {
-      if (!this.hasToken) {
-        return
-      }
-      Im.getImInfo().then((res) => {
-        if (res.error === ERR_OK) {
-          let imInfo = res.data
-          this.setImInfo(imInfo)
-          // console.log(imInfo)
-          this.sdkLogin(imInfo).then(() => {
-
-          })
-        }
-      }, (err) => {
-        console.log(err)
-      })
+      this.touch = {}
+      this.login()
     },
     methods: {
       ...mapActions([
@@ -54,8 +44,26 @@
         'addListCount',
         'addListMsg',
         'setImInfo',
-        'addNowChat'
+        'addNowChat',
+        'setImIng'
       ]),
+      async login() {
+        if (!this.hasToken) {
+          return
+        }
+        Im.getImInfo(this.userInfo.im_account).then((res) => {
+          if (res.error === ERR_OK) {
+            let imInfo = res.data
+            this.setImInfo(imInfo)
+            // console.log(imInfo)
+            this.sdkLogin(imInfo).then(() => {
+              this.setImIng(true)
+            })
+          }
+        }, (err) => {
+          console.log(err)
+        })
+      },
       // IM登录
       async sdkLogin(imInfo) {
         let loginInfo = {
@@ -82,6 +90,14 @@
             let res = await webimHandler.onMsgNotify(msg)
             if (res.type === 'custom') {
               this.setCustomCount('add')
+              if (res.ext * 1 === 20005 && res.fromAccount === this.currentMsg.account) {
+                let goods = JSON.parse(res.data)
+                let url = goods.url ? goods.url : ''
+                let title = goods.title ? goods.title : ''
+                let goodsId = goods.goods_id
+                let goodsRes = Object.assign({}, res, {url, title, goods_id: goodsId})
+                this.addNowChat(goodsRes)
+              }
             } else {
               this.addListCount(res)
               this.addListMsg(res)
@@ -131,6 +147,37 @@
         }, (err) => {
           console.log(err)
         })
+      },
+      touchStart(e) {
+        this.touch.initiated = true
+        // 用来判断是否是一次移动
+        this.touch.moved = false
+        const touch = e.touches[0]
+        this.touch.startX = touch.pageX
+        this.touch.startY = touch.pageY
+      },
+      touchMove(e) {
+        if (!this.touch.initiated) {
+          return
+        }
+        const touch = e.touches[0]
+        const deltaY = touch.pageY - this.touch.startY
+        if (deltaY > 0) {
+          return
+        }
+        if (!this.touch.moved) {
+          this.touch.moved = true
+        }
+        this.touch.hide = true
+      },
+      touchEnd() {
+        if (!this.touch.moved) {
+          return
+        }
+        if (this.touch.hide) {
+          this.touch.hide = false
+          this.newMsgIn = false
+        }
       }
     },
     computed: {

@@ -18,7 +18,9 @@
                 <!--{{comment?'':'special'}}-->
                 <pre class="words">{{item.content}}</pre>
                 <div class="one-box">
-                  <img class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
+                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  </div>
                 </div>
               </div>
               <!--<div class="address">-->
@@ -57,7 +59,9 @@
                 </div>
                 <pre class="words">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
+                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  </div>
                 </div>
               </div>
               <!--<div class="address">-->
@@ -97,7 +101,9 @@
                 <!--{{comment?'':'special'}}"-->
                 <pre class="words">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <img class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
+                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  </div>
                 </div>
               </div>
               <!--<div class="address" >-->
@@ -145,7 +151,7 @@
   import { ERR_OK } from '../../common/js/config'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Toast from 'components/toast/toast'
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'dynamic-list',
@@ -172,7 +178,7 @@
         } : false
       },
       ...mapGetters(['ios']),
-      slide() {
+      slide () {
         return this.ios ? '' : 'slide'
       }
     },
@@ -361,7 +367,7 @@
       box-sizing: border-box
       border: 0.5px solid $color-background
       width: 34.134vw
-      height: 46.4vw
+      overflow: hidden
     .one-box
       display: inline-block
 
@@ -370,6 +376,7 @@
       display: flex
       justify-content: space-between
       .two-item
+        overflow :hidden
         box-sizing: border-box
         height: 31.2vw
         width: 49%
@@ -380,6 +387,7 @@
       flex-wrap: wrap
       transform: translateX(-5PX)
       .two-item
+        overflow :hidden
         box-sizing: border-box
         height: 23.5vw
         width: @height
@@ -397,4 +405,7 @@
     height: @width
     .new-dynamic-img
       width: 100%
+
+  .img-small
+    width: 100%
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app" @touchmove.prevent>
-    <ceiling></ceiling>
-    <router-view/>
+    <ceiling ref="ceiling"></ceiling>
+    <router-view @login="login"/>
     <tab></tab>
   </div>
 </template>
@@ -16,6 +16,14 @@
     name: COMPONENT_NAME,
     data() {
       return {}
+    },
+    created() {
+      console.log(process.env)
+    },
+    methods: {
+      login() {
+        this.$refs.celing.login()
+      }
     },
     components: {
       Tab,

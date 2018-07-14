@@ -51,11 +51,15 @@
   import {mapActions, mapGetters} from 'vuex'
   import {Im} from 'api'
   import {ERR_OK} from 'common/js/config'
+  import storage from 'storage-controller'
   import {ease} from 'common/js/ease'
   export default {
     name: 'Radar',
     created() {
-      Im.getRadarList(this.page).then((res) => {
+      if (!this.imIng) {
+        this.$emit('login')
+      }
+      Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
         if (res.error === ERR_OK) {
           this.list = res.data
         }
@@ -74,7 +78,9 @@
     },
     methods: {
       ...mapActions([
-        'setCustomCount'
+        'setCustomCount',
+        'setImIng',
+        'setImInfo'
       ]),
       toDetail(item) {
         let url = '/radar/client-detail'
@@ -83,7 +89,7 @@
       clearNum() {
         this.page = 1
         let limit = this.list.length + this.customCount
-        Im.getRadarList(this.page, limit).then((res) => {
+        Im.getRadarList(this.page, limit, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             this.list = res.data
             this.setCustomCount('clear')
@@ -96,7 +102,7 @@
       },
       onPullingUp() {
         this.page++
-        Im.getRadarList(this.page).then((res) => {
+        Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             let list = res.data
             if (!list.length) {
@@ -128,13 +134,17 @@
     },
     computed: {
       ...mapGetters([
-        'customCount'
+        'customCount',
+        'imIng'
       ]),
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
+      },
+      userInfo() {
+        return storage.get('info')
       }
     },
     watch: {

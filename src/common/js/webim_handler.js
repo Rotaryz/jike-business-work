@@ -150,14 +150,14 @@ export default class webimHandler {
 
   // 处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
   static handlderMsg(msg) {
-    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend, seq, random
+    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend, seq, random, nameObj
     return new Promise(async (resolve, reject) => {
       fromAccount = msg.getFromAccount()
       if (!fromAccount) {
         fromAccount = ''
       }
-
-      fromAccountNick = msg.getFromAccountNick()
+      nameObj = await this.getCustomerMsg(fromAccount)
+      fromAccountNick = nameObj.name
       if (!fromAccountNick) {
         fromAccountNick = fromAccount
       }

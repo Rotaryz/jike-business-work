@@ -10,7 +10,8 @@ const state = {
   customCount: 0,
   imInfo: {},
   nowChat: [], // 当前会话
-  platform // 平台信息
+  platform, // 平台信息
+  imIng: false
 }
 
 export default state

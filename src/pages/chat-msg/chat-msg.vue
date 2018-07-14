@@ -7,6 +7,7 @@
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
           <div class="chat-list" ref="list">
+            <div class="list-line"></div>
             <div class="chat-item" v-for="(item, index) in nowChat" :key="index">
               <div class="chat-content" v-if="item.from_account_id !== imInfo.im_account">
                 <img :src="currentMsg.avatar" class="avatar">
@@ -61,10 +62,10 @@
     created() {
       this.id = this.$route.query.id
       let data = {
-        page: this.page,
+        'end_date': this.endDate,
         limit: 30,
-        customer_id: this.id,
-        employee_id: this.imInfo.im_account
+        customer_im_account: this.id,
+        employee_im_account: this.imInfo.im_account
       }
       Im.getMsgList(data).then((res) => {
         if (res.error === ERR_OK) {
@@ -84,8 +85,8 @@
       this.chatDom = this.$refs.chat
       this.listDom = this.$refs.list
       document.title = this.currentMsg.nickName
-      webimHandler.getC2CMsgList(this.currentMsg.nickName) // 消息已读处理
-      this.setUnreadCount(this.currentMsg.nickName) // vuex
+      webimHandler.getC2CMsgList(this.currentMsg.account) // 消息已读处理
+      this.setUnreadCount(this.currentMsg.account) // vuex
     },
     beforeDestroy() {
       this.setCurrent({})
@@ -110,10 +111,10 @@
         if (this.noMore) return
         let heightBegin = this.listDom.clientHeight
         let data = {
-          page: this.page++,
+          'end_date': this.endDate,
           limit: 30,
-          customer_id: this.id,
-          employee_id: this.imInfo.im_account
+          customer_im_account: this.id,
+          employee_im_account: this.imInfo.im_account
         }
         Im.getMsgList(data).then((res) => {
           if (res.error === ERR_OK) {
@@ -233,6 +234,13 @@
       },
       slide() {
         return this.ios ? '' : 'slide'
+      },
+      endDate() {
+        if (this.nowChat.length) {
+          return this.nowChat[0].created_at ? this.nowChat[0].created_at : this.nowChat[0].msgTimeStamp
+        } else {
+          return ''
+        }
       }
     }
   }
@@ -263,6 +271,8 @@
       .chat-list
         width: 100%
         padding-bottom: 40px
+        .list-line
+          height: 20px
       .chat-item
         width: 100%
         box-sizing: border-box
