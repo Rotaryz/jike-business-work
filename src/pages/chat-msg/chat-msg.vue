@@ -62,7 +62,7 @@
     created() {
       this.id = this.$route.query.id
       let data = {
-        page: this.page,
+        'end_date': this.endDate,
         limit: 30,
         customer_im_account: this.id,
         employee_im_account: this.imInfo.im_account
@@ -111,7 +111,7 @@
         if (this.noMore) return
         let heightBegin = this.listDom.clientHeight
         let data = {
-          page: this.page++,
+          'end_date': this.endDate,
           limit: 30,
           customer_im_account: this.id,
           employee_im_account: this.imInfo.im_account
@@ -234,6 +234,13 @@
       },
       slide() {
         return this.ios ? '' : 'slide'
+      },
+      endDate() {
+        if (this.nowChat.length) {
+          return this.nowChat[0].created_at ? this.nowChat[0].created_at : this.nowChat[0].msgTimeStamp
+        } else {
+          return ''
+        }
       }
     }
   }
