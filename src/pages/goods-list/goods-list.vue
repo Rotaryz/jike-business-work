@@ -34,7 +34,7 @@
           </div>
         </scroll>
       </transition>
-      <transition name="right">
+      <transition name="slide-right">
         <scroll
           ref="scrolls"
           v-show="!tabIndex"
