@@ -198,6 +198,9 @@
       msgCancel() {
         this.checkedItem = null
       },
+      scrollTop() {
+        this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0)
+      },
       onPullingUp() {
         // 更新数据
         console.info('pulling up and load data')

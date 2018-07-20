@@ -8,7 +8,7 @@
         <span class="line" :class="{'line-buss': !tabIndex}"></span>
       </div>
       <div class="line"></div>
-      <transition :name="slide">
+      <transition name="slide-left">
         <scroll
           ref="scroll"
           :data="goodsListMine"
@@ -34,7 +34,7 @@
           </div>
         </scroll>
       </transition>
-      <transition name="right">
+      <transition name="slide-right">
         <scroll
           ref="scrolls"
           v-show="!tabIndex"
