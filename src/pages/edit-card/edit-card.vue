@@ -15,7 +15,7 @@
           <p class="mine-position">{{mine.position}}</p>
           <p class="mine-company">{{mine.department}}</p>
           <div class="mine-sign">
-            <p class="mine-sign">“{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
+            <p class="mine-sign-text">“<span class="mine-sign-hidden">{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}</span>”</p>
             <router-link tag="span" to="editCard/changeAutograph" class="chang-header">更改签名</router-link>
           </div>
           <ul class="mine-status">
@@ -79,11 +79,11 @@
     created () {
       this._getMine()
     },
-    beforeDestory() {
+    beforeDestory () {
       this.$emit('refresh')
     },
     methods: {
-      getSign() {
+      getSign () {
         this.mine.signature = this.$store.state.signature
         console.log(this.mine.department)
       },
@@ -139,7 +139,7 @@
     },
     computed: {
       ...mapGetters(['ios']),
-      slide() {
+      slide () {
         return this.ios ? '' : 'slide'
       }
     },
@@ -177,6 +177,7 @@
         width: 90px
         height: 36px
         position: absolute
+        z-index: 100
         opacity: 0
 
   .chang-header
@@ -187,6 +188,7 @@
     font-size: $font-size-medium-x
     line-height: 36px
     position: relative
+    z-index: 1
     width: 90px
     height: 36px
 
@@ -220,9 +222,18 @@
     .mine-sign
       position: relative
       margin-top: 11px
-      line-height: 63px
       background: rgba(32, 32, 46, 0.20)
       height: 63px
+      display: flex
+      align-items: center
+      .mine-sign-text
+        width: 100%
+        display :flex
+      .mine-sign-hidden
+        text-indent :0
+        text-align :left
+        max-width: 80%
+        no-wrap()
       .chang-header
         position: absolute
         all-center()
@@ -269,7 +280,7 @@
       border-bottom-1px($color-row-line)
       .item-detail
         height: 100%
-        width : 70%
+        width: 70%
         outline: none
       .item-text
         width: 48px

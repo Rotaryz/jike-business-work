@@ -64,6 +64,8 @@
             let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
             this.image.push(imageItem)
             this.image = this.image.slice(0, 9)
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },

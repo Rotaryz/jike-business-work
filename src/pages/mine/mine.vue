@@ -35,7 +35,7 @@
   import Scroll from 'components/scroll/scroll'
   import { Business } from 'api'
   import { ERR_OK } from '../../common/js/config'
-  import storage from 'storage-controller'
+  // import storage from 'storage-controller'
 
   const CONTENTLIST = [{title: '分享名片', src: 'mine/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
 
@@ -53,18 +53,18 @@
     },
     methods: {
       refresh () {
-        this.mine = storage.get('info', {})
+        this.getMine()
+        // this.mine = storage.get('info', {})
       },
       getMine () {
-        if (storage.get('info')) {
-          this.mine = storage.get('info')
-          console.log(this.mine)
-          return
-        }
+        // if (storage.get('info')) {
+        //   this.mine = storage.get('info')
+        //   console.log(this.mine)
+        //   return
+        // }
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
             this.mine = res.data
-            console.log(this.mine)
           }
         })
       }

@@ -16,7 +16,7 @@
                   <p class="nickname">{{item.employee_name}}</p>
                 </div>
                 <!--{{comment?'':'special'}}-->
-                <pre class="words">{{item.content}}</pre>
+                <pre class="words" width="20">{{item.content}}</pre>
                 <div class="one-box">
                   <div class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
                     <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
@@ -57,7 +57,7 @@
                   <img class="header" :src="item.employee_image_url">
                   <p class="nickname">{{item.employee_name}}</p>
                 </div>
-                <pre class="words">{{item.content}}</pre>
+                <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
                   <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
                     <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
@@ -99,7 +99,7 @@
                   <p class="nickname">{{item.employee_name}}</p>
                 </div>
                 <!--{{comment?'':'special'}}"-->
-                <pre class="words">{{item.content}}</pre>
+                <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
                   <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
                     <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
@@ -147,11 +147,12 @@
 
 <script>
   import Scroll from 'components/scroll/scroll'
-  import { Live } from 'api'
+  import { Live, Global } from 'api'
   import { ERR_OK } from '../../common/js/config'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Toast from 'components/toast/toast'
   import { mapGetters } from 'vuex'
+  import wx from 'weixin-js-sdk'
 
   export default {
     name: 'dynamic-list',
@@ -168,6 +169,21 @@
       }
     },
     created () {
+      let url = location.href
+      console.log(location.href)
+      Global.jssdkConfig({weixin: 'ai_radar', url}).then((res) => {
+        if (res.error === ERR_OK) {
+          res = res.data
+          wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: res.appid, // 必填，生成签名的时间戳
+            nonceStr: res.noncestr, // 必填，生成签名的随机串
+            signature: res.signature, // 必填，签名，见附录1
+            jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        }
+      })
       this._getList()
     },
     computed: {
@@ -194,12 +210,12 @@
       _seeImage (index, image) {
         console.log(index, image)
         let imageArr = image.map(item => item.file_url)
-        console.log(imageArr[index], imageArr)
+        // console.log(imageArr[index], imageArr)
         // 预览图片，正式上面需要打开注释
-        // wx.previewImage({
-        //   current: imageArr[index], // 当前显示图片的http链接
-        //   urls: imageArr // 需要预览的图片http链接列表
-        // })
+        wx.previewImage({
+          current: imageArr[index], // 当前显示图片的http链接
+          urls: imageArr // 需要预览的图片http链接列表
+        })
       },
       onPullingUp () {
         this.page++
@@ -303,6 +319,8 @@
         font-size: $font-size-medium
         line-height: 21px
         margin-bottom: 3.5px
+        white-space: pre-wrap
+        word-wrap: break-word
         overflow: hidden
         text-overflow: ellipsis
         display: -webkit-box
@@ -376,7 +394,7 @@
       display: flex
       justify-content: space-between
       .two-item
-        overflow :hidden
+        overflow: hidden
         box-sizing: border-box
         height: 31.2vw
         width: 49%
@@ -387,7 +405,7 @@
       flex-wrap: wrap
       transform: translateX(-5PX)
       .two-item
-        overflow :hidden
+        overflow: hidden
         box-sizing: border-box
         height: 23.5vw
         width: @height
