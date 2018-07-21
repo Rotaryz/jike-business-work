@@ -12,7 +12,7 @@
           <div class="last-time">最后跟进</div>
         </section>
         <div class="tags">
-          <div>{{userInfo.last_follow_day}}</div>
+          <div class="left">{{userInfo.last_follow_day}}</div>
           <div class="tags-right">{{userInfo.last_follow_at}}</div>
         </div>
       </article>
@@ -29,7 +29,7 @@
           <div class="last-time">最后活跃</div>
         </section>
         <div class="tags">
-          <div>{{userInfo.last_follow_day}}</div>
+          <div class="left">{{userInfo.last_follow_day}}</div>
           <div class="tags-right">{{userInfo.last_active_at}}</div>
         </div>
       </article>
@@ -46,7 +46,7 @@
           <div class="last-time">{{userInfo.sources}}</div>
         </section>
         <div class="tags">
-          <div>{{userInfo.last_follow_day}}</div>
+          <div class="left">{{userInfo.last_follow_day}}</div>
           <div class="tags-right">{{userInfo.flow_join_at}}</div>
         </div>
       </article>
@@ -62,7 +62,10 @@
           </div>
           <div class="last-time">AI预计成交率{{userInfo.conversion_rate}}%</div>
         </section>
-        <div class="tags">{{userInfo.last_follow_day}}</div>
+        <div class="tags">
+          <div class="left">{{userInfo.last_follow_day}}</div>
+          <div class="tags-right"></div>
+        </div>
       </article>
     </section>
   </div>
