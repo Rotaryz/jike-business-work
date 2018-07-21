@@ -51,6 +51,7 @@
     },
     methods: {
       check(item) {
+        if (item.is_member) return
         item.isCheck = !item.isCheck
       },
       submit() {
@@ -111,8 +112,8 @@
           border-radius: 50%
           border: 1px solid $color-col-line
           box-sizing: border-box
-          background :url("")
-          transition :all 0.1s
+          background: url("")
+          transition: all 0.1s
           &.active
             background: url("./icon-selected@3x.png") no-repeat center / 100%
             border: none

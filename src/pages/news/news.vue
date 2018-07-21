@@ -1,27 +1,30 @@
 <template>
   <div class="news">
-    <div class="news-list">
-      <div class="news-item border-bottom-1px" v-for="(item, index) in latelyList" :key="index" @click="chatMsg(item)">
-        <div class="news-left">
-          <img :src="item.avatar" class="left-img">
-          <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount > 99 ? '···' : item.unreadMsgCount}}</span>
-        </div>
-        <div class="news-right">
-          <div class="right-top">
-            <span class="top-name">{{item.nickName}}</span>
-            <span class="top-time">{{item.time}}</span>
+    <scroll :data="latelyList" :bcColor="'#ffffff'">
+      <div class="news-list">
+        <div class="news-item border-bottom-1px" v-for="(item, index) in latelyList" :key="index" @click="chatMsg(item)">
+          <div class="news-left">
+            <img :src="item.avatar" class="left-img">
+            <span class="news-count" v-show="item.unreadMsgCount">{{item.unreadMsgCount > 99 ? '···' : item.unreadMsgCount}}</span>
           </div>
-          <div class="right-down">
-            {{item.lastMsg}}
+          <div class="news-right">
+            <div class="right-top">
+              <span class="top-name">{{item.nickName}}</span>
+              <span class="top-time">{{item.time}}</span>
+            </div>
+            <div class="right-down">
+              {{item.lastMsg}}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script>
   import {mapActions, mapGetters} from 'vuex'
+  import Scroll from 'components/scroll/scroll'
   export default {
     name: 'News',
     created() {
@@ -49,6 +52,9 @@
       ...mapGetters([
         'latelyList'
       ])
+    },
+    components: {
+      Scroll
     }
   }
 </script>

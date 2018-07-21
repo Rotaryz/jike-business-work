@@ -74,7 +74,7 @@ const route = new Router({
               path: 'detail-data',
               component: Cdata,
               meta: {
-                title: '客户資料'
+                title: '客户资料'
               }
             },
             {
@@ -148,7 +148,7 @@ const route = new Router({
                   path: 'detail-data',
                   component: Cdata,
                   meta: {
-                    title: '客户資料'
+                    title: '客户资料'
                   }
                 },
                 {
@@ -180,7 +180,7 @@ const route = new Router({
               path: 'detail-data',
               component: Cdata,
               meta: {
-                title: '客户資料'
+                title: '客户资料'
               }
             },
             {
@@ -338,7 +338,7 @@ const route = new Router({
       path: '/detail-data',
       component: Cdata,
       meta: {
-        title: '客户資料'
+        title: '客户资料'
       }
     },
     {
@@ -351,7 +351,7 @@ const route = new Router({
   ]
 })
 
-const DEFAULT_TITLE = 'AI雷达'
+const DEFAULT_TITLE = '雷达'
 const DEFAULT_ROUTE = '/radar'
 const OAUTH_ROUTE = '/oauth'
 
