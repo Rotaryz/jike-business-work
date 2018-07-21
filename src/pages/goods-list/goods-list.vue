@@ -11,7 +11,7 @@
         <scroll
           ref="scroll"
           :data="goodsListMine"
-          v-show="tabIndex === 1"
+          v-if="tabIndex === 1"
           :pullUpLoad="pullUpLoadObj"
           :pullDownRefresh="pullDownRefreshObj"
           @pullingUp="onPullingUp"
@@ -37,7 +37,7 @@
       <div class="goods-box">
         <scroll
           ref="scrolls"
-          v-show="tabIndex === 0"
+          v-if="tabIndex === 0"
           :data="goodsList"
           :pullUpLoad="pullUpLoadObj"
           :pullDownRefresh="pullDownRefreshObj"
@@ -156,8 +156,11 @@
               return
             }
             if (res.data.length === 0) {
-              this.$refs.scroll.forceUpdate()
-              this.$refs.scrolls.forceUpdate()
+              if (this.tabIndex) {
+                this.$refs.scroll.forceUpdate()
+              } else {
+                this.$refs.scrolls.forceUpdate()
+              }
               this.loadMore = false
               return
             }
