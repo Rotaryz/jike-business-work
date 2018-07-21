@@ -7,8 +7,8 @@
           <textarea class="words-span" placeholder="这一刻的想法…" v-model="title"></textarea>
           <!--:style="height: {{comHeight}}px"-->
           <div class="com-box">
-            <div class="com-image" v-for="(item, index) in image" :key="index">
-              <img class="img-item" :src="item.image_url">
+            <div class="com-image" v-for="(item, index) in image" :key="index" :style="{'background-image': 'url('+item.image_url+')'}">
+              <!--<img class="img-item" :src="item.image_url">-->
               <!--<input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" multiple>-->
               <div class="close-icon" @click.stop="_delImage(index)">
                 <img class="close-icon" src="./icon-del@2x.png">
@@ -219,8 +219,13 @@
       opacity: 1 !important
 
   .com-image
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
     position: relative
     display: inline-block
+    height: 28.4vw
+    width: @height
     .img-item
       height: 28.4vw
       margin: 1.6vw 0 0 1.6vw
