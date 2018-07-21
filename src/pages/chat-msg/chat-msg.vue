@@ -9,6 +9,9 @@
           <div class="chat-list" ref="list">
             <div class="list-line"></div>
             <div class="chat-item" v-for="(item, index) in nowChat" :key="index">
+              <div class="item-time" v-if="item.is_showtime">
+                <span class="time-box">{{item.created_at | timeFormat}}</span>
+              </div>
               <div class="chat-content" v-if="item.from_account_id !== imInfo.im_account">
                 <img :src="currentMsg.avatar" class="avatar">
                 <div class="chat-msg-box other" v-if="item.type == 1">
@@ -61,13 +64,14 @@
   import storage from 'storage-controller'
   import {Im} from 'api'
   import {ERR_OK} from 'common/js/config'
+  import utils from 'common/js/utils'
   export default {
     name: 'Chat',
     created() {
       this.id = this.$route.query.id
       let data = {
         'end_date': this.endDate,
-        limit: 30,
+        limit: 40,
         customer_im_account: this.id,
         employee_im_account: this.imInfo.im_account
       }
@@ -121,7 +125,7 @@
         let heightBegin = this.listDom.clientHeight
         let data = {
           'end_date': this.endDate,
-          limit: 30,
+          limit: 40,
           customer_im_account: this.id,
           employee_im_account: this.imInfo.im_account
         }
@@ -209,7 +213,8 @@
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         id: '',
-        page: 1
+        page: 1,
+        noMore: false
       }
     },
     components: {
@@ -227,6 +232,15 @@
         deep: true
       }
     },
+    filters: {
+      timeFormat(val) {
+        if (val) {
+          let res = utils.radarTimeFormat(val)
+          return res.time
+        }
+        return ''
+      }
+    },
     computed: {
       ...mapGetters([
         'currentMsg',
@@ -235,7 +249,7 @@
         'ios'
       ]),
       pullDownRefreshObj: function () {
-        return this.pullDownRefresh ? {
+        return this.pullDownRefresh && !this.noMore ? {
           threshold: parseInt(this.pullDownRefreshThreshold),
           stop: parseInt(this.pullDownRefreshStop),
           txt: ' '
@@ -290,6 +304,18 @@
         box-sizing: border-box
         padding: 0 15px
         margin-top: 15px
+        .item-time
+          padding-bottom: 15px
+          text-align: center
+          .time-box
+            display: inline-block
+            padding: 4px 8px
+            background: #D6D6D9
+            border-radius: 2px
+            font-family: $font-family-regular
+            font-size: $font-size-12
+            color: $color-white
+            line-height: 14px
         .chat-content
           display: flex
           width: 100%
@@ -303,6 +329,7 @@
             .chat-msg-content-max-box
               flex: 1
               overflow: hidden
+              display: flex
             .chat-msg-content
               padding: 13px 15px
               border-radius: 8px

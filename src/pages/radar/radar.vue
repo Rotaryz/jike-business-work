@@ -10,32 +10,35 @@
                 :data="list"
                 :bcColor="'#f1f2f5'"
                 :pullUpLoad="pullUpLoadObj"
+                :showNoMore="showNoMore"
                 @pullingUp="onPullingUp">
           <div class="msgs-list">
             <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
-              <img :src="item.image_url" class="msgs-left">
-              <div class="msgs-right">
-                <div class="msgs-container">
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span class="green">赞</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span class="green">邮箱</span>，请留意邮件</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span class="green">地址</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span class="green">名片</span>，你的人脉圈正在裂变</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span>，看来TA对你感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span class="green">手机</span>，请记录跟进内容</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">电话</span>，可以考虑主动沟通</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 10009">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span class="green">咨询</span>，请做好准备应答</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span class="green">点了</span><span class="green">赞</span></p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
-                  <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span class="green">咨询</span>，请做好准备应答</p>
+              <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
+              <div class="msg-item-content">
+                <img :src="item.image_url" class="msgs-left">
+                <div class="msgs-right">
+                  <div class="msgs-container">
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span class="green">你的名片</span>第{{item.count_sum}}次，看来TA对你感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span class="green">赞</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span class="green">邮箱</span>，请留意邮件</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span class="green">地址</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span class="green">名片</span>，你的人脉圈正在裂变</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span>，看来TA对你感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span class="green">手机</span>，请记录跟进内容</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">电话</span>，可以考虑主动沟通</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span class="green">查看</span><span class="green">{{item.name | titleCut}}</span>，可能对该产品感兴趣</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.name | titleCut}}</span>向你<span class="green">咨询</span>，请做好准备应答</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span class="green">{{item.name | titleCut}}</span>，可能在咨询他人建议</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span class="green">点了</span><span class="green">赞</span></p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                    <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span class="green">咨询</span>，请做好准备应答</p>
+                  </div>
+                  <img src="./icon-pressed@2x.png" class="msgs-rt">
                 </div>
-                <img src="./icon-pressed@2x.png" class="msgs-rt">
               </div>
             </div>
           </div>
@@ -53,6 +56,7 @@
   import {ERR_OK} from 'common/js/config'
   import storage from 'storage-controller'
   import {ease} from 'common/js/ease'
+  import utils from 'common/js/utils'
   export default {
     name: 'Radar',
     created() {
@@ -62,6 +66,9 @@
       Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
         if (res.error === ERR_OK) {
           this.list = res.data
+          setTimeout(() => {
+            this.$refs.scroll.refresh()
+          }, 20)
         }
       })
     },
@@ -73,7 +80,8 @@
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
-        scrollToEasing: 'bounce'
+        scrollToEasing: 'bounce',
+        showNoMore: false
       }
     },
     methods: {
@@ -101,12 +109,14 @@
         })
       },
       onPullingUp() {
+        if (this.showNoMore) return
         this.page++
         Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             let list = res.data
             if (!list.length) {
               this.page--
+              this.showNoMore = true
             } else {
               this.list = [...this.list, ...list]
             }
@@ -130,6 +140,13 @@
         } else {
           return val
         }
+      },
+      timeFormat(val) {
+        if (val) {
+          let res = utils.radarTimeFormat(val)
+          return res.time
+        }
+        return ''
       }
     },
     computed: {
@@ -206,15 +223,21 @@
       padding: 50px 15px 0
       .msgs-item
         margin-top: 15px
-        width: 100%
-        height: 55px
-        background: $color-white
-        border: 0.5px solid rgba(32,32,46,0.10)
-        box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
-        border-radius: 2px
-        display: flex
-        justify-content: space-between
-        align-items: center
+        .item-time
+          font-family: PingFangSC-Medium
+          font-size: $font-size-14
+          color: #20202E
+          padding: 10px 0 15px
+        .msg-item-content
+          width: 100%
+          height: 55px
+          background: $color-white
+          border: 0.5px solid rgba(32,32,46,0.10)
+          box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
+          border-radius: 2px
+          display: flex
+          justify-content: space-between
+          align-items: center
         .msgs-left
           margin: 0 10px
           width: 40px
