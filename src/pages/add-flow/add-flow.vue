@@ -51,6 +51,7 @@
           if (res.error === ERR_OK) {
             this.$refs.toast.show(res.message)
             setTimeout(() => {
+              this.$emit('refresh')
               this.$router.back()
             }, 500)
           } else {
