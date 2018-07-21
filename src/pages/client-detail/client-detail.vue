@@ -332,9 +332,10 @@
         'setCurrent'
       ]),
       refresh() {
-        setTimeout(() => {
-          this.getCusomerTagList()
-        }, 300)
+        this.flowPage = 1
+        this.getClientId(this.id)
+        this.getCusomerTagList()
+        this.getActionLineData()
       },
       getCusomerTagList() {
         Client.getCusomerTagList({customer_id: this.id}).then(res => {
@@ -1037,6 +1038,7 @@
         color: $color-text-88
         font-family: $font-family-regular
       .text
+        word-break :break-word
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text

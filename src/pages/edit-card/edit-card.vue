@@ -4,18 +4,19 @@
       <scroll ref="scroll">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
-          <div class="header-mask"></div>
-          <div class="chang-header">
-            更换头像
+          <div class="header-mask">
+            <div class="chang-header">
+              更换头像
+            </div>
+            <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
           </div>
-          <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
         </div>
         <div class="mine-msg">
           <p class="mine-name">{{mine.name}}</p>
           <p class="mine-position">{{mine.position}}</p>
           <p class="mine-company">{{mine.department}}</p>
           <div class="mine-sign">
-            <p class="mine-sign">“{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}”</p>
+            <p class="mine-sign-text">“<span class="mine-sign-hidden">{{mine.signature || '生活，总把我们打磨的光鲜圆润'}}</span>”</p>
             <router-link tag="span" to="editCard/changeAutograph" class="chang-header">更改签名</router-link>
           </div>
           <ul class="mine-status">
@@ -79,11 +80,11 @@
     created () {
       this._getMine()
     },
-    beforeDestory() {
+    beforeDestory () {
       this.$emit('refresh')
     },
     methods: {
-      getSign() {
+      getSign () {
         this.mine.signature = this.$store.state.signature
         console.log(this.mine.department)
       },
@@ -139,7 +140,7 @@
     },
     computed: {
       ...mapGetters(['ios']),
-      slide() {
+      slide () {
         return this.ios ? '' : 'slide'
       }
     },
@@ -160,15 +161,17 @@
     bottom: 45px
     z-index: 30
     .header-icon-box
-      display: flex
-      justify-content: center
-      align-items: center
       height: 82.67vw
       width: 100vw
       position: relative
       background-size: cover
       background-repeat: no-repeat
       .header-mask
+        top: 0
+        left: 0
+        display: flex
+        justify-content: center
+        align-items: center
         background: rgba(32, 32, 46, 0.30)
         position: absolute
         height: 100%
@@ -177,6 +180,7 @@
         width: 90px
         height: 36px
         position: absolute
+        z-index: 100
         opacity: 0
 
   .chang-header
@@ -187,6 +191,7 @@
     font-size: $font-size-medium-x
     line-height: 36px
     position: relative
+    z-index: 1
     width: 90px
     height: 36px
 
@@ -220,9 +225,18 @@
     .mine-sign
       position: relative
       margin-top: 11px
-      line-height: 63px
       background: rgba(32, 32, 46, 0.20)
       height: 63px
+      display: flex
+      align-items: center
+      .mine-sign-text
+        width: 100%
+        display :flex
+      .mine-sign-hidden
+        text-indent :0
+        text-align :left
+        max-width: 80%
+        no-wrap()
       .chang-header
         position: absolute
         all-center()
@@ -269,7 +283,7 @@
       border-bottom-1px($color-row-line)
       .item-detail
         height: 100%
-        width : 70%
+        width: 70%
         outline: none
       .item-text
         width: 48px
