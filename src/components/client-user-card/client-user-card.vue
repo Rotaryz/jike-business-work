@@ -43,11 +43,11 @@
             <div class="txt">{{userInfo.name}}</div>
             <img v-if="userInfo.is_new" class="is-new" src="./icon-new@3x.png" alt="">
           </div>
-          <div class="last-time">{{userInfo.flow_join_at}}</div>
+          <div class="last-time">{{userInfo.sources}}</div>
         </section>
         <div class="tags">
           <div>{{userInfo.last_follow_day}}</div>
-          <div class="tags-right">{{userInfo.last_follow_day}}</div>
+          <div class="tags-right">{{userInfo.flow_join_at}}</div>
         </div>
       </article>
     </section>
