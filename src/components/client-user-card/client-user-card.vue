@@ -98,9 +98,11 @@
         margin-right: 10px
       .user-info
         flex: 1
-        layout()
+        layout(column,block,nowrap)
+        padding :3px 0
         justify-content: space-between
         height: 100%
+        box-sizing :border-box
         .base-info
           box-sizing: border-box
           layout(row, block, nowrap)
@@ -111,8 +113,8 @@
             font-size: $font-size-16
             color: $color-20202E
             letter-spacing: 0.6px
-            layout(row)
-            align-items: center
+            layout(row, block, nowrap)
+            align-items: flex-start
             .is-new
               width: 19px
               height: 13.5px
@@ -127,7 +129,7 @@
           font-family: $font-family-regular
           font-size: $font-size-12
           color: $color-56BA15
-          layout(row)
+          layout(row, block, nowrap)
           justify-content: space-between
           align-items: flex-start
           .tags-right
@@ -135,5 +137,6 @@
             font-size: $font-size-12
             color: $color-888888
             padding-right: 15px
+            no-wrap()
 
 </style>
