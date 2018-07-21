@@ -99,7 +99,7 @@
       .user-info
         flex: 1
         layout()
-        justify-content: space-around
+        justify-content: space-between
         height: 100%
         .base-info
           box-sizing: border-box
