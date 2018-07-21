@@ -4,11 +4,12 @@
       <scroll ref="scroll">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
-          <div class="header-mask"></div>
-          <div class="chang-header">
-            更换头像
+          <div class="header-mask">
+            <div class="chang-header">
+              更换头像
+            </div>
+            <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
           </div>
-          <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
         </div>
         <div class="mine-msg">
           <p class="mine-name">{{mine.name}}</p>
@@ -160,15 +161,17 @@
     bottom: 45px
     z-index: 30
     .header-icon-box
-      display: flex
-      justify-content: center
-      align-items: center
       height: 82.67vw
       width: 100vw
       position: relative
       background-size: cover
       background-repeat: no-repeat
       .header-mask
+        top: 0
+        left: 0
+        display: flex
+        justify-content: center
+        align-items: center
         background: rgba(32, 32, 46, 0.30)
         position: absolute
         height: 100%
