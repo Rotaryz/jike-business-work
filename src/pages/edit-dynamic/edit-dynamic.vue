@@ -147,8 +147,6 @@
         font-size: $font-size-medium-x
         color: #CCCCCC
     .com-box
-      height: 19.5vh
-      overflow-y: auto
       padding: 0 4vw 0 2.4vw
     .com-words
       color: #CCCCCC
