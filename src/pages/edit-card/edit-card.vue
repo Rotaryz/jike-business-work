@@ -7,8 +7,8 @@
           <div class="header-mask">
             <div class="chang-header">
               更换头像
+              <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
             </div>
-            <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
           </div>
         </div>
         <div class="mine-msg">
@@ -177,10 +177,12 @@
         height: 100%
         width: 100%
       .header-icon
+        top: 0
+        left: 0
         width: 90px
         height: 36px
         position: absolute
-        z-index: 100
+        z-index: 1000
         opacity: 0
 
   .chang-header
@@ -191,7 +193,7 @@
     font-size: $font-size-medium-x
     line-height: 36px
     position: relative
-    z-index: 1
+    z-index: 0
     width: 90px
     height: 36px
 
