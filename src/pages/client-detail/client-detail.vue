@@ -834,7 +834,6 @@
                 padding-top: 5px
                 margin-bottom: 15px
               .label-box
-                width: 100%
                 overflow-y: auto
                 .label
                   padding: 0 10px
