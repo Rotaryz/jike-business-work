@@ -147,6 +147,12 @@
           }, (err) => {
             console.log(err)
           })
+        } else {
+          msgList = msgList.map((item) => {
+            item.time = Utils.formatDate(item.msgTimeStamp).date
+            return item
+          })
+          this.saveList(msgList)
         }
       },
       touchStart(e) {
