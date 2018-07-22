@@ -67,7 +67,7 @@
         if (res.error === ERR_OK) {
           this.list = res.data
           setTimeout(() => {
-            this.$refs.scroll.refresh()
+            this.$refs.scroll.forceUpdate()
           }, 20)
         }
       })
@@ -220,7 +220,7 @@
     .show.msg-box
       right: -100%
     .msgs-list
-      padding: 50px 15px 0
+      padding: 10px 15px 0
       .msgs-item
         margin-top: 15px
         .item-time

@@ -45,7 +45,7 @@
                       <div class="text">预计成交率</div>
                     </div>
                   </div>
-                  <div class="bottom-number">
+                  <div class="bottom-number" @click="showModel">
                     <div class="number-top" v-if="clientData.progress < 110">
                       <div class="number">{{clientData.progress}}</div>
                       <div class="icon">%</div>
@@ -53,7 +53,7 @@
                     <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
                       <div class="text">{{clientData.progress}}</div>
                     </div>
-                    <div class="number-bottom" @click="showModel">
+                    <div class="number-bottom">
                       <div class="text">实际跟进阶段</div>
                       <div class="img-box">
                         <img class="img" src="./icon-switch@2x.png" alt="">
@@ -423,7 +423,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '新用户数：{c}',
+            formatter: '活跃度：{c}',
             axisPointer: {
               type: 'none'
             }
@@ -822,6 +822,8 @@
                 height: 60px
                 display: block
             .label-right
+              flex: 1
+              overflow: hidden
               margin-left: 10px
               .label-name
                 font-size: $font-size-medium-x
@@ -830,7 +832,8 @@
                 padding-top: 5px
                 margin-bottom: 15px
               .label-box
-                layout(row)
+                width: 100%
+                overflow-y: auto
                 .label
                   width: 65px
                   height: 20px
@@ -996,7 +999,7 @@
   .visitor-box
     padding: 0 15px
     .box-list
-      padding-top: 25px
+      padding-top: 10px
       .time
         font-size: $font-size-medium
         color: $color-text

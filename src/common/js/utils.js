@@ -54,7 +54,7 @@ export default class utils {
     const minute = date.getMinutes()
 
     const t1 = [year, month, day].join('/')
-    const t2 = [hour, minute].join(':')
+    const t2 = [hour, minute].map(this.formatNumber).join(':')
     return `${t1} ${t2}`
   }
 

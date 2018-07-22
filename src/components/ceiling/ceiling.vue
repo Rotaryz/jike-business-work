@@ -34,6 +34,7 @@
     },
     created() {
       this.touch = {}
+      this.login()
     },
     methods: {
       ...mapActions([
@@ -126,7 +127,7 @@
         let requireArr = noMsgList.map((item) => {
           return item.sessionId
         })
-        if (requireArr.length) {
+        if (noMsgList.length) {
           Im.getLastMsgObj(requireArr).then((res) => {
             if (res.error === ERR_OK) {
               let resObj = res.data
@@ -145,8 +146,14 @@
               this.saveList(msgList)
             }
           }, (err) => {
-            console.log(err)
+            alert(err)
           })
+        } else {
+          msgList = msgList.map((item) => {
+            item.time = Utils.formatDate(item.msgTimeStamp).date
+            return item
+          })
+          this.saveList(msgList)
         }
       },
       touchStart(e) {
