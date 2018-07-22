@@ -810,6 +810,8 @@
           position: relative
           z-index: 1
           .detail-img-box
+            flex: 1
+            overflow: hidden
             layout(row)
             .img
               position: relative
@@ -835,7 +837,7 @@
                 width: 100%
                 overflow-y: auto
                 .label
-                  width: 65px
+                  padding: 0 10px
                   height: 20px
                   line-height: 20px
                   text-align: center
