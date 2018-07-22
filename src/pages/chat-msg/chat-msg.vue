@@ -69,6 +69,10 @@
     name: 'Chat',
     created() {
       this.id = this.$route.query.id
+      if (!this.id) {
+        this.$refs.toast.show('网络异常, 请稍后重试')
+        this.$router.go(-1)
+      }
       let data = {
         'end_date': this.endDate,
         limit: 40,
@@ -155,7 +159,6 @@
         })
       },
       sendMsg() {
-        console.log(this.inputMsg)
         let value = this.inputMsg.trim()
         if (!value) {
           this.$refs.toast.show('发送消息不能为空')
