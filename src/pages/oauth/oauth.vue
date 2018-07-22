@@ -33,7 +33,7 @@
     },
     methods: {
       _checkAuthorize () {
-        this.$router.replace(NORMAL_ROUTE)
+        // this.$router.replace(NORMAL_ROUTE)
         if (this.code && !this.hasToken) {
           // 有code没有token -> 申请拿token
           this._applyOauth()
@@ -57,7 +57,6 @@
           const {access_token: token, employee_info: info} = res.data
           storage.set('token', token)
           storage.set('info', info)
-          // alert(token)
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
         })
       }

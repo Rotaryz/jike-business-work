@@ -18,8 +18,8 @@
                 <!--{{comment?'':'special'}}-->
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="one-box">
-                  <div class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="img-one-item" :style="{'background-image': 'url('+items.file_url+')'}" v-for="(items, idx) in item.live_log_detail" :key="idx" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url">-->
                   </div>
                 </div>
               </div>
@@ -59,8 +59,8 @@
                 </div>
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :style="{'background-image': 'url('+items.file_url+')'}" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">-->
                   </div>
                 </div>
               </div>
@@ -101,8 +101,8 @@
                 <!--{{comment?'':'special'}}"-->
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :style="{'background-image': 'url('+items.file_url+')'}" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">-->
                   </div>
                 </div>
               </div>
@@ -352,6 +352,7 @@
         .find-num, .time
           color: $color-text-88
           display: flex
+          white-space:nowrap
         .share
           display: flex
           .share-item
@@ -384,6 +385,10 @@
       box-sizing: border-box
       border: 0.5px solid $color-background
       width: 34.134vw
+      height: 174px
+      background-repeat: no-repeat
+      background-size: cover
+      background-position: center
       overflow: hidden
     .one-box
       display: inline-block
@@ -393,6 +398,9 @@
       display: flex
       justify-content: space-between
       .two-item
+        background-repeat: no-repeat
+        background-position: center
+        background-size: cover
         overflow: hidden
         box-sizing: border-box
         height: 31.2vw
@@ -404,6 +412,9 @@
       flex-wrap: wrap
       transform: translateX(-5PX)
       .two-item
+        background-repeat: no-repeat
+        background-position: center
+        background-size: cover
         overflow: hidden
         box-sizing: border-box
         height: 23.5vw

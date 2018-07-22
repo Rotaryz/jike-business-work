@@ -532,6 +532,7 @@
       selectBar(index, item) {
         this.barIndex = index
         this.flow.progress = item.text
+        this.flowPage = 1
         setTimeout(() => {
           this.showMode = true
           ClientDetail.saveClientDetail(this.clientData.id, this.flow).then((res) => {
