@@ -54,12 +54,10 @@
       ])
     },
     watch: {
-      latelyList: function(newVal, oldVal) {
-        if (newVal && oldVal && newVal.length !== oldVal.length) {
-          setTimeout(() => {
-            this.$refs.scroll.refresh()
-          }, 20)
-        }
+      latelyList: function() {
+        setTimeout(() => {
+          this.$refs.scroll.refresh()
+        }, 20)
       }
     },
     components: {
@@ -74,10 +72,10 @@
   @import '~common/stylus/mixin'
 
   .news
-    width: 100vw
     position: fixed
     left: 0
     top: 0
+    right: 0
     bottom: 45px
     background: $color-white
     .news-list

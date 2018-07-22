@@ -13,6 +13,7 @@
             <div class="ai">AI预计成交率{{item.conversion_rate}}%</div>
           </li>
         </ul>
+        <div style="height: 45px;"></div>
       </scroll>
       <footer class="btn" @click="submit">确定</footer>
       <toast ref="toast"></toast>
