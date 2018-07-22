@@ -145,7 +145,7 @@
               this.saveList(msgList)
             }
           }, (err) => {
-            console.log(err)
+            alert(err)
           })
         } else {
           msgList = msgList.map((item) => {
