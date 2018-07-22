@@ -839,6 +839,7 @@
                   height: 20px
                   line-height: 20px
                   text-align: center
+                  display: inline-block
                   font-size: $font-size-medium
                   color: $color-text-88
                   font-family: $font-family-regular
