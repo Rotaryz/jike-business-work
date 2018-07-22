@@ -13,8 +13,8 @@
             <p class="peo-phone">{{mine.mobile}}</p>
           </div>
           <div class="mine-card-right">
-            <div class="mine-header-box">
-              <img class="mine-header" :src="mine.avatar">
+            <div class="mine-header-box" :style="{'background-image': 'url('+ mine.avatar +')'}">
+              <!--<img class="mine-header" :src="mine.avatar">-->
             </div>
             <router-link tag="p" to="mine/editCard" class="card">编辑名片</router-link>
           </div>
@@ -141,6 +141,9 @@
         margin-top: 4vw
         overflow: hidden
         background: $color-white
+        background-repeat: no-repeat
+        background-position: center
+        background-size: cover
         border-1px($color-row-line, 0)
         .mine-header
           width: 100%
