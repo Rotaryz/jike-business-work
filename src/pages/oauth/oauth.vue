@@ -6,10 +6,10 @@
 
 <script>
   import Oauth from 'common/js/oauth'
-  import { Jwt } from 'api'
+  // import { Jwt } from 'api'
   import storage from 'storage-controller'
-  import { ERR_OK } from 'common/js/config'
-  import utils from 'common/js/utils'
+  // import { ERR_OK } from 'common/js/config'
+  // import utils from 'common/js/utils'
 
   const NORMAL_ROUTE = '/radar'
   const COMPONENT_NAME = 'Oauth'
@@ -48,7 +48,7 @@
       },
       _applyOauth () {
         alert(this.code)
-        Jwt.employeeLogin(this.code).then((res) => {
+        /** Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
             utils._handleErrorType(this.code)
@@ -58,7 +58,7 @@
           storage.set('token', token)
           storage.set('info', info)
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
-        })
+        }) **/
       }
     }
   }
