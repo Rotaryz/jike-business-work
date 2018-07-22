@@ -846,7 +846,7 @@
                   line-height: 20px
                   text-align: center
                   display: inline-block
-                  font-size: $font-size-10
+                  font-size: $font-size-12
                   color: $color-text-88
                   font-family: $font-family-regular
                   background: #F0F2F5
