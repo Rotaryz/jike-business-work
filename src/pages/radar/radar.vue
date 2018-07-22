@@ -155,7 +155,7 @@
         'imIng'
       ]),
       pullUpLoadObj: function () {
-        return this.pullUpLoad && !this.showNoMore ? {
+        return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
