@@ -1,17 +1,19 @@
 <template>
   <transition :name="slide">
     <article class="client-add-user">
-      <ul class="user-list">
-        <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-          <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
-          <img class="user-icon" :src="item.image_url" alt="">
-          <section class="base-info">
-            <div class="name">{{item.name}}</div>
-            <div class="status">{{item.last_follow_day}}</div>
-          </section>
-          <div class="ai">AI预计成交率{{item.conversion_rate}}%</div>
-        </li>
-      </ul>
+      <scroll ref="scroll" :data="dataArray">
+        <ul class="user-list">
+          <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+            <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
+            <img class="user-icon" :src="item.image_url" alt="">
+            <section class="base-info">
+              <div class="name">{{item.name}}</div>
+              <div class="status">{{item.last_follow_day}}</div>
+            </section>
+            <div class="ai">AI预计成交率{{item.conversion_rate}}%</div>
+          </li>
+        </ul>
+      </scroll>
       <footer class="btn" @click="submit">确定</footer>
       <toast ref="toast"></toast>
     </article>
@@ -21,6 +23,7 @@
 <script type="text/ecmascript-6">
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
+  import Scroll from 'components/scroll/scroll'
   import {ERR_OK} from '../../common/js/config'
   import {mapGetters} from 'vuex'
 
@@ -42,6 +45,7 @@
           this.dataArray = res.data.map(item => {
             return {...item, isCheck: false}
           })
+          this.$refs.scroll.refresh()
         }
       })
     },
@@ -84,7 +88,8 @@
     },
     watch: {},
     components: {
-      Toast
+      Toast,
+      Scroll
     }
   }
 </script>
