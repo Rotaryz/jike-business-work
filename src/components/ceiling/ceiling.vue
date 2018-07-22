@@ -144,6 +144,9 @@
                 return item
               })
               msgList = msgList.map((item) => {
+                if (item.lastMsg === '[其他]') {
+                  item.lastMsg = ''
+                }
                 item.time = Utils.formatDate(item.msgTimeStamp).date
                 return item
               })
