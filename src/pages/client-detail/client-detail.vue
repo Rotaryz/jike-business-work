@@ -24,10 +24,12 @@
                     <div class="label-right">
                       <div class="label-name">{{clientData.name}}</div>
                       <div class="label-box">
-                        <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
-                             @click="toClientTag">{{item.label_name}}
+                        <div class="label-content">
+                          <div class="label active" v-for="(item, index) in labelList" v-bind:key="index"
+                               @click="toClientTag">{{item.label_name}}
+                          </div>
+                          <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
                         </div>
-                        <div class="label" v-if="labelList.length<3" @click="toClientTag">添加标签</div>
                       </div>
                     </div>
                   </div>
@@ -835,6 +837,8 @@
                 margin-bottom: 15px
               .label-box
                 overflow-y: auto
+                .label-content
+                  display: inline-block
                 .label
                   padding: 0 10px
                   height: 20px
