@@ -832,7 +832,7 @@
               .label-box
                 layout(row)
                 .label
-                  width: 65px
+                  padding: 0 10px
                   height: 20px
                   line-height: 20px
                   text-align: center
