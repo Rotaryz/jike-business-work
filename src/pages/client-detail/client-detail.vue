@@ -45,7 +45,7 @@
                       <div class="text">预计成交率</div>
                     </div>
                   </div>
-                  <div class="bottom-number">
+                  <div class="bottom-number" @click="showModel">
                     <div class="number-top" v-if="clientData.progress < 110">
                       <div class="number">{{clientData.progress}}</div>
                       <div class="icon">%</div>
@@ -53,7 +53,7 @@
                     <div class="number-top" v-if="clientData.progress === '无法签单' || clientData.progress === '成交'">
                       <div class="text">{{clientData.progress}}</div>
                     </div>
-                    <div class="number-bottom" @click="showModel">
+                    <div class="number-bottom">
                       <div class="text">实际跟进阶段</div>
                       <div class="img-box">
                         <img class="img" src="./icon-switch@2x.png" alt="">
@@ -423,7 +423,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '新用户数：{c}',
+            formatter: '活跃度：{c}',
             axisPointer: {
               type: 'none'
             }

@@ -67,7 +67,7 @@
         if (res.error === ERR_OK) {
           this.list = res.data
           setTimeout(() => {
-            this.$refs.scroll.refresh()
+            this.$refs.scroll.forceUpdate()
           }, 20)
         }
       })
