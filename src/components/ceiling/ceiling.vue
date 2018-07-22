@@ -128,7 +128,11 @@
           return item.sessionId
         })
         if (noMsgList.length) {
-          Im.getLastMsgObj(requireArr).then((res) => {
+          let reqdata = {
+            customer_ims: requireArr,
+            employee_id: this.userInfo.id
+          }
+          Im.getLastMsgObj(reqdata).then((res) => {
             if (res.error === ERR_OK) {
               let resObj = res.data
               msgList = msgList.map((item) => {
@@ -146,7 +150,7 @@
               this.saveList(msgList)
             }
           }, (err) => {
-            alert(err)
+            console.log(err)
           })
         } else {
           msgList = msgList.map((item) => {

@@ -180,8 +180,10 @@
           time: timeStamp,
           msgTimeStamp: timeStamp,
           fromAccount: this.id,
+          sessionId: this.id,
           unreadMsgCount: 0,
-          avatar: msg.avatar
+          avatar: this.currentMsg.avatar,
+          nickName: this.currentMsg.nickName
         }
         this.addListMsg(addMsg)
         this.inputMsg = ''
