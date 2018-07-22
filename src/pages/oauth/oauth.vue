@@ -47,6 +47,7 @@
         window.location.replace(oauth.oauthUri)
       },
       _applyOauth () {
+        alert(this.code)
         Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
