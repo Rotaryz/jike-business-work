@@ -996,7 +996,7 @@
   .visitor-box
     padding: 0 15px
     .box-list
-      padding-top: 25px
+      padding-top: 10px
       .time
         font-size: $font-size-medium
         color: $color-text
