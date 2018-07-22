@@ -6,10 +6,10 @@
 
 <script>
   import Oauth from 'common/js/oauth'
-  // import { Jwt } from 'api'
+  import { Jwt } from 'api'
   import storage from 'storage-controller'
-  // import { ERR_OK } from 'common/js/config'
-  // import utils from 'common/js/utils'
+  import { ERR_OK } from 'common/js/config'
+  import utils from 'common/js/utils'
 
   const NORMAL_ROUTE = '/radar'
   const COMPONENT_NAME = 'Oauth'
@@ -33,7 +33,6 @@
     },
     methods: {
       _checkAuthorize () {
-        this.$router.replace(NORMAL_ROUTE)
         if (this.code && !this.hasToken) {
           // 有code没有token -> 申请拿token
           this._applyOauth()
@@ -47,8 +46,7 @@
         window.location.replace(oauth.oauthUri)
       },
       _applyOauth () {
-        alert(this.code)
-        /** Jwt.employeeLogin(this.code).then((res) => {
+        Jwt.employeeLogin(this.code).then((res) => {
           if (res.error !== ERR_OK) {
             // todo '跳去系统异常页面'
             utils._handleErrorType(this.code)
@@ -58,7 +56,7 @@
           storage.set('token', token)
           storage.set('info', info)
           this.$router.replace(this.beforeLoginRoute || NORMAL_ROUTE)
-        })**/
+        })
       }
     }
   }
