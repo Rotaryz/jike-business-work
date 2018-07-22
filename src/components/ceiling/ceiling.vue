@@ -126,7 +126,7 @@
         let requireArr = noMsgList.map((item) => {
           return item.sessionId
         })
-        if (requireArr.length) {
+        if (noMsgList.length) {
           Im.getLastMsgObj(requireArr).then((res) => {
             if (res.error === ERR_OK) {
               let resObj = res.data
