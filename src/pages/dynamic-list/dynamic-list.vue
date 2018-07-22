@@ -18,8 +18,8 @@
                 <!--{{comment?'':'special'}}-->
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="one-box">
-                  <div class="img-one-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="img-one-item" :style="{'background-image': 'url('+items.file_url+')'}" v-for="(items, idx) in item.live_log_detail" :key="idx" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url">-->
                   </div>
                 </div>
               </div>
@@ -59,8 +59,8 @@
                 </div>
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :style="{'background-image': 'url('+items.file_url+')'}" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">-->
                   </div>
                 </div>
               </div>
@@ -101,8 +101,8 @@
                 <!--{{comment?'':'special'}}"-->
                 <pre class="words" width="20">{{item.content}}</pre>
                 <div class="img-item-two">
-                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx">
-                    <img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">
+                  <div class="two-item" v-for="(items, idx) in item.live_log_detail" :key="idx" :style="{'background-image': 'url('+items.file_url+')'}" @click="_seeImage(idx, item.live_log_detail)">
+                    <!--<img class="img-small" :src="items.file_url" @click="_seeImage(idx, item.live_log_detail)">-->
                   </div>
                 </div>
               </div>
@@ -170,14 +170,13 @@
     },
     created () {
       let url = location.href
-      console.log(location.href)
       Global.jssdkConfig({weixin: 'ai_radar', url}).then((res) => {
         if (res.error === ERR_OK) {
           res = res.data
           wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: res.appid, // 必填，生成签名的时间戳
+            timestamp: res.timestamp, // 必填，生成签名的时间戳
             nonceStr: res.noncestr, // 必填，生成签名的随机串
             signature: res.signature, // 必填，签名，见附录1
             jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
@@ -353,6 +352,7 @@
         .find-num, .time
           color: $color-text-88
           display: flex
+          white-space:nowrap
         .share
           display: flex
           .share-item
@@ -385,6 +385,10 @@
       box-sizing: border-box
       border: 0.5px solid $color-background
       width: 34.134vw
+      height: 174px
+      background-repeat: no-repeat
+      background-size: cover
+      background-position: center
       overflow: hidden
     .one-box
       display: inline-block
@@ -394,6 +398,9 @@
       display: flex
       justify-content: space-between
       .two-item
+        background-repeat: no-repeat
+        background-position: center
+        background-size: cover
         overflow: hidden
         box-sizing: border-box
         height: 31.2vw
@@ -405,6 +412,9 @@
       flex-wrap: wrap
       transform: translateX(-5PX)
       .two-item
+        background-repeat: no-repeat
+        background-position: center
+        background-size: cover
         overflow: hidden
         box-sizing: border-box
         height: 23.5vw
@@ -425,5 +435,6 @@
       width: 100%
 
   .img-small
-    width: 100%
+    max-width: 100%
+    max-height: 100%
 </style>
