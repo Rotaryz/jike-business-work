@@ -836,9 +836,10 @@
                 padding-top: 5px
                 margin-bottom: 15px
               .label-box
-                overflow-y: auto
+                overflow-x: auto
                 .label-content
                   display: inline-block
+                  white-space: nowrap
                 .label
                   padding: 0 10px
                   height: 20px
