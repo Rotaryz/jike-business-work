@@ -29,7 +29,8 @@
       return {
         glideShow: false,
         newMsgIn: false,
-        timer: ''
+        timer: '',
+        userInfo: ''
       }
     },
     created() {
@@ -48,7 +49,8 @@
         'setImIng'
       ]),
       async login() {
-        if (!this.hasToken) {
+        let token = storage.get('token')
+        if (!token) {
           return
         }
         Im.getImInfo(this.userInfo.im_account).then((res) => {
@@ -66,6 +68,7 @@
       },
       // IM登录
       async sdkLogin(imInfo) {
+        this.userInfo = storage.get('info')
         let loginInfo = {
           'sdkAppID': imInfo.im_sdk_appid, // 用户所属应用id,必填
           'appIDAt3rd': imInfo.im_sdk_appid, // 用户所属应用id，必填
@@ -196,12 +199,6 @@
       }
     },
     computed: {
-      hasToken() {
-        return storage.has('token')
-      },
-      userInfo() {
-        return storage.get('info')
-      },
       ...mapGetters([
         'newMsg',
         'currentMsg'
