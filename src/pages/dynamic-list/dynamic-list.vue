@@ -5,7 +5,10 @@
       <scroll ref="scroll"
               :data="dynamicList"
               :pullUpLoad="pullUpLoadObj"
-              @pullingUp="onPullingUp">
+              :pullDownRefresh="pullDownRefreshObj"
+              @pullingUp="onPullingUp"
+              @pullingDown="onPullingDown"
+      >
         <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
           <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
             <div class="find-box">
@@ -162,10 +165,15 @@
         delIndex: null,
         page: 1,
         pullUpLoad: true,
+        loadMore: true,
         pullUpLoadThreshold: 0,
         pullUpLoadMoreTxt: '加载更多',
         pullUpLoadNoMoreTxt: '没有更多了',
-        loadMore: true
+        pullDownRefreshThreshold: 90,
+        pullDownRefreshStop: 40,
+        scrollbar: true,
+        scrollbarFade: true,
+        pullDownRefresh: true
       }
     },
     created () {
@@ -186,6 +194,15 @@
       this._getList()
     },
     computed: {
+      scrollbarObj: function () {
+        return this.scrollbar ? {fade: this.scrollbarFade} : false
+      },
+      pullDownRefreshObj: function () {
+        return this.pullDownRefresh ? {
+          threshold: parseInt(this.pullDownRefreshThreshold),
+          stop: parseInt(this.pullDownRefreshStop)
+        } : false
+      },
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
           threshold: parseInt(this.pullUpLoadThreshold),
@@ -198,6 +215,12 @@
       }
     },
     watch: {
+      pullDownRefreshObj: {
+        handler () {
+          this.rebuildScroll()
+        },
+        deep: true
+      },
       pullUpLoadObj: {
         handler () {
           this.rebuildScroll()
@@ -206,6 +229,11 @@
       }
     },
     methods: {
+      onPullingDown () {
+        this.page = 1
+        this.loadMore = true
+        this._getList()
+      },
       _seeImage (index, image) {
         console.log(index, image)
         let imageArr = image.map(item => item.file_url)
@@ -352,7 +380,7 @@
         .find-num, .time
           color: $color-text-88
           display: flex
-          white-space:nowrap
+          white-space: nowrap
         .share
           display: flex
           .share-item
