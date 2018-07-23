@@ -235,7 +235,7 @@
           },
           tooltip: {
             trigger: 'axis',
-            formatter: '新用户数：{c}',
+            formatter: '活跃度：{c}',
             axisPointer: {
               type: 'none'
             }
@@ -271,11 +271,6 @@
         let myChart = this.$echarts.init(document.getElementById('myAddLine'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '近30日客户活跃度',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -434,12 +429,7 @@
                 borderWidth: 1
               }
             },
-            data: [
-              {value: 80, name: '322'},
-              {value: 60, name: '155'},
-              {value: 40, name: '21'},
-              {value: 20, name: '0'}
-            ]
+            data: this.successData
           }]
         })
         // myChart.on('click', this.eConsole)
