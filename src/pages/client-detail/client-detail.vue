@@ -341,7 +341,6 @@
       },
       getCusomerTagList() {
         Client.getCusomerTagList({customer_id: this.id}).then(res => {
-          // console.log(res)
           if (res.error === ERR_OK) {
             let arr = res.data.slice(0, 3)
             this.labelList = arr
@@ -353,7 +352,6 @@
         this.$router.push(path)
       },
       chatMsg(item) {
-        console.log(item)
         let currentMsg = {
           nickName: item.nickName,
           avatar: item.avatar,
@@ -375,11 +373,6 @@
         let myChart = this.$echarts.init(document.getElementById('myPie'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户兴趣占比',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'item',
             formatter: '{d}%'
@@ -407,11 +400,6 @@
         let myChart = this.$echarts.init(document.getElementById('myLine'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '近30日客户活跃度',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -461,11 +449,6 @@
         let myChart = this.$echarts.init(document.getElementById('myBar'))
         // 绘制图表
         myChart.setOption({
-          // title: {
-          //   text: '客户与我的互动',
-          //   subtext: '(每小时更新)',
-          //   x: 'center'
-          // },
           tooltip: {
             trigger: 'axis',
             formatter: '{b}数：{c}',
@@ -576,6 +559,17 @@
             this.id = res.data.id
             this.flowId = res.data.flow_id
             this.mobile = res.data.mobile
+            ClientDetail.getClientDetail(id).then(res => {
+              if (res.error === ERR_OK) {
+                console.log(res.data)
+                if (res.data.flow.real_name.length !== 0) {
+                  this.clientData.name = res.data.flow.real_name
+                } else {
+                  this.clientData.name = res.data.flow.nickname
+                }
+              }
+            })
+            console.log(this.mobile, 11)
             this.getNewFlowList(this.id, this.flowId)
             this.getNewActionList(this.id)
           }
@@ -650,7 +644,6 @@
           avatar: this.clientData.image_url,
           account: this.clientData.im_account
         }
-        console.log(currentMsg)
         this.setCurrent(currentMsg)
         let url = '/chat?id=' + this.clientData.im_account
         this.$router.push(url)
