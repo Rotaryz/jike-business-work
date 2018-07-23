@@ -1,7 +1,12 @@
 <template>
   <transition :name="slide">
     <article class="client-add-user">
-      <scroll ref="scroll" :data="dataArray">
+      <scroll ref="scroll"
+              bcColor="#fff"
+              :data="dataArray"
+              :pullUpLoad="pullUpLoadObj"
+              @pullingUp="onPullingUp"
+      >
         <ul class="user-list">
           <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
             <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
@@ -27,20 +32,35 @@
   import {ERR_OK} from '../../common/js/config'
   import {mapGetters} from 'vuex'
 
+  const LIMIT = 10
+
   export default {
     name: 'ClientAddUser',
     data() {
       return {
         dataArray: [],
-        id: null
+        id: null,
+        pullUpLoad: true,
+        pullUpLoadThreshold: 0,
+        pullUpLoadMoreTxt: '加载更多',
+        pullUpLoadNoMoreTxt: '没有更多了',
+        page: 1,
+        limit: LIMIT,
+        isAll: false
       }
     },
     created() {
       this.id = this.$route.query.id
       const data = {
-        group_id: this.id
+        group_id: this.id,
+        page: 1,
+        limit: LIMIT
       }
       Client.getCustomerList(data).then(res => {
+        if (res.error !== ERR_OK) {
+          this.$refs.toast.show(res.message)
+          return
+        }
         if (res.data) {
           this.dataArray = res.data.map(item => {
             return {...item, isCheck: false}
@@ -78,15 +98,61 @@
             this.$refs.toast.show(res.message)
           }
         })
+      },
+      onPullingUp() {
+        if (!this.pullUpLoad) return
+        if (this.isAll) return this.$refs.scroll.forceUpdate()
+        // 更新数据
+        console.info('pulling up and load data')
+
+        let page = ++this.page
+        let limit = this.limit
+        const data = {group_id: this.id, page, limit}
+        Client.getCustomerList(data).then(res => {
+          if (res.error !== ERR_OK) {
+            this.$refs.toast.show(res.message)
+            return
+          }
+          if (res.data && res.data.length) {
+            let arr = res.data.map(item => {
+              return {...item, isCheck: false}
+            })
+            this.dataArray.push(...arr)
+            this.$refs.scroll.refresh()
+          } else {
+            this.$refs.scroll.forceUpdate()
+            this.isAll = true
+          }
+        })
+      },
+      rebuildScroll() {
+        this.nextTick(() => {
+          this.$refs.scroll.destroy()
+          this.$refs.scroll.initScroll()
+        })
       }
     },
     computed: {
       ...mapGetters(['ios']),
       slide() {
         return this.ios ? '' : 'slide'
+      },
+      pullUpLoadObj: function () {
+        return this.pullUpLoad ? {
+          threshold: parseInt(this.pullUpLoadThreshold),
+          txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
+        } : false
       }
     },
-    watch: {},
+    watch: {
+      pullUpLoadObj: {
+        handler() {
+          if (!this.pullUpLoad) return // 防止下拉报错
+          this.rebuildScroll()
+        },
+        deep: true
+      }
+    },
     components: {
       Toast,
       Scroll
@@ -101,7 +167,8 @@
   .client-add-user
     fill-box()
     background-color: $color-white-fff
-    z-index: 10
+    z-index: 50
+    padding-bottom :45px
     .user-list
       position: relative
       padding-left: 15px
