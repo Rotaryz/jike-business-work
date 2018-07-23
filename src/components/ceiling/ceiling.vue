@@ -53,6 +53,7 @@
         if (!token) {
           return
         }
+        this.userInfo = storage.get('info')
         Im.getImInfo(this.userInfo.im_account).then((res) => {
           if (res.error === ERR_OK) {
             let imInfo = res.data
@@ -68,7 +69,6 @@
       },
       // IM登录
       async sdkLogin(imInfo) {
-        this.userInfo = storage.get('info')
         let loginInfo = {
           'sdkAppID': imInfo.im_sdk_appid, // 用户所属应用id,必填
           'appIDAt3rd': imInfo.im_sdk_appid, // 用户所属应用id，必填

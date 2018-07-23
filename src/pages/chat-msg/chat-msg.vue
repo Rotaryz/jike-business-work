@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <div class="chat-msg-goods" v-if="item.type * 1 == 2">
-                  <img :src="item.url" class="goods-img">
+                  <img :src="item.url" class="goods-img" onload="refushBox">
                   <p class="goods-title">{{item.title}}</p>
                 </div>
               </div>
@@ -116,6 +116,11 @@
         'addListMsg',
         'setNowChat'
       ]),
+      refushBox() {
+        setTimeout(() => {
+          this.$refs.scroll.refresh()
+        }, 20)
+      },
       textHeight() {
         let timer = setTimeout(() => {
           this.textareaDom.style.height = 'auto'
@@ -393,7 +398,6 @@
                 top: 17.5px
           .chat-msg-goods
             width: 200px
-            height: 150px
             border: 0.5px solid rgba(0,0,0,0.10)
             border-radius: 8px
             background: $color-white
@@ -402,7 +406,6 @@
             font-size: 0
             .goods-img
               width: 100%
-              height: 120px
             .goods-title
               line-height: 30px
               font-size: $font-size-small
