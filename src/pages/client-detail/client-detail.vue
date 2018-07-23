@@ -561,7 +561,6 @@
             this.mobile = res.data.mobile
             ClientDetail.getClientDetail(id).then(res => {
               if (res.error === ERR_OK) {
-                console.log(res.data)
                 if (res.data.flow.real_name.length !== 0) {
                   this.clientData.name = res.data.flow.real_name
                 } else {
@@ -569,13 +568,13 @@
                 }
               }
             })
-            console.log(this.mobile, 11)
             this.getNewFlowList(this.id, this.flowId)
             this.getNewActionList(this.id)
           }
         })
       },
       getNewFlowList(id, flowId) {
+        this.flowPage = 1
         ClientDetail.getFlowList(id, flowId, this.flowPage).then((res) => {
           if (res.error === ERR_OK) {
             this.flowList = res.data
@@ -602,6 +601,7 @@
         }
       },
       getNewActionList(id) {
+        this.actionPage = 1
         ClientDetail.getActionList(id, this.actionPage).then((res) => {
           if (res.error === ERR_OK) {
             this.actionList = res.data
