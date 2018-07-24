@@ -86,6 +86,7 @@
         pullDownRefreshStop: 40,
         page: 1,
         scrollToEasing: 'bounce',
+        scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         showNoMore: false
       }
     },
