@@ -142,8 +142,6 @@
               this.$refs.scroll.forceUpdate()
               this.$refs.scroll.scrollTo(0, 0, 300, ease[this.scrollToEasing])
             }, 20)
-          } else {
-            alert(res)
           }
         })
       },
