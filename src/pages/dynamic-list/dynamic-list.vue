@@ -51,6 +51,17 @@
                   </div>
                 </div>
               </div>
+              <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
+                <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
+                <div class="peo-big-box">
+                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <div class="like-name">
+                    <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
+                  </div>
+                </div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
+              </div>
             </div>
           </div>
           <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
@@ -91,6 +102,17 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
+                <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
+                <div class="peo-big-box">
+                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <div class="like-name">
+                    <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
+                  </div>
+                </div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
           </div>
@@ -133,6 +155,17 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
+                <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
+                <div class="peo-big-box">
+                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <div class="like-name">
+                    <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
+                  </div>
+                </div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
           </div>
@@ -286,6 +319,7 @@
         Live.likeLog(data).then((res) => {
           if (res.error === ERR_OK) {
             this.dynamicList[index].is_like = !this.dynamicList[index].is_like
+            this.dynamicList[index].live_log_like = res.data
             return
           }
           this.$refs.toast.show(res.message)
@@ -348,10 +382,6 @@
         margin-bottom: 3.5px
         white-space: pre-wrap
         word-wrap: break-word
-        overflow: hidden
-        text-overflow: ellipsis
-        display: -webkit-box
-        -webkit-line-clamp: 6
         -webkit-box-orient: vertical
         .p-more
           color: $color-del
@@ -397,7 +427,46 @@
         .thumbs-up
           .find-num
             color: $color-theme-tw
-
+    .likes-peo
+      margin-top: 5px
+      position: relative
+      width: 79.73vw
+      box-sizing: border-box
+      .likes-peo-bg
+        display: block
+        width: 100%
+      .peo-big-box
+        width: 100%
+        box-sizing: border-box
+        border-right-1px(rgba(0, 0, 0, 0.10))
+        border-left-1px(rgba(0, 0, 0, 0.10))
+        background: #F9F9F9
+        padding: 3px 0
+        display: flex
+      .like-icon
+        margin: 4px 0 0 10px
+        z-index: 10
+        width: 14px
+        height: 13px
+      .like-name
+        font-size: $font-size-14
+        color: #7C7C8F
+        margin-left: 5px
+        z-index: 10
+        line-height: 21px
+        flex: 1
+      .comment-peo
+        border-right-1px(rgba(0, 0, 0, 0.10))
+        border-left-1px(rgba(0, 0, 0, 0.10))
+        padding-left: 10px
+        width: 100%
+        box-sizing: border-box
+        background: #F9F9F9
+        font-size: $font-size-14
+        line-height: 22px
+        color: #7C7C8F
+        .comment-name
+          color: $color-374B63
   .video
     .find-video
       width: 54vw
