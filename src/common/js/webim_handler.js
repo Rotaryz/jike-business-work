@@ -388,7 +388,7 @@ export default class webimHandler {
       let nickName = msg.fromAccountNick
       switch (code) {
         case 10000:
-          resTxt = nickName + '正在查看你的名片'
+          resTxt = nickName + '正在查看你的名片, 成交在望'
           break
         case 10001:
           resTxt = nickName + '给你点了赞, 看来认可你'
