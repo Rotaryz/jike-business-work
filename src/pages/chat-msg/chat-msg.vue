@@ -117,9 +117,7 @@
         'setNowChat'
       ]),
       refushBox() {
-        setTimeout(() => {
-          this.$refs.scroll.refresh()
-        }, 20)
+        this.$refs.scroll.refresh()
       },
       textHeight() {
         let timer = setTimeout(() => {
