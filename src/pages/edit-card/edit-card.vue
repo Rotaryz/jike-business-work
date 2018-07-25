@@ -77,7 +77,7 @@
         </vueCropper>
         <div class="img-btn">
           <div class="btn-item" @click="cropImage">确定</div>
-          <div class="btn-item">取消</div>
+          <div class="btn-item" @click="visible = false">取消</div>
         </div>
       </div>
       <!--<image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false" @loadSuccess="loadSuccess"></image-clipper>-->
@@ -116,12 +116,13 @@
     methods: {
       cropImage () {
         this.visible = false
-        let $Blob = this.getBlobBydataURI(this.$refs.cropper.getCroppedCanvas().toDataURL(), 'image/png')
+        let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
+        let $Blob = this.getBlobBydataURI(src, 'image/png')
         let formData = new FormData()
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
-        alert($Blob)
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
+          alert('aaa')
           if (res.error === ERR_OK) {
             alert(res.data.name)
             this.mine.avatar = res.data.url
@@ -191,6 +192,7 @@
         for (var i = 0; i < binary.length; i++) {
           array.push(binary.charCodeAt(i))
         }
+        console.log(new Blob([new Uint8Array(array)], {type: type}))
         return new Blob([new Uint8Array(array)], {type: type})
       }
     },
