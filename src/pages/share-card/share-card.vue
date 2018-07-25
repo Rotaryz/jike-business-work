@@ -66,6 +66,8 @@
       background: $color-white
       margin: 20px auto
       .qr-code
+        padding :64px
+        margin-top: -64px
         width: 195.5px
         height: 195.5px
       .buss-name
@@ -84,7 +86,7 @@
         color: $color-text
         margin-top: 10px
       .tip
-        margin-top: 15px
+        margin-top: -49px
         font-family: $font-family-regular
         font-size: $font-size-small
         color: $color-text-88
