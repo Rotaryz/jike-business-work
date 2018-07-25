@@ -155,8 +155,7 @@
           success: (res) => {
             // alert(res)
             let localIds = res.localIds[0]
-            this.imageBig = localIds
-            this.visible = true
+            this.uploadImage(localIds)
             console.log(localIds)
             // this.uploadImage(localIds)
             // this.imageBig = localIds[0]
@@ -185,8 +184,9 @@
           localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
           isShowProgressTips: 1, // 默认为1，显示进度提示
           success: (res) => {
-            this.mine.avatar = res.serverId
-            console.log(res.serverId)
+            this.imageBig = res.localIds[0]
+            this.visible = true
+            alert(this.imageBig)
           }
         })
       }
