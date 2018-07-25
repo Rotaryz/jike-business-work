@@ -2,7 +2,6 @@
   <transition :name="slide">
     <div class="edit-card">
       <scroll ref="scroll">
-        <img :src="imageBig">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
           <div class="header-mask">
@@ -157,10 +156,9 @@
             // alert(res)
             let localIds = res.localIds[0]
             this.imageBig = localIds
-            console.log(this.mine.avatar)
+            this.visible = true
             console.log(localIds)
             // this.uploadImage(localIds)
-            // this.visible = true
             // this.imageBig = localIds[0]
             // alert(this.imageBig)
             // console.log(localIds)
