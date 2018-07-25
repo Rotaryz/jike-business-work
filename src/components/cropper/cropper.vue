@@ -25,6 +25,8 @@
 
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'imageClipper',
     props: {
@@ -38,6 +40,9 @@
         default: 250
       }
     },
+    // computed: {
+    //   ...mapGetters(['img'])
+    // },
     watch: {
       img () {
         alert(this.img)

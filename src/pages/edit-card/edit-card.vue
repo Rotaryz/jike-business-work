@@ -6,9 +6,9 @@
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
           <div class="header-mask">
-            <div class="chang-header" @click="_fileChange()">
+            <div class="chang-header">
               更换头像
-              <!--<input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">-->
+              <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
             </div>
           </div>
         </div>
@@ -71,7 +71,6 @@
   import { mapActions, mapGetters } from 'vuex'
   import imageClipper from '../../components/cropper/cropper'
   import storage from 'storage-controller'
-  import wx from 'weixin-js-sdk'
 
   export default {
     name: 'edit-card',
@@ -84,21 +83,6 @@
       }
     },
     created () {
-      let url = location.href
-      // let url = 'https://business-manager.jkweixin.net/mine/editCard'
-      Global.jssdkConfig({weixin: 'ai_radar', url}).then((res) => {
-        if (res.error === ERR_OK) {
-          res = res.data
-          wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: res.timestamp, // 必填，生成签名的时间戳
-            nonceStr: res.noncestr, // 必填，生成签名的随机串
-            signature: res.signature, // 必填，签名，见附录1
-            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-          })
-        }
-      })
       this._getMine()
     },
     beforeDestory () {
@@ -113,7 +97,7 @@
         this.mine.signature = this.$store.state.signature
         console.log(this.mine.department)
       },
-      ...mapActions(['setSignature']),
+      ...mapActions(['setSignature', 'setCutImg']),
       _getMine () {
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
@@ -147,104 +131,23 @@
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
-      getBase64Image (img) {
-        var canvas = document.createElement('canvas')
-        var width = img.width
-        var height = img.height
-        if (width > height) {
-          if (width > 100) {
-            height = Math.round(height *= 100 / width)
-            width = 100
-          }
-        } else {
-          if (height > 100) {
-            width = Math.round(width *= 100 / height)
-            height = 100
-          }
-        }
-        canvas.width = width
-        canvas.height = height
-        var ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0, width, height)
-        var dataURL = canvas.toDataURL('image/png', 0.8)
-        return dataURL.replace('data:image/pngbase64,', '')
-      },
       _fileChange (e) {
-        // console.log('sss')
-        wx.chooseImage({
-          count: 1, // 默认9
-          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: (res) => {
-            // alert(res)
-            let localIds = res.localIds[0]
-            let s = this.getBase64Image(localIds)
-            alert(s)
-            // this.uploadImage(localIds)
-            // this.visible = true
-            // this.imageBig = localIds
-            // this.uploadImage(localIds)
-            // this.imageBig = localIds[0]
-            // alert(this.imageBig)
-            // console.log(localIds)
-          }
-        })
         // document.getElementById('header-logo').click()
-        // this.visible = true
-        // console.log('aa')
-        // if (e.target) {
-        //   let param = this._infoImage(e.target.files[0])
-        //   UpLoad.upLoadImage(param).then((res) => {
-        //     if (res.error === ERR_OK) {
-        //       this.mine.avatar = res.data.url
-        //       this.mine.image_id = res.data.id
-        //       // this.$refs.toast.show('修改成功')
-        //       return false
-        //     }
-        //     this.$refs.toast.show(res.message)
-        //   })
-        // }
-      },
-      uploadImage (id) {
-        wx.uploadImage({
-          localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
-          isShowProgressTips: 1, // 默认为1，显示进度提示
-          success: (res) => {
-            let data = {file: res.serverId}
-            UpLoad.upLoadImage(data).then((res) => {
-              console.log(res)
-              if (res.error === ERR_OK) {
-                // this.mine.avatar = res.data.url
-                // this.mine.image_id = res.data.id
-                // this.$refs.toast.show('修改成功')
-                return false
-              }
-              this.$refs.toast.show(res.message)
-            })
-            // this.downloadImage(res.serverId)
-          }
-        })
-      },
-      downloadImage (id) {
-        wx.downloadImage({
-          serverId: id, // 需要下载的图片的服务器端ID，由uploadImage接口获得
-          isShowProgressTips: 1, // 默认为1，显示进度提示
-          success: (res) => {
-            let data = {file: res.localId}
-            UpLoad.upLoadImage(data).then((res) => {
-              console.log(res)
-              if (res.error === ERR_OK) {
-                // this.mine.avatar = res.data.url
-                // this.mine.image_id = res.data.id
-                // this.$refs.toast.show('修改成功')
-                return false
-              }
-              this.$refs.toast.show(res.message)
-            })
-            console.log(res)
-            // var localId = res.localId // 返回图片下载后的本地ID
-          }
-        })
+        if (e.target) {
+          let param = this._infoImage(e.target.files[0])
+          UpLoad.upLoadImage(param).then((res) => {
+            if (res.error === ERR_OK) {
+              console.log(res.data)
+              this.imageBig = res.data.url
+              this.visible = true
+              // this.mine.avatar = res.data.url
+              // this.mine.image_id = res.data.id
+              // this.$refs.toast.show('修改成功')
+              return false
+            }
+            this.$refs.toast.show(res.message)
+          })
+        }
       }
     },
     computed: {

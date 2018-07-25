@@ -285,7 +285,7 @@
     font-size: $font-size-small
     color: $color-text-88
     /*&:last-child*/
-      /*margin-bottom: 0*/
+    /*margin-bottom: 0*/
     .img-box
       overflow: hidden
       height: 70px
