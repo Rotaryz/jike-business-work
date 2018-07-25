@@ -37,7 +37,7 @@
   import { ERR_OK } from '../../common/js/config'
   // import storage from 'storage-controller'
 
-  const CONTENTLIST = [{title: '分享名片', src: 'mine/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
+  const CONTENTLIST = [{title: '查看名片', src: 'mine/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
 
   export default {
     name: 'Mine',
@@ -89,19 +89,18 @@
     top: 0
 
   .ba-dark
-    background-color: $color-text
     text-align: center
     color: $color-white
     width: 100vw
     font-size: $font-size-large
     font-family: $font-family-regular
-    height: 105.5px
+    height: 15px
 
   .mine-card
     position: relative
     z-index: 100
     background-color: $color-white
-    margin: -57px auto 0
+    margin: 0 auto
     height: 50.67vw
     width: 92vw
     .mine-card-bg
@@ -110,7 +109,7 @@
       box-sizing: border-box
       justify-content: space-between
       background-size: cover
-      bg-image('bg-my')
+      bg-image('pic-card_bg')
       height: 100%
       width: 100%
       .mine-card-right, .mind-card-left
@@ -119,22 +118,22 @@
         margin-top: 5.33vw
         font-family: $font-family-regular
         font-size: $font-size-medium
-        color: $color-text
+        color: $color-white
       .peo-name
         margin-top: 8.27vw
         font-family: PingFangSC-Semibold
         font-size: $font-size-large-xx
-        color: $color-text
+        color: $color-white
       .peo-position
         font-family: $font-family-regular
         font-size: $font-size-small
-        color: $color-text-88
+        color: $color-white
         margin-top: 2.67vw
       .peo-phone
         margin-top: 9.33vw
         font-family: $font-family-regular
         font-size: $font-size-medium
-        color: $color-text
+        color: $color-white
       .mine-header-box
         height: 60px
         width: 60px
