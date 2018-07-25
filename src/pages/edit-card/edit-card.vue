@@ -66,7 +66,7 @@
 <script>
   import { ERR_OK } from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
-  import { Business, Global, UpLoad } from 'api'
+  import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
   import imageClipper from '../../components/cropper/cropper'
@@ -134,19 +134,23 @@
       _fileChange (e) {
         // document.getElementById('header-logo').click()
         if (e.target) {
-          let param = this._infoImage(e.target.files[0])
-          UpLoad.upLoadImage(param).then((res) => {
-            if (res.error === ERR_OK) {
-              console.log(res.data)
-              this.imageBig = res.data.url
-              this.visible = true
-              // this.mine.avatar = res.data.url
-              // this.mine.image_id = res.data.id
-              // this.$refs.toast.show('修改成功')
-              return false
-            }
-            this.$refs.toast.show(res.message)
-          })
+          // let param = this._infoImage(e.target.files[0])
+          let url = window.URL.createObjectURL(e.target.files[0])
+          console.log(url)
+          this.imageBig = url
+          this.visible = true
+          // UpLoad.upLoadImage(param).then((res) => {
+          //   if (res.error === ERR_OK) {
+          //     console.log(res.data)
+          //     this.imageBig = res.data.url
+          //     this.visible = true
+          //     // this.mine.avatar = res.data.url
+          //     // this.mine.image_id = res.data.id
+          //     // this.$refs.toast.show('修改成功')
+          //     return false
+          //   }
+          //   this.$refs.toast.show(res.message)
+          // })
         }
       }
     },
