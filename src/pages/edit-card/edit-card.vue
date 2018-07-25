@@ -122,7 +122,7 @@
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
-          alert('aaa')
+          alert(res.error)
           if (res.error === ERR_OK) {
             alert(res.data.name)
             this.mine.avatar = res.data.url
