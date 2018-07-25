@@ -70,6 +70,8 @@
           :view-mode="2"
           :min-container-width="200"
           :min-container-height="200"
+          :minCanvasWidth="200"
+          :minCropBoxHeight="200"
           :cropBoxResizable="status"
           :toggleDragModeOnDblclick="status"
         >
@@ -115,18 +117,19 @@
     methods: {
       cropImage () {
         this.visible = false
-        var $Blob = this.getBlobBydataURI(this.$refs.cropper.getCroppedCanvas().toDataURL(), 'image/png')
-        var formData = new FormData()
+        let $Blob = this.getBlobBydataURI(this.$refs.cropper.getCroppedCanvas().toDataURL(), 'image/png')
+        let formData = new FormData()
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
-            console.log(res.data)
+            alert(res.data)
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
             // this.$refs.toast.show('修改成功')
             return false
           }
+          alert('999')
           this.$refs.toast.show(res.message)
         })
         console.log(formData)
