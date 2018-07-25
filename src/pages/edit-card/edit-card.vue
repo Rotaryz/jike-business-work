@@ -2,6 +2,7 @@
   <transition :name="slide">
     <div class="edit-card">
       <scroll ref="scroll">
+        <img :src="imageBig">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
           <div class="header-mask">
@@ -154,11 +155,14 @@
           sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: (res) => {
             // alert(res)
-            var localIds = res.localIds
-            this.visible = true
-            this.mine.avatar = localIds[0]
-            this.imageBig = localIds[0]
-            alert(this.imageBig)
+            let localIds = res.localIds[0]
+            this.imageBig = localIds
+            console.log(this.mine.avatar)
+            console.log(localIds)
+            // this.uploadImage(localIds)
+            // this.visible = true
+            // this.imageBig = localIds[0]
+            // alert(this.imageBig)
             // console.log(localIds)
           }
         })
@@ -177,15 +181,17 @@
         //     this.$refs.toast.show(res.message)
         //   })
         // }
+      },
+      uploadImage (id) {
+        wx.uploadImage({
+          localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: (res) => {
+            this.mine.avatar = res.serverId
+            console.log(res.serverId)
+          }
+        })
       }
-      // uploadImage () {
-      //   wx.uploadImage({
-      //     localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
-      //     isShowProgressTips: 1, // 默认为1，显示进度提示
-      //     success: (res) => {
-      //     }
-      //   })
-      // },
     },
     computed: {
       ...mapGetters(['ios']),
