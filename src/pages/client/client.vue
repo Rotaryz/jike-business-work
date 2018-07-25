@@ -108,7 +108,8 @@
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
         limit: LIMIT,
-        isAll: false
+        isAll: false,
+        total: 0
       }
     },
     created() {
@@ -146,6 +147,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
+            this.total = res.meta.total
             this.isEmpty = !this.dataArray.length
             this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
@@ -177,6 +179,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.data) {
             this.dataArray = res.data
+            this.total = res.meta.total
           }
         })
       },
@@ -214,6 +217,7 @@
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               let newArr = this.dataArray.concat(res.data)
+              this.total = res.meta.total // 共多少人
               this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
