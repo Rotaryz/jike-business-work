@@ -222,8 +222,6 @@
     right: 0
     bottom: 45px
     background: $color-background
-    display: flex
-    flex-direction: column
     .container
       width: 100%
       height: 100%
