@@ -156,6 +156,7 @@
             // alert(res)
             var localIds = res.localIds
             this.visible = true
+            this.mine.avatar = localIds[0]
             this.imageBig = localIds[0]
             alert(this.imageBig)
             // console.log(localIds)
