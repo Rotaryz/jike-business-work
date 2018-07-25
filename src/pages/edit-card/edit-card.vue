@@ -72,6 +72,7 @@
           :min-container-height="200"
           :cropBoxResizable="status"
           :toggleDragModeOnDblclick="status"
+          :aspectRatio="1"
           :img-style="{ 'width': '200px', 'height': '200px' }"
         >
         </vueCropper>
@@ -122,18 +123,14 @@
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
-          alert(res.error)
           if (res.error === ERR_OK) {
-            alert(res.data.name)
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
             // this.$refs.toast.show('修改成功')
             return false
           }
-          alert('999')
           this.$refs.toast.show(res.message)
         })
-        console.log(formData)
       },
       getSign () {
         this.mine.signature = this.$store.state.signature
@@ -192,7 +189,6 @@
         for (var i = 0; i < binary.length; i++) {
           array.push(binary.charCodeAt(i))
         }
-        console.log(new Blob([new Uint8Array(array)], {type: type}))
         return new Blob([new Uint8Array(array)], {type: type})
       }
     },
