@@ -123,12 +123,13 @@
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
-            this.visible = false
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
+            this.visible = false
             // this.$refs.toast.show('修改成功')
             return false
           }
+          this.visible = false
           this.$refs.toast.show(res.message)
         })
       },
