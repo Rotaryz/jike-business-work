@@ -116,7 +116,6 @@
     },
     methods: {
       cropImage () {
-        this.visible = false
         let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
         let $Blob = this.getBlobBydataURI(src, 'image/png')
         let formData = new FormData()
@@ -124,6 +123,7 @@
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
+            this.visible = false
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
             // this.$refs.toast.show('修改成功')
