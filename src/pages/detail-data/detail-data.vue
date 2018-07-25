@@ -13,7 +13,7 @@
                       <img :src="imgUrl" alt="" class="imgUrl">
                     </div>
                     <div class="label-right">
-                      <div class="label-name">{{nickname}}</div>
+                      <div class="label-name">{{flow.nickname}}</div>
                       <div class="add-text">
                         <div class="text">{{flow.created_at}}</div>
                         <div class="text">{{flow.sources}}</div>
@@ -135,7 +135,6 @@
         choose: false,
         bgChoose: false,
         chooseText: '屏蔽',
-        nickname: '',
         flow: {
           nickname: '',
           real_name: '',
@@ -176,11 +175,6 @@
             console.log(res)
             this.imgUrl = res.data.image_url
             this.flow = res.data.flow
-            if (res.data.flow.real_name.length !== 0) {
-              this.nickname = res.data.flow.real_name
-            } else {
-              this.nickname = res.data.flow.nickname
-            }
             if (res.data.flow.sex * 1 === 0) {
               this.sexSelected = '未完善'
             } else if (res.data.flow.sex * 1 === 1) {

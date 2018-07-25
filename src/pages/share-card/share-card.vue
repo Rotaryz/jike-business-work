@@ -10,12 +10,12 @@
               <img :src="card.qrcode" alt="" class="share-code">
               <div class="name-profession">
                 <div class="name">{{card.name}}</div>
-                <div class="line"></div>
+                <div class="line" v-if="showPosition"></div>
                 <div class="name-profession">{{card.position}}</div>
               </div>
               <div class="buss-name">{{card.department}}</div>
               <div class="code-padding"></div>
-              <div class="code-phone">
+              <div class="code-phone" v-if="showMobile">
                 <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
                 <div class="text">{{card.business_card_mobile}}</div>
               </div>
@@ -41,13 +41,20 @@
     name: 'share-card',
     data() {
       return {
-        card: {}
+        card: {},
+        showPosition: true,
+        showMobile: true
       }
     },
     created() {
       Business.Myqrcode().then((res) => {
         this.card = res.data || {}
-        console.log(res)
+        if (this.card.position.length === 0) {
+          this.showPosition = false
+        }
+        if (this.card.business_card_mobile.length === 0) {
+          this.showMobile = false
+        }
       })
     },
     computed: {
