@@ -70,10 +70,9 @@
           :view-mode="2"
           :min-container-width="200"
           :min-container-height="200"
-          :minCanvasWidth="200"
-          :minCropBoxHeight="200"
           :cropBoxResizable="status"
           :toggleDragModeOnDblclick="status"
+          :img-style="{ 'width': '200px', 'height': '200px' }"
         >
         </vueCropper>
         <div class="img-btn">
@@ -120,10 +119,11 @@
         let $Blob = this.getBlobBydataURI(this.$refs.cropper.getCroppedCanvas().toDataURL(), 'image/png')
         let formData = new FormData()
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
+        alert($Blob)
         // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
-            alert(res.data)
+            alert(res.data.name)
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
             // this.$refs.toast.show('修改成功')
