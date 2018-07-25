@@ -1,6 +1,7 @@
 <template>
   <transition :name="slide">
     <div class="edit-card">
+      <!--<canvas class="canvas"></canvas>-->
       <scroll ref="scroll">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
@@ -57,6 +58,7 @@
       <div class="btn" @click="_changeMine">保存</div>
       <toast ref="toast"></toast>
       <router-view @getSign="getSign"></router-view>
+      <image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false"></image-clipper>
     </div>
   </transition>
 </template>
@@ -67,6 +69,7 @@
   import { Business, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
+  import imageClipper from '../../components/cropper/cropper'
   import storage from 'storage-controller'
 
   export default {
@@ -74,7 +77,9 @@
     data () {
       return {
         mine: {},
-        imageId: null
+        imageId: null,
+        visible: false,
+        imageBig: ''
       }
     },
     created () {
@@ -84,11 +89,15 @@
       this.$emit('refresh')
     },
     methods: {
+      sure (res) {
+        this.imageBig = res
+        console.log(res)
+      },
       getSign () {
         this.mine.signature = this.$store.state.signature
         console.log(this.mine.department)
       },
-      ...mapActions(['setSignature']),
+      ...mapActions(['setSignature', 'setCutImg']),
       _getMine () {
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
@@ -123,18 +132,25 @@
         return param
       },
       _fileChange (e) {
-        document.getElementById('header-logo').click()
+        // document.getElementById('header-logo').click()
         if (e.target) {
-          let param = this._infoImage(e.target.files[0])
-          UpLoad.upLoadImage(param).then((res) => {
-            if (res.error === ERR_OK) {
-              this.mine.avatar = res.data.url
-              this.mine.image_id = res.data.id
-              // this.$refs.toast.show('修改成功')
-              return false
-            }
-            this.$refs.toast.show(res.message)
-          })
+          // let param = this._infoImage(e.target.files[0])
+          let url = window.URL.createObjectURL(e.target.files[0])
+          console.log(url)
+          this.imageBig = url
+          this.visible = true
+          // UpLoad.upLoadImage(param).then((res) => {
+          //   if (res.error === ERR_OK) {
+          //     console.log(res.data)
+          //     this.imageBig = res.data.url
+          //     this.visible = true
+          //     // this.mine.avatar = res.data.url
+          //     // this.mine.image_id = res.data.id
+          //     // this.$refs.toast.show('修改成功')
+          //     return false
+          //   }
+          //   this.$refs.toast.show(res.message)
+          // })
         }
       }
     },
@@ -146,13 +162,17 @@
     },
     components: {
       Scroll,
-      Toast
+      Toast,
+      imageClipper
     }
   }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  .canvas
+    display: none
+
   .edit-card
     position: fixed
     top: 0
@@ -193,7 +213,7 @@
     font-size: $font-size-medium-x
     line-height: 36px
     position: relative
-    z-index: 0
+    z-index: 1
     width: 90px
     height: 36px
 
@@ -233,10 +253,10 @@
       align-items: center
       .mine-sign-text
         width: 100%
-        display :flex
+        display: flex
       .mine-sign-hidden
-        text-indent :0
-        text-align :left
+        text-indent: 0
+        text-align: left
         max-width: 80%
         no-wrap()
       .chang-header

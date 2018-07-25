@@ -1,5 +1,6 @@
-import {tabMode} from 'common/js/constants'
+import { tabMode } from 'common/js/constants'
 import utils from 'common/js/utils'
+
 const platform = utils.getPlatform()
 const state = {
   tabMode: tabMode.show,
@@ -11,7 +12,8 @@ const state = {
   imInfo: {},
   nowChat: [], // 当前会话
   platform, // 平台信息
-  imIng: false
+  imIng: false,
+  img: ''
 }
 
 export default state
