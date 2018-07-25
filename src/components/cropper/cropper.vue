@@ -1,6 +1,6 @@
 <template>
   <div class="clipper-container" ref="clipper">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" height="250" width="250"></canvas>
 
     <!-- 裁剪部分 -->
     <div class="clipper-part">
@@ -28,7 +28,10 @@
   export default {
     name: 'imageClipper',
     props: {
-      img: String, // url或dataUrl
+      img: {
+        type: String,
+        default: ''
+      }, // url或dataUrl
       clipperImgWidth: {
         type: Number,
         default: 250
@@ -304,6 +307,7 @@
           eW = parseInt(w / h * maxH)
           eH = maxH
         } else {
+          console.log(h, w)
           // 判断是横图还是竖图
           if (h > w) {
             eW = parseInt(w / h * maxH)
@@ -311,15 +315,17 @@
           } else {
             eW = maxW
             eH = parseInt(h / w * maxW)
+            console.log(eW)
           }
         }
+        console.log(eW, maxW)
         if (eW <= maxW && eH <= maxH) {
           // 记录其初始化的宽高，日后的缩放功能以此值为基础
           this.imgStartWidth = eW
           this.imgStartHeight = eH
           this._drawImage((maxW - eW) / 2, (maxH - eH) / 2, eW, eH)
         } else {
-          this._initImg(eW, eH)
+          // this._initImg(eW, eH)
         }
       },
       _drawImage (x, y, w, h) {
