@@ -7,10 +7,7 @@ import 'common/stylus/index.styl'
 // import fastclick from 'fastclick'
 import store from './store'
 import echarts from 'echarts'
-// import imageClipper from 'static/cropper/index'
 Vue.prototype.$echarts = echarts
-
-// Vue.use(imageClipper)
 
 // fastclick.attach(document.body)
 

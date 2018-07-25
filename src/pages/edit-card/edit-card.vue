@@ -5,9 +5,9 @@
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
           <div class="header-mask">
-            <div class="chang-header">
+            <div class="chang-header" @click="_fileChange()">
               更换头像
-              <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
+              <!--<input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">-->
             </div>
           </div>
         </div>
@@ -57,6 +57,7 @@
       <div class="btn" @click="_changeMine">保存</div>
       <toast ref="toast"></toast>
       <router-view @getSign="getSign"></router-view>
+      <image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false"></image-clipper>
     </div>
   </transition>
 </template>
@@ -64,26 +65,49 @@
 <script>
   import { ERR_OK } from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
-  import { Business, UpLoad } from 'api'
+  import { Business, Global } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
+  import imageClipper from '../../components/cropper/cropper'
   import storage from 'storage-controller'
+  import wx from 'weixin-js-sdk'
 
   export default {
     name: 'edit-card',
     data () {
       return {
         mine: {},
-        imageId: null
+        imageId: null,
+        visible: false,
+        imageBig: ''
       }
     },
     created () {
+      let url = location.href
+      // let url = 'https://business-manager.jkweixin.net/mine/editCard'
+      Global.jssdkConfig({weixin: 'ai_radar', url}).then((res) => {
+        if (res.error === ERR_OK) {
+          res = res.data
+          wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: res.timestamp, // 必填，生成签名的时间戳
+            nonceStr: res.noncestr, // 必填，生成签名的随机串
+            signature: res.signature, // 必填，签名，见附录1
+            jsApiList: ['chooseImage', 'checkJsApi', 'startRecord', 'stopRecord', 'translateVoice', 'scanQRCode', 'openCard'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        }
+      })
       this._getMine()
     },
     beforeDestory () {
       this.$emit('refresh')
     },
     methods: {
+      sure (res) {
+        this.imageBig = res
+        console.log(res)
+      },
       getSign () {
         this.mine.signature = this.$store.state.signature
         console.log(this.mine.department)
@@ -123,19 +147,31 @@
         return param
       },
       _fileChange (e) {
-        document.getElementById('header-logo').click()
-        if (e.target) {
-          let param = this._infoImage(e.target.files[0])
-          UpLoad.upLoadImage(param).then((res) => {
-            if (res.error === ERR_OK) {
-              this.mine.avatar = res.data.url
-              this.mine.image_id = res.data.id
-              // this.$refs.toast.show('修改成功')
-              return false
-            }
-            this.$refs.toast.show(res.message)
-          })
-        }
+        // console.log('sss')
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            var localIds = res.localIds
+            console.log(localIds)
+          }
+        })
+        // document.getElementById('header-logo').click()
+        // this.visible = true
+        // console.log('aa')
+        // if (e.target) {
+        //   let param = this._infoImage(e.target.files[0])
+        //   UpLoad.upLoadImage(param).then((res) => {
+        //     if (res.error === ERR_OK) {
+        //       this.mine.avatar = res.data.url
+        //       this.mine.image_id = res.data.id
+        //       // this.$refs.toast.show('修改成功')
+        //       return false
+        //     }
+        //     this.$refs.toast.show(res.message)
+        //   })
+        // }
       }
     },
     computed: {
@@ -146,7 +182,8 @@
     },
     components: {
       Scroll,
-      Toast
+      Toast,
+      imageClipper
     }
   }
 </script>
@@ -193,7 +230,7 @@
     font-size: $font-size-medium-x
     line-height: 36px
     position: relative
-    z-index: 0
+    z-index: 1
     width: 90px
     height: 36px
 
@@ -233,10 +270,10 @@
       align-items: center
       .mine-sign-text
         width: 100%
-        display :flex
+        display: flex
       .mine-sign-hidden
-        text-indent :0
-        text-align :left
+        text-indent: 0
+        text-align: left
         max-width: 80%
         no-wrap()
       .chang-header

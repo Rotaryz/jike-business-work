@@ -158,7 +158,7 @@
     width: 92vw
     margin: 15px auto 0
     padding-left: 15px
-    box-sizing :border-box
+    box-sizing: border-box
     border-radius: 2px
     border-1px($color-row-line)
     .content-item

@@ -24,20 +24,19 @@
 </template>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  position()
-    position: absolute
+  @import "~common/stylus/variable"
+  @import '~common/stylus/mixin'
+  .clipper-container
+    position: fixed
     top: 0
     bottom: 0
     left: 0
     right: 0
     z-index: 100
-
-  .clipper-container
-    position()
     line-height: 0
     background-color: #000
     .clipper-part
-      position()
+      all-center()
       bottom: 61px
       z-index: 102
       .pCanvas-container
@@ -47,41 +46,44 @@
         transform: translate(-50%, -50%)
         border: 2px solid #fff
 
-        .action-bar
-          box-sizing: content-box
-          position()
-          top: auto
-          z-index: 103
-          height: 60px
-          line-height: 60px
-          border-top: 1px solid rgba(256, 256, 256, 0.3)
-          button
-            display: block
-            padding: 0 15px
-            line-height: 60px
-            font-size: 16px
-            color: #fff
-            background: none
-            border: none
-            outline: 0
-            &.btn-cancel
-              float: left
+  .action-bar
+    box-sizing: content-box
+    width: 100vw
+    all-center()
+    bottom: -30px
+    top: auto
+    z-index: 120
+    background: $color-20202E
+    height: 60px
+    line-height: 60px
+    border-top: 1px solid rgba(256, 256, 256, 0.3)
+    button
+      display: block
+      padding: 0 15px
+      line-height: 60px
+      font-size: 16px
+      color: #fff
+      background: none
+      border: none
+      outline: 0
+      &.btn-cancel
+        float: left
 
-            &.btn-ok
-              float: right
-            .mask
-              position()
-              z-index: 101
-              transition: opacity 500ms
-              background-color: #000
-              opacity: 0
-              &.opacity
-                opacity: 0.8
+      &.btn-ok
+        float: right
+      .mask
+        all-center()
+        z-index: 101
+        transition: opacity 500ms
+        background-color: #000
+        opacity: 0
+        &.opacity
+          opacity: 0.8
 
-            .gesture-mask
-              position()
-              bottom: 61px
-              z-index: 103
+      .gesture-mask
+        all-center()
+        bottom: 61px
+        z-index: 103
 </style>
 
 <script>
@@ -91,11 +93,11 @@
       img: String, // url或dataUrl
       clipperImgWidth: {
         type: Number,
-        default: 500
+        default: 250
       },
       clipperImgHeight: {
         type: Number,
-        default: 200
+        default: 250
       }
     },
     watch: {
@@ -151,7 +153,11 @@
         this._initEvent()
       },
       _initCanvas () {
-        let $canvas = this.$refs.canvas, $pCanvas = this.$refs.pCanvas, clipperClientRect = this.$refs.clipper.getBoundingClientRect(), clipperWidth = parseInt(this.clipperImgWidth / window.devicePixelRatio), clipperHeight = parseInt(this.clipperImgHeight / window.devicePixelRatio)
+        let $canvas = this.$refs.canvas
+        let $pCanvas = this.$refs.pCanvas
+        let clipperClientRect = this.$refs.clipper.getBoundingClientRect()
+        let clipperWidth = parseInt(this.clipperImgWidth / window.devicePixelRatio)
+        let clipperHeight = parseInt(this.clipperImgHeight / window.devicePixelRatio)
         this.ctx = $canvas.getContext('2d')
         this.pCtx = $pCanvas.getContext('2d')
         // 判断clipperWidth与clipperHeight有没有超过容器值
@@ -171,25 +177,25 @@
         $pCanvas.width = this._ratio(clipperWidth)
         $pCanvas.height = this._ratio(clipperHeight)
         // 计算两个canvas原点的x y差值
-        let cClientRect = $canvas.getBoundingClientRect(),
-          pClientRect = $pCanvas.getBoundingClientRect()
+        let cClientRect = $canvas.getBoundingClientRect()
+        let pClientRect = $pCanvas.getBoundingClientRect()
         this.originXDiff = pClientRect.left - cClientRect.left
         this.originYDiff = pClientRect.top - cClientRect.top
         this.cWidth = cClientRect.width
         this.cHeight = cClientRect.height
       },
       _initEvent () {
-        let $gesture = this.$refs.gesture,
-          cClientRect = this.$refs.canvas.getBoundingClientRect(),
-          scx = 0, // 对于单手操作是移动的起点坐标，对于缩放是图片距离两手指的中点最近的图标。
-          scy = 0,
-          fingers = {} // 记录当前有多少只手指在触控屏幕
+        let $gesture = this.$refs.gesture
+        let cClientRect = this.$refs.canvas.getBoundingClientRect()
+        let scx = 0 // 对于单手操作是移动的起点坐标，对于缩放是图片距离两手指的中点最近的图标。
+        let scy = 0
+        let fingers = {} // 记录当前有多少只手指在触控屏幕
         // one finger
-        let iX = this.imgX,
-          iY = this.imgY
+        let iX = this.imgX
+        let iY = this.imgY
         // two finger
-        let figureDistance = 0,
-          pinchScale = this.imgScale
+        let figureDistance = 0
+        let pinchScale = this.imgScale
         $gesture.addEventListener('touchstart', e => {
           if (!this.imgLoaded) {
             return
@@ -202,12 +208,12 @@
             iY = this.imgY
             fingers[finger.identifier] = finger
           } else if (e.touches.length === 2) {
-            let finger1 = e.touches[0],
-              finger2 = e.touches[1],
-              f1x = finger1.pageX - cClientRect.left,
-              f1y = finger1.pageY - cClientRect.top,
-              f2x = finger2.pageX - cClientRect.left,
-              f2y = finger2.pageY - cClientRect.top
+            let finger1 = e.touches[0]
+            let finger2 = e.touches[1]
+            let f1x = finger1.pageX - cClientRect.left
+            let f1y = finger1.pageY - cClientRect.top
+            let f2x = finger2.pageX - cClientRect.left
+            let f2y = finger2.pageY - cClientRect.top
             scx = parseInt((f1x + f2x) / 2)
             scy = parseInt((f1y + f2y) / 2)
             figureDistance = this._pointDistance(f1x, f1y, f2x, f2y)
@@ -236,18 +242,18 @@
           this.maskShowTimer && clearTimeout(this.maskShowTimer)
           this.maskShow = false
           if (e.touches.length === 1) {
-            let f1x = e.touches[0].pageX,
-              f1y = e.touches[0].pageY
+            let f1x = e.touches[0].pageX
+            let f1y = e.touches[0].pageY
             this._drawImage(iX + f1x - scx, iY + f1y - scy, this.imgCurrentWidth, this.imgCurrentHeight)
           } else if (e.touches.length === 2) {
-            let finger1 = e.touches[0],
-              finger2 = e.touches[1],
-              f1x = finger1.pageX - cClientRect.left,
-              f1y = finger1.pageY - cClientRect.top,
-              f2x = finger2.pageX - cClientRect.left,
-              f2y = finger2.pageY - cClientRect.top,
-              newFigureDistance = this._pointDistance(f1x, f1y, f2x, f2y),
-              scale = this.imgScale + parseFloat(((newFigureDistance - figureDistance) / this.imgScaleStep).toFixed(1))
+            let finger1 = e.touches[0]
+            let finger2 = e.touches[1]
+            let f1x = finger1.pageX - cClientRect.left
+            let f1y = finger1.pageY - cClientRect.top
+            let f2x = finger2.pageX - cClientRect.left
+            let f2y = finger2.pageY - cClientRect.top
+            let newFigureDistance = this._pointDistance(f1x, f1y, f2x, f2y)
+            let scale = this.imgScale + parseFloat(((newFigureDistance - figureDistance) / this.imgScaleStep).toFixed(1))
             fingers[finger1.identifier] = finger1
             fingers[finger2.identifier] = finger2
             if (scale !== pinchScale) {
@@ -273,7 +279,8 @@
             delete fingers[item.identifier]
           })
           // 迭代fingers，如果存在finger则更新scx,scy,iX,iY，因为可能缩放后立即单指拖动
-          let i, fingerArr = []
+          let i = []
+          let fingerArr = []
           for (i in fingers) {
             if (fingers.hasOwnProperty(i)) {
               fingerArr.push(fingers[i])
@@ -290,9 +297,9 @@
             }, 300)
           }
           // 做边界值检测
-          let x = this.imgX,
-            y = this.imgY,
-            pClientRect = this.$refs.pCanvas.getBoundingClientRect()
+          let x = this.imgX
+          let y = this.imgY
+          let pClientRect = this.$refs.pCanvas.getBoundingClientRect()
           if (x > pClientRect.left + pClientRect.width) {
             x = pClientRect.left
           } else if (x + this.imgCurrentWidth < pClientRect.left) {
@@ -316,25 +323,25 @@
         if (!img) {
           return
         }
-        let $img = new Image(),
-          onLoad = e => {
-            $img.removeEventListener('load', onLoad, false)
-            this.$img = $img
-            this.imgLoaded = true
-            this.imgLoading = false
-            this._initImg($img.width, $img.height)
-            this.$emit('loadSuccess', e)
-            this.$emit('loadComplete', e)
-            this._loadImg()
-          },
-          onError = e => {
-            $img.removeEventListener('error', onError, false)
-            this.$img = $img = null
-            this.imgLoading = false
-            this.$emit('loadError', e)
-            this.$emit('loadComplete', e)
-            this._loadImg()
-          }
+        let $img = new Image()
+        let onLoad = e => {
+          $img.removeEventListener('load', onLoad, false)
+          this.$img = $img
+          this.imgLoaded = true
+          this.imgLoading = false
+          this._initImg($img.width, $img.height)
+          this.$emit('loadSuccess', e)
+          this.$emit('loadComplete', e)
+          this._loadImg()
+        }
+        let onError = e => {
+          $img.removeEventListener('error', onError, false)
+          this.$img = $img = null
+          this.imgLoading = false
+          this.$emit('loadError', e)
+          this.$emit('loadComplete', e)
+          this._loadImg()
+        }
         this.$emit('beforeLoad')
         this.imgLoading = true
         this.imgLoaded = false
@@ -344,10 +351,10 @@
         $img.addEventListener('error', onError, false)
       },
       _initImg (w, h) {
-        let eW = null,
-          eH = null,
-          maxW = this.cWidth,
-          maxH = this.cHeight - this.actionBarHeight
+        let eW = null
+        let eH = null
+        let maxW = this.cWidth
+        let maxH = this.cHeight - this.actionBarHeight
         // 如果图片的宽高都少于容器的宽高，则不做处理
         if (w <= maxW && h <= maxH) {
           eW = w
@@ -389,8 +396,8 @@
         this.pCtx.drawImage(this.$img, this._ratio(x - this.originXDiff), this._ratio(y - this.originYDiff), this._ratio(w), this._ratio(h))
       },
       _clearCanvas () {
-        let $canvas = this.$refs.canvas,
-          $pCanvas = this.$refs.pCanvas
+        let $canvas = this.$refs.canvas
+        let $pCanvas = this.$refs.pCanvas
         $canvas.width = $canvas.width
         $canvas.height = $canvas.height
         $pCanvas.width = $pCanvas.width
@@ -403,10 +410,10 @@
         return parseInt(Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)))
       },
       _scale (x, y, scale) {
-        let newPicWidth = parseInt(this.imgStartWidth * scale),
-          newPicHeight = parseInt(this.imgStartHeight * scale),
-          newIX = parseInt(x - newPicWidth * (x - this.imgX) / this.imgCurrentWidth),
-          newIY = parseInt(y - newPicHeight * (y - this.imgY) / this.imgCurrentHeight)
+        let newPicWidth = parseInt(this.imgStartWidth * scale)
+        let newPicHeight = parseInt(this.imgStartHeight * scale)
+        let newIX = parseInt(x - newPicWidth * (x - this.imgX) / this.imgCurrentWidth)
+        let newIY = parseInt(y - newPicHeight * (y - this.imgY) / this.imgCurrentHeight)
         this._drawImage(newIX, newIY, newPicWidth, newPicHeight)
       },
       _clipper () {
