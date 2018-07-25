@@ -23,68 +23,6 @@
   </div>
 </template>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "~common/stylus/variable"
-  @import '~common/stylus/mixin'
-  .clipper-container
-    position: fixed
-    top: 0
-    bottom: 0
-    left: 0
-    right: 0
-    z-index: 100
-    line-height: 0
-    background-color: #000
-    .clipper-part
-      all-center()
-      bottom: 61px
-      z-index: 102
-      .pCanvas-container
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        border: 2px solid #fff
-
-  .action-bar
-    box-sizing: content-box
-    width: 100vw
-    all-center()
-    bottom: -30px
-    top: auto
-    z-index: 120
-    background: $color-20202E
-    height: 60px
-    line-height: 60px
-    border-top: 1px solid rgba(256, 256, 256, 0.3)
-    button
-      display: block
-      padding: 0 15px
-      line-height: 60px
-      font-size: 16px
-      color: #fff
-      background: none
-      border: none
-      outline: 0
-      &.btn-cancel
-        float: left
-
-      &.btn-ok
-        float: right
-      .mask
-        all-center()
-        z-index: 101
-        transition: opacity 500ms
-        background-color: #000
-        opacity: 0
-        &.opacity
-          opacity: 0.8
-
-      .gesture-mask
-        all-center()
-        bottom: 61px
-        z-index: 103
-</style>
 
 <script>
   export default {
@@ -102,6 +40,7 @@
     },
     watch: {
       img () {
+        alert(this.img)
         this.loadImgQueue.push(this.img)
         this._loadImg()
       }
@@ -435,3 +374,66 @@
     }
   }
 </script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import '~common/stylus/mixin'
+  .clipper-container
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    z-index: 100
+    line-height: 0
+    background-color: #000
+    .clipper-part
+      all-center()
+      bottom: 61px
+      z-index: 102
+      .pCanvas-container
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        border: 2px solid #fff
+
+  .action-bar
+    box-sizing: content-box
+    width: 100vw
+    all-center()
+    bottom: -30px
+    top: auto
+    z-index: 120
+    background: $color-20202E
+    height: 60px
+    line-height: 60px
+    border-top: 1px solid rgba(256, 256, 256, 0.3)
+    button
+      display: block
+      padding: 0 15px
+      line-height: 60px
+      font-size: 16px
+      color: #fff
+      background: none
+      border: none
+      outline: 0
+      &.btn-cancel
+        float: left
+
+      &.btn-ok
+        float: right
+      .mask
+        all-center()
+        z-index: 101
+        transition: opacity 500ms
+        background-color: #000
+        opacity: 0
+        &.opacity
+          opacity: 0.8
+
+      .gesture-mask
+        all-center()
+        bottom: 61px
+        z-index: 103
+</style>

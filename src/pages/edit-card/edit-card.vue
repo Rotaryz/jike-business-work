@@ -65,7 +65,7 @@
 <script>
   import { ERR_OK } from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
-  import { Business, Global } from 'api'
+  import { Business, Global, UpLoad } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
   import imageClipper from '../../components/cropper/cropper'
@@ -155,8 +155,10 @@
           success: (res) => {
             // alert(res)
             let localIds = res.localIds[0]
+
             this.uploadImage(localIds)
-            console.log(localIds)
+            // this.visible = true
+            // this.imageBig = localIds
             // this.uploadImage(localIds)
             // this.imageBig = localIds[0]
             // alert(this.imageBig)
@@ -184,9 +186,28 @@
           localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
           isShowProgressTips: 1, // 默认为1，显示进度提示
           success: (res) => {
-            this.visible = true
-            this.imageBig = res.localIds[0]
-            alert(this.imageBig)
+            this.downloadImage(res.serverId)
+          }
+        })
+      },
+      downloadImage (id) {
+        wx.downloadImage({
+          serverId: id, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: (res) => {
+            let data = {file: res.localId}
+            UpLoad.upLoadImage(data).then((res) => {
+              console.log(res)
+              if (res.error === ERR_OK) {
+                // this.mine.avatar = res.data.url
+                // this.mine.image_id = res.data.id
+                // this.$refs.toast.show('修改成功')
+                return false
+              }
+              this.$refs.toast.show(res.message)
+            })
+            console.log(res)
+            // var localId = res.localId // 返回图片下载后的本地ID
           }
         })
       }
