@@ -155,8 +155,9 @@
           success: function (res) {
             // alert(res)
             var localIds = res.localIds
-            this.imageBig = localIds[0]
             this.visible = true
+            this.imageBig = localIds[0]
+            alert(this.imageBig)
             // console.log(localIds)
           }
         })
