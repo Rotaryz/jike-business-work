@@ -1,6 +1,7 @@
 <template>
   <transition :name="slide">
     <div class="edit-card">
+      <!--<canvas class="canvas"></canvas>-->
       <scroll ref="scroll">
         <!--require('./Snip20180707_35.png')-->
         <div class="header-icon-box" :style="{backgroundImage: 'url('+mine.avatar+')'}">
@@ -146,6 +147,28 @@
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
+      getBase64Image (img) {
+        var canvas = document.createElement('canvas')
+        var width = img.width
+        var height = img.height
+        if (width > height) {
+          if (width > 100) {
+            height = Math.round(height *= 100 / width)
+            width = 100
+          }
+        } else {
+          if (height > 100) {
+            width = Math.round(width *= 100 / height)
+            height = 100
+          }
+        }
+        canvas.width = width
+        canvas.height = height
+        var ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+        var dataURL = canvas.toDataURL('image/png', 0.8)
+        return dataURL.replace('data:image/pngbase64,', '')
+      },
       _fileChange (e) {
         // console.log('sss')
         wx.chooseImage({
@@ -155,8 +178,9 @@
           success: (res) => {
             // alert(res)
             let localIds = res.localIds[0]
-
-            this.uploadImage(localIds)
+            let s = this.getBase64Image(localIds)
+            alert(s)
+            // this.uploadImage(localIds)
             // this.visible = true
             // this.imageBig = localIds
             // this.uploadImage(localIds)
@@ -186,7 +210,18 @@
           localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
           isShowProgressTips: 1, // 默认为1，显示进度提示
           success: (res) => {
-            this.downloadImage(res.serverId)
+            let data = {file: res.serverId}
+            UpLoad.upLoadImage(data).then((res) => {
+              console.log(res)
+              if (res.error === ERR_OK) {
+                // this.mine.avatar = res.data.url
+                // this.mine.image_id = res.data.id
+                // this.$refs.toast.show('修改成功')
+                return false
+              }
+              this.$refs.toast.show(res.message)
+            })
+            // this.downloadImage(res.serverId)
           }
         })
       },
@@ -228,6 +263,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  .canvas
+    display: none
+
   .edit-card
     position: fixed
     top: 0
