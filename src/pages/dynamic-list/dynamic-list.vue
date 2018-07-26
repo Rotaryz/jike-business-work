@@ -59,7 +59,7 @@
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx"><span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -111,7 +111,7 @@
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx"><span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -164,7 +164,7 @@
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{<span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -459,14 +459,19 @@
       .comment-peo
         border-right-1px(rgba(0, 0, 0, 0.10))
         border-left-1px(rgba(0, 0, 0, 0.10))
-        padding-left: 10px
         width: 100%
+        padding: 0 10px
         box-sizing: border-box
         background: #F9F9F9
         font-size: $font-size-14
         line-height: 22px
         color: #7C7C8F
+        display :flex
+        .ro-peo-name
+          font-family: $font-family-medium
+          white-space :nowrap
         .comment-name
+          font-family: $font-family-regular
           color: $color-374B63
 
   .video
