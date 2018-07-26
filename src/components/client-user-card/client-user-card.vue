@@ -130,7 +130,7 @@
             no-wrap()
         .tags
           font-family: $font-family-regular
-          font-size: $font-size-12
+          font-size: $font-size-12k
           color: $color-56BA15
           layout(row, block, nowrap)
           justify-content: space-between
