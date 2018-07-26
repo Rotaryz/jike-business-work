@@ -2,31 +2,32 @@
   <transition :name="slide">
 
     <div class="share-card">
-      <scroll>
-        <div class="share-box">
-          <div class="share-con">
-            <img class="share-top" :src="card.avatar" alt="">
-            <div class="share-bottom">
-              <img :src="card.qrcode" alt="" class="share-code">
-              <div class="name-profession">
-                <div class="name">{{card.name}}</div>
-                <div class="line" v-if="showPosition"></div>
-                <div class="name-profession">{{card.position}}</div>
-              </div>
-              <div class="buss-name">{{card.department}}</div>
-              <div class="code-padding"></div>
-              <div class="code-phone" v-if="showMobile">
-                <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
-                <div class="text">{{card.business_card_mobile}}</div>
-              </div>
-            </div>
-            <!--<p class="peo-name">{{card.name}}</p>-->
-            <!--<p class="peo-position">{{card.position}}</p>-->
-            <!--<p class="buss-name">{{card.department}}</p>-->
-            <!--<img class="qr-code" :src="card.qrcode" alt="">-->
-          </div>
-        </div>
-      </scroll>
+      <img :src="card.qrcode" alt="" class="share-code">
+      <!--<scroll>-->
+        <!--<div class="share-box">-->
+          <!--<div class="share-con">-->
+            <!--<img class="share-top" :src="card.avatar" alt="">-->
+            <!--<div class="share-bottom">-->
+              <!--<img :src="card.qrcode" alt="" class="share-code">-->
+              <!--<div class="name-profession">-->
+                <!--<div class="name">{{card.name}}</div>-->
+                <!--<div class="line" v-if="showPosition"></div>-->
+                <!--<div class="name-profession">{{card.position}}</div>-->
+              <!--</div>-->
+              <!--<div class="buss-name">{{card.department}}</div>-->
+              <!--<div class="code-padding"></div>-->
+              <!--<div class="code-phone" v-if="showMobile">-->
+                <!--<img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">-->
+                <!--<div class="text">{{card.business_card_mobile}}</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<p class="peo-name">{{card.name}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p class="peo-position">{{card.position}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p class="buss-name">{{card.department}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<img class="qr-code" :src="card.qrcode" alt="">&ndash;&gt;-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</scroll>-->
     </div>
   </transition>
 </template>
