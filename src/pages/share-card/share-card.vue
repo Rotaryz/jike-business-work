@@ -2,29 +2,31 @@
   <transition :name="slide">
 
     <div class="share-card">
-      <div class="share-box">
-        <div class="share-con">
-          <img class="share-top" :src="card.avatar" alt="">
-          <div class="share-bottom">
-            <div class="name-profession">
-              <div class="name">{{card.name}}</div>
-              <div class="line" v-if="showPosition"></div>
-              <div class="name-profession">{{card.position}}</div>
-            </div>
-            <div class="buss-name">{{card.department}}</div>
-            <div class="code-padding"></div>
-            <div class="code-phone" v-if="showMobile">
-              <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
-              <div class="text">{{card.business_card_mobile}}</div>
-              <img :src="card.qrcode" alt="" class="share-code">
-            </div>
-          </div>
-          <!--<p class="peo-name">{{card.name}}</p>-->
-          <!--<p class="peo-position">{{card.position}}</p>-->
-          <!--<p class="buss-name">{{card.department}}</p>-->
-          <!--<img class="qr-code" :src="card.qrcode" alt="">-->
-        </div>
-      </div>
+      <img :src="card.qrcode" alt="" class="qr-code">
+
+      <!--<div class="share-box">-->
+        <!--<div class="share-con">-->
+          <!--<img class="share-top" :src="card.avatar" alt="">-->
+          <!--<div class="share-bottom">-->
+            <!--<div class="name-profession">-->
+              <!--<div class="name">{{card.name}}</div>-->
+              <!--<div class="line" v-if="showPosition"></div>-->
+              <!--<div class="name-profession">{{card.position}}</div>-->
+            <!--</div>-->
+            <!--<div class="buss-name">{{card.department}}</div>-->
+            <!--<div class="code-padding"></div>-->
+            <!--<div class="code-phone" v-if="showMobile">-->
+              <!--<img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">-->
+              <!--<div class="text">{{card.business_card_mobile}}</div>-->
+              <!--<img :src="card.qrcode" alt="" class="share-code">-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<p class="peo-name">{{card.name}}</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p class="peo-position">{{card.position}}</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p class="buss-name">{{card.department}}</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<img class="qr-code" :src="card.qrcode" alt="">&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
   </transition>
 </template>
@@ -71,7 +73,7 @@
   @import '~common/stylus/mixin'
   .share-card
     height: 100vh
-    background: $color-text
+    background: $color-white
     .share-box
       display: flex
       flex-direction: column
@@ -127,13 +129,10 @@
             font-size: $font-size-medium
             color: $color-text-88
 
-        .share-code
-          margin-left: 64px
-          margin-top: -158px
-          padding :64px
-          width: 74px
-          height: 74px
-          display: block
-          right: 20px
-          bottom: 20px
+  .qr-code
+    margin-left:-1000px
+    margin-top: -1000px
+    padding :1000px
+    width: 70vw
+    display: block
 </style>
