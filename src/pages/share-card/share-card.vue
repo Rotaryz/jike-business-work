@@ -93,7 +93,8 @@
       .share-top
         display: block
         width: 305px
-        height: 500px
+        height: 305px
+        padding :100px
         border: 0px solid #fff
       .share-bottom
         padding: 20px
