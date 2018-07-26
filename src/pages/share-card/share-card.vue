@@ -6,7 +6,6 @@
         <div class="share-con">
           <img class="share-top" :src="card.avatar" alt="">
           <div class="share-bottom">
-            <img :src="card.qrcode" alt="" class="share-code">
             <div class="name-profession">
               <div class="name">{{card.name}}</div>
               <div class="line" v-if="showPosition"></div>
@@ -17,6 +16,7 @@
             <div class="code-phone" v-if="showMobile">
               <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
               <div class="text">{{card.business_card_mobile}}</div>
+              <img :src="card.qrcode" alt="" class="share-code">
             </div>
           </div>
           <!--<p class="peo-name">{{card.name}}</p>-->
@@ -134,8 +134,9 @@
             color: $color-text-88
 
         .share-code
-          position: absolute
-          z-index: 11
+          margin-left: 64px
+          margin-top: -128px
+          padding :64px
           width: 74px
           height: 74px
           display: block
