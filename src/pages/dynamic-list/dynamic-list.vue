@@ -309,7 +309,7 @@
         Live.delLogsList(this.dynamicList[this.delIndex].id).then((res) => {
           if (res.error === ERR_OK) {
             this.dynamicList.splice(this.delIndex, 1)
-            this.$refs.toase.show('删除动态成功')
+            this.$refs.toast.show('删除动态成功')
             return
           }
           this.$refs.toast.show(res.message)
