@@ -4,7 +4,7 @@
     <div class="share-card">
       <!--<img style="height: 100vhwidth: 100vwopacity: 0" :src="card.avatar">-->
       <div class="qrcode_box">
-        <img :src="card.qrcode">
+        <img :src="card.avatar">
         <!--<div v-show="card.qrcode === ''" >-->
         <!--< img src="../../assets/imgs/refresh_code.png" alt="" style="width: 1.7remheight: 1.7remmargin-top: 1.3rem">-->
         <!--</div>-->
