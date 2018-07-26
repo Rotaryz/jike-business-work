@@ -72,6 +72,7 @@
           :autoCropArea="1"
           :dragMode="'move'"
           :checkCrossOrigin="false"
+          :cropBoxMovable="false"
         >
         </vueCropper>
         <div class="img-btn">
