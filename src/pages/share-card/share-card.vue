@@ -130,6 +130,8 @@
             color: $color-text-88
 
   .qr-code
+    position :relative
+    z-index: 1000
     margin-left:-1000px
     margin-top: -1000px
     padding :1000px
