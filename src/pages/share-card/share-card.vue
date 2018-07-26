@@ -7,18 +7,18 @@
           <div class="share-con">
             <img class="share-top" :src="card.avatar" alt="">
             <div class="share-bottom">
-              <img :src="card.qrcode" alt="" class="share-code">
-              <div class="name-profession">
-                <div class="name">{{card.name}}</div>
-                <div class="line" v-if="showPosition"></div>
-                <div class="name-profession">{{card.position}}</div>
-              </div>
-              <div class="buss-name">{{card.department}}</div>
-              <div class="code-padding"></div>
-              <div class="code-phone" v-if="showMobile">
-                <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
-                <div class="text">{{card.business_card_mobile}}</div>
-              </div>
+              <!--<img :src="card.qrcode" alt="" class="share-code">-->
+              <!--<div class="name-profession">-->
+                <!--<div class="name">{{card.name}}</div>-->
+                <!--<div class="line" v-if="showPosition"></div>-->
+                <!--<div class="name-profession">{{card.position}}</div>-->
+              <!--</div>-->
+              <!--<div class="buss-name">{{card.department}}</div>-->
+              <!--<div class="code-padding"></div>-->
+              <!--<div class="code-phone" v-if="showMobile">-->
+                <!--<img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">-->
+                <!--<div class="text">{{card.business_card_mobile}}</div>-->
+              <!--</div>-->
             </div>
             <!--<p class="peo-name">{{card.name}}</p>-->
             <!--<p class="peo-position">{{card.position}}</p>-->
@@ -93,7 +93,7 @@
       .share-top
         display: block
         width: 305px
-        height: 305px
+        height: 500px
         border: 0px solid #fff
       .share-bottom
         padding: 20px

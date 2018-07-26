@@ -54,7 +54,7 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
@@ -106,7 +106,7 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
@@ -159,7 +159,7 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
@@ -309,6 +309,8 @@
         Live.delLogsList(this.dynamicList[this.delIndex].id).then((res) => {
           if (res.error === ERR_OK) {
             this.dynamicList.splice(this.delIndex, 1)
+            this.$refs.toase.show('删除动态成功')
+            return
           }
           this.$refs.toast.show(res.message)
         })
@@ -466,6 +468,7 @@
         color: #7C7C8F
         .comment-name
           color: $color-374B63
+
   .video
     .find-video
       width: 54vw
