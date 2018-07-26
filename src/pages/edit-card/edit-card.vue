@@ -58,7 +58,30 @@
       <div class="btn" @click="_changeMine">保存</div>
       <toast ref="toast"></toast>
       <router-view @getSign="getSign"></router-view>
-      <image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false"></image-clipper>
+      <div class="img-cut" v-show="visible">
+        <vueCropper
+          :viewMode="1"
+          class="img-big"
+          :guides="false"
+          ref="cropper"
+          :img="imageBig"
+          :rotatable="true"
+          :background="status"
+          :cropBoxResizable="status"
+          :aspectRatio="1"
+          :autoCropArea="1"
+          :dragMode="'move'"
+          :checkCrossOrigin="false"
+          :cropBoxMovable="false"
+        >
+        </vueCropper>
+        <div class="img-btn">
+          <div class="btn-item" @click="cropImage">确定</div>
+          <div class="btn-item" @click="visible = false">取消</div>
+        </div>
+        <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="loading">
+      </div>
+      <!--<image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false" @loadSuccess="loadSuccess"></image-clipper>-->
     </div>
   </transition>
 </template>
@@ -71,15 +94,19 @@
   import { mapActions, mapGetters } from 'vuex'
   import imageClipper from '../../components/cropper/cropper'
   import storage from 'storage-controller'
+  import VueCropper from 'vue-cropperjs'
 
   export default {
     name: 'edit-card',
     data () {
       return {
+        status: false,
         mine: {},
         imageId: null,
         visible: false,
-        imageBig: ''
+        imageBig: '',
+        cropImg: '',
+        loading: false
       }
     },
     created () {
@@ -89,13 +116,29 @@
       this.$emit('refresh')
     },
     methods: {
-      sure (res) {
-        this.imageBig = res
-        console.log(res)
+      cropImage () {
+        this.loading = true
+        let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
+        let $Blob = this.getBlobBydataURI(src, 'image/png')
+        let formData = new FormData()
+        formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
+        // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
+        UpLoad.upLoadImage(formData).then((res) => {
+          if (res.error === ERR_OK) {
+            this.mine.avatar = res.data.url
+            this.mine.image_id = res.data.id
+            this.loading = false
+            this.visible = false
+            this.$refs.toast.show('上传成功')
+            return false
+          }
+          this.loading = false
+          this.visible = false
+          this.$refs.toast.show(res.message)
+        })
       },
       getSign () {
         this.mine.signature = this.$store.state.signature
-        console.log(this.mine.department)
       },
       ...mapActions(['setSignature', 'setCutImg']),
       _getMine () {
@@ -135,23 +178,23 @@
         // document.getElementById('header-logo').click()
         if (e.target) {
           // let param = this._infoImage(e.target.files[0])
-          let url = window.URL.createObjectURL(e.target.files[0])
-          console.log(url)
-          this.imageBig = url
-          this.visible = true
-          // UpLoad.upLoadImage(param).then((res) => {
-          //   if (res.error === ERR_OK) {
-          //     console.log(res.data)
-          //     this.imageBig = res.data.url
-          //     this.visible = true
-          //     // this.mine.avatar = res.data.url
-          //     // this.mine.image_id = res.data.id
-          //     // this.$refs.toast.show('修改成功')
-          //     return false
-          //   }
-          //   this.$refs.toast.show(res.message)
-          // })
+          const file = e.target.files[0]
+          const reader = new FileReader()
+          reader.onload = async (event) => {
+            this.imageBig = event.target.result
+            this.$refs.cropper.replace(event.target.result)
+            this.visible = true
+          }
+          reader.readAsDataURL(file)
         }
+      },
+      getBlobBydataURI (dataURI, type) {
+        var binary = atob(dataURI.split(',')[1])
+        var array = []
+        for (var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i))
+        }
+        return new Blob([new Uint8Array(array)], {type: type})
       }
     },
     computed: {
@@ -163,15 +206,43 @@
     components: {
       Scroll,
       Toast,
-      imageClipper
+      imageClipper,
+      VueCropper
     }
   }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
-  .canvas
-    display: none
+  .img-cut
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 50
+    background: #000
+    .img-big
+      background: #000
+      height: 100%
+    .img-btn
+      width: 100vw
+      position: absolute
+      bottom: 0
+      height: 60px
+      display: flex
+      align-items: center
+      background: $color-white
+      border-top: 0.5px solid $color-col-line
+      .btn-item
+        flex: 1
+        text-align: center
+        font-size: $font-size-16
+        color: $color-20202E
+        &:last-child
+          border-left: 0.5px solid $color-col-line
+    .loading
+      all-center()
 
   .edit-card
     position: fixed

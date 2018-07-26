@@ -54,12 +54,12 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx"><span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -106,12 +106,12 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx"><span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -159,12 +159,12 @@
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
                 <div class="peo-big-box">
-                  <img  src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
+                  <img src="./icon-spot@2x.png" class="like-icon" v-if="item.live_log_like.length">
                   <div class="like-name">
                     <span v-for="(items,idx) in item.live_log_like" :key="idx">{{idx > 0 ? '，' : ''}}{{items.employee_name || items.customer_name}}</span>
                   </div>
                 </div>
-                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{{com.customer_name}}：<span class="comment-name">{{com.content}}</span></div>
+                <div class="comment-peo" v-for="(com, comIdx) in item.live_log_comment" :key="comIdx">{<span class="ro-peo-name">{{com.customer_name}}：</span><span class="comment-name">{{com.content}}</span></div>
                 <img src="./pic-trends_zan3@2x.png" class="likes-peo-bg" mode="widthFix">
               </div>
             </div>
@@ -215,7 +215,7 @@
         if (res.error === ERR_OK) {
           res = res.data
           wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: res.timestamp, // 必填，生成签名的时间戳
             nonceStr: res.noncestr, // 必填，生成签名的随机串
@@ -309,6 +309,8 @@
         Live.delLogsList(this.dynamicList[this.delIndex].id).then((res) => {
           if (res.error === ERR_OK) {
             this.dynamicList.splice(this.delIndex, 1)
+            this.$refs.toase.show('删除动态成功')
+            return
           }
           this.$refs.toast.show(res.message)
         })
@@ -457,15 +459,21 @@
       .comment-peo
         border-right-1px(rgba(0, 0, 0, 0.10))
         border-left-1px(rgba(0, 0, 0, 0.10))
-        padding-left: 10px
         width: 100%
+        padding: 0 10px
         box-sizing: border-box
         background: #F9F9F9
         font-size: $font-size-14
         line-height: 22px
         color: #7C7C8F
+        display :flex
+        .ro-peo-name
+          font-family: $font-family-medium
+          white-space :nowrap
         .comment-name
+          font-family: $font-family-regular
           color: $color-374B63
+
   .video
     .find-video
       width: 54vw
