@@ -2,7 +2,7 @@
   <transition :name="slide">
 
     <div class="share-card">
-      <img :src="card.qrcode" alt="" class="share-code">
+      <img :src="card.avatar" alt="" class="share-code">
       <!--<scroll>-->
         <!--<div class="share-box">-->
           <!--<div class="share-con">-->
