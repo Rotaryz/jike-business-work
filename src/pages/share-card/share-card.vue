@@ -1,5 +1,5 @@
 <template>
-  <transition :name="slide">
+  <!--<transition :name="slide">-->
 
     <div class="share-card">
       <!--<img style="height: 100vhwidth: 100vwopacity: 0" :src="card.avatar">-->
@@ -37,7 +37,7 @@
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-  </transition>
+  <!--</transition>-->
 </template>
 
 <script>
@@ -144,11 +144,10 @@
   .qrcode_box
     padding-top: 30px
     text-align: center
-
-  .qrcode_box img, .qrcode_box div
-    width: 4.3rem
-    height: 4.3rem
-    margin-top: 0.53rem
+    img
+      width: 4.3rem
+      height: 4.3rem
+      margin-top: 0.53rem
 
   .qrcode_box div
     display: inline-block
