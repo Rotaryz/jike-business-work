@@ -70,14 +70,8 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .share-card
+    height: 100vh
     background: $color-text
-    position: fixed
-    background: share-card
-    z-index: 10
-    left: 0
-    right: 0
-    bottom: 0
-    top: 0
     .share-box
       display: flex
       flex-direction: column
