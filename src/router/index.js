@@ -250,6 +250,14 @@ const route = new Router({
         title: '添加分组'
       }
     },
+    // 测试
+    {
+      path: '/shareCard',
+      component: ShareCard,
+      meta: {
+        title: '分享名片'
+      }
+    },
     {
       path: '/mine',
       component: Mine,
