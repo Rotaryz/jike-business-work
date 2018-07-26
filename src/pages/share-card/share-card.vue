@@ -135,7 +135,7 @@
 
         .share-code
           margin-left: 64px
-          margin-top: -128px
+          margin-top: -158px
           padding :64px
           width: 74px
           height: 74px
