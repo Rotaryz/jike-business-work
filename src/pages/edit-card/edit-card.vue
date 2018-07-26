@@ -62,7 +62,7 @@
         <vueCropper
           :viewMode="1"
           class="img-big"
-          :guides="true"
+          :guides="false"
           ref="cropper"
           :img="imageBig"
           :rotatable="true"
