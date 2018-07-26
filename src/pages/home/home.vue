@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" @touchmove.prevent>
     <ceiling ref="ceiling"></ceiling>
     <router-view @login="login" />
     <tab></tab>
