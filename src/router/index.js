@@ -34,10 +34,10 @@ Vue.use(Router)
 const route = new Router({
   mode: 'history',
   routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/oauth'
-    // },
+    {
+      path: '/',
+      redirect: '/shareCard'
+    },
     {
       path: '/oauth',
       component: Oauth

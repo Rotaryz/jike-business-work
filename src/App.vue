@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <ceiling ref="ceiling"></ceiling>
+    <!--<ceiling ref="ceiling"></ceiling>-->
     <router-view @login="login"/>
-    <tab></tab>
+    <!--<tab></tab>-->
   </div>
 </template>
 
