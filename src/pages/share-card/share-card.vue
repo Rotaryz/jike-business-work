@@ -2,31 +2,29 @@
   <transition :name="slide">
 
     <div class="share-card">
-      <scroll>
-        <div class="share-box">
-          <div class="share-con">
-            <img class="share-top" :src="card.avatar" alt="">
-            <div class="share-bottom">
-              <img :src="card.qrcode" alt="" class="share-code">
-              <div class="name-profession">
-                <div class="name">{{card.name}}</div>
-                <div class="line" v-if="showPosition"></div>
-                <div class="name-profession">{{card.position}}</div>
-              </div>
-              <div class="buss-name">{{card.department}}</div>
-              <div class="code-padding"></div>
-              <div class="code-phone" v-if="showMobile">
-                <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
-                <div class="text">{{card.business_card_mobile}}</div>
-              </div>
+      <div class="share-box">
+        <div class="share-con">
+          <img class="share-top" :src="card.avatar" alt="">
+          <div class="share-bottom">
+            <img :src="card.qrcode" alt="" class="share-code">
+            <div class="name-profession">
+              <div class="name">{{card.name}}</div>
+              <div class="line" v-if="showPosition"></div>
+              <div class="name-profession">{{card.position}}</div>
             </div>
-            <!--<p class="peo-name">{{card.name}}</p>-->
-            <!--<p class="peo-position">{{card.position}}</p>-->
-            <!--<p class="buss-name">{{card.department}}</p>-->
-            <!--<img class="qr-code" :src="card.qrcode" alt="">-->
+            <div class="buss-name">{{card.department}}</div>
+            <div class="code-padding"></div>
+            <div class="code-phone" v-if="showMobile">
+              <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
+              <div class="text">{{card.business_card_mobile}}</div>
+            </div>
           </div>
+          <!--<p class="peo-name">{{card.name}}</p>-->
+          <!--<p class="peo-position">{{card.position}}</p>-->
+          <!--<p class="buss-name">{{card.department}}</p>-->
+          <!--<img class="qr-code" :src="card.qrcode" alt="">-->
         </div>
-      </scroll>
+      </div>
     </div>
   </transition>
 </template>
@@ -34,19 +32,19 @@
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
-  import {Business} from 'api'
-  import {mapGetters} from 'vuex'
+  import { Business } from 'api'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'share-card',
-    data() {
+    data () {
       return {
         card: {},
         showPosition: true,
         showMobile: true
       }
     },
-    created() {
+    created () {
       Business.Myqrcode().then((res) => {
         this.card = res.data || {}
         if (this.card.position.length === 0) {
@@ -59,7 +57,7 @@
     },
     computed: {
       ...mapGetters(['ios']),
-      slide() {
+      slide () {
         return this.ios ? '' : 'slide'
       }
     },
@@ -89,7 +87,7 @@
     .share-con
       background: $color-white-fff
       border-radius: 2px
-      box-shadow: 0 2px 6px 0 rgba(43,43,145,0.04)
+      box-shadow: 0 2px 6px 0 rgba(43, 43, 145, 0.04)
       .share-top
         display: block
         width: 305px
@@ -113,8 +111,7 @@
             height: 16px
             width: 1px
             margin: 0 10px
-            background: rgba(0,0,0, .1)
-
+            background: rgba(0, 0, 0, .1)
 
         .buss-name
           font-family: $font-family-regular
