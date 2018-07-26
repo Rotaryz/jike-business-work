@@ -2,6 +2,7 @@
   <transition :name="slide">
 
     <div class="share-card">
+      <img style="height: 100vw;width: 100vh;opacity: 0" :src="card.avatar">
       <img :src="card.avatar" alt="" class="qr-code">
 
       <!--<div class="share-box">-->
@@ -130,11 +131,6 @@
             color: $color-text-88
 
   .qr-code
-    position :relative
-    z-index: 1000
-    margin-left:-1000px
-    margin-top: -1000px
-    padding :1000px
+    all-center()
     width: 70vw
-    display: block
 </style>
