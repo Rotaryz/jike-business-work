@@ -95,6 +95,7 @@
         width: 305px
         height: 305px
         padding :100px
+        margin-left: -100px
         border: 0px solid #fff
       .share-bottom
         padding: 20px
