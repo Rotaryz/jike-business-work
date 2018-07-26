@@ -60,26 +60,25 @@
       <router-view @getSign="getSign"></router-view>
       <div class="img-cut" v-show="visible">
         <vueCropper
+          :viewMode="1"
           class="img-big"
           :guides="true"
           ref="cropper"
           :img="imageBig"
           :rotatable="true"
           :background="status"
-          drag-mode="crop"
-          :view-mode="2"
-          :min-container-width="200"
-          :min-container-height="200"
           :cropBoxResizable="status"
-          :toggleDragModeOnDblclick="status"
           :aspectRatio="1"
-          :img-style="{ 'width': '200px', 'height': '200px' }"
+          :autoCropArea="1"
+          :dragMode="'move'"
+          :checkCrossOrigin="false"
         >
         </vueCropper>
         <div class="img-btn">
           <div class="btn-item" @click="cropImage">确定</div>
           <div class="btn-item" @click="visible = false">取消</div>
         </div>
+        <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="loading">
       </div>
       <!--<image-clipper ref="clipper" :img="imageBig" v-show="visible" :clipper-img-width="250" :clipper-img-height="250" @ok="sure" @cancel="visible = false" @loadSuccess="loadSuccess"></image-clipper>-->
     </div>
@@ -105,7 +104,8 @@
         imageId: null,
         visible: false,
         imageBig: '',
-        cropImg: ''
+        cropImg: '',
+        loading: false
       }
     },
     created () {
@@ -116,6 +116,7 @@
     },
     methods: {
       cropImage () {
+        this.loading = true
         let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
         let $Blob = this.getBlobBydataURI(src, 'image/png')
         let formData = new FormData()
@@ -125,10 +126,12 @@
           if (res.error === ERR_OK) {
             this.mine.avatar = res.data.url
             this.mine.image_id = res.data.id
+            this.loading = false
             this.visible = false
-            // this.$refs.toast.show('修改成功')
+            this.$refs.toast.show('上传成功')
             return false
           }
+          this.loading = false
           this.visible = false
           this.$refs.toast.show(res.message)
         })
@@ -176,7 +179,7 @@
           // let param = this._infoImage(e.target.files[0])
           const file = e.target.files[0]
           const reader = new FileReader()
-          reader.onload = (event) => {
+          reader.onload = async (event) => {
             this.imageBig = event.target.result
             this.$refs.cropper.replace(event.target.result)
             this.visible = true
@@ -237,6 +240,8 @@
         color: $color-20202E
         &:last-child
           border-left: 0.5px solid $color-col-line
+    .loading
+      all-center()
 
   .edit-card
     position: fixed
