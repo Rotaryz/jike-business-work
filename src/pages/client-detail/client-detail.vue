@@ -631,7 +631,7 @@
           return
         }
         // this.actionPage++
-        const  number = this.actionList.length
+        const number = this.actionList.length
         ClientDetail.getActionList(id, number).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length * 1 === 0) {
@@ -1065,7 +1065,7 @@
         color: $color-text-88
         font-family: $font-family-regular
       .text
-        word-break :break-word
+        word-break: break-word
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text
@@ -1228,8 +1228,8 @@
       width: 100%
       height: 55px
       background: $color-white
-      border: 0.5px solid rgba(32,32,46,0.10)
-      box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
+      border: 0.5px solid rgba(32, 32, 46, 0.10)
+      box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.04)
       border-radius: 2px
       display: flex
       justify-content: space-between
