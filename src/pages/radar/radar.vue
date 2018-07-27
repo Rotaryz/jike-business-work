@@ -65,7 +65,7 @@
       if (!this.imIng) {
         this.$emit('login')
       }
-      Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
+      Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
         if (res.error === ERR_OK) {
           this.list = res.data
           setTimeout(() => {
@@ -84,7 +84,6 @@
         pullDownRefresh: true,
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
-        page: 1,
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         showNoMore: false
@@ -101,9 +100,7 @@
         this.$router.push({path: url, query: {id: item.customer_id, pageUrl: url}})
       },
       clearNum() {
-        this.page = 1
-        let limit = this.list.length + this.customCount
-        Im.getRadarList(this.page, limit, this.userInfo.id).then((res) => {
+        Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             this.list = res.data
             this.setCustomCount('clear')
@@ -116,12 +113,10 @@
       },
       onPullingUp() {
         if (this.showNoMore) return
-        this.page++
-        Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
+        Im.getRadarList(this.list.length, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             let list = res.data
             if (!list.length) {
-              this.page--
               this.showNoMore = true
             } else {
               this.list = [...this.list, ...list]
@@ -133,8 +128,7 @@
         })
       },
       onPullingDown() {
-        this.page = 1
-        Im.getRadarList(this.page, 30, this.userInfo.id).then((res) => {
+        Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
             this.list = res.data
             this.setCustomCount('clear')
