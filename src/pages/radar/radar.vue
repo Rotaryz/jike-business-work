@@ -260,7 +260,7 @@
           background: $color-white
           border: 0.5px solid rgba(32,32,46,0.10)
           box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
-          border-radius: 2px
+          border-radius: 5px
           display: flex
           justify-content: space-between
           align-items: center
