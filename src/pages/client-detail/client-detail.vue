@@ -1218,7 +1218,7 @@
     bottom: 50px
 
   .msgs-item
-    margin-top: 15px
+    margin-top: 18px
     .item-time
       font-family: PingFangSC-Medium
       font-size: $font-size-18

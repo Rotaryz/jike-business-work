@@ -248,7 +248,7 @@
     .msgs-list
       padding: 10px 15px 0
       .msgs-item
-        margin-top: 15px
+        margin-top: 18px
         .item-time
           font-family: PingFangSC-Medium
           font-size: $font-size-18
