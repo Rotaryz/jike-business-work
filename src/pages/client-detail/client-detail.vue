@@ -1256,7 +1256,7 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-medium
+          font-family: $font-family-regular
           font-size: $font-size-medium
           .green
             color: $color-text-56
