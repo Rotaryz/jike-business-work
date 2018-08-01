@@ -248,26 +248,27 @@
     .msgs-list
       padding: 10px 15px 0
       .msgs-item
-        margin-top: 15px
+        margin-top: 18px
         .item-time
           font-family: PingFangSC-Medium
-          font-size: $font-size-14
+          font-size: $font-size-18
           color: #20202E
           padding: 10px 0 15px
         .msg-item-content
           width: 100%
-          height: 55px
+          height: 70px
           background: $color-white
           border: 0.5px solid rgba(32,32,46,0.10)
           box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
-          border-radius: 2px
+          border-radius: 5px
           display: flex
           justify-content: space-between
           align-items: center
         .msgs-left
-          margin: 0 10px
+          margin: 0 10px 0 15px
           width: 40px
           height: 40px
+          border-radius: 50%
           border: 0.5px solid rgba(32,32,46,0.10)
         .msgs-right
           flex: 1
@@ -285,7 +286,7 @@
             align-items: center
             .msgs-p
               line-height: 18px
-              font-family: $font-family-regular
+              font-family: $font-family-medium
               font-size: $font-size-medium
               .green
                 color: $color-text-56
