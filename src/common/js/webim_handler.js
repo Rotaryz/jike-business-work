@@ -84,7 +84,6 @@ export default class webimHandler {
   // 初始化未读数
   static async initUnread(data) {
     let sessMap = await this.getUnread()
-    console.log(data, sessMap)
     data.forEach((item) => {
       let name = 'C2C' + item.sessionId
       if (sessMap[name]) {
