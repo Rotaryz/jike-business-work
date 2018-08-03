@@ -47,7 +47,7 @@
       }
     },
     created () {
-      Business.Myqrcode().then((res) => {
+      Business.Myqrcode({is_hyaline: 0}).then((res) => {
         this.card = res.data || {}
         if (this.card.position.length === 0) {
           this.showPosition = false
