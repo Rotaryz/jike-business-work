@@ -13,8 +13,8 @@
             </div>
             <div class="buss-name">{{card.department}}</div>
             <div class="code-padding"></div>
-            <div class="code-phone" v-if="showMobile">
-              <div class="code-phone-box">
+            <div class="code-phone">
+              <div class="code-phone-box" v-if="showMobile">
                 <img src="./icon-telephone_ash@2x.png" alt="" class="img-phone">
                 <div class="text">{{card.business_card_mobile}}</div>
               </div>
