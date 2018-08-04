@@ -122,7 +122,8 @@
 
         let avatar = this.userInfo.avatar
         await webimHandler.sdkLogin(loginInfo, listeners, options, avatar)
-        let userInfo = storage.get('info')
+        // 下一版本才上
+        /** let userInfo = storage.get('info')
         let reqData = {
           merchant_id: userInfo.merchant_id,
           employee_id: userInfo.id,
@@ -140,8 +141,8 @@
               this.saveList(msgList)
             })
           }
-        })
-        /** let res = await webimHandler.getRecentContact(50)
+        })**/
+        let res = await webimHandler.getRecentContact(50)
         let msgList = await webimHandler.initUnread(res)
 
         let noMsgList = msgList.filter((item) => {
@@ -184,7 +185,7 @@
             return item
           })
           this.saveList(msgList)
-        }**/
+        }
       },
       touchStart(e) {
         this.touch.initiated = true
