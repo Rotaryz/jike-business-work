@@ -49,7 +49,6 @@ export default class webimHandler {
       webim.getRecentContactList({
         'Count': num // 最近的会话数 ,最大为 100
       }, resp => {
-        console.log(resp)
         if (resp.SessionItem && resp.SessionItem.length > 0) {
           let data = Promise.all(resp.SessionItem.map(async (item) => {
             let type = item.Type
@@ -238,13 +237,17 @@ export default class webimHandler {
     return new Promise((resolve, reject) => {
       webim.getProfilePortrait(ops, (res) => {
         let arr = res.UserProfileItem[0].ProfileItem
-        let nickName = arr.filter((item) => {
-          return item.Tag === 'Tag_Profile_IM_Nick'
-        })[0]
-        let nickAvatar = arr.filter((item) => {
-          return item.Tag === 'Tag_Profile_IM_Image'
-        })[0]
-        resolve({name: nickName.Value, avatar: nickAvatar.Value})
+        if (arr) {
+          let nickName = arr.filter((item) => {
+            return item.Tag === 'Tag_Profile_IM_Nick'
+          })[0]
+          let nickAvatar = arr.filter((item) => {
+            return item.Tag === 'Tag_Profile_IM_Image'
+          })[0]
+          resolve({name: nickName.Value, avatar: nickAvatar.Value})
+        } else {
+          resolve({name: '', avatar: ''})
+        }
       }, (err) => {
         reject(err)
       })
