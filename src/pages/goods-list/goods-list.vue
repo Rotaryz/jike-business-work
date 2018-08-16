@@ -8,58 +8,62 @@
         <span class="line" :class="{'line-buss': !tabIndex}"></span>
       </div>
       <div class="goods-box">
-        <scroll
-          ref="scroll"
-          :data="goodsListMine"
-          v-if="tabIndex === 1"
-          :pullUpLoad="pullUpLoadObj"
-          :pullDownRefresh="pullDownRefreshObj"
-          @pullingUp="onPullingUp"
-          @pullingDown="onPullingDown"
-        >
-          <div style="height: 1px;"></div>
-          <div class="goods-item" v-for="(item, index) in goodsListMine" :key="index" @click="_goDetail(item.id)">
-            <div class="img-box">
-              <img class="goods-image" :src="item.image_url">
+        <keep-alive>
+          <scroll
+            ref="scroll"
+            :data="goodsListMine"
+            v-if="tabIndex === 1"
+            :pullUpLoad="pullUpLoadObj"
+            :pullDownRefresh="pullDownRefreshObj"
+            @pullingUp="onPullingUp"
+            @pullingDown="onPullingDown"
+          >
+            <div style="height: 1px;"></div>
+            <div class="goods-item" v-for="(item, index) in goodsListMine" :key="index" @click="_goDetail(item.id)">
+              <div class="img-box">
+                <img class="goods-image" :src="item.image_url">
+              </div>
+              <div class="goods-content">
+                <p class="goods-text">{{item.title}}</p>
+                <p class="goods-time">发布日期：{{item.created_at}}</p>
+              </div>
+              <div class="goods-use">
+                <p class="tip">公司发布</p>
+                <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
+                <!--btn-green-->
+              </div>
             </div>
-            <div class="goods-content">
-              <p class="goods-text">{{item.title}}</p>
-              <p class="goods-time">发布日期：{{item.created_at}}</p>
-            </div>
-            <div class="goods-use">
-              <p class="tip">公司发布</p>
-              <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
-              <!--btn-green-->
-            </div>
-          </div>
-        </scroll>
+          </scroll>
+        </keep-alive>
       </div>
       <div class="goods-box">
-        <scroll
-          ref="scrolls"
-          v-if="tabIndex === 0"
-          :data="goodsList"
-          :pullUpLoad="pullUpLoadObj"
-          :pullDownRefresh="pullDownRefreshObj"
-          @pullingUp="onPullingUp"
-          @pullingDown="onPullingDown"
-        >
-          <div style="height: 1px;"></div>
-          <div class="goods-item" v-for="(item, index) in goodsList" :key="index" @click="_goDetail(item.id)">
-            <div class="img-box">
-              <img class="goods-image" :src="item.image_url">
+        <keep-alive>
+          <scroll
+            ref="scrolls"
+            v-if="tabIndex === 0"
+            :data="goodsList"
+            :pullUpLoad="pullUpLoadObj"
+            :pullDownRefresh="pullDownRefreshObj"
+            @pullingUp="onPullingUp"
+            @pullingDown="onPullingDown"
+          >
+            <div style="height: 1px;"></div>
+            <div class="goods-item" v-for="(item, index) in goodsList" :key="index" @click="_goDetail(item.id)">
+              <div class="img-box">
+                <img class="goods-image" :src="item.image_url">
+              </div>
+              <div class="goods-content">
+                <p class="goods-text">{{item.title}}</p>
+                <p class="goods-time">发布日期：{{item.created_at}}</p>
+              </div>
+              <div class="goods-use">
+                <p class="tip">公司发布</p>
+                <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
+                <!--btn-green-->
+              </div>
             </div>
-            <div class="goods-content">
-              <p class="goods-text">{{item.title}}</p>
-              <p class="goods-time">发布日期：{{item.created_at}}</p>
-            </div>
-            <div class="goods-use">
-              <p class="tip">公司发布</p>
-              <div class="btn" :class="{'btn-green': !item.recommend_status}" @click.stop="_presellGoods(item.id, item.recommend_status)">{{item.recommend_status ? '取消推荐' : '推荐'}}</div>
-              <!--btn-green-->
-            </div>
-          </div>
-        </scroll>
+          </scroll>
+        </keep-alive>
       </div>
       <toast ref="toast"></toast>
       <router-view></router-view>

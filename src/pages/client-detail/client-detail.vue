@@ -472,7 +472,16 @@
             axisLabel: {
               interval: 0,
               color: '#20202E',
-              fontSize: 14
+              fontSize: 14,
+              formatter: function (value) {
+                return value
+              },
+              align: 'right'
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           yAxis: {
@@ -482,13 +491,18 @@
               interval: 0,
               color: '#20202E',
               fontSize: 14
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#888'
+              }
             }
           },
           series: [{
             data: this.barData.x,
             type: 'bar',
             showSymbol: false,
-            barWidth: 25,
+            barWidth: 15,
             itemStyle: {
               normal: {
                 color: '#F9543C',
@@ -602,7 +616,7 @@
       },
       getNewActionList(id) {
         this.actionPage = 1
-        ClientDetail.getActionList(id, this.actionPage).then((res) => {
+        ClientDetail.getActionList(id).then((res) => {
           if (res.error === ERR_OK) {
             this.actionList = res.data
           } else {
@@ -616,11 +630,12 @@
           this.$refs.scroll.forceUpdate()
           return
         }
-        this.actionPage++
-        ClientDetail.getActionList(id, this.actionPage).then((res) => {
+        // this.actionPage++
+        const number = this.actionList.length
+        ClientDetail.getActionList(id, number).then((res) => {
           if (res.error === ERR_OK) {
             if (res.data.length * 1 === 0) {
-              this.actionPage--
+              // this.actionPage--
               this.noActionMore = true
             } else {
               this.actionList.push(...res.data)
@@ -1050,7 +1065,7 @@
         color: $color-text-88
         font-family: $font-family-regular
       .text
-        word-break :break-word
+        word-break: break-word
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text
@@ -1203,26 +1218,27 @@
     bottom: 50px
 
   .msgs-item
-    margin-top: 15px
+    margin-top: 18px
     .item-time
       font-family: PingFangSC-Medium
-      font-size: $font-size-14
+      font-size: $font-size-18
       color: #20202E
       padding: 10px 0 15px
     .msg-item-content
       width: 100%
-      height: 55px
+      height: 70px
       background: $color-white
-      border: 0.5px solid rgba(32,32,46,0.10)
-      box-shadow: 0 4px 12px 0 rgba(43,43,145,0.04)
-      border-radius: 2px
+      border: 0.5px solid rgba(32, 32, 46, 0.10)
+      box-shadow: 0 4px 12px 0 rgba(43, 43, 145, 0.04)
+      border-radius: 5px
       display: flex
       justify-content: space-between
       align-items: center
     .msgs-left
-      margin: 0 10px
+      margin: 0 10px 0 15px
       width: 40px
       height: 40px
+      border-radius: 50%
       border: 0.5px solid rgba(32, 32, 46, 0.10)
     .msgs-right
       flex: 1
@@ -1240,7 +1256,7 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-regular
+          font-family: $font-family-medium
           font-size: $font-size-medium
           .green
             color: $color-text-56

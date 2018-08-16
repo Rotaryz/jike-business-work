@@ -11,11 +11,12 @@ export default {
   },
 
   // 雷达消息（所有人）
-  getRadarList(page = 1, limit = 30, id, loading = true) {
+  getRadarList(from = 0, limit = 30, id, loading = true) {
     const url = `/api/employee/action-logs`
     const data = {
-      page,
+      from,
       limit,
+      page: 0,
       customer_id: 0,
       employee_id: id
     }
@@ -31,6 +32,12 @@ export default {
   // 最近联系人最后一条聊天记录
   getLastMsgObj(data, loading = true) {
     const url = `/api/employee/customers-newest-message`
+    return request.post(url, data, loading)
+  },
+
+  // 最近联系人列表
+  getContactList(data, loading = true) {
+    const url = `/api/employee/customers-recent-contacts`
     return request.post(url, data, loading)
   }
 }

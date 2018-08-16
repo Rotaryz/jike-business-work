@@ -1,5 +1,6 @@
 import * as TYPES from './mutation-types'
 import Utils from 'common/js/utils'
+import {TIMELAG} from 'common/js/config'
 
 const mutations = {
   [TYPES.SET_TAB_MODE] (state, tabMode) {
@@ -112,6 +113,13 @@ const mutations = {
         unreadMsgCount: 0,
         type: 2
       }
+    }
+    if (state.nowChat.length) {
+      let lastItem = state.nowChat[state.nowChat.length - 1]
+      let lastTime = lastItem.created_at ? lastItem.created_at : lastItem.msgTimeStamp
+      newMsg.is_showtime = msg.time - lastTime > TIMELAG
+    } else {
+      newMsg.is_showtime = true
     }
     state.nowChat = [...state.nowChat, newMsg]
   },
