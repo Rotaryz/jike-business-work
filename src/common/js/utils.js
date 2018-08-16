@@ -2,7 +2,7 @@ import _this from '@/main'
 import storage from 'storage-controller'
 
 const LOSE_EFFICACY = 10000
-const DISABLE = 110002
+const DISABLE = 11001 // 11001 AI雷达没有权限, 11002 BOSS雷达没有权限
 const DELETE = 1 // TODO
 const NET_404 = 404
 
