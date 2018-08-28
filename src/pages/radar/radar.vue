@@ -5,7 +5,20 @@
         <img src="./icon-news_up@3x.png" class="msg-arrow">
         <span class="msg-hint">{{customCount}}条信息</span>
       </span>
-      <div class="container">
+      <div class="tab-container">
+        <div class="tab-line-wrapper" :style="'transform :translate3d('+ tabIndex*100 +'%,0,0)'">
+          <div class="tab-line"></div>
+        </div>
+        <ul class="tab-wrapper border-bottom-1px">
+          <li class="tab-item" :class="tabIndex===index?'active':''"
+              v-for="(item,index) in tabList"
+              :key="index"
+              @click="changeTab(index)">
+            {{item}}
+          </li>
+        </ul>
+      </div>
+      <div class="container" :style="'transform :translate3d('+ -tabIndex*100/3 +'%,0,0)'">
         <scroll ref="scroll"
                 :data="list"
                 :bcColor="'#f1f2f5'"
@@ -14,7 +27,7 @@
                 @pullingUp="onPullingUp"
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
-          <div class="msgs-list">
+          <div class="list-wrap msgs-list">
             <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
               <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
               <div class="msg-item-content">
@@ -43,6 +56,12 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="list-wrap actions-list">
+              2
+          </div>
+          <div class="list-wrap person-list">
+              3
           </div>
         </scroll>
       </div>
@@ -86,7 +105,9 @@
         pullDownRefreshStop: 40,
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
-        showNoMore: false
+        showNoMore: false,
+        tabList: ['时间', '行为', '人'],
+        tabIndex: 1
       }
     },
     methods: {
@@ -95,6 +116,9 @@
         'setImIng',
         'setImInfo'
       ]),
+      changeTab(index) {
+        this.tabIndex = index
+      },
       toDetail(item) {
         let url = '/radar/client-detail'
         this.$router.push({path: url, query: {id: item.customer_id, pageUrl: url}})
@@ -217,11 +241,52 @@
     right: 0
     bottom: 45px
     background: $color-background
+    .tab-container
+      height: 44.5px
+      width: 100vw
+      position: relative
+      background: $color-white
+      .tab-wrapper
+        position: relative
+        height: 100%
+        layout(row, block, nowrap)
+        align-items: center
+        justify-content: space-between
+        .tab-item
+          flex: 1
+          height: 100%
+          line-height: 44.5px
+          font-family: $font-family-Medium
+          font-size: $font-size-16
+          color: $color-202020
+          letter-spacing: 0.6px
+          text-align: center
+          transition: color 0.3s
+          &.active
+            color: $color-202020
+      .tab-line-wrapper
+        height: 100%
+        width: 33.333%
+        position: absolute
+        top: 0
+        left: 0
+        layout()
+        justify-content: flex-end
+        align-items: center
+        transition: all 0.3s
+        .tab-line
+          width: 30px
+          height: 2.5px
+          background: $color-20202E
     .container
-      width: 100%
+      width: 300vw
       height: 100%
       overflow: hidden
       position: relative
+      transition: all 0.3s
+      .list-wrap
+        float: left
+        width: 100vw
     .msg-box
       min-width: 95px
       height: 30px
@@ -247,6 +312,7 @@
       right: -100%
     .msgs-list
       padding: 10px 15px 0
+      box-sizing: border-box
       .msgs-item
         margin-top: 18px
         .item-time
