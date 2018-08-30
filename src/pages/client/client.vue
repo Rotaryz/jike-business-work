@@ -3,30 +3,54 @@
     <article>
       <search @toNav="toSearch"></search>
       <dl class="tab-wrapper">
-        <dt class="line-wrap"></dt>
-        <dd class="tab" v-for="(item,index) in tabList" :key="index">{{item.title}}({{item.number}})</dd>
+        <dt class="line-wrap" :style="'transform: translate3d('+ selectTab * 100 +'%, 0, 0)'"></dt>
+        <dd class="tab" v-for="(item,index) in tabList" :key="index" @click="changeTab(index)">{{item.title}}({{item.number}})</dd>
       </dl>
+      <section class="f3"></section>
     </article>
-
-    <section class="status-bar" @click="showGroupList">
-      <div class="left">
-        <p>{{checkedGroup.name}}</p>
-        <img class="icon" src="./icon-down@3x.png" alt=""/>
-      </div>
-      <div class="right">全部 {{dataArray.length}} 位</div>
-    </section>
-    <div class="scroll-list-wrap" v-if="dataArray.length">
-      <ul class="user-list">
-        <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-          <slide-view :useType="1" @grouping="groupingHandler" :item="item">
-            <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
-          </slide-view>
-        </li>
+    <section class="content" v-if="selectTab === 0">
+      <ul class="custom-tab border-bottom-1px">
+        <li v-for="(item, index) in groupList" :key="index" :class="item.isCheck?'active':''" @click="checkCustom(item)">{{item.name}}</li>
       </ul>
-    </div>
-    <section class="exception-box" v-if="isEmpty">
-      <exception errType="customer"></exception>
+      <div class="custom-scroll">
+        <scroll bcColor="#fff"
+                ref="scroll"
+                :data="dataArray"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp"
+        >
+          <ul class="user-list">
+            <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+              <slide-view :useType="1" @grouping="groupingHandler" :item="item">
+                <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
+              </slide-view>
+            </li>
+          </ul>
+        </scroll>
+      </div>
     </section>
+    <section class="content" v-if="selectTab === 1">
+      <div class="scroll-list-wrap" v-if="dataArray.length">
+        <ul class="user-list">
+          <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+            <slide-view :useType="1" @grouping="groupingHandler" :item="item">
+              <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
+            </slide-view>
+          </li>
+        </ul>
+      </div>
+      <section class="exception-box" v-if="isEmpty">
+        <exception errType="customer"></exception>
+      </section>
+    </section>
+    <!--<section class="status-bar" @click="showGroupList">-->
+    <!--<div class="left">-->
+    <!--<p>{{checkedGroup.name}}</p>-->
+    <!--<img class="icon" src="./icon-down@3x.png" alt=""/>-->
+    <!--</div>-->
+    <!--<div class="right">全部 {{dataArray.length}} 位</div>-->
+    <!--</section>-->
+
     <!--<scroll bcColor="#fff"-->
     <!--ref="scroll"-->
     <!--:data="dataArray"-->
@@ -106,19 +130,19 @@
 
   const groupList = [{
     orderBy: '',
-    name: '预计成交率',
+    name: '成交率',
     isCheck: true
   }, {
     orderBy: 'follow',
-    name: '最后跟进时间',
+    name: '跟进时间',
     isCheck: false
   }, {
     orderBy: 'active',
-    name: '最后活跃时间',
+    name: '活跃时间',
     isCheck: false
   }, {
     orderBy: 'join',
-    name: '最新加入时间',
+    name: '加入时间',
     isCheck: false
   }]
   const LIMIT = 10
@@ -139,7 +163,8 @@
         page: 1,
         limit: LIMIT,
         isAll: false,
-        total: 0
+        total: 0,
+        selectTab: 0
       }
     },
     created() {
@@ -152,6 +177,13 @@
     mounted() {
     },
     methods: {
+      changeTab(index) {
+        this.selectTab = index
+      },
+      checkCustom(item) {
+        this.groupList.forEach(item => { item.isCheck = false })
+        item.isCheck = true
+      },
       refresh() {
         this.isAll = false
         this.page = 1
@@ -326,14 +358,66 @@
       left: 0
       bottom: 0
       right: 0
-      width :50%
+      width: 50%
       layout()
       align-items: center
+      transition: all 0.3s
       &:after
         content: ''
         width: 30px
         height: 3px
         background: $color-20202E
+
+  .f3
+    height: 10px
+    background: $color-F0F2F5
+
+  .content
+    .custom-tab
+      height: 45px
+      layout(row, block, nowrap)
+      align-items: center
+      padding: 0 20px
+      justify-content: space-between
+      font-family: $font-family-regular
+      font-size: $font-size-14
+      color: $color-20202E
+      letter-spacing: 0.52px
+      text-align: center
+      line-height: 45px
+      .active
+        color: #56BA15
+    .custom-scroll
+      position: absolute
+      top: 155px
+      bottom: 0
+      left: 0
+      right: 0
+      .user-list-box
+        background-color: $color-white-fff
+        .user-list-item
+          layout(row)
+          height: 75px
+          align-items: center
+          margin-left: 15px
+          border-bottom: 0.5px solid $color-col-line
+          &.add-list
+            border: none
+          .users-avatar
+            width: 45px
+            height: 45px
+            background-color: $color-f5f7f9
+            margin-right: 10px
+            overflow: hidden
+            &.add-list
+              opacity: 0.8
+              background: $color-20202E url("./icon-newconstruction@3x.png") no-repeat center / 20px 20px
+            .avatar
+              float: left
+              width: 15px
+              height: 15px
+              box-sizing: border-box
+              border: 1px solid $color-white-fff
 
   .client
     position: absolute
