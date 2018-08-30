@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="radar">
-      <span class="msg-box" :class="customCount ? '' : 'show'" @click.stop="clearNum">
-        <img src="./icon-news_up@3x.png" class="msg-arrow">
-        <span class="msg-hint">{{customCount}}条信息</span>
-      </span>
       <div class="tab-container">
-        <div class="tab-line-wrapper" :style="'transform :translate3d('+ tabIndex*100 +'%,0,0)'">
-          <div class="tab-line"></div>
-        </div>
         <ul class="tab-wrapper border-bottom-1px">
           <li class="tab-item" :class="tabIndex===index?'active':''"
               v-for="(item,index) in tabList"
@@ -16,9 +9,16 @@
               @click="changeTab(index)">
             {{item}}
           </li>
+          <div class="line" :style="'transform:translate3d('+ (100 * tabIndex) + '%, 0, 0)'">
+            <div class="chilen-line"></div>
+          </div>
         </ul>
       </div>
-      <div class="container" :style="'transform :translate3d('+ -tabIndex*100/3 +'%,0,0)'">
+      <span class="msg-box" :class="customCount ? '' : 'show'" @click.stop="clearNum" v-if="tabIndex === 0" >
+        <img src="./icon-news_up@3x.png" class="msg-arrow">
+        <span class="msg-hint">{{customCount}}条信息</span>
+      </span>
+      <div class="container" v-if="tabIndex * 1 === 0">
         <scroll ref="scroll"
                 :data="list"
                 :bcColor="'#f1f2f5'"
@@ -27,7 +27,7 @@
                 @pullingUp="onPullingUp"
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
-          <div class="list-wrap msgs-list">
+          <div class="msgs-list">
             <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
               <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
               <div class="msg-item-content">
@@ -57,11 +57,266 @@
               </div>
             </div>
           </div>
-          <div class="list-wrap actions-list">
-              2
+        </scroll>
+      </div>
+      <div class="action-box"  v-if="tabIndex * 1 === 1">
+        <scroll>
+          <div class="action-all">
+            <ul class="action-tab">
+              <li class="tab-item"  :class="actionIndex===index?'active':''"
+                  v-for="(item,index) in actionList"
+                  :key="index"
+                  @click="actionTab(index)">{{item}}</li>
+            </ul>
+            <div class="action-list-con">
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-checkcard@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看名片</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-zancard@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">点赞名片</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-relaycard@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">转发名片</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-call@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">拨打电话</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-email@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">复制邮箱</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-address@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看地址</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-addphone@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">保存电话</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action-list-con">
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-viewproduct@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看产品</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-viewdetail@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看详情</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-consult@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">咨询产品</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-relayproduct@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">转发产品</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action-list-con">
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-checktrends@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看动态</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-zan@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">点赞动态</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-comment@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">评论动态</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-icon-relaytrends@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">转发动态</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action-list-con">
+              <div class="item-list">
+                <div class="item-left">
+                  <img src="./icon-website@2x.png" class="item-left-img">
+                </div>
+                <div class="item-right">
+                  <div class="text">查看官网</div>
+                  <div class="right-box">
+                    <div class="number">100次</div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="list-wrap person-list">
-              3
+        </scroll>
+      </div>
+      <div class="people-box" v-if="tabIndex * 1 === 2">
+        <scroll  ref="scrollPeople"
+                 :data="peopleList"
+                 :bcColor="'#f1f2f5'"
+                 :pullUpLoad="pullUpPeoleLoadObj"
+                 :showNoMore="showPeopleNoMore"
+                 @pullingUp="onPeoplePullingUp"
+                 :pullDownRefresh="pullDownPeopleRefreshObj"
+                 @pullingDown="onPeoplePullingDown">
+          <div class="people-all">
+            <ul class="action-tab">
+              <li class="tab-item"  :class="actionIndex===index?'active':''"
+                  v-for="(item,index) in actionList"
+                  :key="index"
+                  @click="actionTab(index)">{{item}}</li>
+            </ul>
+            <div class="msgs-list">
+              <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
+                <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
+                <div class="msg-item-content">
+                  <img :src="item.image_url" class="msgs-left">
+                  <div class="msgs-right">
+                    <div class="msgs-container">
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span class="green">你的名片</span>第{{item.count_sum}}次，成交在望</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span class="green">点了</span><span class="green">赞</span>，看来认可你</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span class="green">赞</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span class="green">邮箱</span>，请留意邮件</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span class="green">地址</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span class="green">名片</span>，你的人脉圈正在裂变</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span>，看来TA对你感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span class="green">手机</span>，请记录跟进内容</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">电话</span>，可以考虑主动沟通</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span class="green">查看</span><span class="green">{{item.title | titleCut}}</span>，可能对该产品感兴趣</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.title | titleCut}}</span>向你<span class="green">咨询</span>，请做好准备应答</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span class="green">{{item.title | titleCut}}</span>，可能在咨询他人建议</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span class="green">点了</span><span class="green">赞</span></p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
+                      <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span class="green">咨询</span>，请做好准备应答</p>
+                    </div>
+                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </scroll>
       </div>
@@ -92,6 +347,11 @@
           }, 20)
         }
       })
+      Im.getActionList(0, 30, this.userInfo.id, 2).then((res) => {
+        if (res.error === ERR_OK) {
+          console.log(res)
+        }
+      })
     },
     data() {
       return {
@@ -103,11 +363,19 @@
         pullDownRefresh: true,
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
+        showNoMore: false,
+        peopleList: [],
+        pullUpPeopleLoadThreshold: 0,
+        pullUpPeopleLoadMoreTxt: '加载更多',
+        pullUpPeopleLoadNoMoreTxt: '没有更多了',
+        pullUpPeopleLoad: true,
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
-        showNoMore: false,
+        showPeopleNoMore: false,
         tabList: ['时间', '行为', '人'],
-        tabIndex: 1
+        tabIndex: 0,
+        actionList: ['全部', '今天', '7天', '30天'],
+        actionIndex: 0
       }
     },
     methods: {
@@ -118,6 +386,9 @@
       ]),
       changeTab(index) {
         this.tabIndex = index
+      },
+      actionTab(index) {
+        this.actionIndex = index
       },
       toDetail(item) {
         let url = '/radar/client-detail'
@@ -164,10 +435,24 @@
           }
         })
       },
+      onPeoplePullingDown() {
+        console.log('``````')
+        this.$refs.scrollPeople.forceUpdate()
+      },
+      onPeoplePullingUp() {
+        console.log('11111')
+        this.$refs.scrollPeople.forceUpdate()
+      },
       rebuildScroll() {
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
+        })
+      },
+      rebuildPeopleScroll() {
+        this.nextTick(() => {
+          this.$refs.scrollPeople.destroy()
+          this.$refs.scrollPeople.initScroll()
         })
       }
     },
@@ -198,7 +483,20 @@
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
       },
+      pullUpPeoleLoadObj: function () {
+        return this.pullUpPeopleLoad ? {
+          threshold: parseInt(this.pullUpPeopleLoadThreshold),
+          txt: {more: this.pullUpPeopleLoadMoreTxt, noMore: this.pullUpPeopleLoadNoMoreTxt}
+        } : false
+      },
       pullDownRefreshObj: function () {
+        return this.pullDownRefresh && !this.noMore ? {
+          threshold: parseInt(this.pullDownRefreshThreshold),
+          stop: parseInt(this.pullDownRefreshStop),
+          txt: '没有更多了'
+        } : false
+      },
+      pullDownPeopleRefreshObj: function () {
         return this.pullDownRefresh && !this.noMore ? {
           threshold: parseInt(this.pullDownRefreshThreshold),
           stop: parseInt(this.pullDownRefreshStop),
@@ -216,9 +514,21 @@
         },
         deep: true
       },
+      pullUpPeoleLoadObj: {
+        handler() {
+          this.rebuildPeopleScroll()
+        },
+        deep: true
+      },
       pullDownRefreshObj: {
         handler() {
           this.rebuildScroll()
+        },
+        deep: true
+      },
+      pullDownPeopleRefreshObj: {
+        handler() {
+          this.rebuildPeopleScroll()
         },
         deep: true
       }
@@ -244,7 +554,10 @@
     .tab-container
       height: 44.5px
       width: 100vw
-      position: relative
+      position: fixed
+      left: 0
+      top: 0
+      z-index: 29
       background: $color-white
       .tab-wrapper
         position: relative
@@ -279,14 +592,93 @@
           height: 2.5px
           background: $color-20202E
     .container
-      width: 300vw
-      height: 100%
+      width: 100%
       overflow: hidden
-      position: relative
-      transition: all 0.3s
-      .list-wrap
-        float: left
-        width: 100vw
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
+    .action-all
+      padding-bottom: 10px
+      .action-list-con:last-child
+        margin-bottom: 0
+    .action-box
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
+      .action-list-con
+        background: $color-white-fff
+        padding-left: 15px
+        margin-bottom: 10px
+        .item-list
+          layout(row)
+          align-items: center
+          .item-left
+            width: 18px
+            height: 18px
+            margin-right: 10px
+            .item-left-img
+              width: 100%
+              height: 100%
+              display: block
+          .item-right
+            layout(row)
+            padding-right: 15px
+            justify-content: space-between
+            align-items: center
+            height: 44.5px
+            flex: 1
+            border-bottom-1px(#e5e5e5)
+            .text
+              font-size: $font-size-14
+              font-family: $font-family-medium
+              color: $color-20202E
+            .right-box
+              layout(row)
+              align-items: center
+              .number
+                font-size: $font-size-14
+                font-family: $font-family-medium
+                color: $color-56BA15
+                margin-right: 10px
+              .msgs-rt
+                width: 7.5px
+                height: 11.5px
+        .item-list:last-child
+          .item-right
+            border-bottom-1px(rgba(255,255,255,0))
+    .action-tab
+      padding: 20px 0
+      layout(row)
+      justify-content: center
+      align-items: center
+      .tab-item
+        width: 60px
+        height: 30px
+        text-align: center
+        line-height: 30px
+        background: $color-white-fff
+        font-family: $font-family-medium
+        color: $color-20202E
+        font-size: $font-size-14
+        border-1px(#e5e5e5)
+      .active
+        background: $color-20202E
+        color: $color-white-fff
+        border-1px(rgba(255,2555,255,0))
+    .people-box
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
     .msg-box
       min-width: 95px
       height: 30px
@@ -295,7 +687,7 @@
       line-height: 30px
       font-size: 0
       position: fixed
-      top: 15px
+      top: 55px
       right: 0
       z-index: 9
       transition: all .3s
@@ -311,7 +703,7 @@
     .show.msg-box
       right: -100%
     .msgs-list
-      padding: 10px 15px 0
+      padding: 10px 15px 10px
       box-sizing: border-box
       .msgs-item
         margin-top: 18px
@@ -360,4 +752,15 @@
             width: 7.5px
             height: 11.5px
             margin-left: 33px
+  .line
+    position: absolute
+    width: 33.33%
+    height: 3px
+    bottom: 0
+    transition: all .3s
+    .chilen-line
+      height: 3px
+      width: 30px
+      background: #20202e
+      margin: 0 auto
 </style>

@@ -1,0 +1,204 @@
+<template>
+  <transition :name="slide">
+    <div class="data-all">
+      <scroll>
+        <div class="address-box">
+          <div class="address-list" @click="selcetAddress">
+            <div class="text">所在地区</div>
+            <div class="text-right" v-if="address.length === 0">请选择地区</div>
+            <div class="text-right-acitive" v-if="address.length !== 0">{{address}}</div>
+            <img src="./icon-pressed@2x.png" alt="" class="address-img">
+          </div>
+          <div class="address-list">
+            <div class="text">详细地址</div>
+            <input type="text" class="item-input" v-model="detailAdress" placeholder="请输入详细地址"/>
+          </div>
+        </div>
+      </scroll>
+      <div id="allmap"></div>
+      <div class="save-btn" @click="saveAdress">确定</div>
+      <awesome-picker
+        ref="picker"
+        :data="cityData"
+        @cancel="handlePickerCancel"
+        @confirm="handlePickerConfirm">
+      </awesome-picker>
+      <toast ref="toast"></toast>
+    </div>
+  </transition>
+</template>
+<script type="text/ecmascript-6">
+  import Scroll from 'components/scroll/scroll'
+  import {mapGetters} from 'vuex'
+  import {cityData} from 'common/js/utils'
+  import Toast from 'components/toast/toast'
+  import {Mine} from 'api'
+  import {ERR_OK} from '../../common/js/config'
+  import map from 'map'
+
+  export default {
+    name: 'addAdress',
+    data() {
+      return {
+        cityData,
+        province: '',
+        city: '',
+        area: '',
+        address: '',
+        detailAdress: '',
+        latitude: 0,
+        longitude: 0
+      }
+    },
+    created() {
+      Mine.getMyInfoAddress().then((res) => {
+        if (res.error === ERR_OK) {
+          this.detailAdress = res.message.address
+          this.address = res.message.province + res.message.city + res.message.area
+        } else {
+          this.$refs.toast.show(res.message)
+        }
+      })
+    },
+    mounted() {
+      console.log(map)
+    },
+    methods: {
+      handlePickerCancel(e) {
+        console.log(e)
+      },
+      handlePickerConfirm(e) {
+        let text = ''
+        for (var i = 0; i < e.length; i++) {
+          text += e[i].value
+        }
+        this.province = e[0].value
+        this.city = e[1].value
+        this.area = e[2].value
+        this.address = text
+      },
+      selcetAddress() {
+        this.$refs.picker.show()
+      },
+      getMapInfo(text) {
+      },
+      saveAdress() {
+        if (this.address.length === 0) {
+          this.$refs.toast.show('请选择所在地区')
+          return
+        }
+        if (this.detailAdress.length === 0) {
+          this.$refs.toast.show('请输入详细地址')
+          return
+        }
+        let text = this.address + this.detailAdress
+        console.log(text)
+        this.getMapInfo(text)
+        let data = {
+          address: this.detailAdress,
+          province: this.province,
+          city: this.city,
+          area: this.area,
+          longitude: this.longitude,
+          latitude: this.latitude
+        }
+        Mine.updateMyInfoAddress(data).then((res) => {
+          if (res.error === ERR_OK) {
+            this.$router.back()
+            this.$emit('getSign')
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
+      }
+    },
+    computed: {
+      ...mapGetters(['ios']),
+      slide() {
+        return this.ios ? '' : 'slide'
+      }
+    },
+    components: {
+      Scroll,
+      Toast
+    }
+  }
+</script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import '~common/stylus/mixin'
+  *
+    box-sizing: border-box
+    -moz-box-sizing: border-box
+    -webkit-box-sizing: border-box
+
+  .data-all
+    fill-box()
+    z-index: 70
+
+  .address-box
+    background: $color-white-fff
+    padding: 0 15px
+    .address-list
+      height: 55px
+      layout(row)
+      align-items: center
+      position: relative
+      border-bottom-1px(#ecedf1)
+      .text
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-888888
+        margin-right: 16px
+      .text-right
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-ccc
+      .text-right-acitive
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-text
+      .address-img
+        position: absolute
+        right: 0
+        width: 7.5px
+        height: 11.5px
+        top: 0
+        bottom: 0
+        margin: auto
+      .item-input
+        height: 53px
+        flex: 1
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-text
+        padding-right: 15px
+        border: none
+        outline: none
+      .item-input::-webkit-input-placeholder
+        color: #ccc
+      .item-input::-ms-input-placeholder
+        color: #ccc
+      .item-input::-moz-placeholder
+        color: #ccc
+      .address-list:last-child
+        border-none()
+
+  .save-btn
+    background: $color-20202E
+    position: fixed
+    bottom: 0
+    left: 0
+    width: 100%
+    height: 45px
+    line-height: 45px
+    text-align: center
+    font-size: $font-size-14
+    font-family: $font-family-medium
+    color: $color-white
+
+  .z
+    width: 100%
+
+</style>

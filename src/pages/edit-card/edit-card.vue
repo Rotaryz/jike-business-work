@@ -44,13 +44,20 @@
                 <input class="item-detail" type="mobile" v-model="mine.mobile" maxlength="11">
               </li>
               <li class="mine-detail-item">
+                <span class="item-text">微信</span>
+                <input class="item-detail" type="text" v-model="mine.weixin_account"  maxlength="18">
+              </li>
+              <li class="mine-detail-item">
                 <span class="item-text">邮箱</span>
                 <input class="item-detail" type="email" v-model="mine.email">
               </li>
-              <li class="mine-detail-item">
+              <router-link tag="span" to="editCard/addAdress" class="mine-detail-item">
                 <span class="item-text">地址</span>
-                <input class="item-detail" type="text" v-model="mine.address">
-              </li>
+                <div class="address-box">
+                  <div class="text">{{mine.address}}</div>
+                  <img src="./icon-pressed@2x.png" alt="" class="address-img">
+                </div>
+              </router-link>
             </ul>
           </div>
         </div>
@@ -151,7 +158,7 @@
         })
       },
       _changeMine () {
-        let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, address: this.mine.address, image_id: this.mine.image_id}
+        let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, weixin_account: this.mine.weixin_account, image_id: this.mine.image_id}
         Business.updateMyBusiness(data).then((res) => {
           if (res.error === ERR_OK) {
             let obj = storage.get('info', {})
@@ -381,6 +388,20 @@
       .item-text
         width: 48px
         color: $color-text-88
+      .address-box
+        layout(row)
+        flex: 1
+        align-items: center
+        justify-content: space-between
+        .text
+          font-family: $font-family-medium
+          font-size: $font-size-14
+          color: $color-20202E
+          width: 90%
+          no-wrap()
+        .address-img
+          width: 7.5px
+          height: 11.5px
       &:last-child
         border-none()
 

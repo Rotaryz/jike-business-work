@@ -20,6 +20,10 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  externals: {
+    'wx': 'jWeixin',
+    'map': 'QMap'
+  },
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'

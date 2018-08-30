@@ -29,6 +29,9 @@ const AddFlow = () => import('pages/add-flow/add-flow')
 const MyData = () => import('pages/my-data/my-data')
 const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
+const ActionDetail = () => import('pages/action-detail/action-detail')
+const MineInfo = () => import('pages/mine-info/mine-info')
+const AddAdress = () => import('pages/addAdress/addAdress')
 
 Vue.use(Router)
 
@@ -64,6 +67,13 @@ const route = new Router({
             meta: {
               title: '修改签名'
             }
+          },
+          {
+            path: 'addAdress',
+            component: AddAdress,
+            meta: {
+              title: '编辑地址'
+            }
           }]
         },
         {
@@ -71,6 +81,13 @@ const route = new Router({
           component: MyData,
           meta: {
             title: '我的图表'
+          }
+        },
+        {
+          path: 'mine-info',
+          component: MineInfo,
+          meta: {
+            title: '个人信息'
           }
         },
         {
@@ -137,6 +154,13 @@ const route = new Router({
         }
       },
       {
+        path: '/action-detail',
+        component: ActionDetail,
+        meta: {
+          title: '查看名片'
+        }
+      },
+      {
         path: '/addflow',
         component: AddFlow,
         meta: {
@@ -178,6 +202,13 @@ const route = new Router({
                 }
               }
             ]
+          },
+          {
+            path: '/action-detail',
+            component: ActionDetail,
+            meta: {
+              title: '查看名片'
+            }
           }
         ]
       },
