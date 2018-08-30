@@ -39,5 +39,17 @@ export default {
   getContactList(data, loading = true) {
     const url = `/api/employee/customers-recent-contacts`
     return request.post(url, data, loading)
+  },
+
+  // 最近联系人列表
+  getLastGroupMsg(loading = true) {
+    const url = `/api/employee/latest-group-message`
+    return request.get(url, {}, loading)
+  },
+
+  // 最近联系人列表
+  getGroupMsgList(data, loading = true) {
+    const url = `/api/employee/group-message-logs`
+    return request.get(url, data, loading)
   }
 }

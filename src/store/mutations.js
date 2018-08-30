@@ -56,6 +56,14 @@ const mutations = {
     }
   },
   [TYPES.ADD_LIST_MSG] (state, msg) {
+    if (msg.desc) {
+      let desc = JSON.parse(msg.desc)
+      if (desc.log_type * 1 === 3 || desc.log_type * 1 === 4 || desc.log_type * 1 === 5) {
+        msg.text = '[商品信息]'
+      } else if (desc.log_type * 1 === 20) {
+        msg.text = '[图片信息]'
+      }
+    }
     let hasIn = state.latelyList.filter((item) => {
       return item.sessionId === msg.fromAccount
     })
@@ -64,10 +72,11 @@ const mutations = {
     })
     let inItem
     if (hasIn.length) {
-      inItem = Object.assign({}, hasIn[0], {lastMsg: msg.text, msgTimeStamp: msg.msgTimeStamp, time: Utils.formatDate(msg.time).date})
+      inItem = Object.assign({}, hasIn[0], {html: Utils.msgFaceToHtml(msg.text), lastMsg: msg.text, msgTimeStamp: msg.msgTimeStamp, time: Utils.formatDate(msg.time).date})
     } else {
       let addMsg = {
         lastMsg: msg.text,
+        html: Utils.msgFaceToHtml(msg.text),
         msgTimeStamp: msg.msgTimeStamp ? msg.msgTimeStamp : msg.time,
         time: Utils.formatDate(msg.time).date,
         sessionId: msg.fromAccount,
@@ -128,6 +137,13 @@ const mutations = {
   },
   [TYPES.SET_CUT_IMAGE] (state, img) {
     state.img = img
+  },
+  [TYPES.SET_GROUP_ITEM] (state, msg) {
+    state.groupItem = {
+      time: Utils.formatDate(msg.time).date,
+      lastMsg: msg.lastMsg,
+      html: Utils.msgFaceToHtml(msg.lastMsg)
+    }
   }
 }
 

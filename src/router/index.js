@@ -29,6 +29,7 @@ const AddFlow = () => import('pages/add-flow/add-flow')
 const MyData = () => import('pages/my-data/my-data')
 const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
+const NewGroupMsg = () => import('pages/new-group-msg/new-group-msg')
 
 Vue.use(Router)
 
@@ -186,6 +187,13 @@ const route = new Router({
         component: News,
         meta: {
           title: '消息'
+        }
+      },
+      {
+        path: '/new-group-msg',
+        component: NewGroupMsg,
+        meta: {
+          title: '新建群发'
         }
       },
       {
