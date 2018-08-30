@@ -1,62 +1,89 @@
 <template>
   <div class="client">
-    <scroll bcColor="#fff"
-            ref="scroll"
-            :data="dataArray"
-            :pullUpLoad="pullUpLoadObj"
-            @pullingUp="onPullingUp"
-    >
+    <article>
       <search @toNav="toSearch"></search>
-      <ul class="user-list-box" v-if="userListArr.length">
-        <li class="user-list-item"
-            v-if="userListArr.length"
-            v-for="(item,index) in userListArr"
-            :key="index"
-            @click="toUserList(item)"
-        >
-          <slide-view :useType="3" @del="delHandler" :item="item">
-            <div slot="content" class="user-list-item">
-              <div class="users-avatar">
-                <img v-if="item.icon && item.icon.length"
-                     v-for="(user,i) in item.icon"
-                     class="avatar"
-                     :key="i"
-                     :src="user"
-                />
-              </div>
-              <div class="item-name">{{item.name}}（{{item.number}}）</div>
-            </div>
+      <dl class="tab-wrapper">
+        <dt class="line-wrap"></dt>
+        <dd class="tab" v-for="(item,index) in tabList" :key="index">{{item.title}}({{item.number}})</dd>
+      </dl>
+    </article>
+
+    <section class="status-bar" @click="showGroupList">
+      <div class="left">
+        <p>{{checkedGroup.name}}</p>
+        <img class="icon" src="./icon-down@3x.png" alt=""/>
+      </div>
+      <div class="right">全部 {{dataArray.length}} 位</div>
+    </section>
+    <div class="scroll-list-wrap" v-if="dataArray.length">
+      <ul class="user-list">
+        <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+          <slide-view :useType="1" @grouping="groupingHandler" :item="item">
+            <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
           </slide-view>
         </li>
       </ul>
-      <section class="user-list-box add-list" @click="toCreateGroup">
-        <div class="user-list-item">
-          <div class="users-avatar add-list"></div>
-          <div class="item-name">新建分组</div>
-        </div>
-      </section>
-      <section class="status-bar" @click="showGroupList">
-        <div class="left">
-          <p>{{checkedGroup.name}}</p>
-          <img class="icon" src="./icon-down@3x.png" alt=""/>
-        </div>
-        <div class="right">全部 {{dataArray.length}} 位</div>
-      </section>
-      <div class="scroll-list-wrap" v-if="dataArray.length">
-        <ul class="user-list">
-          <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <slide-view :useType="1" @grouping="groupingHandler" :item="item">
-              <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
-            </slide-view>
-          </li>
-        </ul>
-      </div>
-      <section class="exception-box" v-if="isEmpty">
-        <exception errType="customer"></exception>
-      </section>
-    </scroll>
-    <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
-    <action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>
+    </div>
+    <section class="exception-box" v-if="isEmpty">
+      <exception errType="customer"></exception>
+    </section>
+    <!--<scroll bcColor="#fff"-->
+    <!--ref="scroll"-->
+    <!--:data="dataArray"-->
+    <!--:pullUpLoad="pullUpLoadObj"-->
+    <!--@pullingUp="onPullingUp"-->
+    <!--&gt;-->
+
+    <!--<ul class="user-list-box" v-if="userListArr.length">-->
+    <!--<li class="user-list-item"-->
+    <!--v-if="userListArr.length"-->
+    <!--v-for="(item,index) in userListArr"-->
+    <!--:key="index"-->
+    <!--@click="toUserList(item)"-->
+    <!--&gt;-->
+    <!--<slide-view :useType="3" @del="delHandler" :item="item">-->
+    <!--<div slot="content" class="user-list-item">-->
+    <!--<div class="users-avatar">-->
+    <!--<img v-if="item.icon && item.icon.length"-->
+    <!--v-for="(user,i) in item.icon"-->
+    <!--class="avatar"-->
+    <!--:key="i"-->
+    <!--:src="user"-->
+    <!--/>-->
+    <!--</div>-->
+    <!--<div class="item-name">{{item.name}}（{{item.number}}）</div>-->
+    <!--</div>-->
+    <!--</slide-view>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--<section class="user-list-box add-list" @click="toCreateGroup">-->
+    <!--<div class="user-list-item">-->
+    <!--<div class="users-avatar add-list"></div>-->
+    <!--<div class="item-name">新建分组</div>-->
+    <!--</div>-->
+    <!--</section>-->
+    <!--<section class="status-bar" @click="showGroupList">-->
+    <!--<div class="left">-->
+    <!--<p>{{checkedGroup.name}}</p>-->
+    <!--<img class="icon" src="./icon-down@3x.png" alt=""/>-->
+    <!--</div>-->
+    <!--<div class="right">全部 {{dataArray.length}} 位</div>-->
+    <!--</section>-->
+    <!--<div class="scroll-list-wrap" v-if="dataArray.length">-->
+    <!--<ul class="user-list">-->
+    <!--<li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">-->
+    <!--<slide-view :useType="1" @grouping="groupingHandler" :item="item">-->
+    <!--<user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>-->
+    <!--</slide-view>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<section class="exception-box" v-if="isEmpty">-->
+    <!--<exception errType="customer"></exception>-->
+    <!--</section>-->
+    <!--</scroll>-->
+    <!--<confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>-->
+    <!--<action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>-->
     <toast ref="toast"></toast>
     <router-view @refresh="refresh"></router-view>
   </div>
@@ -69,11 +96,13 @@
   import Scroll from 'components/scroll/scroll'
   import UserCard from 'components/client-user-card/client-user-card'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
-  import {Client} from 'api'
+  import { Client } from 'api'
   import ActionSheet from 'components/action-sheet/action-sheet'
   import Toast from 'components/toast/toast'
-  import {ERR_OK} from '../../common/js/config'
+  import { ERR_OK } from '../../common/js/config'
   import Exception from 'components/exception/exception'
+
+  const tabList = [{title: '客户', number: 0}, {title: '分组', number: 0}]
 
   const groupList = [{
     orderBy: '',
@@ -98,6 +127,7 @@
     data() {
       return {
         groupList: groupList,
+        tabList: tabList,
         userListArr: [],
         dataArray: [],
         isEmpty: false,
@@ -276,6 +306,34 @@
 
   .exception-box
     padding-top: 70px
+
+  .tab-wrapper
+    height: 44.5px
+    background: $color-white-fff
+    layout(row, block, nowrap)
+    margin: 0 45px
+    position: relative
+    .tab
+      flex: 1
+      font-family: $font-family-regular
+      font-size: $font-size-16
+      color: $color-20202E
+      letter-spacing: 0.6px
+      text-align: center;
+      line-height: 44.5px
+    .line-wrap
+      position: absolute
+      left: 0
+      bottom: 0
+      right: 0
+      width :50%
+      layout()
+      align-items: center
+      &:after
+        content: ''
+        width: 30px
+        height: 3px
+        background: $color-20202E
 
   .client
     position: absolute
