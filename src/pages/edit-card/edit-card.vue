@@ -412,7 +412,6 @@
       background: $color-background
   .mine-detail
     background-color: $color-white
-    width: 92vw
     padding-left: 15px
     box-sizing border-box
     font-family: $font-family-regular
