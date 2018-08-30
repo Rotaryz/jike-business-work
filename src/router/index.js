@@ -30,6 +30,7 @@ const MyData = () => import('pages/my-data/my-data')
 const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
 const NewGroupMsg = () => import('pages/new-group-msg/new-group-msg')
+const NewsAddGroup = () => import('pages/news-add-group/news-add-group')
 
 Vue.use(Router)
 
@@ -187,6 +188,13 @@ const route = new Router({
         component: News,
         meta: {
           title: '消息'
+        }
+      },
+      {
+        path: '/news-add-group',
+        component: NewsAddGroup,
+        meta: {
+          title: '添加组'
         }
       },
       {
