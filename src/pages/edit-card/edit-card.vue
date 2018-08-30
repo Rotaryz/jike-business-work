@@ -158,7 +158,7 @@
         })
       },
       _changeMine () {
-        let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, weixin_account: this.mine.weixin_account, image_id: this.mine.image_id}
+        let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, weixin_account: this.mine.weixin_account, address: '', image_id: this.mine.image_id}
         Business.updateMyBusiness(data).then((res) => {
           if (res.error === ERR_OK) {
             let obj = storage.get('info', {})

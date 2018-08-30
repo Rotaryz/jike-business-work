@@ -76,8 +76,7 @@
                 <div class="item-right">
                   <div class="text">查看名片</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckmpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -88,8 +87,7 @@
                 <div class="item-right">
                   <div class="text">点赞名片</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{dzmpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -100,8 +98,7 @@
                 <div class="item-right">
                   <div class="text">转发名片</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{zfmpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -112,8 +109,7 @@
                 <div class="item-right">
                   <div class="text">拨打电话</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{bddhNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -124,8 +120,7 @@
                 <div class="item-right">
                   <div class="text">复制邮箱</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{fzyxNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -136,8 +131,7 @@
                 <div class="item-right">
                   <div class="text">查看地址</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckdzNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -148,8 +142,7 @@
                 <div class="item-right">
                   <div class="text">保存电话</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{bcdhNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -162,8 +155,7 @@
                 <div class="item-right">
                   <div class="text">查看产品</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckcpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -174,8 +166,7 @@
                 <div class="item-right">
                   <div class="text">查看详情</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckxqNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -186,8 +177,7 @@
                 <div class="item-right">
                   <div class="text">咨询产品</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{zxcpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -198,8 +188,7 @@
                 <div class="item-right">
                   <div class="text">转发产品</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{zfcpNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -212,8 +201,7 @@
                 <div class="item-right">
                   <div class="text">查看动态</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckdtNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -224,8 +212,7 @@
                 <div class="item-right">
                   <div class="text">点赞动态</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{dzdtNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -236,8 +223,7 @@
                 <div class="item-right">
                   <div class="text">评论动态</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{pldtNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -248,8 +234,7 @@
                 <div class="item-right">
                   <div class="text">转发动态</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{zfdtNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -262,8 +247,7 @@
                 <div class="item-right">
                   <div class="text">查看官网</div>
                   <div class="right-box">
-                    <div class="number">100次</div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
+                    <div class="number">{{ckgwNumber}}次</div>
                   </div>
                 </div>
               </div>
@@ -273,46 +257,27 @@
       </div>
       <div class="people-box" v-if="tabIndex * 1 === 2">
         <scroll  ref="scrollPeople"
-                 :data="peopleList"
+                 :data="peopleDataList"
                  :bcColor="'#f1f2f5'"
                  :pullUpLoad="pullUpPeoleLoadObj"
-                 :showNoMore="showPeopleNoMore"
-                 @pullingUp="onPeoplePullingUp"
-                 :pullDownRefresh="pullDownPeopleRefreshObj"
-                 @pullingDown="onPeoplePullingDown">
+                 :showNoMore="peopleMore"
+                 @pullingUp="onPeoplePullingUp">
           <div class="people-all">
             <ul class="action-tab">
-              <li class="tab-item"  :class="actionIndex===index?'active':''"
-                  v-for="(item,index) in actionList"
+              <li class="tab-item"  :class="tabPeopleIndex===index?'active':''"
+                  v-for="(item,index) in tapPeopleList"
                   :key="index"
-                  @click="actionTab(index)">{{item}}</li>
+                  @click="peopleTab(index)">{{item}}</li>
             </ul>
-            <div class="msgs-list">
-              <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
+            <div class="msgs-list msgs-people">
+              <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
                 <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
                 <div class="msg-item-content">
                   <img :src="item.image_url" class="msgs-left">
                   <div class="msgs-right">
                     <div class="msgs-container">
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10000">{{item.nickname}}<span class="green">查看</span>了<span class="green">你的名片</span>第{{item.count_sum}}次，成交在望</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10001">{{item.nickname}}给你<span class="green">点了</span><span class="green">赞</span>，看来认可你</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10002">{{item.nickname}}<span class="green">取消</span>给你点的<span class="green">赞</span></p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10003">{{item.nickname}}<span class="green">复制</span>了你的<span class="green">邮箱</span>，请留意邮件</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10004">{{item.nickname}}<span class="green">浏览</span>了你的<span class="green">地址</span></p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10005">{{item.nickname}}<span class="green">转发</span>了你的<span class="green">名片</span>，你的人脉圈正在裂变</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10006">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">名片海报</span>，看来TA对你感兴趣</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10007">{{item.nickname}}<span class="green">拨打</span>了你的<span class="green">手机</span>，请记录跟进内容</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 10008">{{item.nickname}}<span class="green">保存</span>了你的<span class="green">电话</span>，可以考虑主动沟通</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 20001">{{item.nickname}}正在<span class="green">查看</span>你的<span class="green">产品</span>第{{item.count_sum}}次，请把握商机</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 20002">{{item.nickname}}正在<span class="green">查看</span><span class="green">{{item.title | titleCut}}</span>，可能对该产品感兴趣</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 20003">{{item.nickname}}正在对<span class="green">{{item.title | titleCut}}</span>向你<span class="green">咨询</span>，请做好准备应答</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 20004">{{item.nickname}}<span class="green">转发</span>了<span class="green">{{item.title | titleCut}}</span>，可能在咨询他人建议</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 30001">{{item.nickname}}正在<span class="green">查看</span>你发布的<span class="green">动态</span>第{{item.count_sum}}次</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 30002">{{item.nickname}}给你发布的动态<span class="green">点了</span><span class="green">赞</span></p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 40001">{{item.nickname}}正在<span class="green">查看</span>你公司的<span class="green">官网</span>第{{item.count_sum}}次</p>
-                      <p class="msgs-p" v-show="item.event_no * 1 === 50001">{{item.nickname}}正在向你<span class="green">咨询</span>，请做好准备应答</p>
+                      <p class="msgs-p">{{item.nickname}}跟你互动了<span class="green">{{item.count_sum}}</span>次</p>
                     </div>
-                    <img src="./icon-pressed@2x.png" class="msgs-rt">
                   </div>
                 </div>
               </div>
@@ -347,11 +312,7 @@
           }, 20)
         }
       })
-      Im.getActionList(0, 30, this.userInfo.id, 2).then((res) => {
-        if (res.error === ERR_OK) {
-          console.log(res)
-        }
-      })
+      this.getAllData()
     },
     data() {
       return {
@@ -364,7 +325,6 @@
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
         showNoMore: false,
-        peopleList: [],
         pullUpPeopleLoadThreshold: 0,
         pullUpPeopleLoadMoreTxt: '加载更多',
         pullUpPeopleLoadNoMoreTxt: '没有更多了',
@@ -373,9 +333,31 @@
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
         showPeopleNoMore: false,
         tabList: ['时间', '行为', '人'],
+        tabPeopleIndex: 0,
+        tapPeopleList: ['全部', '今天', '7天', '30天'],
         tabIndex: 0,
         actionList: ['全部', '今天', '7天', '30天'],
-        actionIndex: 0
+        actionIndex: 0,
+        ckmpNumber: 0,
+        dzmpNumber: 0,
+        zfmpNumber: 0,
+        bddhNumber: 0,
+        fzyxNumber: 0,
+        ckdzNumber: 0,
+        bcdhNumber: 0,
+        ckcpNumber: 0,
+        ckxqNumber: 0,
+        zxcpNumber: 0,
+        zfcpNumber: 0,
+        ckdtNumber: 0,
+        dzdtNumber: 0,
+        pldtNumber: 0,
+        zfdtNumber: 0,
+        ckgwNumber: 0,
+        peopleDataList: [],
+        firstGet: true,
+        peopleMore: false,
+        page: 0
       }
     },
     methods: {
@@ -386,9 +368,43 @@
       ]),
       changeTab(index) {
         this.tabIndex = index
+        if (index * 1 === 2 && this.firstGet) {
+          this.getPeopleList()
+        }
+      },
+      peopleTab(index) {
+        this.tabPeopleIndex = index
+        switch (index * 1) {
+          case 0:
+            this.getPeopleList()
+            break
+          case 1:
+            this.getPeopleList('today')
+            break
+          case 2:
+            this.getPeopleList('week')
+            break
+          case 3:
+            this.getPeopleList('month')
+            break
+        }
       },
       actionTab(index) {
         this.actionIndex = index
+        switch (index * 1) {
+          case 0:
+            this.getAllData()
+            break
+          case 1:
+            this.getAllData('today')
+            break
+          case 2:
+            this.getAllData('week')
+            break
+          case 3:
+            this.getAllData('month')
+            break
+        }
       },
       toDetail(item) {
         let url = '/radar/client-detail'
@@ -407,7 +423,10 @@
         })
       },
       onPullingUp() {
-        if (this.showNoMore) return
+        if (this.showNoMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
         const num = this.list.length * 1 + this.customCount * 1
         Im.getRadarList(num, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
@@ -436,12 +455,23 @@
         })
       },
       onPeoplePullingDown() {
-        console.log('``````')
         this.$refs.scrollPeople.forceUpdate()
       },
       onPeoplePullingUp() {
-        console.log('11111')
-        this.$refs.scrollPeople.forceUpdate()
+        switch (this.tabPeopleIndex * 1) {
+          case 0:
+            this.getMorePeopleList()
+            break
+          case 1:
+            this.getMorePeopleList('today')
+            break
+          case 2:
+            this.getMorePeopleList('week')
+            break
+          case 3:
+            this.getMorePeopleList('month')
+            break
+        }
       },
       rebuildScroll() {
         this.nextTick(() => {
@@ -453,6 +483,116 @@
         this.nextTick(() => {
           this.$refs.scrollPeople.destroy()
           this.$refs.scrollPeople.initScroll()
+        })
+      },
+      clearActionNum() {
+        this.ckmpNumber = 0
+        this.dzmpNumber = 0
+        this.zfmpNumber = 0
+        this.bddhNumber = 0
+        this.fzyxNumber = 0
+        this.ckdzNumber = 0
+        this.bcdhNumber = 0
+        this.ckcpNumber = 0
+        this.ckxqNumber = 0
+        this.zxcpNumber = 0
+        this.zfcpNumber = 0
+        this.ckdtNumber = 0
+        this.dzdtNumber = 0
+        this.pldtNumber = 0
+        this.zfdtNumber = 0
+        this.ckgwNumber = 0
+      },
+      getAllData(time) {
+        this.clearActionNum()
+        Im.getActionList(0, 30, this.userInfo.id, 2, time).then((res) => {
+          if (res.error === ERR_OK) {
+            for (var i = 0; i < res.data.length; i++) {
+              this.switchNumber(res.data[i].event_no, res.data[i].count_sum)
+            }
+          }
+        })
+      },
+      switchNumber(type, number) {
+        switch (type * 1) {
+          case 10000:
+            this.ckmpNumber = number
+            break
+          case 10001:
+            this.dzmpNumber = number
+            break
+          case 10005:
+            this.zfmpNumber = number
+            break
+          case 10007:
+            this.bddhNumber = number
+            break
+          case 10003:
+            this.fzyxNumber = number
+            break
+          case 10004:
+            this.ckdzNumber = number
+            break
+          case 10008:
+            this.bcdhNumber = number
+            break
+          case 20001:
+            this.ckcpNumber = number
+            break
+          case 20002:
+            this.ckxqNumber = number
+            break
+          case 20003:
+            this.zxcpNumber = number
+            break
+          case 20004:
+            this.zfcpNumber = number
+            break
+          case 30001:
+            this.ckdtNumber = number
+            break
+          case 30002:
+            this.dzdtNumber = number
+            break
+          case 40001:
+            this.ckgwNumber = number
+            break
+        }
+      },
+      getPeopleList(time) {
+        Im.getActionList(0, 30, this.userInfo.id, 3, time).then((res) => {
+          if (res.error === ERR_OK) {
+            this.peopleDataList = res.data
+            this.firstGet = false
+            this.page = 0
+            this.peopleMore = false
+            if (res.data.length < 30) {
+              this.peopleMore = true
+            }
+            setTimeout(() => {
+              this.$refs.scrollPeople.forceUpdate()
+            }, 20)
+          }
+        })
+      },
+      getMorePeopleList(time) {
+        if (this.peopleMore) {
+          this.$refs.scrollPeople.forceUpdate()
+          return
+        }
+        this.page++
+        const num = this.page * 30
+        Im.getActionList(num, 30, this.userInfo.id, 3, time).then((res) => {
+          if (res.error === ERR_OK) {
+            let list = res.data
+            if (res.data.length < 30) {
+              this.peopleMore = true
+            }
+            this.peopleDataList = [...this.peopleDataList, ...list]
+            setTimeout(() => {
+              this.$refs.scrollPeople.forceUpdate()
+            }, 20)
+          }
         })
       }
     },
@@ -645,7 +785,6 @@
                 font-size: $font-size-14
                 font-family: $font-family-medium
                 color: $color-56BA15
-                margin-right: 10px
               .msgs-rt
                 width: 7.5px
                 height: 11.5px
@@ -752,6 +891,10 @@
             width: 7.5px
             height: 11.5px
             margin-left: 33px
+    .msgs-people
+      padding-top: 0
+      .msgs-item
+        margin: 0 0 18px
   .line
     position: absolute
     width: 33.33%

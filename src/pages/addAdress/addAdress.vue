@@ -34,7 +34,6 @@
   import Toast from 'components/toast/toast'
   import {Mine} from 'api'
   import {ERR_OK} from '../../common/js/config'
-  import map from 'map'
 
   export default {
     name: 'addAdress',
@@ -61,7 +60,6 @@
       })
     },
     mounted() {
-      console.log(map)
     },
     methods: {
       handlePickerCancel(e) {

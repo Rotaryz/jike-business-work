@@ -23,7 +23,7 @@ export default {
     return request.post(url, data, loading)
   },
 
-  // 雷达消息（所有人）
+  // 行为为雷达消息（所有人）
   getActionList(from = 0, limit = 30, id, type = 1, time, loading = true) {
     const url = `/api/employee/action-logs`
     const data = {
