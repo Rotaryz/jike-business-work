@@ -1,25 +1,44 @@
 <template>
   <transition :name="slide">
     <article class="client-add-user">
-      <scroll ref="scroll"
-              bcColor="#fff"
-              :data="dataArray"
-              :pullUpLoad="pullUpLoadObj"
-              @pullingUp="onPullingUp"
-      >
-        <ul class="user-list">
-          <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
-            <img class="user-icon" :src="item.image_url" alt="">
-            <section class="base-info">
-              <div class="name">{{item.name}}</div>
-              <div class="status">{{item.last_follow_day}}</div>
-            </section>
-            <div class="ai">AI预计成交率{{item.conversion_rate}}%</div>
-          </li>
-        </ul>
-        <div style="height: 45px;"></div>
-      </scroll>
+      <ul class="tablist-box" >
+        <li class="tablist-item" v-for="(item, index) in tabList" v-bind:key="index" :class="tabListIndex===index?'active':''" @click="tabSelect(index)">{{item}}</li>
+      </ul>
+      <div class="scroll-box">
+        <scroll ref="scroll"
+                bcColor="#fff"
+                :data="dataArray"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp"
+        >
+          <ul class="user-list">
+            <li class="user-box" v-if="dataArray.length" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
+              <div :class="['check-box',item.is_member?'un-check':'' ,item.isCheck?'active':'']"></div>
+              <img class="user-icon" :src="item.image_url" alt="">
+              <section class="base-info">
+                <div class="name">{{item.name}}</div>
+                <div class="status">{{item.last_follow_day}}</div>
+              </section>
+              <div class="ai" v-if="selectText === ''">
+                <div class="ai-null">AI预计成交率{{item.conversion_rate}}%</div>
+              </div>
+              <div class="ai" v-if="selectText === 'join'">
+                <div class="type">{{item.sources}}</div>
+                <div class="time">{{item.flow_join_at}}</div>
+              </div>
+              <div class="ai" v-if="selectText === 'follow'">
+                <div class="type">最后跟进</div>
+                <div class="time">{{item.last_follow_at}}</div>
+              </div>
+              <div class="ai" v-if="selectText === 'active'">
+                <div class="type">最后活跃</div>
+                <div class="time">{{item.last_active_at}}</div>
+              </div>
+            </li>
+          </ul>
+          <div style="height: 45px;"></div>
+        </scroll>
+      </div>
       <footer class="btn" @click="submit">确定</footer>
       <toast ref="toast"></toast>
     </article>
@@ -47,28 +66,15 @@
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
         limit: LIMIT,
-        isAll: false
+        isAll: false,
+        tabList: ['加入时间', '跟进时间', '活跃时间', '成交率'],
+        tabListIndex: 0,
+        selectText: 'join'
       }
     },
     created() {
       this.id = this.$route.query.id
-      const data = {
-        group_id: this.id,
-        page: 1,
-        limit: LIMIT
-      }
-      Client.getCustomerList(data).then(res => {
-        if (res.error !== ERR_OK) {
-          this.$refs.toast.show(res.message)
-          return
-        }
-        if (res.data) {
-          this.dataArray = res.data.map(item => {
-            return {...item, isCheck: false}
-          })
-          this.$refs.scroll.refresh()
-        }
-      })
+      this.getNewDataList()
     },
     beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
@@ -108,7 +114,7 @@
 
         let page = ++this.page
         let limit = this.limit
-        const data = {group_id: this.id, page, limit}
+        const data = {group_id: this.id, page, limit, order_by: this.selectText}
         Client.getCustomerList(data).then(res => {
           if (res.error !== ERR_OK) {
             this.$refs.toast.show(res.message)
@@ -130,6 +136,50 @@
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
+        })
+      },
+      tabSelect(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.tabListIndex = index
+        switch (index * 1) {
+          case 0:
+            this.selectText = 'join'
+            this.getNewDataList()
+            break
+          case 1:
+            this.selectText = 'follow'
+            this.getNewDataList()
+            break
+          case 2:
+            this.selectText = 'active'
+            this.getNewDataList()
+            break
+          case 3:
+            this.selectText = ''
+            this.getNewDataList()
+            break
+        }
+      },
+      getNewDataList() {
+        this.page = 1
+        this.isAll = false
+        const data = {
+          group_id: this.id,
+          page: 1,
+          limit: LIMIT,
+          order_by: this.selectText
+        }
+        Client.getCustomerList(data).then(res => {
+          if (res.error !== ERR_OK) {
+            this.$refs.toast.show(res.message)
+            return
+          }
+          if (res.data) {
+            this.dataArray = res.data.map(item => {
+              return {...item, isCheck: false}
+            })
+            this.$refs.scroll.refresh()
+          }
         })
       }
     },
@@ -169,7 +219,6 @@
     fill-box()
     background-color: $color-white-fff
     z-index: 50
-    padding-bottom :45px
     .user-list
       position: relative
       padding-left: 15px
@@ -213,13 +262,31 @@
             font-size: $font-size-12
             color: $color-56BA15
         .ai
-          width: 105px
+          text-align: right
+          width: 120px
           height: 100%
           padding-right: 15px
           padding-top: 5px
           font-family: $font-family-regular
           font-size: $font-size-12
           color: $color-888888
+          .type
+            text-align: right
+            height: 20px
+            font-family: $font-family-regular
+            font-size: $font-size-12
+            color: $color-888888
+          .time
+            text-align: right
+            font-family: $font-family-regular
+            font-size: $font-size-12
+            color: $color-888888
+          .ai-null
+            text-align: right
+            padding-top: 10px
+            font-family: $font-family-regular
+            font-size: $font-size-12
+            color: $color-888888
 
     .btn
       height: 45px
@@ -235,4 +302,32 @@
       color: $color-white-fff
       letter-spacing: 0.3px
       z-index: 2
+  .scroll-box
+    fill-box(absolute)
+    top: 45px
+    bottom: 45px
+    z-index: 50
+  .tablist-box
+    layout(row)
+    width: 100%
+    box-sizing: border-box
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 60
+    background: #fff
+    border-bottom-1px(#e5e5e5)
+    .tablist-item
+      width: 25%
+      height: 45px
+      line-height: 45px
+      text-align: center
+      font-size: $font-size-14
+      color: $color-20202E
+      font-family: $font-family-regular
+      transition: all 0.5s
+    .active
+      font-size: $font-size-14
+      color: $color-56BA15
+      font-family: $font-family-medium
 </style>

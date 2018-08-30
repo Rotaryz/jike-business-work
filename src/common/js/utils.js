@@ -1,5 +1,6 @@
 import _this from '@/main'
 import storage from 'storage-controller'
+import CITY_JSON from 'common/js/city'
 import {emotionsFace} from 'common/js/constants'
 
 const LOSE_EFFICACY = 10000
@@ -199,3 +200,27 @@ function _handleLoseEfficacy () {
   storage.remove('token')
   _this.$router.replace('/oauth')
 }
+
+function doCity(city) {
+  let arr = []
+  for (let [, value] of Object.entries(city)) {
+    let obj1 = {}
+    obj1.value = value.name
+    obj1.children = []
+    const two = value.child
+    for (let [, val] of Object.entries(two)) {
+      let obj2 = {}
+      obj2.value = val.name
+      obj2.children = []
+      const three = val.child
+      for (let [, cc] of Object.entries(three)) {
+        obj2.children.push({value: cc})
+      }
+      obj1.children.push({value: obj2.value, children: obj2.children})
+    }
+    arr.push(obj1)
+  }
+  return arr
+}
+
+export const cityData = doCity(CITY_JSON)

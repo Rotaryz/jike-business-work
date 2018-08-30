@@ -37,7 +37,7 @@
   import { ERR_OK } from '../../common/js/config'
   // import storage from 'storage-controller'
 
-  const CONTENTLIST = [{title: '查看名片', src: '/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
+  const CONTENTLIST = [{title: '个人信息', src: 'mine/mine-info'}, {title: '查看名片', src: '/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
 
   export default {
     name: 'Mine',
