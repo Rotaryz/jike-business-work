@@ -1,24 +1,27 @@
 <template>
   <transition :name="slide">
     <article class="client-user-list">
-      <search @toNav="toSearch"></search>
+      <!--<search @toNav="toSearch"></search>-->
       <section class="add-user" @click="toAddUser">
         <img class="icon" src="./icon-add@3x.png" alt="">
         <div class="txt">添加成员</div>
       </section>
-      <section class="total">共 {{total}} 位</section>
+      <!--<section class="total">共 {{total}} 位</section>-->
+      <ul class="tablist-box" >
+        <li class="tablist-item" v-for="(item, index) in tabList" v-bind:key="index" :class="tabListIndex===index?'active':''" @click="tabSelect(index)">{{item}}</li>
+      </ul>
       <div class="simple-scroll-demo">
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
                   v-if="dataArray.length"
-                  bcColor="#fff"
+                  bcColor="#f0f2f5"
                   :data="dataArray"
                   :pullUpLoad="pullUpLoadObj"
                   @pullingUp="onPullingUp">
             <ul class="user-list">
               <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
                 <slide-view @grouping="groupingHandler" :item="item" @del="delHandler">
-                  <user-card :userInfo="item" slot="content"></user-card>
+                  <user-card :userInfo="item" slot="content" :useType="selectText"></user-card>
                 </slide-view>
               </li>
             </ul>
@@ -72,7 +75,10 @@
         page: 1,
         limit: LIMIT,
         isAll: false,
-        total: 0
+        total: 0,
+        tabList: ['加入时间', '跟进时间', '活跃时间', '成交率'],
+        tabListIndex: 0,
+        selectText: 'join'
       }
     },
     created() {
@@ -103,11 +109,14 @@
         this.id = this.$route.query.id
       },
       getCustomerList() {
+        this.page = 1
+        this.isAll = false
         const data = {
           get_group_detail: 1,
           group_id: this.id,
           page: 1,
-          limit: LIMIT
+          limit: LIMIT,
+          order_by: this.selectText
         }
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
@@ -162,7 +171,8 @@
           get_group_detail: 1,
           group_id: this.id,
           page: page,
-          limit: limit
+          limit: limit,
+          order_by: this.selectText
         }
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
@@ -183,6 +193,28 @@
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
         })
+      },
+      tabSelect(index) {
+        this.$refs.scroll.scrollTo(0, 0)
+        this.tabListIndex = index
+        switch (index * 1) {
+          case 0:
+            this.selectText = 'join'
+            this.getCustomerList()
+            break
+          case 1:
+            this.selectText = 'follow'
+            this.getCustomerList()
+            break
+          case 2:
+            this.selectText = 'active'
+            this.getCustomerList()
+            break
+          case 3:
+            this.selectText = ''
+            this.getCustomerList()
+            break
+        }
       }
     },
     watch: {
@@ -255,18 +287,34 @@
   .simple-scroll-demo
     position: fixed
     left: 0
-    top: 123px
+    top: 104px
     right: 0
     bottom: 0
     z-index: 10
     .scroll-list-wrap
       position relative
       height: 100%
-      border: 1px solid rgba(0, 0, 0, .1)
       border-radius: 4px
       transform: rotate(0deg)
       overflow: hidden
-
+  .tablist-box
+    layout(row)
+    width: 100%
+    border-top: 10px solid #f0f2f5
+    box-sizing: border-box
+    .tablist-item
+      width: 25%
+      height: 45px
+      line-height: 45px
+      text-align: center
+      font-size: $font-size-14
+      color: $color-20202E
+      font-family: $font-family-regular
+      transition: all 0.5s
+    .active
+      font-size: $font-size-14
+      color: $color-56BA15
+      font-family: $font-family-medium
   .user-list
     position: relative
     .user-list-item
