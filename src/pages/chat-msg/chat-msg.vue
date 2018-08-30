@@ -29,22 +29,22 @@
                   <p class="goods-title">{{item.title}}</p>
                 </section>
                 <!--<section class="chat-msg-new-goods other" v-if="item.type * 1 == 3 || item.type * 1 == 4 || item.type * 1 == 5">-->
-                  <!--<div class="new-goods-top">-->
-                    <!--<div class="shop-title">-->
-                      <!--<div :style="{backgroundImage: 'url(' + item.avatar + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="shop-icon"></div>-->
-                      <!--<div class="shop-name">{{item.shop_name}}的小店</div>-->
-                    <!--</div>-->
-                    <!--<div class="goods-title">-->
-                      <!--<img src="../../../static/img/pic-spell@2x.png" class="title-icon" v-if="item.type * 1 == 4">-->
-                      <!--<img src="../../../static/img/icon-bargain@2x.png" class="title-icon" v-if="item.type * 1 == 5">-->
-                      <!--<span>原价{{item.original_price}}元的{{item.title}}，{{item.type * 1 == 4 ? '团购价' : '底价'}}只要{{item.goods_price}}元！</span>-->
-                    <!--</div>-->
-                    <!--<div :style="{backgroundImage: 'url(' + item.url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="goods-img"></div>-->
-                  <!--</div>-->
-                  <!--<div class="new-goods-down border-top-1px">-->
-                    <!--<img src="../../../static/img/pic-logo_zb@2x.png" class="down-icon" @load="refushBox">-->
-                    <!--<span>赞播微店</span>-->
-                  <!--</div>-->
+                <!--<div class="new-goods-top">-->
+                <!--<div class="shop-title">-->
+                <!--<div :style="{backgroundImage: 'url(' + item.avatar + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="shop-icon"></div>-->
+                <!--<div class="shop-name">{{item.shop_name}}的小店</div>-->
+                <!--</div>-->
+                <!--<div class="goods-title">-->
+                <!--<img src="../../../static/img/pic-spell@2x.png" class="title-icon" v-if="item.type * 1 == 4">-->
+                <!--<img src="../../../static/img/icon-bargain@2x.png" class="title-icon" v-if="item.type * 1 == 5">-->
+                <!--<span>原价{{item.original_price}}元的{{item.title}}，{{item.type * 1 == 4 ? '团购价' : '底价'}}只要{{item.goods_price}}元！</span>-->
+                <!--</div>-->
+                <!--<div :style="{backgroundImage: 'url(' + item.url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="goods-img"></div>-->
+                <!--</div>-->
+                <!--<div class="new-goods-down border-top-1px">-->
+                <!--<img src="../../../static/img/pic-logo_zb@2x.png" class="down-icon" @load="refushBox">-->
+                <!--<span>赞播微店</span>-->
+                <!--</div>-->
                 <!--</section>-->
                 <section>
                   <img class="chat-msg-img other" :src="item.url" v-if="item.type * 1 == 20" @load="refushBox" @click.stop="showPic(item)">
@@ -60,22 +60,22 @@
                   </div>
                 </section>
                 <!--<section class="chat-msg-new-goods mine" v-if="item.type * 1 == 3 || item.type * 1 == 4 || item.type * 1 == 5">-->
-                  <!--<div class="new-goods-top">-->
-                    <!--<div class="shop-title">-->
-                      <!--<div :style="{backgroundImage: 'url(' + item.avatar + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="shop-icon"></div>-->
-                      <!--<div class="shop-name">{{item.shop_name}}的小店</div>-->
-                    <!--</div>-->
-                    <!--<div class="goods-title">-->
-                      <!--<img src="../../../static/img/pic-spell@2x.png" class="title-icon" v-if="item.type * 1 == 4">-->
-                      <!--<img src="../../../static/img/icon-bargain@2x.png" class="title-icon" v-if="item.type * 1 == 5">-->
-                      <!--<span>原价{{item.original_price}}元的{{item.title}}，{{item.type * 1 == 4 ? '团购价' : '底价'}}只要{{item.goods_price}}元！</span>-->
-                    <!--</div>-->
-                    <!--<div :style="{backgroundImage: 'url(' + item.url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="goods-img"></div>-->
-                  <!--</div>-->
-                  <!--<div class="new-goods-down border-top-1px">-->
-                    <!--<img src="../../../static/img/pic-logo_zb@2x.png" class="down-icon" @load="refushBox">-->
-                    <!--<span>赞播微店</span>-->
-                  <!--</div>-->
+                <!--<div class="new-goods-top">-->
+                <!--<div class="shop-title">-->
+                <!--<div :style="{backgroundImage: 'url(' + item.avatar + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="shop-icon"></div>-->
+                <!--<div class="shop-name">{{item.shop_name}}的小店</div>-->
+                <!--</div>-->
+                <!--<div class="goods-title">-->
+                <!--<img src="../../../static/img/pic-spell@2x.png" class="title-icon" v-if="item.type * 1 == 4">-->
+                <!--<img src="../../../static/img/icon-bargain@2x.png" class="title-icon" v-if="item.type * 1 == 5">-->
+                <!--<span>原价{{item.original_price}}元的{{item.title}}，{{item.type * 1 == 4 ? '团购价' : '底价'}}只要{{item.goods_price}}元！</span>-->
+                <!--</div>-->
+                <!--<div :style="{backgroundImage: 'url(' + item.url + ')',backgroundPosition: 'center',backgroundRepeat: 'no-repeat',backgroundSize: 'cover'}" class="goods-img"></div>-->
+                <!--</div>-->
+                <!--<div class="new-goods-down border-top-1px">-->
+                <!--<img src="../../../static/img/pic-logo_zb@2x.png" class="down-icon" @load="refushBox">-->
+                <!--<span>赞播微店</span>-->
+                <!--</div>-->
                 <!--</section>-->
                 <div>
                   <img class="chat-msg-img mine" :src="item.url" v-if="item.type * 1 == 20" @load="refushBox" @click.stop="showPic(item)">
@@ -106,11 +106,11 @@
             </div>
           </div>
           <div class="addimg-list" v-if="mortListShow">
-            <div class="addimg-item" v-for="(item, index) in moreLists" :key="index" @click="nextWork(item)">
+            <label class="addimg-item" :for="item.type == 1?'choose-pic':''" v-for="(item, index) in moreLists" :key="index" @click="nextWork(item)">
               <img :src="item.icon" class="item-icon">
               <p class="item-txt">{{item.txt}}</p>
-              <input type="file" class="image-file" @change="_fileImage($event)" accept="image/*" v-if="item.type == 1">
-            </div>
+              <input type="file" id="choose-pic" class="image-file" @change="_fileImage($event)" accept="image/*" v-if="item.type == 1">
+            </label>
           </div>
         </div>
       </section>
@@ -133,9 +133,9 @@
   import wx from 'weixin-js-sdk'
 
   const MORELIST = [
-    {txt: '图片', icon: '../../../static/img/icon-pic-_im@2x.png', type: 1},
-    {txt: '发送商品', icon: '../../../static/img/icon-goods_im@2x.png', type: 2},
-    {txt: '发送活动', icon: '../../../static/img/icon-send_im@2x.png', type: 3}
+    {txt: '图片', icon: '../../../static/img/icon-pic-_im@2x.png', type: 1}
+    // {txt: '发送商品', icon: '../../../static/img/icon-goods_im@2x.png', type: 2},
+    // {txt: '发送活动', icon: '../../../static/img/icon-send_im@2x.png', type: 3}
   ]
   export default {
     name: 'Chat',
@@ -158,15 +158,13 @@
         moreLists: MORELIST,
         emojiList: emotionsFaceArr,
         emojiShow: false,
-        mortListShow: false
+        mortListShow: false,
+        allowSelectPic: true
       }
     },
     created() {
       this.id = this.$route.query.id
-      if (!this.id) {
-        this.$refs.toast.show('网络异常, 请稍后重试')
-        this.$router.go(-1)
-      }
+      if (this.exceptionHandle(!this.id)) return
       let data = {
         'end_date': this.endDate,
         limit: 40,
@@ -184,7 +182,7 @@
             } else {
               startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
             }
-            this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
+            this.$refs.scroll && this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
             clearTimeout(timer)
           }, 20)
         }
@@ -209,6 +207,7 @@
       this.textBoxDom = this.$refs.textBox
       this.chatDom = this.$refs.chat
       this.listDom = this.$refs.list
+      if (this.exceptionHandle(!this.currentMsg.account)) return
       document.title = this.currentMsg.nickName
       webimHandler.getC2CMsgList(this.currentMsg.account) // 消息已读处理
       this.setUnreadCount(this.currentMsg.account) // vuex
@@ -224,6 +223,13 @@
         'addListMsg',
         'setNowChat'
       ]),
+      exceptionHandle(flag) {
+        if (flag) {
+          this.$refs.toast.show('网络异常, 请稍后重试')
+          this.$router.go(-1)
+          return true
+        }
+      },
       hideInput() {
         this.mortListShow = false
         this.emojiShow = false
@@ -243,6 +249,9 @@
         this.emojiShow = false
       },
       _fileImage(e) {
+        // if (!this.allowSelectPic) return
+        // this.allowSelectPic = false
+        console.log(22222222222222)
         let file = e.target.files[0]
         let params = new FormData()
         params.append('file', file, file.name)
@@ -261,7 +270,7 @@
               desc,
               ext
             }
-            let timeStamp = parseInt(Date.parse(new Date()) / 1000)
+            let timeStamp = parseInt(Date.now() / 1000)
             let msg = {
               from_account_id: this.imInfo.im_account,
               avatar: this.userInfo.avatar,
@@ -309,6 +318,7 @@
         let url
         switch (type) {
           case 1:
+            console.log(666)
             break
           case 2:
             url = this.$route.fullPath + '/select-goods?type=1'
@@ -330,8 +340,8 @@
           } else {
             startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
           }
-          this.$refs.scroll.refresh()
-          this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
+          this.$refs.scroll && this.$refs.scroll.refresh()
+          this.$refs.scroll && this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
           clearTimeout(timer)
         }, 20)
       },
@@ -572,20 +582,20 @@
               height: 45px
               position: relative
               .gray-arrow
-                width:0
-                height:0
+                width: 0
+                height: 0
                 border-width: 5px 6px 5px 0
                 border-style: solid
-                border-color: transparent #D6DCE0 transparent transparent/*透明 灰 透明 透明 */
+                border-color: transparent #D6DCE0 transparent transparent /*透明 灰 透明 透明 */
                 position: absolute
                 right: 0
                 top: 17.5px
                 .white-arrow
-                  width:0
-                  height:0
+                  width: 0
+                  height: 0
                   border-width: 5px 6px 5px 0
                   border-style: solid
-                  border-color: transparent #FFF transparent transparent/*透明 灰 透明 透明 */
+                  border-color: transparent #FFF transparent transparent /*透明 灰 透明 透明 */
                   position: absolute
                   left: 1px
                   top: -5px
@@ -598,11 +608,11 @@
               height: 45px
               position: relative
               .green-arrow
-                width:0
-                height:0
+                width: 0
+                height: 0
                 border-width: 5px 0 5px 6px
                 border-style: solid
-                border-color: transparent transparent transparent $color-green/*透明 灰 透明 透明 */
+                border-color: transparent transparent transparent $color-green /*透明 灰 透明 透明 */
                 position: absolute
                 left: 0
                 top: 17.5px
@@ -616,7 +626,7 @@
             margin-right: 10px
           .chat-msg-new-goods
             width: 226px
-            border: 0.5px solid rgba(0,0,0,0.10)
+            border: 0.5px solid rgba(0, 0, 0, 0.10)
             border-radius: 4px
             background: $color-white
             overflow: hidden
@@ -635,7 +645,7 @@
                 .shop-icon
                   width: 18px
                   height: 18px
-                  border: 0.5px solid rgba(0,0,0,0.10)
+                  border: 0.5px solid rgba(0, 0, 0, 0.10)
                   border-radius: 50%
                   margin-right: 6px
                 .shop-name
@@ -682,7 +692,7 @@
             margin-right: 10px
           .chat-msg-goods
             width: 200px
-            border: 0.5px solid rgba(0,0,0,0.10)
+            border: 0.5px solid rgba(0, 0, 0, 0.10)
             border-radius: 4px
             background: $color-white
             margin-left: 10px
