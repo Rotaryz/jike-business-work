@@ -24,6 +24,7 @@
                       </div>
                       <div class="label-right">
                         <div class="label-name">{{clientData.name}}</div>
+                        <div class="text">{{clientData.sources}}</div>
                       </div>
                     </div>
                     <div class="detail-jump" @click="jumpData">
@@ -851,6 +852,10 @@
                 font-family: $font-family-regular
                 padding-top: 5px
                 margin-bottom: 15px
+              .text
+                font-size: $font-size-12
+                color: $color-888888
+                font-family: $font-family-medium
           .detail-jump
             height: 45px
             width: 25px
@@ -1249,7 +1254,8 @@
   .label-box
     overflow-x: auto
     position:relative
-    z-index: 10
+    margin-top: 10px
+    z-index: 66
     .label-content
       display: inline-block
       white-space: nowrap
@@ -1267,6 +1273,9 @@
     .active
       background: rgba(86, 186, 21, 0.2)
       color: #56BA15
+  .cliten-top
+    padding-bottom: 10px
+    border-bottom-1px(#e5e5e5)
   .msgs-item:last-child
     margin-bottom: 0
 </style>

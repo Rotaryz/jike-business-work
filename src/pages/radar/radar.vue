@@ -60,230 +60,235 @@
         </scroll>
       </div>
       <div class="action-box"  v-if="tabIndex * 1 === 1">
-        <scroll>
-          <div class="action-all">
-            <ul class="action-tab">
-              <li class="tab-item"  :class="actionIndex===index?'active':''"
-                  v-for="(item,index) in actionList"
-                  :key="index"
-                  @click="actionTab(index)">{{item}}</li>
-            </ul>
-            <div class="action-list-con">
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-checkcard@2x.png" class="item-left-img">
+        <ul class="action-tab">
+          <li class="tab-item"  :class="actionIndex===index?'active':''"
+              v-for="(item,index) in actionList"
+              :key="index"
+              @click="actionTab(index)">{{item}}</li>
+        </ul>
+        <div class="action-scroll">
+          <scroll
+            ref="scrollAction">
+            <div class="action-all">
+              <div class="action-list-con">
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-checkcard@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">查看名片</div>
+                    <div class="right-box">
+                      <div class="number">{{ckmpNumber}}次</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="item-right">
-                  <div class="text">查看名片</div>
-                  <div class="right-box">
-                    <div class="number">{{ckmpNumber}}次</div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-zancard@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">点赞名片</div>
+                    <div class="right-box">
+                      <div class="number">{{dzmpNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-relaycard@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">转发名片</div>
+                    <div class="right-box">
+                      <div class="number">{{zfmpNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-call@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">拨打电话</div>
+                    <div class="right-box">
+                      <div class="number">{{bddhNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-email@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">复制邮箱</div>
+                    <div class="right-box">
+                      <div class="number">{{fzyxNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-address@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">查看地址</div>
+                    <div class="right-box">
+                      <div class="number">{{ckdzNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-addphone@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">保存电话</div>
+                    <div class="right-box">
+                      <div class="number">{{bcdhNumber}}次</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-zancard@2x.png" class="item-left-img">
+              <div class="action-list-con">
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-viewproduct@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">查看产品</div>
+                    <div class="right-box">
+                      <div class="number">{{ckcpNumber}}次</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="item-right">
-                  <div class="text">点赞名片</div>
-                  <div class="right-box">
-                    <div class="number">{{dzmpNumber}}次</div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-viewdetail@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">查看详情</div>
+                    <div class="right-box">
+                      <div class="number">{{ckxqNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-consult@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">咨询产品</div>
+                    <div class="right-box">
+                      <div class="number">{{zxcpNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-relayproduct@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">转发产品</div>
+                    <div class="right-box">
+                      <div class="number">{{zfcpNumber}}次</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-relaycard@2x.png" class="item-left-img">
+              <div class="action-list-con">
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-checktrends@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">查看动态</div>
+                    <div class="right-box">
+                      <div class="number">{{ckdtNumber}}次</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="item-right">
-                  <div class="text">转发名片</div>
-                  <div class="right-box">
-                    <div class="number">{{zfmpNumber}}次</div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-zan@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">点赞动态</div>
+                    <div class="right-box">
+                      <div class="number">{{dzdtNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-comment@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">评论动态</div>
+                    <div class="right-box">
+                      <div class="number">{{pldtNumber}}次</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-icon-relaytrends@2x.png" class="item-left-img">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">转发动态</div>
+                    <div class="right-box">
+                      <div class="number">{{zfdtNumber}}次</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-call@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">拨打电话</div>
-                  <div class="right-box">
-                    <div class="number">{{bddhNumber}}次</div>
+              <div class="action-list-con">
+                <div class="item-list">
+                  <div class="item-left">
+                    <img src="./icon-website@2x.png" class="item-left-img">
                   </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-email@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">复制邮箱</div>
-                  <div class="right-box">
-                    <div class="number">{{fzyxNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-address@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">查看地址</div>
-                  <div class="right-box">
-                    <div class="number">{{ckdzNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-addphone@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">保存电话</div>
-                  <div class="right-box">
-                    <div class="number">{{bcdhNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="action-list-con">
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-viewproduct@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">查看产品</div>
-                  <div class="right-box">
-                    <div class="number">{{ckcpNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-viewdetail@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">查看详情</div>
-                  <div class="right-box">
-                    <div class="number">{{ckxqNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-consult@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">咨询产品</div>
-                  <div class="right-box">
-                    <div class="number">{{zxcpNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-relayproduct@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">转发产品</div>
-                  <div class="right-box">
-                    <div class="number">{{zfcpNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="action-list-con">
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-checktrends@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">查看动态</div>
-                  <div class="right-box">
-                    <div class="number">{{ckdtNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-zan@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">点赞动态</div>
-                  <div class="right-box">
-                    <div class="number">{{dzdtNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-comment@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">评论动态</div>
-                  <div class="right-box">
-                    <div class="number">{{pldtNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-icon-relaytrends@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">转发动态</div>
-                  <div class="right-box">
-                    <div class="number">{{zfdtNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="action-list-con">
-              <div class="item-list">
-                <div class="item-left">
-                  <img src="./icon-website@2x.png" class="item-left-img">
-                </div>
-                <div class="item-right">
-                  <div class="text">查看官网</div>
-                  <div class="right-box">
-                    <div class="number">{{ckgwNumber}}次</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </scroll>
-      </div>
-      <div class="people-box" v-if="tabIndex * 1 === 2">
-        <scroll  ref="scrollPeople"
-                 :data="peopleDataList"
-                 :bcColor="'#f1f2f5'"
-                 :pullUpLoad="pullUpPeoleLoadObj"
-                 :showNoMore="peopleMore"
-                 @pullingUp="onPeoplePullingUp">
-          <div class="people-all">
-            <ul class="action-tab">
-              <li class="tab-item"  :class="tabPeopleIndex===index?'active':''"
-                  v-for="(item,index) in tapPeopleList"
-                  :key="index"
-                  @click="peopleTab(index)">{{item}}</li>
-            </ul>
-            <div class="msgs-list msgs-people">
-              <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
-                <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
-                <div class="msg-item-content">
-                  <img :src="item.image_url" class="msgs-left">
-                  <div class="msgs-right">
-                    <div class="msgs-container">
-                      <p class="msgs-p">{{item.nickname}}跟你互动了<span class="green">{{item.count_sum}}</span>次</p>
+                  <div class="item-right">
+                    <div class="text">查看官网</div>
+                    <div class="right-box">
+                      <div class="number">{{ckgwNumber}}次</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </scroll>
+          </scroll>
+        </div>
+      </div>
+      <div class="people-box" v-if="tabIndex * 1 === 2">
+        <ul class="action-tab">
+          <li class="tab-item"  :class="tabPeopleIndex===index?'active':''"
+              v-for="(item,index) in tapPeopleList"
+              :key="index"
+              @click="peopleTab(index)">{{item}}</li>
+        </ul>
+        <div class="action-scroll">
+          <scroll  ref="scrollPeople"
+                   :data="peopleDataList"
+                   :bcColor="'#f1f2f5'"
+                   :pullUpLoad="pullUpPeoleLoadObj"
+                   :showNoMore="peopleMore"
+                   @pullingUp="onPeoplePullingUp">
+            <div class="people-all">
+              <div class="msgs-list msgs-people">
+                <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
+                  <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
+                  <div class="msg-item-content">
+                    <img :src="item.image_url" class="msgs-left">
+                    <div class="msgs-right">
+                      <div class="msgs-container">
+                        <p class="msgs-p">{{item.nickname}}跟你互动了<span class="green">{{item.count_sum}}</span>次</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </scroll>
+        </div>
       </div>
     </div>
     <router-view></router-view>
@@ -373,6 +378,7 @@
         }
       },
       peopleTab(index) {
+        this.$refs.scrollPeople.scrollTo(0, 0)
         this.tabPeopleIndex = index
         switch (index * 1) {
           case 0:
@@ -390,6 +396,7 @@
         }
       },
       actionTab(index) {
+        this.$refs.scrollAction.scrollTo(0, 0)
         this.actionIndex = index
         switch (index * 1) {
           case 0:
@@ -791,6 +798,14 @@
         .item-list:last-child
           .item-right
             border-bottom-1px(rgba(255,255,255,0))
+    .action-scroll
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 70px
+      left: 0
+      right: 0
+      bottom: 0
     .action-tab
       padding: 20px 0
       layout(row)

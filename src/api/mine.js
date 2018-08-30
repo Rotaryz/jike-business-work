@@ -44,7 +44,7 @@ export default {
    * @returns {*}
    */
   updateMyInfoAddress (data) {
-    let url = 'api/employee/my-card-address'
+    let url = 'api/employee/update-card-address'
     return request.post(url, data)
   }
 }

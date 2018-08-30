@@ -34,6 +34,7 @@
   import Toast from 'components/toast/toast'
   import {Mine} from 'api'
   import {ERR_OK} from '../../common/js/config'
+  import AMap from 'AMap'
 
   export default {
     name: 'addAdress',
@@ -90,8 +91,7 @@
           return
         }
         let text = this.address + this.detailAdress
-        console.log(text)
-        this.getMapInfo(text)
+        this.getGeocoder(text)
         let data = {
           address: this.detailAdress,
           province: this.province,
@@ -106,6 +106,23 @@
             this.$emit('getSign')
           } else {
             this.$refs.toast.show(res.message)
+          }
+        })
+      },
+      getGeocoder(text) {
+        let that = this
+        console.log(text)
+        let geocoder
+        AMap.plugin('AMap.Geocoder', function() {
+          geocoder = new AMap.Geocoder({
+            city: '010'
+          })
+        })
+        geocoder.getLocation(text, function (status, result) {
+          if (status === 'complete' && result.info === 'OK') {
+            that.longitude = result.geocodes[0].location.lng
+            that.latitude = result.geocodes[0].location.lat
+            console.log(result.geocodes[0].location.lat, result.geocodes[0].location.lng)
           }
         })
       }
