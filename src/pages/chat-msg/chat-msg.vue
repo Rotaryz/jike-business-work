@@ -158,8 +158,7 @@
         moreLists: MORELIST,
         emojiList: emotionsFaceArr,
         emojiShow: false,
-        mortListShow: false,
-        allowSelectPic: true
+        mortListShow: false
       }
     },
     created() {
@@ -249,9 +248,6 @@
         this.emojiShow = false
       },
       _fileImage(e) {
-        // if (!this.allowSelectPic) return
-        // this.allowSelectPic = false
-        console.log(22222222222222)
         let file = e.target.files[0]
         let params = new FormData()
         params.append('file', file, file.name)
@@ -318,7 +314,6 @@
         let url
         switch (type) {
           case 1:
-            console.log(666)
             break
           case 2:
             url = this.$route.fullPath + '/select-goods?type=1'
