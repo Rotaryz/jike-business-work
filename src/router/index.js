@@ -31,6 +31,7 @@ const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
 const NewGroupMsg = () => import('pages/new-group-msg/new-group-msg')
 const NewsAddGroup = () => import('pages/news-add-group/news-add-group')
+const NewsChatGroup = () => import('pages/news-chat-group/news-chat-group')
 
 Vue.use(Router)
 
@@ -195,6 +196,13 @@ const route = new Router({
         component: NewsAddGroup,
         meta: {
           title: '添加组'
+        }
+      },
+      {
+        path: '/news-chat-group',
+        component: NewsChatGroup,
+        meta: {
+          title: '群发'
         }
       },
       {
