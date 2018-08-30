@@ -279,6 +279,9 @@
         position: relative
         background-size: cover
         background-repeat: no-repeat
+        border-top-left-radius: 2px
+        border-top-right-radius: 2px
+        overflow: hidden
         .header-mask
           top: 0
           left: 0
@@ -321,6 +324,8 @@
     color: $color-text
     font-family: $font-family-regular
     box-shadow: 0 4px 20px 0 #EAF0FD
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
     .mine-name
       font-family: PingFangSC-Semibold
       font-size: $font-size-22
@@ -417,6 +422,8 @@
     font-family: $font-family-regular
     font-size: $font-size-medium-x
     box-shadow: 0 4px 20px 0 #EAF0FD
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
     .mine-detail-item
       color: $color-text
       font-size: $font-size-mediums
