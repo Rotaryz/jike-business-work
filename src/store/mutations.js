@@ -91,10 +91,16 @@ const mutations = {
   [TYPES.SET_IM_INFO] (state, imInfo) {
     state.imInfo = imInfo
   },
-  [TYPES.SET_NOW_CHAT] (state, arr) {
-    state.nowChat = arr
+  // [TYPES.SET_NOW_CHAT] (state, arr) {
+  //   state.nowChat = arr
+  // },
+  [TYPES.SET_NOW_CHAT](state, arr) {
+    state.nowChat = arr.map((item) => {
+      item.html = Utils.msgFaceToHtml(item.content)
+      return item
+    })
   },
-  [TYPES.ADD_NOW_CHAT] (state, msg) {
+  [TYPES.ADD_NOW_CHAT](state, msg) {
     let newMsg
     if (msg.type === 'chat') {
       newMsg = {
@@ -106,21 +112,27 @@ const mutations = {
         nickName: state.currentMsg.nickName,
         sessionId: msg.fromAccount,
         unreadMsgCount: 0,
-        type: 1
+        type: 1,
+        html: Utils.msgFaceToHtml(msg.text)
       }
     } else {
       let data = JSON.parse(msg.data)
+      let desc = JSON.parse(msg.desc)
       newMsg = {
         from_account_id: msg.fromAccount,
-        avatar: state.currentMsg.avatar,
         time: msg.time,
         url: data.url,
         title: data.title,
+        goods_id: data.goods_id,
+        goods_price: data.goods_price,
+        original_price: data.original_price,
+        avatar: data.avatar,
+        shop_name: data.shop_name,
         msgTimeStamp: msg.time,
         nickName: state.currentMsg.nickName,
         sessionId: msg.fromAccount,
         unreadMsgCount: 0,
-        type: 2
+        type: desc.log_type
       }
     }
     if (state.nowChat.length) {
@@ -132,6 +144,44 @@ const mutations = {
     }
     state.nowChat = [...state.nowChat, newMsg]
   },
+  // [TYPES.ADD_NOW_CHAT] (state, msg) {
+  //   let newMsg
+  //   if (msg.type === 'chat') {
+  //     newMsg = {
+  //       from_account_id: msg.fromAccount,
+  //       avatar: state.currentMsg.avatar,
+  //       content: msg.text,
+  //       time: msg.time,
+  //       msgTimeStamp: msg.time,
+  //       nickName: state.currentMsg.nickName,
+  //       sessionId: msg.fromAccount,
+  //       unreadMsgCount: 0,
+  //       type: 1
+  //     }
+  //   } else {
+  //     let data = JSON.parse(msg.data)
+  //     newMsg = {
+  //       from_account_id: msg.fromAccount,
+  //       avatar: state.currentMsg.avatar,
+  //       time: msg.time,
+  //       url: data.url,
+  //       title: data.title,
+  //       msgTimeStamp: msg.time,
+  //       nickName: state.currentMsg.nickName,
+  //       sessionId: msg.fromAccount,
+  //       unreadMsgCount: 0,
+  //       type: 2
+  //     }
+  //   }
+  //   if (state.nowChat.length) {
+  //     let lastItem = state.nowChat[state.nowChat.length - 1]
+  //     let lastTime = lastItem.created_at ? lastItem.created_at : lastItem.msgTimeStamp
+  //     newMsg.is_showtime = msg.time - lastTime > TIMELAG
+  //   } else {
+  //     newMsg.is_showtime = true
+  //   }
+  //   state.nowChat = [...state.nowChat, newMsg]
+  // },
   [TYPES.SET_IM_ING] (state, boolean) {
     state.imIng = boolean
   },
