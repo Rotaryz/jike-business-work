@@ -9,10 +9,10 @@
       <section class="f3"></section>
     </article>
     <section class="custom-content" v-if="selectTab === 0">
-      <ul class="custom-tab border-bottom-1px">
+      <ul class="custom-tab border-bottom-1px" v-if="dataArray.length">
         <li v-for="(item, index) in groupList" :key="index" :class="item.isCheck?'active':''" @click="checkCustom(item)">{{item.name}}</li>
       </ul>
-      <div class="custom-scroll">
+      <div class="custom-scroll" v-if="dataArray.length">
         <scroll bcColor="#fff"
                 ref="scroll"
                 :data="dataArray"
@@ -28,22 +28,21 @@
           </ul>
         </scroll>
       </div>
+      <section class="exception-box" v-if="isEmpty">
+        <exception errType="customer"></exception>
+      </section>
     </section>
     <section class="group-content" v-if="selectTab === 1">
       <section class="group-add border-bottom-1px" @click="toCreateGroup">
         <div class="icon"></div>
         <div class="title">新建分组</div>
       </section>
-      <article class="group-scroll">
+      <article class="group-scroll" v-if="userListArr.length">
         <scroll bcColor="#fff"
-                ref="scroll"
                 :data="userListArr"
-                :pullUpLoad="pullUpLoadObj"
-                @pullingUp="onPullingUp"
         >
-          <ul class="user-list-box" v-if="userListArr.length">
+          <ul class="user-list-box">
             <li class="user-list-item"
-                v-if="userListArr.length"
                 v-for="(item,index) in userListArr"
                 :key="index"
                 @click="toUserList(item)"
@@ -66,8 +65,8 @@
           </ul>
         </scroll>
       </article>
-      <section class="exception-box" v-if="isEmpty">
-        <exception errType="customer"></exception>
+      <section class="exception-box" v-if="userListIsEmpty">
+        <exception errType="nodata"></exception>
       </section>
     </section>
     <toast ref="toast"></toast>
@@ -92,9 +91,13 @@
   const tabList = [{title: '客户', number: 0}, {title: '分组', number: 0}]
 
   const groupList = [{
+    orderBy: 'join',
+    name: '加入时间',
+    isCheck: true
+  }, {
     orderBy: '',
     name: '成交率',
-    isCheck: true
+    isCheck: false
   }, {
     orderBy: 'follow',
     name: '跟进时间',
@@ -102,10 +105,6 @@
   }, {
     orderBy: 'active',
     name: '活跃时间',
-    isCheck: false
-  }, {
-    orderBy: 'join',
-    name: '加入时间',
     isCheck: false
   }]
   const LIMIT = 10
@@ -117,6 +116,7 @@
         tabList: tabList,
         userListArr: [],
         dataArray: [],
+        userListIsEmpty: false,
         isEmpty: false,
         checkedItem: null, // 被选中的分组
         pullUpLoad: true,
@@ -132,8 +132,8 @@
     },
     created() {
       this.$emit('tabChange', 3)
-      this.getGroupList()
       this.getCustomerList()
+      this._getGroupList()
     },
     beforeDestroy() {
     },
@@ -146,25 +146,30 @@
       checkCustom(item) {
         this.groupList.forEach(item => { item.isCheck = false })
         item.isCheck = true
+        this.pullUpLoad = true
+        this.isAll = false
+        this.changeGroup()
       },
       refresh() {
         this.isAll = false
         this.page = 1
         this.limit = LIMIT
-        this.getGroupList()
+        this._getGroupList()
         this.getCustomerList()
       },
       toSearch() {
         const path = `/client/client-search`
         this.$router.push({path})
       },
-      getGroupList() {
-        Client.getGroupList().then(res => {
-          if (res.error === ERR_OK) {
-            this.userListArr = res.data
-          } else {
-            this.$refs.toast.show(res.message)
+      _getGroupList(data) {
+        Client.getGroupList(data).then(res => {
+          if (res.error !== ERR_OK) {
+            return this.$refs.toast.show(res.message)
           }
+          let arr = res.data
+          this.userListArr = arr
+          this.tabList[1].number = arr.length
+          this.userListIsEmpty = !arr.length
         })
       },
       getCustomerList() {
@@ -172,7 +177,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
-            this.total = res.meta.total
+            this.tabList[0].number = res.meta.total
             this.isEmpty = !this.dataArray.length
             this.pullUpLoad = !!this.dataArray.length // 防止下拉报错
           } else {
@@ -196,9 +201,6 @@
         const path = `/client/client-set-group`
         this.$router.push({path, query: {id: item.id}}) // 客户id
       },
-      showGroupList() {
-        this.$refs.sheet.show()
-      },
       changeGroup() {
         const data = {order_by: this.checkedGroup.orderBy}
         Client.getCustomerList(data).then(res => {
@@ -216,9 +218,11 @@
         const data = {groupId: this.checkedItem.id}
         const idx = this.userListArr.findIndex(val => val.id === this.checkedItem.id)
         this.userListArr.splice(idx, 1)
+        this.tabList[1].number = this.userListArr.length
         Client.delGroup(data).then(res => {
           if (res.error === ERR_OK) {
           } else {
+            this._getGroupList()
             this.$refs.toast.show(res.message)
           }
         })
@@ -231,10 +235,9 @@
       },
       onPullingUp() {
         // 更新数据
-        console.info('pulling up and load data')
         if (!this.pullUpLoad) return
         if (this.isAll) return this.$refs.scroll.forceUpdate()
-
+        console.info('pulling up and load data')
         let page = ++this.page
         let limit = this.limit
         const data = {order_by: this.checkedGroup.orderBy, page, limit}
@@ -242,11 +245,11 @@
           if (res.error === ERR_OK) {
             if (res.data && res.data.length) {
               let newArr = this.dataArray.concat(res.data)
-              this.total = res.meta.total // 共多少人
               this.dataArray = newArr
             } else {
               this.$refs.scroll.forceUpdate()
               this.isAll = true
+              this.pullUpLoad = false
             }
           } else {
             this.$refs.toast.show(res.message)
@@ -254,7 +257,7 @@
         })
       },
       rebuildScroll() {
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
         })
@@ -401,8 +404,8 @@
           height: 75px
           lr-border-bottom-1px()
           .user-list-item-wrapper
-            width :100%
-            box-sizing :border-box
+            width: 100%
+            box-sizing: border-box
             layout(row, block, nowrap)
             align-items: center
             .users-avatar
@@ -410,7 +413,7 @@
               height: 45px
               background-color: $color-f5f7f9
               overflow: hidden
-              margin-left :15px
+              margin-left: 15px
               .avatar
                 float: left
                 width: 15px
@@ -420,10 +423,12 @@
             .name
               flex: 1
               margin: 0 10px
+              height: 75px
+              line-height: @height
               no-wrap()
             .number
               font-size: $font-size-14
               color: $color-888888
               letter-spacing: 0.3px
-              margin-right :15px
+              margin-right: 15px
 </style>
