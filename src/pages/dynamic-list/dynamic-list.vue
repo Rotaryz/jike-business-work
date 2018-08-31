@@ -299,6 +299,7 @@
         var a = document.querySelector('#link')
         var event = new MouseEvent('click')
         a.href = url
+        a.download = `${i}.jpg`
         this.downNum = i + 1
         a.dispatchEvent(event)
         if (i >= this.dynamicCopy.length - 1) {
