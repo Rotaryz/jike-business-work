@@ -70,186 +70,14 @@
           <scroll
             ref="scrollAction">
             <div class="action-all">
-              <div class="action-list-con">
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-checkcard@2x.png" class="item-left-img">
+              <div class="action-list-con" v-for="(item, index) in actionListData" v-bind:key="index">
+                <div class="item-list" v-for="(data, itemindex) in item" v-bind:key="itemindex">
+                  <div class="item-left" :class="data.icon">
                   </div>
                   <div class="item-right">
-                    <div class="text">查看名片</div>
+                    <div class="text">{{data.name}}</div>
                     <div class="right-box">
-                      <div class="number">{{ckmpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-zancard@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">点赞名片</div>
-                    <div class="right-box">
-                      <div class="number">{{dzmpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-relaycard@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">转发名片</div>
-                    <div class="right-box">
-                      <div class="number">{{zfmpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-call@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">拨打电话</div>
-                    <div class="right-box">
-                      <div class="number">{{bddhNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-email@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">复制邮箱</div>
-                    <div class="right-box">
-                      <div class="number">{{fzyxNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-address@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">查看地址</div>
-                    <div class="right-box">
-                      <div class="number">{{ckdzNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-addphone@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">保存电话</div>
-                    <div class="right-box">
-                      <div class="number">{{bcdhNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="action-list-con">
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-viewproduct@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">查看产品</div>
-                    <div class="right-box">
-                      <div class="number">{{ckcpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-viewdetail@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">查看详情</div>
-                    <div class="right-box">
-                      <div class="number">{{ckxqNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-consult@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">咨询产品</div>
-                    <div class="right-box">
-                      <div class="number">{{zxcpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-relayproduct@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">转发产品</div>
-                    <div class="right-box">
-                      <div class="number">{{zfcpNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="action-list-con">
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-checktrends@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">查看动态</div>
-                    <div class="right-box">
-                      <div class="number">{{ckdtNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-zan@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">点赞动态</div>
-                    <div class="right-box">
-                      <div class="number">{{dzdtNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-comment@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">评论动态</div>
-                    <div class="right-box">
-                      <div class="number">{{pldtNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-icon-relaytrends@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">转发动态</div>
-                    <div class="right-box">
-                      <div class="number">{{zfdtNumber}}次</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="action-list-con">
-                <div class="item-list">
-                  <div class="item-left">
-                    <img src="./icon-website@2x.png" class="item-left-img">
-                  </div>
-                  <div class="item-right">
-                    <div class="text">查看官网</div>
-                    <div class="right-box">
-                      <div class="number">{{ckgwNumber}}次</div>
+                      <div class="number">{{data.count_sum}}次</div>
                     </div>
                   </div>
                 </div>
@@ -303,6 +131,113 @@
   import storage from 'storage-controller'
   import {ease} from 'common/js/ease'
   import utils from 'common/js/utils'
+
+  const WORKLIST = [
+    [
+      {
+        icon: 'ckmp',
+        name: '查看名片',
+        event_no: '10000',
+        count_sum: 0
+      },
+      {
+        icon: 'dzmp',
+        name: '点赞名片',
+        event_no: '10001',
+        count_sum: 0
+      },
+      {
+        icon: 'zfmp',
+        name: '转发名片',
+        event_no: '10005',
+        count_sum: 0
+      },
+      {
+        icon: 'bddh',
+        name: '拨打电话',
+        event_no: '10007',
+        count_sum: 0
+      },
+      {
+        icon: 'fzyx',
+        name: '复制邮箱',
+        event_no: '10003',
+        count_sum: 0
+      },
+      {
+        icon: 'ckdz',
+        name: '查看地址',
+        event_no: '10004',
+        count_sum: 0
+      },
+      {
+        icon: 'bcdh',
+        name: '保存电话',
+        event_no: '10008',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckcp',
+        name: '查看产品',
+        event_no: '20001',
+        count_sum: 0
+      },
+      {
+        icon: 'ckxq',
+        name: '查看详情',
+        event_no: '20002',
+        count_sum: 0
+      },
+      {
+        icon: 'zxcp',
+        name: '咨询产品',
+        event_no: '20003',
+        count_sum: 0
+      },
+      {
+        icon: 'zfcp',
+        name: '转发产品',
+        event_no: '20004',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckdt',
+        name: '查看动态',
+        event_no: '30001',
+        count_sum: 0
+      },
+      {
+        icon: 'dzdt',
+        name: '点赞动态',
+        event_no: '30002',
+        count_sum: 0
+      },
+      {
+        icon: 'pldt',
+        name: '评论动态',
+        event_no: '',
+        count_sum: 0
+      },
+      {
+        icon: 'zfdt',
+        name: '转发动态',
+        event_no: '',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckgw',
+        name: '查看官网',
+        event_no: '50001',
+        count_sum: 0
+      }
+    ]
+  ]
   export default {
     name: 'Radar',
     created() {
@@ -343,25 +278,10 @@
         tabIndex: 0,
         actionList: ['全部', '今天', '7天', '30天'],
         actionIndex: 0,
-        ckmpNumber: 0,
-        dzmpNumber: 0,
-        zfmpNumber: 0,
-        bddhNumber: 0,
-        fzyxNumber: 0,
-        ckdzNumber: 0,
-        bcdhNumber: 0,
-        ckcpNumber: 0,
-        ckxqNumber: 0,
-        zxcpNumber: 0,
-        zfcpNumber: 0,
-        ckdtNumber: 0,
-        dzdtNumber: 0,
-        pldtNumber: 0,
-        zfdtNumber: 0,
-        ckgwNumber: 0,
         peopleDataList: [],
         firstGet: true,
         peopleMore: false,
+        actionListData: WORKLIST,
         page: 0
       }
     },
@@ -492,79 +412,24 @@
           this.$refs.scrollPeople.initScroll()
         })
       },
-      clearActionNum() {
-        this.ckmpNumber = 0
-        this.dzmpNumber = 0
-        this.zfmpNumber = 0
-        this.bddhNumber = 0
-        this.fzyxNumber = 0
-        this.ckdzNumber = 0
-        this.bcdhNumber = 0
-        this.ckcpNumber = 0
-        this.ckxqNumber = 0
-        this.zxcpNumber = 0
-        this.zfcpNumber = 0
-        this.ckdtNumber = 0
-        this.dzdtNumber = 0
-        this.pldtNumber = 0
-        this.zfdtNumber = 0
-        this.ckgwNumber = 0
-      },
       getAllData(time) {
-        this.clearActionNum()
         Im.getActionList(0, 30, this.userInfo.id, 2, time).then((res) => {
           if (res.error === ERR_OK) {
-            for (var i = 0; i < res.data.length; i++) {
-              this.switchNumber(res.data[i].event_no, res.data[i].count_sum)
-            }
+            let dataActionList = WORKLIST
+            dataActionList.forEach((item) => {
+              item.forEach((item1) => {
+                let resArr = res.data.filter((item2) => {
+                  return item1.event_no * 1 === item2.event_no * 1
+                })
+                if (resArr.length) {
+                  item1.count_sum = resArr[0].count_sum
+                } else {
+                  item1.count_sum = 0
+                }
+              })
+            })
           }
         })
-      },
-      switchNumber(type, number) {
-        switch (type * 1) {
-          case 10000:
-            this.ckmpNumber = number
-            break
-          case 10001:
-            this.dzmpNumber = number
-            break
-          case 10005:
-            this.zfmpNumber = number
-            break
-          case 10007:
-            this.bddhNumber = number
-            break
-          case 10003:
-            this.fzyxNumber = number
-            break
-          case 10004:
-            this.ckdzNumber = number
-            break
-          case 10008:
-            this.bcdhNumber = number
-            break
-          case 20001:
-            this.ckcpNumber = number
-            break
-          case 20002:
-            this.ckxqNumber = number
-            break
-          case 20003:
-            this.zxcpNumber = number
-            break
-          case 20004:
-            this.zfcpNumber = number
-            break
-          case 30001:
-            this.ckdtNumber = number
-            break
-          case 30002:
-            this.dzdtNumber = number
-            break
-          case 40001:
-            this.ckgwNumber = number
-            break
-        }
       },
       getPeopleList(time) {
         Im.getActionList(0, 30, this.userInfo.id, 3, time).then((res) => {
@@ -769,10 +634,39 @@
             width: 18px
             height: 18px
             margin-right: 10px
-            .item-left-img
-              width: 100%
-              height: 100%
-              display: block
+            background-size: 18px 18px
+            &.ckmp
+              bg-image('./icon-checkcard')
+            &.dzmp
+              bg-image('./icon-zancard')
+            &.zfmp
+              bg-image('./icon-relaycard')
+            &.bddh
+              bg-image('./icon-call')
+            &.fzyx
+              bg-image('./icon-email')
+            &.ckdz
+              bg-image('./icon-address')
+            &.bcdh
+              bg-image('./icon-addphone')
+            &.ckcp
+              bg-image('./icon-viewproduct')
+            &.ckxq
+              bg-image('./icon-viewdetail')
+            &.zxcp
+              bg-image('./icon-consult')
+            &.zfcp
+              bg-image('./icon-relayproduct')
+            &.ckdt
+              bg-image('./icon-checktrends')
+            &.dzdt
+              bg-image('./icon-zan')
+            &.pldt
+              bg-image('./icon-comment')
+            &.zfdt
+              bg-image('./icon-icon-relaytrends')
+            &.ckgw
+              bg-image('./icon-website')
           .item-right
             layout(row)
             padding-right: 15px
