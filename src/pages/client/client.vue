@@ -8,7 +8,7 @@
       </dl>
       <section class="f3"></section>
     </article>
-    <section class="content" v-if="selectTab === 0">
+    <section class="custom-content" v-if="selectTab === 0">
       <ul class="custom-tab border-bottom-1px">
         <li v-for="(item, index) in groupList" :key="index" :class="item.isCheck?'active':''" @click="checkCustom(item)">{{item.name}}</li>
       </ul>
@@ -29,86 +29,49 @@
         </scroll>
       </div>
     </section>
-    <section class="content" v-if="selectTab === 1">
-      <div class="scroll-list-wrap" v-if="dataArray.length">
-        <ul class="user-list">
-          <li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">
-            <slide-view :useType="1" @grouping="groupingHandler" :item="item">
-              <user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>
-            </slide-view>
-          </li>
-        </ul>
-      </div>
+    <section class="group-content" v-if="selectTab === 1">
+      <section class="group-add border-bottom-1px" @click="toCreateGroup">
+        <div class="icon"></div>
+        <div class="title">新建分组</div>
+      </section>
+      <article class="group-scroll">
+        <scroll bcColor="#fff"
+                ref="scroll"
+                :data="userListArr"
+                :pullUpLoad="pullUpLoadObj"
+                @pullingUp="onPullingUp"
+        >
+          <ul class="user-list-box" v-if="userListArr.length">
+            <li class="user-list-item"
+                v-if="userListArr.length"
+                v-for="(item,index) in userListArr"
+                :key="index"
+                @click="toUserList(item)"
+            >
+              <slide-view :useType="3" @del="delHandler" :item="item">
+                <div slot="content" class="user-list-item-wrapper">
+                  <div class="users-avatar">
+                    <img v-if="item.icon && item.icon.length"
+                         v-for="(user,i) in item.icon"
+                         class="avatar"
+                         :key="i"
+                         :src="user"
+                    />
+                  </div>
+                  <div class="name">{{item.name}}</div>
+                  <div class="number">{{item.number}}人</div>
+                </div>
+              </slide-view>
+            </li>
+          </ul>
+        </scroll>
+      </article>
       <section class="exception-box" v-if="isEmpty">
         <exception errType="customer"></exception>
       </section>
     </section>
-    <!--<section class="status-bar" @click="showGroupList">-->
-    <!--<div class="left">-->
-    <!--<p>{{checkedGroup.name}}</p>-->
-    <!--<img class="icon" src="./icon-down@3x.png" alt=""/>-->
-    <!--</div>-->
-    <!--<div class="right">全部 {{dataArray.length}} 位</div>-->
-    <!--</section>-->
-
-    <!--<scroll bcColor="#fff"-->
-    <!--ref="scroll"-->
-    <!--:data="dataArray"-->
-    <!--:pullUpLoad="pullUpLoadObj"-->
-    <!--@pullingUp="onPullingUp"-->
-    <!--&gt;-->
-
-    <!--<ul class="user-list-box" v-if="userListArr.length">-->
-    <!--<li class="user-list-item"-->
-    <!--v-if="userListArr.length"-->
-    <!--v-for="(item,index) in userListArr"-->
-    <!--:key="index"-->
-    <!--@click="toUserList(item)"-->
-    <!--&gt;-->
-    <!--<slide-view :useType="3" @del="delHandler" :item="item">-->
-    <!--<div slot="content" class="user-list-item">-->
-    <!--<div class="users-avatar">-->
-    <!--<img v-if="item.icon && item.icon.length"-->
-    <!--v-for="(user,i) in item.icon"-->
-    <!--class="avatar"-->
-    <!--:key="i"-->
-    <!--:src="user"-->
-    <!--/>-->
-    <!--</div>-->
-    <!--<div class="item-name">{{item.name}}（{{item.number}}）</div>-->
-    <!--</div>-->
-    <!--</slide-view>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--<section class="user-list-box add-list" @click="toCreateGroup">-->
-    <!--<div class="user-list-item">-->
-    <!--<div class="users-avatar add-list"></div>-->
-    <!--<div class="item-name">新建分组</div>-->
-    <!--</div>-->
-    <!--</section>-->
-    <!--<section class="status-bar" @click="showGroupList">-->
-    <!--<div class="left">-->
-    <!--<p>{{checkedGroup.name}}</p>-->
-    <!--<img class="icon" src="./icon-down@3x.png" alt=""/>-->
-    <!--</div>-->
-    <!--<div class="right">全部 {{dataArray.length}} 位</div>-->
-    <!--</section>-->
-    <!--<div class="scroll-list-wrap" v-if="dataArray.length">-->
-    <!--<ul class="user-list">-->
-    <!--<li class="user-list-item" v-for="(item,index) in dataArray" :key="index" @click="check(item)">-->
-    <!--<slide-view :useType="1" @grouping="groupingHandler" :item="item">-->
-    <!--<user-card :userInfo="item" slot="content" :useType="checkedGroup.orderBy"></user-card>-->
-    <!--</slide-view>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--<section class="exception-box" v-if="isEmpty">-->
-    <!--<exception errType="customer"></exception>-->
-    <!--</section>-->
-    <!--</scroll>-->
-    <!--<confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>-->
-    <!--<action-sheet ref="sheet" :dataArray="groupList" @changeGroup="changeGroup"></action-sheet>-->
     <toast ref="toast"></toast>
+    <confirm-msg ref="confirm" @confirm="msgConfirm"></confirm-msg>
     <router-view @refresh="refresh"></router-view>
   </div>
 </template>
@@ -339,6 +302,14 @@
   .exception-box
     padding-top: 70px
 
+  .client
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 45px
+    background-color: $color-white-fff
+
   .tab-wrapper
     height: 44.5px
     background: $color-white-fff
@@ -372,7 +343,7 @@
     height: 10px
     background: $color-F0F2F5
 
-  .content
+  .custom-content
     .custom-tab
       height: 45px
       layout(row, block, nowrap)
@@ -385,105 +356,74 @@
       letter-spacing: 0.52px
       text-align: center
       line-height: 45px
+      transition: all 0.6s
       .active
         color: #56BA15
     .custom-scroll
       position: absolute
-      top: 155px
+      top: 145px
       bottom: 0
       left: 0
       right: 0
+      overflow: hidden
+      .user-list
+        position: relative
+        .user-list-item
+          height: 75px
+          lr-border-bottom-1px()
+
+  .group-content
+    font-family: $font-family-regular
+    font-size: $font-size-16
+    color: $color-20202E
+    letter-spacing: 0.6px
+    .group-add
+      height: 75px
+      layout(row)
+      align-items: center
+      margin-left: 15px
+      .icon
+        width: 45px
+        height: 45px
+        margin-right: 10px
+        opacity: 0.8
+        background: $color-20202E url("./icon-newconstruction@3x.png") no-repeat center / 20px 20px
+    .group-scroll
+      position: absolute
+      top: 175px
+      bottom: 0
+      left: 0
+      right: 0
+      overflow: hidden
       .user-list-box
         background-color: $color-white-fff
         .user-list-item
-          layout(row)
           height: 75px
-          align-items: center
-          margin-left: 15px
-          border-bottom: 0.5px solid $color-col-line
-          &.add-list
-            border: none
-          .users-avatar
-            width: 45px
-            height: 45px
-            background-color: $color-f5f7f9
-            margin-right: 10px
-            overflow: hidden
-            &.add-list
-              opacity: 0.8
-              background: $color-20202E url("./icon-newconstruction@3x.png") no-repeat center / 20px 20px
-            .avatar
-              float: left
-              width: 15px
-              height: 15px
-              box-sizing: border-box
-              border: 1px solid $color-white-fff
-
-  .client
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 45px
-    background-color: $color-white-fff
-    .user-list-box
-      background-color: $color-white-fff
-      .user-list-item
-        layout(row)
-        height: 75px
-        align-items: center
-        margin-left: 15px
-        border-bottom: 0.5px solid $color-col-line
-        &.add-list
-          border: none
-        .users-avatar
-          width: 45px
-          height: 45px
-          background-color: $color-f5f7f9
-          margin-right: 10px
-          overflow: hidden
-          &.add-list
-            opacity: 0.8
-            background: $color-20202E url("./icon-newconstruction@3x.png") no-repeat center / 20px 20px
-          .avatar
-            float: left
-            width: 15px
-            height: 15px
-            box-sizing: border-box
-            border: 1px solid $color-white-fff
-
-        .item-name
-          font-family: $font-family-regular
-          font-size: $font-size-16
-          color: $color-20202E
-          letter-spacing: 0.6px
-    .status-bar
-      height: 34px
-      background-color: $color-F0F2F5
-      layout(row)
-      justify-content: space-between
-      align-items: center
-      padding: 0 15px
-      .left
-        font-family: $font-family-regular
-        font-size: $font-size-14
-        color: $color-20202E
-        layout(row)
-        align-items: center
-        .icon
-          margin-left: 5px
-          width: 10px
-          height: 5px
-      .right
-        font-family: $font-family-regular
-        font-size: $font-size-12
-        color: $color-888888
-    .scroll-list-wrap
-      position relative
-      overflow: hidden
-
-    .user-list
-      position: relative
-      .user-list-item
-        height: 76px
+          lr-border-bottom-1px()
+          .user-list-item-wrapper
+            width :100%
+            box-sizing :border-box
+            layout(row, block, nowrap)
+            align-items: center
+            .users-avatar
+              width: 45px
+              height: 45px
+              background-color: $color-f5f7f9
+              overflow: hidden
+              margin-left :15px
+              .avatar
+                float: left
+                width: 15px
+                height: 15px
+                box-sizing: border-box
+                border: 1px solid $color-white-fff
+            .name
+              flex: 1
+              margin: 0 10px
+              no-wrap()
+            .number
+              font-size: $font-size-14
+              color: $color-888888
+              letter-spacing: 0.3px
+              margin-right :15px
 </style>
