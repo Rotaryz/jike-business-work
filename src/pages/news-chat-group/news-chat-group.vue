@@ -133,6 +133,12 @@
               desc,
               ext
             }
+            let msg = {
+              time: parseInt(Date.now() / 1000),
+              lastMsg: '[图片信息]'
+            }
+            this.setNewsGetType(true)
+            this.setGroupItem(msg)
             let groupIds = this.currentGroupMsg.map((item) => {
               return item.id
             })
