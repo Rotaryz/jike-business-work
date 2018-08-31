@@ -313,19 +313,6 @@
           a.href = ''
           this._downItem(i + 1)
         }, 200)
-        // wx.downloadFile({
-        //   url: this.dynamicCopy[i].file_url,
-        //   success: (res) => {
-        //     this.downList.push(res.tempFilePath)
-        //     wechat.showLoading(`正在下载${i + 1}/${this.dynamicCopy.length}图片`)
-        //     if (i >= this.dynamicCopy.length - 1) {
-        //       this.showSmallDown = true
-        //       this.showDown = false
-        //       return
-        //     }
-        //     this._downItem(i + 1)
-        //   }
-        // })
       },
       onPullingDown() {
         this.page = 1
