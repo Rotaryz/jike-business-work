@@ -21,8 +21,9 @@ const createLintingRule = () => ({
 
 module.exports = {
   externals: {
-    'wx': 'jWeixin',
-    'map': 'QMap'
+    'AMap':'AMap',
+    'BMap':'BMap',
+    'AMapUI':'AMapUI'
   },
   context: path.resolve(__dirname, '../'),
   entry: {

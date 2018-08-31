@@ -9,7 +9,6 @@
         </div>
       </scroll>
       <div class="btn">
-        <div class="btn-item btn-dark" @click="_back">取消</div>
         <div class="btn-item btn-green" @click="_submit">确定</div>
       </div>
       <toast ref="toast"></toast>
@@ -119,5 +118,5 @@
     .btn-dark
       background: $color-text
     .btn-green
-      background: $color-56
+      background: $color-text
 </style>
