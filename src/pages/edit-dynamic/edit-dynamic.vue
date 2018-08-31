@@ -34,14 +34,14 @@
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
-  import { UpLoad, Live } from 'api'
-  import { ERR_OK } from '../../common/js/config'
+  import {UpLoad, Live} from 'api'
+  import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'edit-dynamic',
-    data () {
+    data() {
       return {
         title: '',
         image: [],
@@ -49,16 +49,16 @@
       }
     },
     methods: {
-      async _fileImage (e) {
+      async _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
       },
-      _infoImage (file) {
+      _infoImage(file) {
         let param = new FormData() // 创建form对象
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
-      _upLoad (item) {
+      _upLoad(item) {
         UpLoad.upLoadImage(item).then((res) => {
           if (res.error === ERR_OK) {
             let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
@@ -69,18 +69,20 @@
           }
         })
       },
-      async _moreImage (arr) {
+      async _moreImage(arr) {
         // let image = {}
         // let sequence = Promise.resolve()
         for (let item of arr) {
           item = this._infoImage(item)
           await this._upLoad(item)
         }
+        let els = document.querySelector('.image-file')
+        els.value = ''
       },
-      _delImage (index) {
+      _delImage(index) {
         this.image.splice(index, 1)
       },
-      _liveLogs () {
+      _liveLogs() {
         if (!this.send) {
           return
         }
@@ -105,13 +107,13 @@
           this.send = true
         })
       },
-      _back () {
+      _back() {
         this.$router.back()
       }
     },
     computed: {
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       }
     },
