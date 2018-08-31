@@ -53,6 +53,9 @@
     created() {
       Mine.getMyInfoAddress().then((res) => {
         if (res.error === ERR_OK) {
+          this.province = res.message.province
+          this.city = res.message.city
+          this.area = res.message.area
           this.detailAdress = res.message.address
           this.address = res.message.province + res.message.city + res.message.area
         } else {
@@ -79,8 +82,6 @@
       selcetAddress() {
         this.$refs.picker.show()
       },
-      getMapInfo(text) {
-      },
       saveAdress() {
         if (this.address.length === 0) {
           this.$refs.toast.show('请选择所在地区')
@@ -92,35 +93,36 @@
         }
         let text = this.address + this.detailAdress
         this.getGeocoder(text)
-        let data = {
-          address: this.detailAdress,
-          province: this.province,
-          city: this.city,
-          area: this.area,
-          longitude: this.longitude,
-          latitude: this.latitude
-        }
-        Mine.updateMyInfoAddress(data).then((res) => {
-          if (res.error === ERR_OK) {
-            this.$router.back()
-            this.$emit('getSign')
-          } else {
-            this.$refs.toast.show(res.message)
-          }
-        })
       },
       getGeocoder(text) {
+        console.log(text)
         let that = this
         let geocoder
         AMap.plugin('AMap.Geocoder', function() {
-          geocoder = new AMap.Geocoder({
-            city: '010'
-          })
+          geocoder = new AMap.Geocoder()
         })
         geocoder.getLocation(text, function (status, result) {
+          console.log(result)
           if (status === 'complete' && result.info === 'OK') {
             that.longitude = result.geocodes[0].location.lng
             that.latitude = result.geocodes[0].location.lat
+            // console.log(result.geocodes[0].location.lng, result.geocodes[0].location.lat)
+            let data = {
+              address: that.detailAdress,
+              province: that.province,
+              city: that.city,
+              area: that.area,
+              longitude: that.longitude,
+              latitude: that.latitude
+            }
+            Mine.updateMyInfoAddress(data).then((res) => {
+              if (res.error === ERR_OK) {
+                that.$router.back()
+                that.$emit('getSign')
+              } else {
+                that.$refs.toast.show(res.message)
+              }
+            })
           }
         })
       }

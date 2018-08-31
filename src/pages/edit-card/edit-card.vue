@@ -65,7 +65,7 @@
                 <router-link tag="span" to="editCard/addAdress" class="mine-detail-item">
                   <span class="item-text">地址</span>
                   <div class="address-box">
-                    <div class="text">{{mine.address}}</div>
+                    <div class="text">{{address}}</div>
                     <img src="./icon-pressed@2x.png" alt="" class="address-img">
                   </div>
                 </router-link>
@@ -108,7 +108,7 @@
 <script>
   import { ERR_OK } from '../../common/js/config'
   import Scroll from 'components/scroll/scroll'
-  import { Business, UpLoad } from 'api'
+  import { Business, UpLoad, Mine } from 'api'
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
   import imageClipper from '../../components/cropper/cropper'
@@ -126,7 +126,8 @@
         imageBig: '',
         cropImg: '',
         loading: false,
-        header: [1, 2, 3, 4, 5, 6, 7, 8]
+        header: [1, 2, 3, 4, 5, 6, 7, 8],
+        address: ''
       }
     },
     created () {
@@ -159,14 +160,28 @@
       },
       getSign () {
         this.mine.signature = this.$store.state.signature
+        Mine.getMyInfoAddress().then((res) => {
+          if (res.error === ERR_OK) {
+            this.address = res.message.province + res.message.city + res.message.area + res.message.address
+          } else {
+            this.$refs.toast.show(res.message)
+          }
+        })
       },
       ...mapActions(['setSignature', 'setCutImg']),
       _getMine () {
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
             this.mine = res.data
-            this.setSignature(this.mine.signature)
             console.log(this.mine)
+            this.setSignature(this.mine.signature)
+          }
+        })
+        Mine.getMyInfoAddress().then((res) => {
+          if (res.error === ERR_OK) {
+            this.address = res.message.province + res.message.city + res.message.area + res.message.address
+          } else {
+            this.$refs.toast.show(res.message)
           }
         })
       },
