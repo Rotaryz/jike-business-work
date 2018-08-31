@@ -98,10 +98,10 @@
                    :data="peopleDataList"
                    :bcColor="'#f1f2f5'"
                    :pullUpLoad="pullUpPeoleLoadObj"
-                   :showNoMore="peopleMore"
+                   :showNoMore="false"
                    @pullingUp="onPeoplePullingUp">
             <div class="people-all">
-              <div class="msgs-list msgs-people">
+              <div class="msgs-list msgs-people" v-if="peopleDataList.length !== 0">
                 <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
                   <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
                   <div class="msg-item-content">
@@ -115,6 +115,9 @@
                 </div>
               </div>
             </div>
+            <section class="exception-box" v-if="peopleDataList.length === 0">
+              <exception errType="nodata"></exception>
+            </section>
           </scroll>
         </div>
       </div>
@@ -131,6 +134,7 @@
   import storage from 'storage-controller'
   import {ease} from 'common/js/ease'
   import utils from 'common/js/utils'
+  import Exception from 'components/exception/exception'
 
   const WORKLIST = [
     [
@@ -546,7 +550,8 @@
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Exception
     }
   }
 </script>
@@ -555,6 +560,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top: 70px
   .radar
     width: 100vw
     position: fixed

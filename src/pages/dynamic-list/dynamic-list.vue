@@ -13,7 +13,7 @@
         <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
           <!--<img class="copy-item" @click="_goCopy(item.live_log_detail, item.content, item)" v-if="isMine && imageUrl" :src="imageUrl + '/ws-image/btn-share@2x.png'">-->
           <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -111,7 +111,7 @@
             </div>
           </div>
           <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -299,6 +299,7 @@
         var a = document.querySelector('#link')
         var event = new MouseEvent('click')
         a.href = url
+        a.download = `${i}.jpg`
         this.downNum = i + 1
         a.dispatchEvent(event)
         if (i >= this.dynamicCopy.length - 1) {
@@ -312,19 +313,6 @@
           a.href = ''
           this._downItem(i + 1)
         }, 200)
-        // wx.downloadFile({
-        //   url: this.dynamicCopy[i].file_url,
-        //   success: (res) => {
-        //     this.downList.push(res.tempFilePath)
-        //     wechat.showLoading(`正在下载${i + 1}/${this.dynamicCopy.length}图片`)
-        //     if (i >= this.dynamicCopy.length - 1) {
-        //       this.showSmallDown = true
-        //       this.showDown = false
-        //       return
-        //     }
-        //     this._downItem(i + 1)
-        //   }
-        // })
       },
       onPullingDown() {
         this.page = 1
