@@ -165,7 +165,7 @@
                     sessionId: item1.account,
                     unreadMsgCount: 0,
                     avatar: item1.avatar,
-                    nickName: item1.nickname
+                    nickName: item1.nickName
                   }
                   this.addListMsg({msg: addMsg, type: 'mineAdd'})
                 }, () => {
@@ -237,7 +237,7 @@
                 sessionId: item1.account,
                 unreadMsgCount: 0,
                 avatar: item1.avatar,
-                nickName: item1.nickname
+                nickName: item1.nickName
               }
               this.addListMsg({msg: addMsg, type: 'mineAdd'})
             }, () => {
