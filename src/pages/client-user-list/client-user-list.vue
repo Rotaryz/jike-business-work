@@ -14,7 +14,7 @@
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
                   v-if="dataArray.length"
-                  bcColor="#f0f2f5"
+                  bcColor="#fff"
                   :data="dataArray"
                   :pullUpLoad="pullUpLoadObj"
                   @pullingUp="onPullingUp">
