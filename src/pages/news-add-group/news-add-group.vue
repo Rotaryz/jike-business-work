@@ -26,7 +26,7 @@
           </ul>
         </scroll>
       </section>
-      <section class="btn-confirm" v-if="dataArray.length">确定</section>
+      <section class="btn-confirm" v-if="dataArray.length" :class="checkArr.length ? '' : 'gray'" @click="checkOver">确定</section>
       <section class="exception-box" v-if="isEmpty && !dataArray.length">
         <exception errType="nodata"></exception>
       </section>
@@ -36,7 +36,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import Scroll from 'components/scroll/scroll'
   import Exception from 'components/exception/exception'
   import Toast from 'components/toast/toast'
@@ -60,16 +60,23 @@
         pullUpLoadNoMoreTxt: '没有更多了',
         page: 1,
         hasMore: true,
-        checkStatus: 0
+        checkStatus: 0,
+        checkArr: []
       }
     },
     created() {
       this._getGroupList()
     },
     methods: {
+      ...mapActions([
+        'setCurrentGroupMsg'
+      ]),
       check(item) {
         if (!item.number) return
         item.isCheck = !item.isCheck
+        this.checkArr = this.dataArray.filter((item) => {
+          return item.isCheck
+        })
       },
       _getGroupList(data) {
         News.getGroupList(data).then(res => {
@@ -92,6 +99,12 @@
           }
           this.hasMore = arr.length
         })
+      },
+      checkOver() {
+        if (!this.checkArr.length) return
+        this.setCurrentGroupMsg(this.checkArr)
+        let url = '/news-chat-group'
+        this.$router.replace(url)
       },
       scrollTop() {
         this.$refs.scroll && this.$refs.scroll.scrollTo(0, 0)
@@ -155,6 +168,8 @@
     font-size: $font-size-16
     color: $color-white-fff
     letter-spacing: 0.3px
+  .gray.btn-confirm
+    background: #ccc
 
   .news-add-group
     fill-box()

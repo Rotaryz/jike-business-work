@@ -58,7 +58,7 @@
           if (res.error === ERR_OK) {
             let imInfo = res.data
             this.setImInfo(imInfo)
-            // console.log(imInfo)
+            console.log(imInfo)
             this.sdkLogin(imInfo).then(() => {
               this.setImIng(true)
             })

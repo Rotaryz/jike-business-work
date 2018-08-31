@@ -2,7 +2,7 @@
   <transition :name="slide">
     <div class="chat">
       <section class="chat-container" @click.stop="hideInput">
-        <div class="group-wrapper">群发组：老客户组(12)，新客户组(8)，新客户组(8)，新客户组(8)，新客户组(8)，新客户组(8)，新客户组(8)</div>
+        <div class="group-wrapper">群发组：<span v-for="(item1, index1) in currentGroupMsg" :key="index1">{{index1 == (currentGroupMsg.length - 1) ? item1.name : item1.name + '，'}}</span></div>
       </section>
       <section class="chat-input border-top-1px">
         <div class="chat-input-box">
@@ -40,10 +40,10 @@
 <script>
   import Toast from 'components/toast/toast'
   import { mapActions, mapGetters } from 'vuex'
-  // import webimHandler from 'common/js/webim_handler'
+  import webimHandler from 'common/js/webim_handler'
   import storage from 'storage-controller'
-  // import { Im, UpLoad } from 'api'
-  // import { ERR_OK, TIMELAG } from 'common/js/config'
+  import { Im, UpLoad } from 'api'
+  import { ERR_OK } from 'common/js/config'
   import utils from 'common/js/utils'
   import { emotionsFaceArr } from 'common/js/constants'
 
@@ -71,65 +71,17 @@
       }
     },
     created() {
-      // this.id = this.$route.query.id
-      // if (this.exceptionHandle(!this.id)) return
-      // let data = {
-      //   'end_date': this.endDate,
-      //   limit: 40,
-      //   customer_im_account: this.id,
-      //   employee_im_account: this.imInfo.im_account
-      // }
-      // Im.getMsgList(data).then((res) => {
-      //   if (res.error === ERR_OK) {
-      //     let list = res.data.reverse()
-      //     this.setNowChat(list)
-      //     let timer = setTimeout(() => {
-      //       let startY
-      //       if (this.listDom.clientHeight < this.chatDom.clientHeight) {
-      //         startY = 20
-      //       } else {
-      //         startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
-      //       }
-      //       this.$refs.scroll && this.$refs.scroll.scrollTo(0, startY, 10, ease[this.scrollToEasing])
-      //       clearTimeout(timer)
-      //     }, 20)
-      //   }
-      // })
-      // let url = location.href
-      // Global.jssdkConfig({weixin: 'ai_radar', url, current_type: 'zantui'}).then((res) => {
-      //   if (res.error === ERR_OK) {
-      //     res = res.data
-      //     wx.config({
-      //       debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      //       appId: res.appid, // 必填，企业号的唯一标识，此处填写企业号corpid
-      //       timestamp: res.timestamp, // 必填，生成签名的时间戳
-      //       nonceStr: res.noncestr, // 必填，生成签名的随机串
-      //       signature: res.signature, // 必填，签名，见附录1
-      //       jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      //     })
-      //   }
-      // })
+
     },
     mounted() {
       this.textareaDom = this.$refs.inputTxt
       this.textBoxDom = this.$refs.textBox
-      // this.chatDom = this.$refs.chat
-      // this.listDom = this.$refs.list
-      // if (this.exceptionHandle(!this.currentMsg.account)) return
-      // document.title = this.currentMsg.nickName
-      // webimHandler.getC2CMsgList(this.currentMsg.account) // 消息已读处理
-      // this.setUnreadCount(this.currentMsg.account) // vuex
-    },
-    beforeDestroy() {
-      // this.setCurrent({})
-      // this.setNowChat([])
     },
     methods: {
       ...mapActions([
-        // 'setUnreadCount',
-        // 'setCurrent',
-        // 'addListMsg',
-        // 'setNowChat'
+        'setGroupItem',
+        'addListMsg',
+        'setNewsGetType'
       ]),
       exceptionHandle(flag) {
         if (flag) {
@@ -166,63 +118,59 @@
         let params = new FormData()
         params.append('file', file, file.name)
         this.hideInput()
-        // UpLoad.upLoadImage(params).then((res) => {
-        //   if (res.error === ERR_OK) {
-        //     let data = {
-        //       image_id: res.data.id,
-        //       url: res.data.url
-        //     }
-        //     let desc = {log_type: 20}
-        //     let ext = '20005'
-        //     data = JSON.stringify(data)
-        //     desc = JSON.stringify(desc)
-        //     let opt = {
-        //       data,
-        //       desc,
-        //       ext
-        //     }
-        //     let timeStamp = parseInt(Date.now() / 1000)
-        //     let msg = {
-        //       from_account_id: this.imInfo.im_account,
-        //       avatar: this.userInfo.avatar,
-        //       content: '',
-        //       time: timeStamp,
-        //       url: res.data.url,
-        //       msgTimeStamp: timeStamp,
-        //       nickName: this.userInfo.nickName,
-        //       sessionId: this.userInfo.account,
-        //       unreadMsgCount: 0,
-        //       type: 20
-        //     }
-        //     if (this.nowChat.length) {
-        //       let lastItem = this.nowChat[this.nowChat.length - 1]
-        //       let lastTime = lastItem.created_at ? lastItem.created_at : lastItem.msgTimeStamp
-        //       msg.is_showtime = timeStamp - lastTime > TIMELAG
-        //     } else {
-        //       msg.is_showtime = true
-        //     }
-        //     let list = [...this.nowChat, msg]
-        //     this.setNowChat(list)
-        //     let addMsg = {
-        //       text: '[图片信息]',
-        //       time: timeStamp,
-        //       msgTimeStamp: timeStamp,
-        //       fromAccount: this.id,
-        //       sessionId: this.id,
-        //       unreadMsgCount: 0,
-        //       avatar: this.currentMsg.avatar,
-        //       nickName: this.currentMsg.nickName
-        //     }
-        //     this.addListMsg(addMsg)
-        //     this.mortListShow = false
-        //     webimHandler.onSendCustomMsg(opt, this.id).then(res => {
-        //     }, () => {
-        //       this.$refs.toast.show('发送消息不能为空')
-        //     })
-        //   } else {
-        //     this.$refs.toast.show('图片发送失败，请重新发送')
-        //   }
-        // })
+        UpLoad.upLoadImage(params).then((res) => {
+          if (res.error === ERR_OK) {
+            let data = {
+              image_id: res.data.id,
+              url: res.data.url
+            }
+            let desc = {log_type: 20}
+            let ext = '20005'
+            data = JSON.stringify(data)
+            desc = JSON.stringify(desc)
+            let opt = {
+              data,
+              desc,
+              ext
+            }
+            let groupIds = this.currentGroupMsg.map((item) => {
+              return item.id
+            })
+            let reqData = {
+              type: 20,
+              url: res.data.url,
+              group_ids: groupIds
+            }
+            let url = '/news'
+            this.$router.push(url)
+            Im.setGroupList(reqData).then((res) => {
+              console.log(res)
+            })
+            this.mortListShow = false
+            this.currentGroupMsg.map((item) => {
+              item.customers.map((item1) => {
+                webimHandler.onSendCustomMsg(opt, item1).then(res => {
+                  let timeStamp = parseInt(Date.now() / 1000)
+                  let addMsg = {
+                    text: '[图片信息]',
+                    time: timeStamp,
+                    msgTimeStamp: timeStamp,
+                    fromAccount: item1,
+                    sessionId: item1,
+                    unreadMsgCount: 0,
+                    avatar: '',
+                    nickName: ''
+                  }
+                  this.addListMsg(addMsg)
+                }, () => {
+                  // this.$refs.toast.show('网络异常, 请稍后重试')
+                })
+              })
+            })
+          } else {
+            this.$refs.toast.show('图片发送失败，请重新发送')
+          }
+        })
       },
       nextWork(item) {
         let type = item.type * 1
@@ -250,53 +198,47 @@
         }
         this.inputMsg = ''
         this.hideInput()
-        console.log('todo', value)
-        // let timeStamp = parseInt(Date.now() / 1000)
-        // let msg = {
-        //   from_account_id: this.imInfo.im_account,
-        //   avatar: this.userInfo.avatar,
-        //   content: value,
-        //   time: timeStamp,
-        //   msgTimeStamp: timeStamp,
-        //   nickName: this.userInfo.nickName,
-        //   sessionId: this.userInfo.account,
-        //   unreadMsgCount: 0,
-        //   type: 1
-        // }
-        // if (this.nowChat.length) {
-        //   let lastItem = this.nowChat[this.nowChat.length - 1]
-        //   let lastTime = lastItem.created_at ? lastItem.created_at : lastItem.msgTimeStamp
-        //   msg.is_showtime = timeStamp - lastTime > TIMELAG
-        // } else {
-        //   msg.is_showtime = true
-        // }
-        // let list = [...this.nowChat, msg]
-        // this.setNowChat(list)
-        // let addMsg = {
-        //   text: value,
-        //   time: timeStamp,
-        //   msgTimeStamp: timeStamp,
-        //   fromAccount: this.id,
-        //   sessionId: this.id,
-        //   unreadMsgCount: 0,
-        //   avatar: this.currentMsg.avatar,
-        //   nickName: this.currentMsg.nickName
-        // }
-        // this.addListMsg(addMsg)
-        // this.inputMsg = ''
-        // this.hideInput()
-        // this.$refs.scroll.forceUpdate()
-        // if (this.listDom.clientHeight > this.chatDom.clientHeight) {
-        //   let timer = setTimeout(() => {
-        //     let startY = this.chatDom.clientHeight - this.listDom.clientHeight - 20
-        //     this.$refs.scroll.scrollTo(0, startY, 300, ease[this.scrollToEasing])
-        //     clearTimeout(timer)
-        //   }, 20)
-        // }
-        // webimHandler.onSendMsg(value, this.id).then(res => {
-        // }, () => {
-        //   this.$refs.toast.show('网络异常, 请稍后重试')
-        // })
+        let msg = {
+          time: parseInt(Date.now() / 1000),
+          lastMsg: value
+        }
+        this.setNewsGetType(true)
+        this.setGroupItem(msg)
+        this.inputMsg = ''
+        this.hideInput()
+        let url = '/news'
+        this.$router.push(url)
+        let groupIds = this.currentGroupMsg.map((item) => {
+          return item.id
+        })
+        let reqData = {
+          type: 1,
+          content: value,
+          group_ids: groupIds
+        }
+        Im.setGroupList(reqData).then((res) => {
+          console.log(res)
+        })
+        this.currentGroupMsg.map((item) => {
+          item.customers.map((item1) => {
+            webimHandler.onSendMsg(value, item1).then(res => {
+              let timeStamp = parseInt(Date.now() / 1000)
+              let addMsg = {
+                text: value,
+                time: timeStamp,
+                msgTimeStamp: timeStamp,
+                fromAccount: item1,
+                sessionId: item1,
+                unreadMsgCount: 0,
+                avatar: '',
+                nickName: ''
+              }
+              this.addListMsg(addMsg)
+            }, () => {
+              // this.$refs.toast.show('网络异常, 请稍后重试')
+            })
+          })
+        })
       }
     },
     components: {
@@ -318,10 +260,9 @@
     },
     computed: {
       ...mapGetters([
-        // 'currentMsg',
-        // 'imInfo',
-        // 'nowChat',
-        'ios'
+        'currentGroupMsg',
+        'ios',
+        'imInfo'
       ]),
       userInfo() {
         return storage.get('info')
