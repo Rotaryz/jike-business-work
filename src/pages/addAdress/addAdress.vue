@@ -95,18 +95,15 @@
         this.getGeocoder(text)
       },
       getGeocoder(text) {
-        console.log(text)
         let that = this
         let geocoder
         AMap.plugin('AMap.Geocoder', function() {
           geocoder = new AMap.Geocoder()
         })
         geocoder.getLocation(text, function (status, result) {
-          console.log(result)
           if (status === 'complete' && result.info === 'OK') {
             that.longitude = result.geocodes[0].location.lng
             that.latitude = result.geocodes[0].location.lat
-            // console.log(result.geocodes[0].location.lng, result.geocodes[0].location.lat)
             let data = {
               address: that.detailAdress,
               province: that.province,
