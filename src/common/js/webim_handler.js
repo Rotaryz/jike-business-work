@@ -290,7 +290,9 @@ export default class webimHandler {
       let msgTime = Math.round(new Date().getTime() / 1000) // 消息时间戳
       let subType = webim.C2C_MSG_SUB_TYPE.COMMON
       let msg = new webim.Msg(this.selSess, isSend, seq, random, msgTime, this.loginInfo.identifier, subType, this.loginInfo.identifierNick)
-      // 解析文本和表情
+      let textObj = new webim.Msg.Elem.Text(msgtosend)
+      msg.addText(textObj)
+      /** // 解析文本和表情
       let expr = /\[[^[\]]{1,3}\]/mg
       let emotions = msgtosend.match(expr)
       let textObj, faceObj, tmsg, emotionIndex, emotion, restMsgIndex
@@ -320,7 +322,7 @@ export default class webimHandler {
           textObj = new webim.Msg.Elem.Text(msgtosend)
           msg.addText(textObj)
         }
-      }
+      } **/
       this.sendMsg(msg).then(res => {
         resolve(res)
       }, err => {
