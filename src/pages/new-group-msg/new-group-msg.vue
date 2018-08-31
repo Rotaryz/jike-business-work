@@ -13,16 +13,17 @@
           </div>
           <div class="item-content">
             <div class="item-top border-bottom-1px">
-              <div class="item-title">群发组：<text v-for="(item, index) in item.groups">{{item.name}}</text></div>
+              <div class="item-title">群发组：<span v-for="(item1, index1) in item.groups" :key="index1">{{index1 == (item.groups.length - 1) ? item1.name : item1.name + '，'}}</span></div>
+              +
               <div class="item-text" v-html="item.html" v-if="item.type == 1"></div>
-              <img class="item-img" @load="refushBox" v-if="item.type == 20" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535544923614&di=6423e2c5a4addd2dd1959dd1f5551423&imgtype=0&src=http%3A%2F%2Fimg.25pp.com%2Fuploadfile%2Fbizhi%2Fiphone4%2F2011%2F0830%2F20110830054327194_3g.jpg"/>
+              <img class="item-img" @load="refushBox" v-if="item.type == 20" :src="item.url"/>
             </div>
-            <div class="item-down" @click="toChat(item.id)">再发一条</div>
+            <div class="item-down" @click="toChat(item)">再发一条</div>
           </div>
         </div>
       </div>
     </scroll>
-    <div class="new-btn">新建群发</div>
+    <div class="new-btn" @click="newGroup">新建群发</div>
   </div>
 </template>
 
@@ -74,7 +75,8 @@
     methods: {
       ...mapActions([
         'setCurrent',
-        'setGroupItem'
+        'setGroupItem',
+        'setCurrentGroupMsg'
       ]),
       chatMsg(item) {
         let currentMsg = {
@@ -86,9 +88,38 @@
         let url = '/chat?id=' + item.sessionId
         this.$router.push(url)
       },
+      toChat(item) {
+        console.log(item.groups)
+        this.setCurrentGroupMsg(item.groups)
+        let url = '/news-chat-group'
+        this.$router.push(url)
+      },
       onPullingUp() {
-        if (this.showNoMore) return
-        console.log(99999)
+        if (this.showNoMore) {
+          setTimeout(() => {
+            this.$refs.scroll.forceUpdate()
+          }, 20)
+          return
+        }
+        this.page++
+        Im.getGroupMsgList({page: this.page, limit: 30}).then(res => {
+          if (res.error === ERR_OK) {
+            if (!res.data.length) {
+              this.showNoMore = true
+              this.page--
+            }
+            let list = res.data.map((item) => {
+              if (item.type * 1 === 1) {
+                item.html = utils.msgFaceToHtml(item.content)
+              }
+              return item
+            })
+            this.list = [...this.list, ...list]
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+            }, 20)
+          }
+        })
       },
       rebuildScroll() {
         this.nextTick(() => {
@@ -100,6 +131,10 @@
         setTimeout(() => {
           this.$refs.scroll.refresh()
         }, 20)
+      },
+      newGroup() {
+        let url = '/news-add-group'
+        this.$router.push(url)
       }
     },
     computed: {
@@ -209,7 +244,7 @@
     background: $color-text
     color: $color-white
     text-align: center
-    line-height: 45px
+    line-height: 44px
     font-family: $font-family-medium
     font-size: $font-size-16
     letter-spacing: 0.3px

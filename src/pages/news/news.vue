@@ -40,6 +40,10 @@
   export default {
     name: 'News',
     created() {
+      if (this.newsGetType) {
+        this.setNewsGetType(false)
+        return
+      }
       Im.getLastGroupMsg().then(res => {
         if (res.error === ERR_OK) {
           let msg = {
@@ -47,7 +51,6 @@
             lastMsg: res.data.content || ''
           }
           this.setGroupItem(msg)
-          console.log(msg, 111)
         }
       })
     },
@@ -63,7 +66,8 @@
     methods: {
       ...mapActions([
         'setCurrent',
-        'setGroupItem'
+        'setGroupItem',
+        'setNewsGetType'
       ]),
       chatMsg(item) {
         let currentMsg = {
@@ -83,7 +87,8 @@
     computed: {
       ...mapGetters([
         'latelyList',
-        'groupItem'
+        'groupItem',
+        'newsGetType'
       ])
     },
     watch: {

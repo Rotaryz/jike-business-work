@@ -194,6 +194,12 @@ const mutations = {
       lastMsg: msg.lastMsg,
       html: Utils.msgFaceToHtml(msg.lastMsg)
     }
+  },
+  [TYPES.SET_CURRENT_GROUP] (state, msg) {
+    state.currentGroupMsg = msg
+  },
+  [TYPES.SET_NEWS_GETTYPE] (state, boolean) {
+    state.newsGetType = boolean
   }
 }
 
