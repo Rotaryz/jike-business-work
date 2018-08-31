@@ -13,7 +13,7 @@
         <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
           <!--<img class="copy-item" @click="_goCopy(item.live_log_detail, item.content, item)" v-if="isMine && imageUrl" :src="imageUrl + '/ws-image/btn-share@2x.png'">-->
           <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -111,7 +111,7 @@
             </div>
           </div>
           <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
-            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
+            <!--<img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">-->
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
