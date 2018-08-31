@@ -50,6 +50,19 @@ export const addNowChat = ({commit, state}, msg) => {
 export const setImIng = ({commit, state}, boolean) => {
   commit(TYPES.SET_IM_ING, boolean)
 }
+
 export const setCutImg = ({commit, state}, boolean) => {
   commit(TYPES.SET_CUT_IMAGE, boolean)
+}
+
+export const setGroupItem = ({commit, state}, msg) => {
+  commit(TYPES.SET_GROUP_ITEM, msg)
+}
+
+export const setCurrentGroupMsg = ({commit, state}, msg) => {
+  commit(TYPES.SET_CURRENT_GROUP, msg)
+}
+
+export const setNewsGetType = ({commit, state}, boolean) => {
+  commit(TYPES.SET_NEWS_GETTYPE, boolean)
 }

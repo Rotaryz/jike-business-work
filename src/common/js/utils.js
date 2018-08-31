@@ -1,6 +1,7 @@
 import _this from '@/main'
 import storage from 'storage-controller'
 import CITY_JSON from 'common/js/city'
+import {emotionsFace} from 'common/js/constants'
 
 const LOSE_EFFICACY = 10000
 const DISABLE = 11001 // 11001 AI雷达没有权限, 11002 BOSS雷达没有权限
@@ -9,6 +10,12 @@ const NET_404 = 404
 
 export default class utils {
   static formatDate (time) {
+    if (!time) {
+      return {
+        date: '',
+        time: ''
+      }
+    }
     let resTime = new Date(time * 1000)
     let nowDate = this.formatDateTime(resTime)
     let nowTime = this.formatTime(resTime)
@@ -27,6 +34,12 @@ export default class utils {
     }
   }
   static radarTimeFormat(time) {
+    if (!time) {
+      return {
+        date: '',
+        time: ''
+      }
+    }
     let resTime = new Date(time * 1000)
     let nowDate = resTime.toLocaleDateString()
     let nowTime = this.formatTime(resTime)
@@ -128,6 +141,45 @@ export default class utils {
         func.apply(this, args)
       }, delay)
     }
+  }
+
+  static breakArr (arr, num) {
+    let res = []
+    let max = Math.ceil(arr.length / num)
+    for (let i = 0; i < max; i++) {
+      let arrSlice = arr.slice(i * num, num + i * num)
+      res.push(arrSlice)
+      if (i === max - 1) return res
+    }
+  }
+
+  // 讲文本中的表情转为img
+  static msgFaceToHtml(msg) {
+    if (!msg) return msg
+    msg = this.labelEscape(msg)
+    let expr = /\[[^[\]]{1,3}\]/mg
+    let emotions = msg.match(expr)
+    if (!emotions || emotions.length < 1) {
+      return msg
+    } else { // 有表情
+      for (let i = 0; i < emotions.length; i++) {
+        if (emotionsFace[emotions[i]]) {
+          let html = `<img class="face-img" style="width: 18px;height: 18px;vertical-align: middle;" src="${emotionsFace[emotions[i]]}"/>`
+          let str = emotions[i].replace(/(\[|])/g, '\\' + '$1')
+          let reg = new RegExp(str, 'g')
+          msg = msg.replace(reg, html)
+        }
+      }
+      return msg
+    }
+  }
+
+  // 标签转义
+  static labelEscape(msg) {
+    if (!msg) return msg
+    let res = msg.replace(/</g, '&lt;')
+    res = res.replace(/>/g, '&gt;')
+    return res
   }
 }
 

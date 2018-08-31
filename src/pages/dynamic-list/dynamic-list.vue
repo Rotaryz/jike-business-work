@@ -2,6 +2,7 @@
   <transition :name="slide">
 
     <div class="dynamic-list">
+      <a href="" id="link"></a>
       <scroll ref="scroll"
               :data="dynamicList"
               :pullUpLoad="pullUpLoadObj"
@@ -10,7 +11,9 @@
               @pullingDown="onPullingDown"
       >
         <div class="dynamic-item" v-for="(item, index) in dynamicList" :key="index" v-if="item.live_log_detail.length">
+          <!--<img class="copy-item" @click="_goCopy(item.live_log_detail, item.content, item)" v-if="isMine && imageUrl" :src="imageUrl + '/ws-image/btn-share@2x.png'">-->
           <div class="find-item img-one" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 1">
+            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -33,22 +36,17 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share">
+                <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">
-                    <img class="find-icon" src="./icon-comment@2x.png">
-                    <div class="find-num">
-                      评论
-                    </div>
+                    <img class="find-icon" src="./icon-review@2x.png">
+                  </div>
+                  <div class="share-item" @click="_goodLike(index)">
+                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
+                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
                   </div>
                   <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                  <div class="share-item" @click="_goodLike(index)">
-                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                    <div class="find-num">
-                      赞
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
@@ -65,6 +63,7 @@
             </div>
           </div>
           <div class="find-item img-two" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length === 2">
+            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -85,22 +84,17 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share">
+                <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">
-                    <img class="find-icon" src="./icon-comment@2x.png">
-                    <div class="find-num">
-                      评论
-                    </div>
+                    <img class="find-icon" src="./icon-review@2x.png">
                   </div>
-                  <!--{{find.is_like ? 'thumbs-up' : ''}} -->
-                  <div class="share-item " @click="_goodLike(index)">
-                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                    <div class="find-num">
-                      赞
-                    </div>
+                  <div class="share-item" @click="_goodLike(index)">
+                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
+                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
                   </div>
+                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
                 </div>
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
@@ -117,6 +111,7 @@
             </div>
           </div>
           <div class="find-item img-more" v-if="item.live_log_detail[0].type === 1 && item.live_log_detail.length > 2">
+            <img src="./btn-share@2x.png" class="copy-item" v-clipboard:copy="item.content" @click="_goCopy(item.live_log_detail)" v-clipboard:error="onError">
             <div class="find-box">
               <div class="cainter">
                 <div class="user">
@@ -138,22 +133,17 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share">
+                <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">
-                    <img class="find-icon" src="./icon-comment@2x.png">
-                    <div class="find-num">
-                      评论
-                    </div>
+                    <img class="find-icon" src="./icon-review@2x.png">
                   </div>
-                  <!--{{find.is_like ? 'thumbs-up' : ''}} -->
                   <div class="share-item" @click="_goodLike(index)">
-                    <img class="find-icon" :src="item.is_like ? require('./icon-like_select@2x.png') : require('./icon-like@2x.png')">
-                    <div class="find-num">
-                      赞
-                    </div>
+                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
+                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
                   </div>
+                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
                 </div>
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
@@ -177,22 +167,41 @@
       <confirm-msg ref="confirm" @confirm="_sureDel"></confirm-msg>
       <toast ref="toast"></toast>
       <router-view @refresh="_getList"></router-view>
+      <transition name="fade">
+        <div class="down-img" v-show="downBig">
+          <div class="down-loading" v-show="showDown">
+            <img src="./loading.gif" class="loading-icon">
+            <p class="loading-text">正在加载{{downNum}}/{{this.dynamicCopy.length}}张图片</p>
+          </div>
+          <transition name="fade">
+            <div class="down-content" v-show="showSmallDown">
+              <p class="down-tip">温馨提示</p>
+              <p class="down-text">图片已保存至你的手机相册 并复制描述！</p>
+              <p class="down-btn" @click="_hideDown">确定</p>
+            </div>
+          </transition>
+        </div>
+      </transition>
     </div>
   </transition>
 </template>
 
 <script>
+  import Vue from 'vue'
   import Scroll from 'components/scroll/scroll'
-  import { Live, Global } from 'api'
-  import { ERR_OK } from '../../common/js/config'
+  import {Live, Global} from 'api'
+  import {ERR_OK, BASE_URL} from '../../common/js/config'
   import ConfirmMsg from 'components/confirm-msg/confirm-msg'
   import Toast from 'components/toast/toast'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import wx from 'weixin-js-sdk'
+  import VueClipboard from 'vue-clipboard2'
+
+  Vue.use(VueClipboard)
 
   export default {
     name: 'dynamic-list',
-    data () {
+    data() {
       return {
         dynamicList: [],
         delIndex: null,
@@ -206,10 +215,15 @@
         pullDownRefreshStop: 40,
         scrollbar: true,
         scrollbarFade: true,
-        pullDownRefresh: true
+        pullDownRefresh: true,
+        showDown: false,
+        showSmallDown: false,
+        downBig: false,
+        dynamicCopy: [],
+        downNum: 0
       }
     },
-    created () {
+    created() {
       let url = location.href
       Global.jssdkConfig({weixin: 'ai_radar', url}).then((res) => {
         if (res.error === ERR_OK) {
@@ -243,31 +257,82 @@
         } : false
       },
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       }
     },
     watch: {
       pullDownRefreshObj: {
-        handler () {
+        handler() {
           this.rebuildScroll()
         },
         deep: true
       },
       pullUpLoadObj: {
-        handler () {
+        handler() {
           this.rebuildScroll()
         },
         deep: true
       }
     },
     methods: {
-      onPullingDown () {
+      _hideDown() {
+        this.showDown = false
+        this.showSmallDown = false
+        this.downBig = false
+      },
+      onError(e) {
+        console.log('无法复制文本！')
+      },
+      _goCopy(imgArr) {
+        this.dynamicCopy = imgArr
+        console.log(imgArr)
+        this.showDown = true
+        this.downBig = true
+        if (!this.dynamicCopy.length) {
+          return
+        }
+        this._downItem(0)
+      },
+      _downItem(i) {
+        let url = `${BASE_URL.api}/getpic?u=${this.dynamicCopy[i].file_url}`
+        var a = document.querySelector('#link')
+        var event = new MouseEvent('click')
+        a.href = url
+        this.downNum = i + 1
+        a.dispatchEvent(event)
+        if (i >= this.dynamicCopy.length - 1) {
+          setTimeout(() => {
+            this.showSmallDown = true
+            this.showDown = false
+          }, 800)
+          return
+        }
+        setTimeout(() => {
+          a.href = ''
+          this._downItem(i + 1)
+        }, 200)
+        // wx.downloadFile({
+        //   url: this.dynamicCopy[i].file_url,
+        //   success: (res) => {
+        //     this.downList.push(res.tempFilePath)
+        //     wechat.showLoading(`正在下载${i + 1}/${this.dynamicCopy.length}图片`)
+        //     if (i >= this.dynamicCopy.length - 1) {
+        //       this.showSmallDown = true
+        //       this.showDown = false
+        //       return
+        //     }
+        //     this._downItem(i + 1)
+        //   }
+        // })
+      },
+      onPullingDown() {
         this.page = 1
         this.loadMore = true
         this._getList()
       },
-      _seeImage (index, image) {
+      // 预览图片
+      _seeImage(index, image) {
         let imageArr = image.map(item => item.file_url)
         // console.log(imageArr[index], imageArr)
         // 预览图片，正式上面需要打开注释
@@ -276,11 +341,11 @@
           urls: imageArr // 需要预览的图片http链接列表
         })
       },
-      onPullingUp () {
+      onPullingUp() {
         this.page++
         this._getList()
       },
-      _getList () {
+      _getList() {
         if (!this.loadMore) {
           this.$refs.scroll.forceUpdate()
           return
@@ -300,12 +365,12 @@
           }
         })
       },
-      _delItem (index) {
+      _delItem(index) {
         this.delIndex = index
         this.$refs.confirm.show({msg: '确定删除该动态？'})
       },
       // 是否确认删除
-      _sureDel () {
+      _sureDel() {
         Live.delLogsList(this.dynamicList[this.delIndex].id).then((res) => {
           if (res.error === ERR_OK) {
             this.dynamicList.splice(this.delIndex, 1)
@@ -315,7 +380,7 @@
           this.$refs.toast.show(res.message)
         })
       },
-      _goodLike (index) {
+      _goodLike(index) {
         let data = {live_log_id: this.dynamicList[index].id, like: this.dynamicList[index].is_like ? 0 : 1}
         Live.likeLog(data).then((res) => {
           if (res.error === ERR_OK) {
@@ -326,7 +391,7 @@
           this.$refs.toast.show(res.message)
         })
       },
-      rebuildScroll () {
+      rebuildScroll() {
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
@@ -343,6 +408,66 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+  .down-img
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0
+    background: rgba(32, 32, 46, .8)
+    z-index: 100
+    display: flex
+    align-items: center
+    justify-content: center
+    .down-loading
+      background: rgba(0, 0, 0, 0.50)
+      border-radius: 2px
+      width: 125px
+      height: @width
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      .loading-icon
+        width: 45px
+      .loading-text
+        font-size: $font-size-12
+        color: $color-white
+        font-family: $font-family-medium
+        margin-top: 15px
+    .down-content
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      background: $color-white
+      width: 300px
+      height: 170px
+      border-radius: 2px
+      border-bottom-1px(rgba(32, 32, 46, 0.10), 2px)
+      .down-tip
+        font-size: $font-size-16
+        color: $color-20202E
+        font-family: $font-family-medium
+      .down-text
+        width: 196px
+        font-size: $font-size-16
+        color: $color-20202E
+        font-family: $font-family-regular
+        text-align: center
+        margin-top: 15px
+      .down-btn
+        width: 100px
+        height: 32px
+        line-height: 32px
+        text-align: center
+        color: $color-white
+        font-family: $font-family-regular
+        font-size: $font-size-14
+        background: $color-56
+        margin-top: 19px
+        border-radius: 2px
+
   .dynamic-list
     position: fixed
     background: dynamic-list
@@ -354,6 +479,7 @@
     top: 0
 
   .find-item
+    position: relative
     padding-top: 14px
     background: $color-white
     .find-box
@@ -401,33 +527,48 @@
       .information
         height: 20px
         display: flex
-        margin: 12px 0 0
-        font-size: $font-size-small
+        margin: 19px 0 0
+        font-size: $font-size-12
         justify-content: space-between
         align-items: center
-        .del
-          color: #839FC0
-          margin-left: 12px
-        .find-num, .time
-          color: $color-text-88
+      .del
+        color: #839FC0
+        margin-left: 3.2vw
+      .find-num, .time
+        white-space: nowrap
+        font-size: $font-size-12
+        font-family: $font-family-regular
+        color: $color-888888
+        display: flex
+      .share
+        display: flex
+        height: 30px
+        align-items: center
+        border-radius: 2px
+        line-height: 30px
+        right: 20px
+        .share-item
+          flex: 1
+          height: 15px
+          justify-content: center
           display: flex
-          white-space: nowrap
-        .share
-          display: flex
-          .share-item
-            display: flex
-            align-items: center
-            &:last-child
-              margin-left: 19px
+          align-items: center
+          margin-right: 8vw
+          &:last-child
+            margin-right: 0
           .find-icon
-            height: 16px
-            width: 16px
-        .find-num
-          margin-left: 1px
-          transform: translateY(2px)
-        .thumbs-up
+            width: 18px
+            height: 18px
           .find-num
-            color: $color-theme-tw
+            margin-left: 2.5px
+            font-size: $font-size-12
+            color: $color-white
+
+          .share-active
+            opacity: 1
+            width: 148px
+            z-index: 10
+            transition: all 0.3s
     .likes-peo
       margin-top: 5px
       position: relative
@@ -466,10 +607,10 @@
         font-size: $font-size-14
         line-height: 22px
         color: #7C7C8F
-        display :flex
+        display: flex
         .ro-peo-name
           font-family: $font-family-medium
-          white-space :nowrap
+          white-space: nowrap
         .comment-name
           font-family: $font-family-regular
           color: $color-374B63
@@ -541,4 +682,15 @@
   .img-small
     max-width: 100%
     max-height: 100%
+
+  .copy-item
+    z-index: 60
+    right: 14px
+    top: 13px
+    position: absolute
+    width: 81px
+
+  #link
+    display: none
+
 </style>

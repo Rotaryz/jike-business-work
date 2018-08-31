@@ -29,6 +29,9 @@ const AddFlow = () => import('pages/add-flow/add-flow')
 const MyData = () => import('pages/my-data/my-data')
 const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
+const NewGroupMsg = () => import('pages/new-group-msg/new-group-msg')
+const NewsAddGroup = () => import('pages/news-add-group/news-add-group')
+const NewsChatGroup = () => import('pages/news-chat-group/news-chat-group')
 const ActionDetail = () => import('pages/action-detail/action-detail')
 const MineInfo = () => import('pages/mine-info/mine-info')
 const AddAdress = () => import('pages/addAdress/addAdress')
@@ -217,6 +220,27 @@ const route = new Router({
         component: News,
         meta: {
           title: '消息'
+        }
+      },
+      {
+        path: '/news-add-group',
+        component: NewsAddGroup,
+        meta: {
+          title: '添加组'
+        }
+      },
+      {
+        path: '/news-chat-group',
+        component: NewsChatGroup,
+        meta: {
+          title: '群发'
+        }
+      },
+      {
+        path: '/new-group-msg',
+        component: NewGroupMsg,
+        meta: {
+          title: '新建群发'
         }
       },
       {
