@@ -67,7 +67,7 @@
         page: 1,
         limit: LIMIT,
         isAll: false,
-        tabList: ['加入时间', '跟进时间', '活跃时间', '成交率'],
+        tabList: ['加入时间', '成交率', '跟进时间', '活跃时间'],
         tabListIndex: 0,
         selectText: 'join'
       }
@@ -147,15 +147,15 @@
             this.getNewDataList()
             break
           case 1:
-            this.selectText = 'follow'
+            this.selectText = ''
             this.getNewDataList()
             break
           case 2:
-            this.selectText = 'active'
+            this.selectText = 'follow'
             this.getNewDataList()
             break
           case 3:
-            this.selectText = ''
+            this.selectText = 'active'
             this.getNewDataList()
             break
         }
