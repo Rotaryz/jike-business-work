@@ -118,7 +118,7 @@
             layout(row, block, nowrap)
             align-items: flex-start
             .txt
-              max-width :42vw
+              max-width :30vw
               no-wrap()
             .is-new
               width: 19px

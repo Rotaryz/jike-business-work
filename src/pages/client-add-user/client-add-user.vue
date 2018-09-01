@@ -267,7 +267,7 @@
             font-size: $font-size-16
             color: $color-20202E
             letter-spacing: 0.6px
-            max-width :40vw
+            max-width :30vw
             no-wrap()
           .status
             font-family: $font-family-regular
