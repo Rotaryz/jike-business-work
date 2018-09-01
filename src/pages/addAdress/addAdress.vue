@@ -36,7 +36,10 @@
   import { mapGetters } from 'vuex'
   import {cityData} from 'common/js/utils'
   import Toast from 'components/toast/toast'
-  import AMap from 'AMap'
+  // import AMap from 'AMap'
+  import axios from 'axios'
+
+  const KEY = '8708f814279a65c9d685b4093c69c40b'
 
   export default {
     name: 'change-autograph',
@@ -96,37 +99,39 @@
         this.getGeocoder(text)
       },
       getGeocoder(text) {
-        let that = this
-        alert(text)
-        let geocoder
-        alert(JSON.stringify(AMap))
-        AMap.plugin('AMap.Geocoder', function () {
-          geocoder = new AMap.Geocoder()
-        })
-        geocoder.getLocation(text, function (status, result) {
-          console.log(result, '111')
-          alert(JSON.stringify(result))
-          if (status === 'complete' && result.info === 'OK') {
-            that.longitude = result.geocodes[0].location.lng
-            that.latitude = result.geocodes[0].location.lat
-            let data = {
-              address: that.detailAdress,
-              province: that.province,
-              city: that.city,
-              area: that.area,
-              longitude: that.longitude,
-              latitude: that.latitude
-            }
-            Mine.updateMyInfoAddress(data).then((res) => {
-              if (res.error === ERR_OK) {
-                that.$router.back()
-                that.$emit('getSign')
-              } else {
-                that.$refs.toast.show(res.message)
-              }
-            })
-          }
-        })
+        axios.post(`https://lbs.amap.com/dev/api?address=${text}&key=${KEY}`)
+          .then(res => {
+            alert(JSON.stringify(res))
+          }).catch(err => {
+            alert(JSON.stringify(err))
+          })
+        // let that = this
+        // let geocoder
+        // AMap.plugin('AMap.Geocoder', function () {
+        //   geocoder = new AMap.Geocoder()
+        // })
+        // geocoder.getLocation(text, function (status, result) {
+        //   if (status === 'complete' && result.info === 'OK') {
+        //     that.longitude = result.geocodes[0].location.lng
+        //     that.latitude = result.geocodes[0].location.lat
+        //     let data = {
+        //       address: that.detailAdress,
+        //       province: that.province,
+        //       city: that.city,
+        //       area: that.area,
+        //       longitude: that.longitude,
+        //       latitude: that.latitude
+        //     }
+        //     Mine.updateMyInfoAddress(data).then((res) => {
+        //       if (res.error === ERR_OK) {
+        //         that.$router.back()
+        //         that.$emit('getSign')
+        //       } else {
+        //         that.$refs.toast.show(res.message)
+        //       }
+        //     })
+        //   }
+        // })
       }
     },
     computed: {
