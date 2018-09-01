@@ -89,7 +89,7 @@
     created() {
       this.getParams()
       this.getCustomerList()
-      document.title = this.title
+      this.title && (document.title = this.title)
     },
     beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
@@ -102,7 +102,9 @@
         this.page = 1
         this.limit = LIMIT
         this.isAll = false
-        document.title = this.title
+        this.$nextTick(() => {
+          this.title && (document.title = this.title)
+        })
         this.getCustomerList()
       },
       toSearch() {
