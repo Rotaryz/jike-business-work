@@ -102,7 +102,9 @@
         this.page = 1
         this.limit = LIMIT
         this.isAll = false
-        document.title = this.title
+        this.$nextTick(() => {
+          this.title && (document.title = this.title)
+        })
         this.getCustomerList()
       },
       toSearch() {
