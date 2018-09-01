@@ -99,10 +99,10 @@
         let that = this
         alert(text)
         let geocoder
+        alert(JSON.stringify(AMap))
         AMap.plugin('AMap.Geocoder', function () {
           geocoder = new AMap.Geocoder()
         })
-        alert(JSON.stringify(geocoder))
         geocoder.getLocation(text, function (status, result) {
           console.log(result, '111')
           alert(JSON.stringify(result))
