@@ -137,8 +137,8 @@
               time: parseInt(Date.now() / 1000),
               lastMsg: '[图片信息]'
             }
-            this.setNewsGetType(true)
             this.setGroupItem(msg)
+            this.setNewsGetType(true)
             let groupIds = this.currentGroupMsg.map((item) => {
               return item.id
             })
@@ -147,10 +147,8 @@
               url: res.data.url,
               group_ids: groupIds
             }
-            let url = '/news'
-            this.$router.push(url)
+            this.$router.go(-2)
             Im.setGroupList(reqData).then((res) => {
-              console.log(res)
             })
             this.mortListShow = false
             this.currentGroupMsg.map((item) => {
@@ -208,12 +206,11 @@
           time: parseInt(Date.now() / 1000),
           lastMsg: value
         }
-        this.setNewsGetType(true)
         this.setGroupItem(msg)
+        this.setNewsGetType(true)
         this.inputMsg = ''
         this.hideInput()
-        let url = '/news'
-        this.$router.push(url)
+        this.$router.go(-2)
         let groupIds = this.currentGroupMsg.map((item) => {
           return item.id
         })
@@ -223,7 +220,6 @@
           group_ids: groupIds
         }
         Im.setGroupList(reqData).then((res) => {
-          console.log(res)
         })
         this.currentGroupMsg.map((item) => {
           item.customers.map((item1) => {
