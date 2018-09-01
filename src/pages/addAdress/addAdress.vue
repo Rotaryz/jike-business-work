@@ -55,7 +55,6 @@
     },
     created () {
       alert(1)
-      this.title = this.$store.state.signature
       Mine.getMyInfoAddress().then((res) => {
         if (res.error === ERR_OK) {
           this.province = res.message.province

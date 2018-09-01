@@ -62,7 +62,7 @@
                   <span class="item-text">邮箱</span>
                   <input class="item-detail" type="text" v-model="mine.email">
                 </li>
-                <li  class="mine-detail-item mine-addres-item" @click="jumpAddress">
+                <li class="mine-detail-item mine-addres-item" @click="jumpAddress">
                   <span class="item-text">地址</span>
                   <div class="address-box">
                     <div class="text">{{address}}</div>
