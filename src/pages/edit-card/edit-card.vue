@@ -195,7 +195,7 @@
           return
         }
         if (utils.checkIsCHINA(this.mine.email)) {
-          this.$refs.toast.show('请输入正确的邮箱号码11')
+          this.$refs.toast.show('请输入正确的邮箱号码')
           return
         }
         let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, weixin_account: this.mine.weixin_account, address: '', image_id: this.mine.image_id}
