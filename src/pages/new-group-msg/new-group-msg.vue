@@ -13,7 +13,7 @@
           </div>
           <div class="item-content">
             <div class="item-top border-bottom-1px">
-              <div class="item-title">群发组：<span v-for="(item1, index1) in item.groups" :key="index1">{{index1 == (item.groups.length - 1) ? item1.name : item1.name + '，'}}</span></div>
+              <div class="item-title">群发组：<span v-for="(item1, index1) in item.groups" :key="index1">{{index1 == (item.groups.length - 1) ? item1.name + '(' + item1.customers.length + ')' : item1.name + '(' + item1.customers.length + ')，'}}</span></div>
               +
               <div class="item-text" v-html="item.html" v-if="item.type == 1"></div>
               <img class="item-img" @load="refushBox" v-if="item.type == 20" :src="item.url"/>

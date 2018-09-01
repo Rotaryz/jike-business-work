@@ -2,7 +2,7 @@
   <transition :name="slide">
     <div class="chat">
       <section class="chat-container" @click.stop="hideInput">
-        <div class="group-wrapper">群发组：<span v-for="(item1, index1) in currentGroupMsg" :key="index1">{{index1 == (currentGroupMsg.length - 1) ? item1.name : item1.name + '，'}}</span></div>
+        <div class="group-wrapper">群发组：<span v-for="(item1, index1) in currentGroupMsg" :key="index1">{{index1 == (currentGroupMsg.length - 1) ? item1.name + '(' + item1.customers.length + ')' : item1.name + '(' + item1.customers.length + ')，'}}</span></div>
       </section>
       <section class="chat-input border-top-1px">
         <div class="chat-input-box">
