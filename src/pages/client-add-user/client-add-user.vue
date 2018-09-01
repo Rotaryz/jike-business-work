@@ -1,10 +1,10 @@
 <template>
   <transition :name="slide">
     <article class="client-add-user">
-      <ul class="tablist-box" >
+      <ul class="tablist-box" v-if="dataArray.length">
         <li class="tablist-item" v-for="(item, index) in tabList" v-bind:key="index" :class="tabListIndex===index?'active':''" @click="tabSelect(index)">{{item}}</li>
       </ul>
-      <div class="scroll-box">
+      <div class="scroll-box" v-if="dataArray.length">
         <scroll ref="scroll"
                 bcColor="#fff"
                 :data="dataArray"
@@ -39,7 +39,10 @@
           <div style="height: 45px;"></div>
         </scroll>
       </div>
-      <footer class="btn" @click="submit">确定</footer>
+      <footer class="btn" @click="submit" v-if="dataArray.length">确定</footer>
+      <section class="exception-box" v-if="isEmpty">
+        <exception errType="nodata"></exception>
+      </section>
       <toast ref="toast"></toast>
     </article>
   </transition>
@@ -51,6 +54,7 @@
   import Scroll from 'components/scroll/scroll'
   import {ERR_OK} from '../../common/js/config'
   import {mapGetters} from 'vuex'
+  import Exception from 'components/exception/exception'
 
   const LIMIT = 10
 
@@ -69,7 +73,8 @@
         isAll: false,
         tabList: ['加入时间', '成交率', '跟进时间', '活跃时间'],
         tabListIndex: 0,
-        selectText: 'join'
+        selectText: 'join',
+        isEmpty: false
       }
     },
     created() {
@@ -178,6 +183,7 @@
             this.dataArray = res.data.map(item => {
               return {...item, isCheck: false}
             })
+            this.isEmpty = !this.dataArray.length
             this.$refs.scroll.refresh()
           }
         })
@@ -206,7 +212,8 @@
     },
     components: {
       Toast,
-      Scroll
+      Scroll,
+      Exception
     }
   }
 </script>
@@ -214,6 +221,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
+
+  .exception-box
+    padding-top: 70px
 
   .client-add-user
     fill-box()
@@ -226,8 +236,8 @@
         layout(row, block, no-warp)
         align-items: center
         padding: 15px 0
-        border-bottom: 0.5px solid $color-col-line
         height: 45px
+        lr-border-bottom-1px($color-col-line,0)
         .check-box
           width: 21px
           height: 21px

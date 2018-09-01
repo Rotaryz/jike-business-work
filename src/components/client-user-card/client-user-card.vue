@@ -91,7 +91,6 @@
       layout(row, block, no-warp)
       align-items: center
       padding: 15px 0
-      border-bottom: 0.5px solid $color-col-line
       height: 45px
       overflow: hidden
       .user-icon

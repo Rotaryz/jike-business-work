@@ -6,14 +6,14 @@
         <img class="icon" src="./icon-add@3x.png" alt="">
         <div class="txt">添加成员</div>
       </section>
+      <div class="f3"></div>
       <!--<section class="total">共 {{total}} 位</section>-->
-      <ul class="tablist-box" >
+      <ul class="tablist-box border-bottom-1px" v-if="dataArray.length" >
         <li class="tablist-item" v-for="(item, index) in tabList" v-bind:key="index" :class="tabListIndex===index?'active':''" @click="tabSelect(index)">{{item}}</li>
       </ul>
-      <div class="simple-scroll-demo">
+      <div class="simple-scroll-demo" v-if="dataArray.length">
         <div class="scroll-list-wrap">
           <scroll ref="scroll"
-                  v-if="dataArray.length"
                   bcColor="#fff"
                   :data="dataArray"
                   :pullUpLoad="pullUpLoadObj"
@@ -28,6 +28,9 @@
           </scroll>
         </div>
       </div>
+      <section class="exception-box" v-if="isEmpty">
+        <exception errType="nodata"></exception>
+      </section>
       <confirm-msg ref="confirm" @confirm="msgConfirm" @cancel="msgCancel"></confirm-msg>
       <toast ref="toast"></toast>
       <router-view @refresh="refresh"></router-view>
@@ -45,6 +48,7 @@
   import {Client} from 'api'
   import Toast from 'components/toast/toast'
   import {ERR_OK} from 'common/js/config'
+  import Exception from 'components/exception/exception'
 
   const LIMIT = 10
   export default {
@@ -78,7 +82,8 @@
         total: 0,
         tabList: ['加入时间', '成交率', '跟进时间', '活跃时间'],
         tabListIndex: 0,
-        selectText: 'join'
+        selectText: 'join',
+        isEmpty: false
       }
     },
     created() {
@@ -121,7 +126,7 @@
         Client.getCustomerList(data).then(res => {
           if (res.error === ERR_OK) {
             this.dataArray = res.data
-            this.total = res.meta.total // 共多少人
+            this.isEmpty = !this.dataArray.length
           } else {
             this.$refs.toast.show(res.message)
           }
@@ -244,7 +249,8 @@
       SlideView,
       UserCard,
       ConfirmMsg,
-      Toast
+      Toast,
+      Exception
     }
   }
 </script>
@@ -252,6 +258,13 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
+
+  .exception-box
+    padding-top: 70px
+
+  .f3
+    height: 10px
+    background: $color-F0F2F5
 
   .client-user-list
     position: fixed
@@ -300,7 +313,6 @@
   .tablist-box
     layout(row)
     width: 100%
-    border-top: 10px solid #f0f2f5
     box-sizing: border-box
     .tablist-item
       width: 25%
@@ -319,4 +331,5 @@
     position: relative
     .user-list-item
       height: 76px
+      lr-border-bottom-1px()
 </style>

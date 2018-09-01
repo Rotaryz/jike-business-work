@@ -36,7 +36,6 @@
   export default {
     name: 'NewGroupMsg',
     created() {
-      console.log(ERR_OK)
       Im.getGroupMsgList({page: 1, limit: 30}).then(res => {
         if (res.error === ERR_OK) {
           this.list = res.data.map((item) => {
@@ -89,7 +88,6 @@
         this.$router.push(url)
       },
       toChat(item) {
-        console.log(item.groups)
         this.setCurrentGroupMsg(item.groups)
         let url = '/news-chat-group'
         this.$router.push(url)
