@@ -1,7 +1,7 @@
 <template>
   <transition :name="slide">
-    <div class="data-all">
-      <scroll>
+    <div class="change-autograph">
+      <scroll ref="scroll">
         <div class="address-box">
           <div class="address-list" @click="selcetAddress">
             <div class="text">所在地区</div>
@@ -15,18 +15,21 @@
           </div>
         </div>
       </scroll>
-      <div id="allmap"></div>
-      <div class="save-btn" @click="saveAdress">确定</div>
+      <div class="btn">
+        <div class="btn-item btn-green" @click="saveAdress">确定</div>
+      </div>
+      <toast ref="toast"></toast>
       <awesome-picker
         ref="picker"
         :data="cityData"
         @cancel="handlePickerCancel"
         @confirm="handlePickerConfirm">
       </awesome-picker>
-      <toast ref="toast"></toast>
     </div>
   </transition>
 </template>
+
+
 <script type="text/ecmascript-6">
   import Scroll from 'components/scroll/scroll'
   import {mapGetters} from 'vuex'
@@ -136,23 +139,46 @@
     }
   }
 </script>
-
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
-  *
-    box-sizing: border-box
-    -moz-box-sizing: border-box
-    -webkit-box-sizing: border-box
-
-  .data-all
+  .change-autograph
     position: fixed
     background: $color-background
-    z-index: 255
+    z-index: 10
     left: 0
     right: 0
     bottom: 45px
     top: 0
+    #autograph
+      outline: none
+      resize: none
+      margin: 4vw
+      border-radius: 2px
+      background: $color-white
+      height: 191px
+      width: 92vw
+      padding: 15px
+      border: none
+      box-sizing: border-box
+      font-family: $font-family-regular
+      font-size: $font-size-medium
+      border-1px($color-col-line, 2px)
+      &::-webkit-input-placeholder
+        font-family: $font-family-regular
+        font-size: $font-size-medium
+        color: #CCCCCC
+    .text-num
+      position: absolute
+      right: 30px
+      bottom: 30px
+      font-size: $font-size-small
+      font-family: $font-family-regular
+      .text-dark
+        color: $color-text
+      .text-light
+        color: #CCCCCC
+
 
   .address-box
     background: $color-white-fff
@@ -216,7 +242,20 @@
     font-family: $font-family-medium
     color: $color-white
 
-  .z
-    width: 100%
-
+  .btn
+    position: relative
+    z-index: 10
+    display: flex
+    height: 45px
+    .btn-item
+      font-family: $font-family-regular
+      font-size: $font-size-medium
+      color: $color-white
+      line-height: 45px
+      text-align: center
+      flex: 1
+    .btn-dark
+      background: $color-text
+    .btn-green
+      background: $color-text
 </style>
