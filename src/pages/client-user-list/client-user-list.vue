@@ -89,7 +89,7 @@
     created() {
       this.getParams()
       this.getCustomerList()
-      document.title = this.title
+      this.title && (document.title = this.title)
     },
     beforeRouteLeave(to, from, next) {
       this.$emit('refresh')
