@@ -146,8 +146,13 @@
     -webkit-box-sizing: border-box
 
   .data-all
-    fill-box()
-    z-index: 70
+    position: fixed
+    background: $color-background
+    z-index: 10
+    left: 0
+    right: 0
+    bottom: 45px
+    top: 0
 
   .address-box
     background: $color-white-fff
@@ -202,6 +207,7 @@
     position: fixed
     bottom: 0
     left: 0
+    z-index: 10
     width: 100%
     height: 45px
     line-height: 45px
