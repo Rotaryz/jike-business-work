@@ -58,7 +58,7 @@
           if (res.error === ERR_OK) {
             let imInfo = res.data
             this.setImInfo(imInfo)
-            // console.log(imInfo)
+            console.log(imInfo)
             this.sdkLogin(imInfo).then(() => {
               this.setImIng(true)
             })
@@ -103,7 +103,7 @@
               }
             } else {
               this.addListCount(res)
-              this.addListMsg(res)
+              this.addListMsg({msg: res})
               if (res.fromAccount === this.currentMsg.account) {
                 this.addNowChat(res)
               }
@@ -136,6 +136,7 @@
             webimHandler.initUnread(data).then((resp) => {
               let msgList = resp.map((item) => {
                 item.time = Utils.formatDate(item.msgTimeStamp).date
+                item.html = Utils.msgFaceToHtml(item.lastMsg)
                 return item
               })
               this.saveList(msgList)
