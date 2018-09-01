@@ -39,7 +39,7 @@
   // import AMap from 'AMap'
   import axios from 'axios'
 
-  const KEY = '8708f814279a65c9d685b4093c69c40b'
+  const KEY = '206ec5511b39a51e02627ffbd8dfc16c'
 
   export default {
     name: 'change-autograph',
