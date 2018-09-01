@@ -99,39 +99,31 @@
         this.getGeocoder(text)
       },
       getGeocoder(text) {
-        axios.post(`https://lbs.amap.com/dev/api?address=${text}&key=${KEY}`)
+        let that = this
+        axios.get(`https://restapi.amap.com/v3/geocode/geo?address=${text}&key=${KEY}`)
           .then(res => {
-            alert(JSON.stringify(res))
+            let location = res.data.geocodes[0].location.split(',')
+            that.longitude = location[0]
+            that.latitude = location[1]
+            let data = {
+              address: that.detailAdress,
+              province: that.province,
+              city: that.city,
+              area: that.area,
+              longitude: that.longitude,
+              latitude: that.latitude
+            }
+            Mine.updateMyInfoAddress(data).then((res) => {
+              if (res.error === ERR_OK) {
+                that.$router.back()
+                that.$emit('getSign')
+              } else {
+                that.$refs.toast.show(res.message)
+              }
+            })
           }).catch(err => {
             alert(JSON.stringify(err))
           })
-        // let that = this
-        // let geocoder
-        // AMap.plugin('AMap.Geocoder', function () {
-        //   geocoder = new AMap.Geocoder()
-        // })
-        // geocoder.getLocation(text, function (status, result) {
-        //   if (status === 'complete' && result.info === 'OK') {
-        //     that.longitude = result.geocodes[0].location.lng
-        //     that.latitude = result.geocodes[0].location.lat
-        //     let data = {
-        //       address: that.detailAdress,
-        //       province: that.province,
-        //       city: that.city,
-        //       area: that.area,
-        //       longitude: that.longitude,
-        //       latitude: that.latitude
-        //     }
-        //     Mine.updateMyInfoAddress(data).then((res) => {
-        //       if (res.error === ERR_OK) {
-        //         that.$router.back()
-        //         that.$emit('getSign')
-        //       } else {
-        //         that.$refs.toast.show(res.message)
-        //       }
-        //     })
-        //   }
-        // })
       }
     },
     computed: {
