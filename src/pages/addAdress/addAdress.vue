@@ -114,7 +114,7 @@
   <transition :name="slide">
     <div class="change-autograph">
       <scroll ref="scroll">
-        <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容" id="autograph"></textarea>
+        <textarea name="autograph" v-model="title" maxlength="50" placeholder="请输入签名内容11" id="autograph"></textarea>
         <div class="text-num">
           <span class="text-dark">{{title.length}}</span>
           <span class="text-light">/50</span>
@@ -153,7 +153,7 @@
   import { mapActions, mapGetters } from 'vuex'
   import {cityData} from 'common/js/utils'
   import Toast from 'components/toast/toast'
-  import AMap from 'AMap'
+  // import AMap from 'AMap'
 
   export default {
     name: 'change-autograph',
@@ -226,37 +226,38 @@
           return
         }
         let text = this.address + this.detailAdress
-        this.getGeocoder(text)
-      },
-      getGeocoder(text) {
-        let that = this
-        let geocoder
-        AMap.plugin('AMap.Geocoder', function () {
-          geocoder = new AMap.Geocoder()
-        })
-        geocoder.getLocation(text, function (status, result) {
-          if (status === 'complete' && result.info === 'OK') {
-            that.longitude = result.geocodes[0].location.lng
-            that.latitude = result.geocodes[0].location.lat
-            let data = {
-              address: that.detailAdress,
-              province: that.province,
-              city: that.city,
-              area: that.area,
-              longitude: that.longitude,
-              latitude: that.latitude
-            }
-            Mine.updateMyInfoAddress(data).then((res) => {
-              if (res.error === ERR_OK) {
-                that.$router.back()
-                that.$emit('getSign')
-              } else {
-                that.$refs.toast.show(res.message)
-              }
-            })
-          }
-        })
+        console.log(text)
+        // this.getGeocoder(text)
       }
+      // getGeocoder(text) {
+      //   let that = this
+      //   let geocoder
+      //   AMap.plugin('AMap.Geocoder', function () {
+      //     geocoder = new AMap.Geocoder()
+      //   })
+      //   geocoder.getLocation(text, function (status, result) {
+      //     if (status === 'complete' && result.info === 'OK') {
+      //       that.longitude = result.geocodes[0].location.lng
+      //       that.latitude = result.geocodes[0].location.lat
+      //       let data = {
+      //         address: that.detailAdress,
+      //         province: that.province,
+      //         city: that.city,
+      //         area: that.area,
+      //         longitude: that.longitude,
+      //         latitude: that.latitude
+      //       }
+      //       Mine.updateMyInfoAddress(data).then((res) => {
+      //         if (res.error === ERR_OK) {
+      //           that.$router.back()
+      //           that.$emit('getSign')
+      //         } else {
+      //           that.$refs.toast.show(res.message)
+      //         }
+      //       })
+      //     }
+      //   })
+      // }
     },
     computed: {
       ...mapGetters(['ios']),
