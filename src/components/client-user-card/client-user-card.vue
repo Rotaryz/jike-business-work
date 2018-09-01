@@ -117,6 +117,9 @@
             letter-spacing: 0.6px
             layout(row, block, nowrap)
             align-items: flex-start
+            .txt
+              max-width :42vw
+              no-wrap()
             .is-new
               width: 19px
               height: 13.5px

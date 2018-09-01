@@ -130,7 +130,7 @@
               return {...item, isCheck: false}
             })
             this.dataArray.push(...arr)
-            this.$refs.scroll.refresh()
+            this.$refs.scroll && this.$refs.scroll.refresh()
           } else {
             this.$refs.scroll.forceUpdate()
             this.isAll = true
@@ -138,7 +138,7 @@
         })
       },
       rebuildScroll() {
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
         })
@@ -184,7 +184,7 @@
               return {...item, isCheck: false}
             })
             this.isEmpty = !this.dataArray.length
-            this.$refs.scroll.refresh()
+            this.$refs.scroll && this.$refs.scroll.refresh()
           }
         })
       }
@@ -267,6 +267,8 @@
             font-size: $font-size-16
             color: $color-20202E
             letter-spacing: 0.6px
+            max-width :40vw
+            no-wrap()
           .status
             font-family: $font-family-regular
             font-size: $font-size-12
