@@ -103,7 +103,7 @@
               }
             } else {
               this.addListCount(res)
-              this.addListMsg(res)
+              this.addListMsg({msg: res})
               if (res.fromAccount === this.currentMsg.account) {
                 this.addNowChat(res)
               }

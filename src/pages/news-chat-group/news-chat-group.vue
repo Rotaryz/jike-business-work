@@ -155,19 +155,19 @@
             this.mortListShow = false
             this.currentGroupMsg.map((item) => {
               item.customers.map((item1) => {
-                webimHandler.onSendCustomMsg(opt, item1).then(res => {
+                webimHandler.onSendCustomMsg(opt, item1.account).then(res => {
                   let timeStamp = parseInt(Date.now() / 1000)
                   let addMsg = {
                     text: '[图片信息]',
                     time: timeStamp,
                     msgTimeStamp: timeStamp,
-                    fromAccount: item1,
-                    sessionId: item1,
+                    fromAccount: item1.account,
+                    sessionId: item1.account,
                     unreadMsgCount: 0,
-                    avatar: '',
-                    nickName: ''
+                    avatar: item1.avatar,
+                    nickName: item1.nickName
                   }
-                  this.addListMsg(addMsg)
+                  this.addListMsg({msg: addMsg, type: 'mineAdd'})
                 }, () => {
                   // this.$refs.toast.show('网络异常, 请稍后重试')
                 })
@@ -227,19 +227,19 @@
         })
         this.currentGroupMsg.map((item) => {
           item.customers.map((item1) => {
-            webimHandler.onSendMsg(value, item1).then(res => {
+            webimHandler.onSendMsg(value, item1.account).then(res => {
               let timeStamp = parseInt(Date.now() / 1000)
               let addMsg = {
                 text: value,
                 time: timeStamp,
                 msgTimeStamp: timeStamp,
-                fromAccount: item1,
-                sessionId: item1,
+                fromAccount: item1.account,
+                sessionId: item1.account,
                 unreadMsgCount: 0,
-                avatar: '',
-                nickName: ''
+                avatar: item1.avatar,
+                nickName: item1.nickName
               }
-              this.addListMsg(addMsg)
+              this.addListMsg({msg: addMsg, type: 'mineAdd'})
             }, () => {
               // this.$refs.toast.show('网络异常, 请稍后重试')
             })

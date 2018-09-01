@@ -298,7 +298,7 @@
               avatar: this.currentMsg.avatar,
               nickName: this.currentMsg.nickName
             }
-            this.addListMsg(addMsg)
+            this.addListMsg({msg: addMsg})
             this.mortListShow = false
             webimHandler.onSendCustomMsg(opt, this.id).then(res => {
             }, () => {
@@ -419,7 +419,7 @@
           avatar: this.currentMsg.avatar,
           nickName: this.currentMsg.nickName
         }
-        this.addListMsg(addMsg)
+        this.addListMsg({msg: addMsg})
         this.inputMsg = ''
         this.hideInput()
         this.$refs.scroll.forceUpdate()
