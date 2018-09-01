@@ -8,7 +8,6 @@
 <script>
   import Tab from 'components/tab/tab'
   import Ceiling from 'components/ceiling/ceiling'
-  import storage from 'storage-controller'
 
   const COMPONENT_NAME = 'home'
 
@@ -18,11 +17,6 @@
       return {}
     },
     created() {
-      let info = storage.get('info', {})
-      if (info.is_boss === undefined) {
-        storage.remove('token')
-        this.$router.replace('/oauth')
-      }
       console.log(process.env)
     },
     methods: {
