@@ -38,16 +38,16 @@
                   {{item.created_at}}
                   <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share" :class="{'share-active': item.show}">
-                  <div class="share-item comment">
-                    <img class="find-icon" src="./icon-review@2x.png">
-                  </div>
-                  <div class="share-item" @click="_goodLike(index)">
-                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
-                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
-                  </div>
-                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                </div>
+                <!--<div class="share" :class="{'share-active': item.show}">-->
+                  <!--<div class="share-item comment">-->
+                    <!--<img class="find-icon" src="./icon-review@2x.png">-->
+                  <!--</div>-->
+                  <!--<div class="share-item" @click="_goodLike(index)">-->
+                    <!--<img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">-->
+                    <!--<img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">-->
+                  <!--</div>-->
+                  <!--&lt;!&ndash;{{find.is_like ? 'thumbs-up' : ''}}&ndash;&gt;-->
+                <!--</div>-->
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
@@ -86,16 +86,16 @@
                   {{item.created_at}}
                   <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share" :class="{'share-active': item.show}">
-                  <div class="share-item comment">
-                    <img class="find-icon" src="./icon-review@2x.png">
-                  </div>
-                  <div class="share-item" @click="_goodLike(index)">
-                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
-                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
-                  </div>
-                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                </div>
+                <!--<div class="share" :class="{'share-active': item.show}">-->
+                  <!--<div class="share-item comment">-->
+                    <!--<img class="find-icon" src="./icon-review@2x.png">-->
+                  <!--</div>-->
+                  <!--<div class="share-item" @click="_goodLike(index)">-->
+                    <!--<img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">-->
+                    <!--<img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">-->
+                  <!--</div>-->
+                  <!--&lt;!&ndash;{{find.is_like ? 'thumbs-up' : ''}}&ndash;&gt;-->
+                <!--</div>-->
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
@@ -135,16 +135,16 @@
                   {{item.created_at}}
                   <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
-                <div class="share" :class="{'share-active': item.show}">
-                  <div class="share-item comment">
-                    <img class="find-icon" src="./icon-review@2x.png">
-                  </div>
-                  <div class="share-item" @click="_goodLike(index)">
-                    <img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">
-                    <img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">
-                  </div>
-                  <!--{{find.is_like ? 'thumbs-up' : ''}}-->
-                </div>
+                <!--<div class="share" :class="{'share-active': item.show}">-->
+                  <!--<div class="share-item comment">-->
+                    <!--<img class="find-icon" src="./icon-review@2x.png">-->
+                  <!--</div>-->
+                  <!--<div class="share-item" @click="_goodLike(index)">-->
+                    <!--<img class="find-icon" v-if="!item.is_like" src="./icon-like@2x.png">-->
+                    <!--<img class="find-icon" v-if="item.is_like" src="./icon-like2_pressed@2x.png">-->
+                  <!--</div>-->
+                  <!--&lt;!&ndash;{{find.is_like ? 'thumbs-up' : ''}}&ndash;&gt;-->
+                <!--</div>-->
               </div>
               <div class="likes-peo" v-if="item.live_log_like.length || item.live_log_comment.length">
                 <img src="./pic-trends_zan1@2x.png" class="likes-peo-bg" mode="widthFix">
