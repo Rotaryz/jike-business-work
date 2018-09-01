@@ -1,32 +1,30 @@
 <template>
-  <transition :name="slide">
-    <div class="change-autograph">
-      <scroll ref="scroll">
-        <div class="address-box">
-          <div class="address-list" @click="selcetAddress">
-            <div class="text">所在地区</div>
-            <div class="text-right" v-if="address.length === 0">请选择地区</div>
-            <div class="text-right-acitive" v-if="address.length !== 0">{{address}}</div>
-            <img src="./icon-pressed@2x.png" alt="" class="address-img">
-          </div>
-          <div class="address-list">
-            <div class="text">详细地址</div>
-            <input type="text" class="item-input" v-model="detailAdress" placeholder="请输入详细地址"/>
-          </div>
+  <div class="change-autograph">
+    <scroll ref="scroll">
+      <div class="address-box">
+        <div class="address-list" @click="selcetAddress">
+          <div class="text">所在地区</div>
+          <div class="text-right" v-if="address.length === 0">请选择地区</div>
+          <div class="text-right-acitive" v-if="address.length !== 0">{{address}}</div>
+          <img src="./icon-pressed@2x.png" alt="" class="address-img">
         </div>
-      </scroll>
-      <div class="btn">
-        <div class="btn-item btn-green" @click="saveAdress">确定</div>
+        <div class="address-list">
+          <div class="text">详细地址</div>
+          <input type="text" class="item-input" v-model="detailAdress" placeholder="请输入详细地址"/>
+        </div>
       </div>
-      <toast ref="toast"></toast>
-      <awesome-picker
-        ref="picker"
-        :data="cityData"
-        @cancel="handlePickerCancel"
-        @confirm="handlePickerConfirm">
-      </awesome-picker>
+    </scroll>
+    <div class="btn">
+      <div class="btn-item btn-green" @click="saveAdress">确定</div>
     </div>
-  </transition>
+    <toast ref="toast"></toast>
+    <awesome-picker
+      ref="picker"
+      :data="cityData"
+      @cancel="handlePickerCancel"
+      @confirm="handlePickerConfirm">
+    </awesome-picker>
+  </div>
 </template>
 
 
@@ -100,7 +98,7 @@
       getGeocoder(text) {
         let that = this
         let geocoder
-        AMap.plugin('AMap.Geocoder', function() {
+        AMap.plugin('AMap.Geocoder', function () {
           geocoder = new AMap.Geocoder()
         })
         geocoder.getLocation(text, function (status, result) {
@@ -178,7 +176,6 @@
         color: $color-text
       .text-light
         color: #CCCCCC
-
 
   .address-box
     background: $color-white-fff
