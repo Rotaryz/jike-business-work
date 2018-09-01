@@ -21,6 +21,15 @@
           </div>
           <!--style="bottom: {{height}}px"-->
         </div>
+        <div class="synchronization" v-if="isBoss">
+          <img src="./icon-member@2x.png" class="synchronization-icon">
+          <span class="synchronization-text">以企业身份发布</span>
+          <div class="tip">
+            <div :class="{move_fa:share}" @click="_defaultCard()">
+              <span class="circular" :class="{move: share}"></span>
+            </div>
+          </div>
+        </div>
       </scroll>
       <div class="btn">
         <div class="btn-item btn-dark" @click="_back">取消</div>
@@ -38,6 +47,7 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import {mapGetters} from 'vuex'
+  import storage from 'storage-controller'
 
   export default {
     name: 'edit-dynamic',
@@ -45,10 +55,19 @@
       return {
         title: '',
         image: [],
-        send: true
+        send: true,
+        share: false,
+        isBoss: false
       }
     },
+    created() {
+      let info = storage.get('info', '')
+      this.isBoss = info ? info.isBoss : false
+    },
     methods: {
+      _defaultCard() {
+        this.share = !this.share
+      },
       async _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
@@ -93,7 +112,7 @@
           this.$refs.toast.show('发布图片不能为空')
           return
         }
-        let data = {content: this.title, live_log_details: this.image}
+        let data = {content: this.title, live_log_details: this.image, is_business: this.share ? 1 : 0}
         Live.liveLogs(data).then((res) => {
           this.send = false
           if (res.error === ERR_OK) {
@@ -282,4 +301,80 @@
     height: 76%
     width: 76%
     all-center()
+
+  .synchronization
+    position: relative
+    display: flex
+    height: 49px
+    width: 92vw
+    margin: 0 auto
+    align-items: center
+    margin-top: 30px
+    border-bottom-1px(#E5E5E5)
+    border-top-1px(#E5E5E5)
+    .synchronization-icon
+      width: 20px
+      height: @width
+    .synchronization-text
+      font-size: $font-size-16
+      font-family: $font-family-regular
+      color: $color-20202E
+      white-space: nowrap
+      margin-left: 8.5px
+    .synchronization-switch
+      display: block
+      right: 1px
+      col-center()
+    .wx-switch-input
+      width: 51px !important
+      height: 30px !important
+      &::before
+        width: 49px !important
+        height: 28px !important
+      &::after
+        width: 28px !important
+        height: 28px !important
+
+  .tip
+    col-center()
+    right: 0
+    font-size: $font-size-small
+    color: $color-text-d
+    margin-top: 6px
+    margin-bottom: 10px
+    width: 44px
+    height: 24px
+    .move_fa
+      width: 44px
+      height: 24px
+      background: $color-56
+    div
+      position: absolute
+      height: 24px
+      width: 44px
+      right: $padding-all
+      top: 50%
+      transform: translateY(-50%)
+      background: #DDDDDD
+      border-radius: @height
+      transition: background 1s
+      .circular
+        display: inline-block
+        height: 21px
+        width: 21px
+        margin: 1px 2px
+        border-radius: 50%
+        background: $color-white
+        transition: transform .5s
+      .move
+        transform: translateX(19px)
+      .status
+        font-size: $font-size-small12
+        col-center()
+        font-family: $fontFamilyRegular
+        color: $color-white
+      .status-right
+        right: 7px
+      .status-left
+        left: 7px
 </style>
