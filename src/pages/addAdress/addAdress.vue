@@ -31,9 +31,9 @@
 
 <script>
   import Scroll from 'components/scroll/scroll'
-  import { Business, Mine } from 'api'
+  import { Mine } from 'api'
   import { ERR_OK } from 'common/js/config'
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
   import {cityData} from 'common/js/utils'
   import Toast from 'components/toast/toast'
   import AMap from 'AMap'
@@ -54,7 +54,6 @@
       }
     },
     created () {
-      alert(1)
       Mine.getMyInfoAddress().then((res) => {
         if (res.error === ERR_OK) {
           this.province = res.message.province
@@ -67,26 +66,7 @@
         }
       })
     },
-    mounted() {
-      console.log(11)
-      this.getGeocoder('广东省')
-    },
     methods: {
-      ...mapActions(['setSignature']),
-      _submit () {
-        Business.updateMySignature({signature: this.title}).then((res) => {
-          if (res.error === ERR_OK) {
-            this._back()
-            this.setSignature(this.title)
-            this.$emit('getSign')
-            return
-          }
-          this.$refs.toast.show(res.message)
-        })
-      },
-      _back () {
-        this.$router.back()
-      },
       handlePickerCancel(e) {
         console.log(e)
       },
@@ -113,8 +93,7 @@
           return
         }
         let text = this.address + this.detailAdress
-        console.log(text)
-        // this.getGeocoder(text)
+        this.getGeocoder(text)
       },
       getGeocoder(text) {
         let that = this
@@ -127,22 +106,22 @@
           if (status === 'complete' && result.info === 'OK') {
             that.longitude = result.geocodes[0].location.lng
             that.latitude = result.geocodes[0].location.lat
-            // let data = {
-            //   address: that.detailAdress,
-            //   province: that.province,
-            //   city: that.city,
-            //   area: that.area,
-            //   longitude: that.longitude,
-            //   latitude: that.latitude
-            // }
-            // Mine.updateMyInfoAddress(data).then((res) => {
-            //   if (res.error === ERR_OK) {
-            //     that.$router.back()
-            //     that.$emit('getSign')
-            //   } else {
-            //     that.$refs.toast.show(res.message)
-            //   }
-            // })
+            let data = {
+              address: that.detailAdress,
+              province: that.province,
+              city: that.city,
+              area: that.area,
+              longitude: that.longitude,
+              latitude: that.latitude
+            }
+            Mine.updateMyInfoAddress(data).then((res) => {
+              if (res.error === ERR_OK) {
+                that.$router.back()
+                that.$emit('getSign')
+              } else {
+                that.$refs.toast.show(res.message)
+              }
+            })
           }
         })
       }
