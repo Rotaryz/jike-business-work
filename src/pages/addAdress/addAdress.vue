@@ -104,7 +104,7 @@
         })
         geocoder.getLocation(text, function (status, result) {
           console.log(result, '111')
-          alert(result)
+          alert(JSON.stringify(result))
           if (status === 'complete' && result.info === 'OK') {
             that.longitude = result.geocodes[0].location.lng
             that.latitude = result.geocodes[0].location.lat
