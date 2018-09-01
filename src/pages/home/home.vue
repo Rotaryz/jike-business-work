@@ -1,7 +1,7 @@
 <template>
   <div class="home" @touchmove.prevent>
     <ceiling ref="ceiling"></ceiling>
-    <router-view @login="login" />
+    <router-view @login="login"/>
     <tab></tab>
   </div>
 </template>
@@ -11,6 +11,7 @@
   import Ceiling from 'components/ceiling/ceiling'
 
   const COMPONENT_NAME = 'home'
+  import storage from 'storage-controller'
 
   export default {
     name: COMPONENT_NAME,
@@ -18,6 +19,11 @@
       return {}
     },
     created() {
+      let info = storage.get('info', {})
+      if (!info.is_boss) {
+        storage.remove('token')
+        this.$router.replace('/oauth')
+      }
       console.log(process.env)
     },
     methods: {
