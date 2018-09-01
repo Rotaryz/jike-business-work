@@ -21,6 +21,15 @@
           </div>
           <!--style="bottom: {{height}}px"-->
         </div>
+        <div class="synchronization" v-if="isBoss">
+          <img src="./icon-member@2x.png" class="synchronization-icon">
+          <span class="synchronization-text">以企业身份发布</span>
+          <div class="tip">
+            <div :class="{move_fa:share}" @click="_defaultCard()">
+              <span class="circular" :class="{move: share}"></span>
+            </div>
+          </div>
+        </div>
       </scroll>
       <div class="btn">
         <div class="btn-item btn-dark" @click="_back">取消</div>
@@ -34,31 +43,47 @@
 <script>
   // import { ERR_OK } from 'api/config'
   import Scroll from 'components/scroll/scroll'
-  import { UpLoad, Live } from 'api'
-  import { ERR_OK } from '../../common/js/config'
+  import {UpLoad, Live} from 'api'
+  import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'edit-dynamic',
-    data () {
+    data() {
       return {
         title: '',
         image: [],
-        send: true
+        send: true,
+        share: false,
+        isBoss: false
       }
     },
+    created() {
+      this._checkBoss()
+    },
     methods: {
-      async _fileImage (e) {
+      _checkBoss() {
+        Live.isBoss().then((res) => {
+          if (res.error !== ERR_OK) {
+            return
+          }
+          this.isBoss = res.data.is_boss
+        })
+      },
+      _defaultCard() {
+        this.share = !this.share
+      },
+      async _fileImage(e) {
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
       },
-      _infoImage (file) {
+      _infoImage(file) {
         let param = new FormData() // 创建form对象
         param.append('file', file, file.name)// 通过append向form对象添加数据
         return param
       },
-      _upLoad (item) {
+      _upLoad(item) {
         UpLoad.upLoadImage(item).then((res) => {
           if (res.error === ERR_OK) {
             let imageItem = {type: 1, detail_id: res.data.id, image_url: res.data.url}
@@ -69,18 +94,20 @@
           }
         })
       },
-      async _moreImage (arr) {
+      async _moreImage(arr) {
         // let image = {}
         // let sequence = Promise.resolve()
         for (let item of arr) {
           item = this._infoImage(item)
           await this._upLoad(item)
         }
+        let els = document.querySelector('.image-file')
+        els.value = ''
       },
-      _delImage (index) {
+      _delImage(index) {
         this.image.splice(index, 1)
       },
-      _liveLogs () {
+      _liveLogs() {
         if (!this.send) {
           return
         }
@@ -91,7 +118,7 @@
           this.$refs.toast.show('发布图片不能为空')
           return
         }
-        let data = {content: this.title, live_log_details: this.image}
+        let data = {content: this.title, live_log_details: this.image, is_business: this.share ? 1 : 0}
         Live.liveLogs(data).then((res) => {
           this.send = false
           if (res.error === ERR_OK) {
@@ -105,13 +132,13 @@
           this.send = true
         })
       },
-      _back () {
+      _back() {
         this.$router.back()
       }
     },
     computed: {
       ...mapGetters(['ios']),
-      slide () {
+      slide() {
         return this.ios ? '' : 'slide'
       }
     },
@@ -280,4 +307,80 @@
     height: 76%
     width: 76%
     all-center()
+
+  .synchronization
+    position: relative
+    display: flex
+    height: 49px
+    width: 92vw
+    margin: 0 auto
+    align-items: center
+    margin-top: 30px
+    border-bottom-1px(#E5E5E5)
+    border-top-1px(#E5E5E5)
+    .synchronization-icon
+      width: 20px
+      height: @width
+    .synchronization-text
+      font-size: $font-size-16
+      font-family: $font-family-regular
+      color: $color-20202E
+      white-space: nowrap
+      margin-left: 8.5px
+    .synchronization-switch
+      display: block
+      right: 1px
+      col-center()
+    .wx-switch-input
+      width: 51px !important
+      height: 30px !important
+      &::before
+        width: 49px !important
+        height: 28px !important
+      &::after
+        width: 28px !important
+        height: 28px !important
+
+  .tip
+    col-center()
+    right: 0
+    font-size: $font-size-small
+    color: $color-text-d
+    margin-top: 6px
+    margin-bottom: 10px
+    width: 44px
+    height: 24px
+    .move_fa
+      width: 44px
+      height: 24px
+      background: $color-56
+    div
+      position: absolute
+      height: 24px
+      width: 44px
+      right: $padding-all
+      top: 50%
+      transform: translateY(-50%)
+      background: #DDDDDD
+      border-radius: @height
+      transition: background 1s
+      .circular
+        display: inline-block
+        height: 21px
+        width: 21px
+        margin: 1px 2px
+        border-radius: 50%
+        background: $color-white
+        transition: transform .5s
+      .move
+        transform: translateX(19px)
+      .status
+        font-size: $font-size-small12
+        col-center()
+        font-family: $fontFamilyRegular
+        color: $color-white
+      .status-right
+        right: 7px
+      .status-left
+        left: 7px
 </style>

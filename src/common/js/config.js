@@ -5,18 +5,21 @@ const LOCAL_URL = {
 }
 
 const DEV_URL = {
-  api: 'http://business-api.jerryf.cn'
+  api: 'http://business-api.jerryf.cn',
+  image: 'https://img.jerryf.cn/defaults'
 }
 // const DEV_URL = {
 //   api: 'https://business-api.jkweixin.com'
 // }
 
 const TEST_URL = {
-  api: 'https://business-api.jkweixin.net'
+  api: 'https://business-api.jkweixin.net',
+  image: 'https://img.jkweixin.net/defaults'
 }
 
 const PROD_URL = {
-  api: 'https://business-api.jkweixin.com'
+  api: 'https://business-api.jkweixin.com',
+  image: 'https://img.jkweixin.com/defaults'
 }
 
 export const BASE_URL = env.NODE_ENV === 'production' ? PROD_URL : env.NODE_ENV === 'test' ? TEST_URL : env.NODE_ENV === 'dev' ? DEV_URL : LOCAL_URL

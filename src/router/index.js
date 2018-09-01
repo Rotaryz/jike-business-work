@@ -29,6 +29,12 @@ const AddFlow = () => import('pages/add-flow/add-flow')
 const MyData = () => import('pages/my-data/my-data')
 const PageError = () => import('pages/page-error/page-error')
 const Home = () => import('pages/home/home')
+const NewGroupMsg = () => import('pages/new-group-msg/new-group-msg')
+const NewsAddGroup = () => import('pages/news-add-group/news-add-group')
+const NewsChatGroup = () => import('pages/news-chat-group/news-chat-group')
+const ActionDetail = () => import('pages/action-detail/action-detail')
+const MineInfo = () => import('pages/mine-info/mine-info')
+const AddAdress = () => import('pages/addAdress/addAdress')
 
 Vue.use(Router)
 
@@ -64,6 +70,13 @@ const route = new Router({
             meta: {
               title: '修改签名'
             }
+          },
+          {
+            path: 'addAdress',
+            component: AddAdress,
+            meta: {
+              title: '编辑地址'
+            }
           }]
         },
         {
@@ -74,10 +87,17 @@ const route = new Router({
           }
         },
         {
+          path: 'mine-info',
+          component: MineInfo,
+          meta: {
+            title: '个人信息'
+          }
+        },
+        {
           path: 'shareCard',
           component: ShareCard,
           meta: {
-            title: '分享名片'
+            title: '查看名片'
           }
         },
         {
@@ -137,6 +157,13 @@ const route = new Router({
         }
       },
       {
+        path: '/action-detail',
+        component: ActionDetail,
+        meta: {
+          title: '查看名片'
+        }
+      },
+      {
         path: '/addflow',
         component: AddFlow,
         meta: {
@@ -178,6 +205,13 @@ const route = new Router({
                 }
               }
             ]
+          },
+          {
+            path: '/action-detail',
+            component: ActionDetail,
+            meta: {
+              title: '查看名片'
+            }
           }
         ]
       },
@@ -186,6 +220,27 @@ const route = new Router({
         component: News,
         meta: {
           title: '消息'
+        }
+      },
+      {
+        path: '/news-add-group',
+        component: NewsAddGroup,
+        meta: {
+          title: '添加组'
+        }
+      },
+      {
+        path: '/news-chat-group',
+        component: NewsChatGroup,
+        meta: {
+          title: '群发'
+        }
+      },
+      {
+        path: '/new-group-msg',
+        component: NewGroupMsg,
+        meta: {
+          title: '新建群发'
         }
       },
       {
@@ -356,7 +411,7 @@ const route = new Router({
       path: '/shareCard',
       component: ShareCard,
       meta: {
-        title: '分享名片'
+        title: '查看名片'
       }
     }
   ]

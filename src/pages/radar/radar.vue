@@ -1,11 +1,24 @@
 <template>
   <div>
     <div class="radar">
-      <span class="msg-box" :class="customCount ? '' : 'show'" @click.stop="clearNum">
+      <div class="tab-container">
+        <ul class="tab-wrapper border-bottom-1px">
+          <li class="tab-item" :class="tabIndex===index?'active':''"
+              v-for="(item,index) in tabList"
+              :key="index"
+              @click="changeTab(index)">
+            {{item}}
+          </li>
+          <div class="line" :style="'transform:translate3d('+ (100 * tabIndex) + '%, 0, 0)'">
+            <div class="chilen-line"></div>
+          </div>
+        </ul>
+      </div>
+      <span class="msg-box" :class="customCount ? '' : 'show'" @click.stop="clearNum" v-if="tabIndex === 0" >
         <img src="./icon-news_up@3x.png" class="msg-arrow">
         <span class="msg-hint">{{customCount}}条信息</span>
       </span>
-      <div class="container">
+      <div class="container" v-if="tabIndex * 1 === 0">
         <scroll ref="scroll"
                 :data="list"
                 :bcColor="'#f1f2f5'"
@@ -46,6 +59,68 @@
           </div>
         </scroll>
       </div>
+      <div class="action-box"  v-if="tabIndex * 1 === 1">
+        <ul class="action-tab">
+          <li class="tab-item"  :class="actionIndex===index?'active':''"
+              v-for="(item,index) in actionList"
+              :key="index"
+              @click="actionTab(index)">{{item}}</li>
+        </ul>
+        <div class="action-scroll">
+          <scroll
+            ref="scrollAction">
+            <div class="action-all">
+              <div class="action-list-con" v-for="(item, index) in actionListData" v-bind:key="index">
+                <div class="item-list" v-for="(data, itemindex) in item" v-bind:key="itemindex">
+                  <div class="item-left" :class="data.icon">
+                  </div>
+                  <div class="item-right">
+                    <div class="text">{{data.name}}</div>
+                    <div class="right-box">
+                      <div class="number">{{data.count_sum}}次</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </scroll>
+        </div>
+      </div>
+      <div class="people-box" v-if="tabIndex * 1 === 2">
+        <ul class="action-tab">
+          <li class="tab-item"  :class="tabPeopleIndex===index?'active':''"
+              v-for="(item,index) in tapPeopleList"
+              :key="index"
+              @click="peopleTab(index)">{{item}}</li>
+        </ul>
+        <div class="action-scroll">
+          <scroll  ref="scrollPeople"
+                   :data="peopleDataList"
+                   :bcColor="'#f1f2f5'"
+                   :pullUpLoad="pullUpPeoleLoadObj"
+                   :showNoMore="false"
+                   @pullingUp="onPeoplePullingUp">
+            <div class="people-all">
+              <div class="msgs-list msgs-people" v-if="peopleDataList.length !== 0">
+                <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
+                  <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
+                  <div class="msg-item-content">
+                    <img :src="item.image_url" class="msgs-left">
+                    <div class="msgs-right">
+                      <div class="msgs-container">
+                        <p class="msgs-p">{{item.nickname}}跟你互动了<span class="green">{{item.count_sum}}</span>次</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <section class="exception-box" v-if="peopleDataList.length === 0">
+              <exception errType="nodata"></exception>
+            </section>
+          </scroll>
+        </div>
+      </div>
     </div>
     <router-view></router-view>
   </div>
@@ -59,6 +134,114 @@
   import storage from 'storage-controller'
   import {ease} from 'common/js/ease'
   import utils from 'common/js/utils'
+  import Exception from 'components/exception/exception'
+
+  const WORKLIST = [
+    [
+      {
+        icon: 'ckmp',
+        name: '查看名片',
+        event_no: '10000',
+        count_sum: 0
+      },
+      {
+        icon: 'dzmp',
+        name: '点赞名片',
+        event_no: '10001',
+        count_sum: 0
+      },
+      {
+        icon: 'zfmp',
+        name: '转发名片',
+        event_no: '10005',
+        count_sum: 0
+      },
+      {
+        icon: 'bddh',
+        name: '拨打电话',
+        event_no: '10007',
+        count_sum: 0
+      },
+      {
+        icon: 'fzyx',
+        name: '复制邮箱',
+        event_no: '10003',
+        count_sum: 0
+      },
+      {
+        icon: 'ckdz',
+        name: '查看地址',
+        event_no: '10004',
+        count_sum: 0
+      },
+      {
+        icon: 'bcdh',
+        name: '保存电话',
+        event_no: '10008',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckcp',
+        name: '查看产品',
+        event_no: '20001',
+        count_sum: 0
+      },
+      {
+        icon: 'ckxq',
+        name: '查看详情',
+        event_no: '20002',
+        count_sum: 0
+      },
+      {
+        icon: 'zxcp',
+        name: '咨询产品',
+        event_no: '20003',
+        count_sum: 0
+      },
+      {
+        icon: 'zfcp',
+        name: '转发产品',
+        event_no: '20004',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckdt',
+        name: '查看动态',
+        event_no: '30001',
+        count_sum: 0
+      },
+      {
+        icon: 'dzdt',
+        name: '点赞动态',
+        event_no: '30002',
+        count_sum: 0
+      },
+      {
+        icon: 'pldt',
+        name: '评论动态',
+        event_no: '',
+        count_sum: 0
+      },
+      {
+        icon: 'zfdt',
+        name: '转发动态',
+        event_no: '',
+        count_sum: 0
+      }
+    ],
+    [
+      {
+        icon: 'ckgw',
+        name: '查看官网',
+        event_no: '50001',
+        count_sum: 0
+      }
+    ]
+  ]
   export default {
     name: 'Radar',
     created() {
@@ -73,6 +256,7 @@
           }, 20)
         }
       })
+      this.getAllData()
     },
     data() {
       return {
@@ -84,9 +268,25 @@
         pullDownRefresh: true,
         pullDownRefreshThreshold: 90,
         pullDownRefreshStop: 40,
+        showNoMore: false,
+        pullUpPeopleLoadThreshold: 0,
+        pullUpPeopleLoadMoreTxt: '加载更多',
+        pullUpPeopleLoadNoMoreTxt: '没有更多了',
+        pullUpPeopleLoad: true,
         scrollToEasing: 'bounce',
         scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
-        showNoMore: false
+        showPeopleNoMore: false,
+        tabList: ['时间', '行为', '人'],
+        tabPeopleIndex: 0,
+        tapPeopleList: ['全部', '今天', '7天', '30天'],
+        tabIndex: 0,
+        actionList: ['全部', '今天', '7天', '30天'],
+        actionIndex: 0,
+        peopleDataList: [],
+        firstGet: true,
+        peopleMore: false,
+        actionListData: WORKLIST,
+        page: 0
       }
     },
     methods: {
@@ -95,6 +295,48 @@
         'setImIng',
         'setImInfo'
       ]),
+      changeTab(index) {
+        this.tabIndex = index
+        if (index * 1 === 2 && this.firstGet) {
+          this.getPeopleList()
+        }
+      },
+      peopleTab(index) {
+        this.$refs.scrollPeople.scrollTo(0, 0)
+        this.tabPeopleIndex = index
+        switch (index * 1) {
+          case 0:
+            this.getPeopleList()
+            break
+          case 1:
+            this.getPeopleList('today')
+            break
+          case 2:
+            this.getPeopleList('week')
+            break
+          case 3:
+            this.getPeopleList('month')
+            break
+        }
+      },
+      actionTab(index) {
+        this.$refs.scrollAction.scrollTo(0, 0)
+        this.actionIndex = index
+        switch (index * 1) {
+          case 0:
+            this.getAllData()
+            break
+          case 1:
+            this.getAllData('today')
+            break
+          case 2:
+            this.getAllData('week')
+            break
+          case 3:
+            this.getAllData('month')
+            break
+        }
+      },
       toDetail(item) {
         let url = '/radar/client-detail'
         this.$router.push({path: url, query: {id: item.customer_id, pageUrl: url}})
@@ -112,7 +354,10 @@
         })
       },
       onPullingUp() {
-        if (this.showNoMore) return
+        if (this.showNoMore) {
+          this.$refs.scroll.forceUpdate()
+          return
+        }
         const num = this.list.length * 1 + this.customCount * 1
         Im.getRadarList(num, 30, this.userInfo.id).then((res) => {
           if (res.error === ERR_OK) {
@@ -140,10 +385,90 @@
           }
         })
       },
+      onPeoplePullingDown() {
+        this.$refs.scrollPeople.forceUpdate()
+      },
+      onPeoplePullingUp() {
+        switch (this.tabPeopleIndex * 1) {
+          case 0:
+            this.getMorePeopleList()
+            break
+          case 1:
+            this.getMorePeopleList('today')
+            break
+          case 2:
+            this.getMorePeopleList('week')
+            break
+          case 3:
+            this.getMorePeopleList('month')
+            break
+        }
+      },
       rebuildScroll() {
         this.nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
+        })
+      },
+      rebuildPeopleScroll() {
+        this.nextTick(() => {
+          this.$refs.scrollPeople.destroy()
+          this.$refs.scrollPeople.initScroll()
+        })
+      },
+      getAllData(time) {
+        Im.getActionList(0, 30, this.userInfo.id, 2, time).then((res) => {
+          if (res.error === ERR_OK) {
+            let dataActionList = WORKLIST
+            dataActionList.forEach((item) => {
+              item.forEach((item1) => {
+                let resArr = res.data.filter((item2) => {
+                  return item1.event_no * 1 === item2.event_no * 1
+                })
+                if (resArr.length) {
+                  item1.count_sum = resArr[0].count_sum
+                } else {
+                  item1.count_sum = 0
+                }
+              })
+            })
+          }
+        })
+      },
+      getPeopleList(time) {
+        Im.getActionList(0, 30, this.userInfo.id, 3, time).then((res) => {
+          if (res.error === ERR_OK) {
+            this.peopleDataList = res.data
+            this.firstGet = false
+            this.page = 0
+            this.peopleMore = false
+            if (res.data.length < 30) {
+              this.peopleMore = true
+            }
+            setTimeout(() => {
+              this.$refs.scrollPeople.forceUpdate()
+            }, 20)
+          }
+        })
+      },
+      getMorePeopleList(time) {
+        if (this.peopleMore) {
+          this.$refs.scrollPeople.forceUpdate()
+          return
+        }
+        this.page++
+        const num = this.page * 30
+        Im.getActionList(num, 30, this.userInfo.id, 3, time).then((res) => {
+          if (res.error === ERR_OK) {
+            let list = res.data
+            if (res.data.length < 30) {
+              this.peopleMore = true
+            }
+            this.peopleDataList = [...this.peopleDataList, ...list]
+            setTimeout(() => {
+              this.$refs.scrollPeople.forceUpdate()
+            }, 20)
+          }
         })
       }
     },
@@ -174,7 +499,20 @@
           txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}
         } : false
       },
+      pullUpPeoleLoadObj: function () {
+        return this.pullUpPeopleLoad ? {
+          threshold: parseInt(this.pullUpPeopleLoadThreshold),
+          txt: {more: this.pullUpPeopleLoadMoreTxt, noMore: this.pullUpPeopleLoadNoMoreTxt}
+        } : false
+      },
       pullDownRefreshObj: function () {
+        return this.pullDownRefresh && !this.noMore ? {
+          threshold: parseInt(this.pullDownRefreshThreshold),
+          stop: parseInt(this.pullDownRefreshStop),
+          txt: '没有更多了'
+        } : false
+      },
+      pullDownPeopleRefreshObj: function () {
         return this.pullDownRefresh && !this.noMore ? {
           threshold: parseInt(this.pullDownRefreshThreshold),
           stop: parseInt(this.pullDownRefreshStop),
@@ -192,15 +530,28 @@
         },
         deep: true
       },
+      pullUpPeoleLoadObj: {
+        handler() {
+          this.rebuildPeopleScroll()
+        },
+        deep: true
+      },
       pullDownRefreshObj: {
         handler() {
           this.rebuildScroll()
         },
         deep: true
+      },
+      pullDownPeopleRefreshObj: {
+        handler() {
+          this.rebuildPeopleScroll()
+        },
+        deep: true
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Exception
     }
   }
 </script>
@@ -209,6 +560,9 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
+
+  .exception-box
+    padding-top: 70px
   .radar
     width: 100vw
     position: fixed
@@ -217,11 +571,170 @@
     right: 0
     bottom: 45px
     background: $color-background
+    .tab-container
+      height: 44.5px
+      width: 100vw
+      position: fixed
+      left: 0
+      top: 0
+      z-index: 29
+      background: $color-white
+      .tab-wrapper
+        position: relative
+        height: 100%
+        layout(row, block, nowrap)
+        align-items: center
+        justify-content: space-between
+        .tab-item
+          flex: 1
+          height: 100%
+          line-height: 44.5px
+          font-family: $font-family-Medium
+          font-size: $font-size-16
+          color: $color-202020
+          letter-spacing: 0.6px
+          text-align: center
+          transition: color 0.3s
+          &.active
+            color: $color-202020
+      .tab-line-wrapper
+        height: 100%
+        width: 33.333%
+        position: absolute
+        top: 0
+        left: 0
+        layout()
+        justify-content: flex-end
+        align-items: center
+        transition: all 0.3s
+        .tab-line
+          width: 30px
+          height: 2.5px
+          background: $color-20202E
     .container
       width: 100%
-      height: 100%
       overflow: hidden
-      position: relative
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
+    .action-all
+      padding-bottom: 10px
+      .action-list-con:last-child
+        margin-bottom: 0
+    .action-box
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
+      .action-list-con
+        background: $color-white-fff
+        padding-left: 15px
+        margin-bottom: 10px
+        .item-list
+          layout(row)
+          align-items: center
+          .item-left
+            width: 18px
+            height: 18px
+            margin-right: 10px
+            background-size: 18px 18px
+            &.ckmp
+              bg-image('./icon-checkcard')
+            &.dzmp
+              bg-image('./icon-zancard')
+            &.zfmp
+              bg-image('./icon-relaycard')
+            &.bddh
+              bg-image('./icon-call')
+            &.fzyx
+              bg-image('./icon-email')
+            &.ckdz
+              bg-image('./icon-address')
+            &.bcdh
+              bg-image('./icon-addphone')
+            &.ckcp
+              bg-image('./icon-viewproduct')
+            &.ckxq
+              bg-image('./icon-viewdetail')
+            &.zxcp
+              bg-image('./icon-consult')
+            &.zfcp
+              bg-image('./icon-relayproduct')
+            &.ckdt
+              bg-image('./icon-checktrends')
+            &.dzdt
+              bg-image('./icon-zan')
+            &.pldt
+              bg-image('./icon-comment')
+            &.zfdt
+              bg-image('./icon-icon-relaytrends')
+            &.ckgw
+              bg-image('./icon-website')
+          .item-right
+            layout(row)
+            padding-right: 15px
+            justify-content: space-between
+            align-items: center
+            height: 44.5px
+            flex: 1
+            border-bottom-1px(#e5e5e5)
+            .text
+              font-size: $font-size-14
+              font-family: $font-family-medium
+              color: $color-20202E
+            .right-box
+              layout(row)
+              align-items: center
+              .number
+                font-size: $font-size-14
+                font-family: $font-family-medium
+                color: $color-56BA15
+              .msgs-rt
+                width: 7.5px
+                height: 11.5px
+        .item-list:last-child
+          .item-right
+            border-bottom-1px(rgba(255,255,255,0))
+    .action-scroll
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 70px
+      left: 0
+      right: 0
+      bottom: 0
+    .action-tab
+      padding: 20px 0
+      layout(row)
+      justify-content: center
+      align-items: center
+      .tab-item
+        width: 60px
+        height: 30px
+        text-align: center
+        line-height: 30px
+        background: $color-white-fff
+        font-family: $font-family-medium
+        color: $color-20202E
+        font-size: $font-size-14
+        border-1px(#e5e5e5)
+      .active
+        background: $color-20202E
+        color: $color-white-fff
+        border-1px(rgba(255,2555,255,0))
+    .people-box
+      width: 100%
+      overflow: hidden
+      position: absolute
+      top: 45px
+      left: 0
+      right: 0
+      bottom: 0
     .msg-box
       min-width: 95px
       height: 30px
@@ -230,7 +743,7 @@
       line-height: 30px
       font-size: 0
       position: fixed
-      top: 15px
+      top: 55px
       right: 0
       z-index: 9
       transition: all .3s
@@ -246,7 +759,8 @@
     .show.msg-box
       right: -100%
     .msgs-list
-      padding: 10px 15px 0
+      padding: 10px 15px 10px
+      box-sizing: border-box
       .msgs-item
         margin-top: 18px
         .item-time
@@ -294,4 +808,19 @@
             width: 7.5px
             height: 11.5px
             margin-left: 33px
+    .msgs-people
+      padding-top: 0
+      .msgs-item
+        margin: 0 0 18px
+  .line
+    position: absolute
+    width: 33.33%
+    height: 3px
+    bottom: 0
+    transition: all .3s
+    .chilen-line
+      height: 3px
+      width: 30px
+      background: #20202e
+      margin: 0 auto
 </style>
