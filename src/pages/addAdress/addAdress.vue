@@ -69,7 +69,7 @@
     },
     mounted() {
       console.log(11)
-      // this.getGeocoder('广东省')
+      this.getGeocoder('广东省')
     },
     methods: {
       ...mapActions(['setSignature']),

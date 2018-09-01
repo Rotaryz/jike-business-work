@@ -20,6 +20,10 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  externals: {
+    'AMap': 'window.AMap',
+    'AMapUI': 'AMapUI'
+  },
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
