@@ -128,7 +128,6 @@
         })
       },
       _fileChange(e, name) {
-        console.log(name)
         this.typeCode = name
         if (e.target) {
           // let param = this._infoImage(e.target.files[0])
