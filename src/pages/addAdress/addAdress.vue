@@ -97,12 +97,14 @@
       },
       getGeocoder(text) {
         let that = this
+        alert(text)
         let geocoder
         AMap.plugin('AMap.Geocoder', function () {
           geocoder = new AMap.Geocoder()
         })
         geocoder.getLocation(text, function (status, result) {
           console.log(result, '111')
+          alert(result)
           if (status === 'complete' && result.info === 'OK') {
             that.longitude = result.geocodes[0].location.lng
             that.latitude = result.geocodes[0].location.lat
