@@ -8,7 +8,7 @@
       </section>
       <div class="f3"></div>
       <!--<section class="total">共 {{total}} 位</section>-->
-      <ul class="tablist-box" v-if="dataArray.length" >
+      <ul class="tablist-box border-bottom-1px" v-if="dataArray.length" >
         <li class="tablist-item" v-for="(item, index) in tabList" v-bind:key="index" :class="tabListIndex===index?'active':''" @click="tabSelect(index)">{{item}}</li>
       </ul>
       <div class="simple-scroll-demo" v-if="dataArray.length">
@@ -331,4 +331,5 @@
     position: relative
     .user-list-item
       height: 76px
+      lr-border-bottom-1px()
 </style>

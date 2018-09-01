@@ -7,8 +7,20 @@ const LOSE_EFFICACY = 10000
 const DISABLE = 11001 // 11001 AI雷达没有权限, 11002 BOSS雷达没有权限
 const DELETE = 1 // TODO
 const NET_404 = 404
+const REGPHONE = /^1[3|4|5|6|7|8][0-9]{9}$/
+const REGEMAIL = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
+const CHINA = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/
 
 export default class utils {
+  static checkIsPhoneNumber(phoneNum) {
+    return REGPHONE.test(phoneNum)
+  }
+  static checkIsEMAIL(email) {
+    return REGEMAIL.test(email)
+  }
+  static checkIsCHINA(email) {
+    return CHINA.test(email)
+  }
   static formatDate (time) {
     if (!time) {
       return {

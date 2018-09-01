@@ -36,7 +36,7 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
                 <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">
@@ -84,7 +84,7 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
                 <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">
@@ -133,7 +133,7 @@
               <div class="information">
                 <div class="time">
                   {{item.created_at}}
-                  <p v-if="item.can_delete" class="del" @click="_delItem(index)">删除</p>
+                  <p v-if="item.employee_id" class="del" @click="_delItem(index)">删除</p>
                 </div>
                 <div class="share" :class="{'share-active': item.show}">
                   <div class="share-item comment">

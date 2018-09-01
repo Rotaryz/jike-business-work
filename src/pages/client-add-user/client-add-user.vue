@@ -236,8 +236,8 @@
         layout(row, block, no-warp)
         align-items: center
         padding: 15px 0
-        border-bottom: 0.5px solid $color-col-line
         height: 45px
+        lr-border-bottom-1px($color-col-line,0)
         .check-box
           width: 21px
           height: 21px

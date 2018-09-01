@@ -60,9 +60,9 @@
                 </li>
                 <li class="mine-detail-item">
                   <span class="item-text">邮箱</span>
-                  <input class="item-detail" type="email" v-model="mine.email">
+                  <input class="item-detail" type="text" v-model="mine.email">
                 </li>
-                <router-link tag="span" to="editCard/addAdress" class="mine-detail-item">
+                <router-link tag="span" to="editCard/addAdress" class="mine-detail-item mine-addres-item">
                   <span class="item-text">地址</span>
                   <div class="address-box">
                     <div class="text">{{address}}</div>
@@ -114,6 +114,7 @@
   import imageClipper from '../../components/cropper/cropper'
   import storage from 'storage-controller'
   import VueCropper from 'vue-cropperjs'
+  import utils from 'common/js/utils'
 
   export default {
     name: 'edit-card',
@@ -173,7 +174,6 @@
         Business.myBusinessCard().then((res) => {
           if (res.error === ERR_OK) {
             this.mine = res.data
-            console.log(this.mine)
             this.setSignature(this.mine.signature)
           }
         })
@@ -186,6 +186,18 @@
         })
       },
       _changeMine () {
+        if (!utils.checkIsPhoneNumber(this.mine.mobile)) {
+          this.$refs.toast.show('请输入正确的手机号码')
+          return
+        }
+        if (!utils.checkIsEMAIL(this.mine.email)) {
+          this.$refs.toast.show('请输入正确的邮箱号码')
+          return
+        }
+        if (utils.checkIsCHINA(this.mine.email)) {
+          this.$refs.toast.show('请输入正确的邮箱号码')
+          return
+        }
         let data = {business_card_mobile: this.mine.mobile, email: this.mine.email, weixin_account: this.mine.weixin_account, address: '', image_id: this.mine.image_id}
         Business.updateMyBusiness(data).then((res) => {
           if (res.error === ERR_OK) {
@@ -442,7 +454,7 @@
     .mine-detail-item
       color: $color-text
       font-size: $font-size-mediums
-      height: 60px
+      min-height: 60px
       align-items: center
       display: flex
       padding-right: 15px
@@ -465,13 +477,22 @@
           font-size: $font-size-14
           color: $color-20202E
           width: 90%
-          no-wrap()
+          overflow: hidden
+          text-overflow: ellipsis
+          display: -webkit-box
+          -webkit-box-orient: vertical
+          -webkit-line-clamp: 2
+          max-height: 28px
         .address-img
           width: 7.5px
           height: 11.5px
       &:last-child
         border-none()
 
+    .mine-addres-item
+      min-height: 60px
+      padding: 10px 15px 10px 0
+      box-sizing: border-box
   .btn
     line-height: 45px
     text-align: center
