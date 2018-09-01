@@ -62,13 +62,13 @@
                   <span class="item-text">邮箱</span>
                   <input class="item-detail" type="text" v-model="mine.email">
                 </li>
-                <router-link tag="span" to="editCard/addAdress" class="mine-detail-item mine-addres-item">
+                <li  class="mine-detail-item mine-addres-item" @click="jumpAddress">
                   <span class="item-text">地址</span>
                   <div class="address-box">
                     <div class="text">{{address}}</div>
                     <img src="./icon-pressed@2x.png" alt="" class="address-img">
                   </div>
-                </router-link>
+                </li>
               </ul>
             </div>
           </div>
@@ -242,6 +242,10 @@
           array.push(binary.charCodeAt(i))
         }
         return new Blob([new Uint8Array(array)], {type: type})
+      },
+      jumpAddress() {
+        let path = `editCard/addAdress`
+        this.$router.push(path)
       }
     },
     computed: {

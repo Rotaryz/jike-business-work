@@ -148,7 +148,7 @@
   .data-all
     position: fixed
     background: $color-background
-    z-index: 10
+    z-index: 81
     left: 0
     right: 0
     bottom: 45px
