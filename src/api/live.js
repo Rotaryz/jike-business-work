@@ -39,6 +39,6 @@ export default {
    */
   isBoss(data) {
     let url = `api/employee/is-boss`
-    return request.post(url, data)
+    return request.get(url, data)
   }
 }
