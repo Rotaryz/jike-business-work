@@ -5,13 +5,12 @@
     <tab></tab>
   </div>
 </template>
-
 <script>
   import Tab from 'components/tab/tab'
   import Ceiling from 'components/ceiling/ceiling'
+  import storage from 'storage-controller'
 
   const COMPONENT_NAME = 'home'
-  import storage from 'storage-controller'
 
   export default {
     name: COMPONENT_NAME,
@@ -20,7 +19,7 @@
     },
     created() {
       let info = storage.get('info', {})
-      if (!info.is_boss) {
+      if (info.is_boss === undefined) {
         storage.remove('token')
         this.$router.replace('/oauth')
       }
@@ -37,6 +36,7 @@
     }
   }
 </script>
+
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
