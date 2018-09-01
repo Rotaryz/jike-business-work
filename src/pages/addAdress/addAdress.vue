@@ -1,9 +1,10 @@
 <template>
   <div class="change-autograph">
-    <scroll ref="scroll">
+    <scroll ref="scroll"
+            bcColor="#f1f2f5">
       <div class="address-box">
         <div class="address-list" @click="selcetAddress">
-          <div class="text">所在地区</div>
+          <div class="text">所在地区1</div>
           <div class="text-right" v-if="address.length === 0">请选择地区</div>
           <div class="text-right-acitive" v-if="address.length !== 0">{{address}}</div>
           <img src="./icon-pressed@2x.png" alt="" class="address-img">
@@ -18,12 +19,12 @@
       <div class="btn-item btn-green" @click="saveAdress">确定</div>
     </div>
     <toast ref="toast"></toast>
-    <awesome-picker
-      ref="picker"
-      :data="cityData"
-      @cancel="handlePickerCancel"
-      @confirm="handlePickerConfirm">
-    </awesome-picker>
+    <!--<awesome-picker-->
+      <!--ref="picker"-->
+      <!--:data="cityData"-->
+      <!--@cancel="handlePickerCancel"-->
+      <!--@confirm="handlePickerConfirm">-->
+    <!--</awesome-picker>-->
   </div>
 </template>
 
