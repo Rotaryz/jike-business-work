@@ -62,7 +62,7 @@
     },
     created() {
       let info = storage.get('info', '')
-      this.isBoss = info ? info.isBoss : false
+      this.isBoss = info ? info.is_boss : false
     },
     methods: {
       _defaultCard() {
