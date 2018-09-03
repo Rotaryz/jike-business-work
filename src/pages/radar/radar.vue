@@ -102,7 +102,7 @@
                    @pullingUp="onPeoplePullingUp">
             <div class="people-all">
               <div class="msgs-list msgs-people" v-if="peopleDataList.length !== 0">
-                <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" >
+                <div class="msgs-item" v-for="(item, index) in peopleDataList" :key="index" @click="toDetail(item)">
                   <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
                   <div class="msg-item-content">
                     <img :src="item.image_url" class="msgs-left">
@@ -110,6 +110,7 @@
                       <div class="msgs-container">
                         <p class="msgs-p">{{item.nickname}}跟你互动了<span class="green">{{item.count_sum}}</span>次</p>
                       </div>
+                      <img src="./icon-pressed@2x.png" class="msgs-rt">
                     </div>
                   </div>
                 </div>
