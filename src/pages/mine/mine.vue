@@ -166,7 +166,7 @@
       font-family: $font-family-regular
       font-size: $font-size-medium
       color: $color-text
-      height: 45px
+      height: 55px
       align-items: center
       display: flex
       padding-right: 15px
@@ -185,6 +185,7 @@
         left: 0
         height: 18px
         width: 18px
+        top: 18.5px
       .user
         icon-image('icon-perinfor')
       .see-card
