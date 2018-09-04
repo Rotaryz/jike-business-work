@@ -227,7 +227,7 @@
       {
         icon: 'ckgw',
         name: '查看官网',
-        event_no: '50001',
+        event_no: '40001',
         count_sum: 0
       }
     ]
