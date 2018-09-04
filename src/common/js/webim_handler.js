@@ -420,6 +420,9 @@ export default class webimHandler {
         case 10009:
           resTxt = nickName + '保存了你的名片海报'
           break
+        case 10010:
+          resTxt = nickName + '复制了你的微信, 可以考虑主动沟通'
+          break
         case 20001:
           resTxt = nickName + '正在查看你的产品, 请把握商机'
           break
