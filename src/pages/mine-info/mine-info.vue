@@ -16,7 +16,7 @@
               <div class="info-img" v-if="imgUrl.length !== 0">
                 <img :src="imgUrl">
               </div>
-              <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')" accept="image/*">
+              <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')" accept="image/*" :value="inputValue">
             </div>
           </div>
           <div class="info-list">
@@ -26,7 +26,7 @@
               <div class="info-img" v-if="allImgUrl.length !== 0">
                 <img :src="allImgUrl">
               </div>
-              <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')" accept="image/*">
+              <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')" accept="image/*" :value="inputValue">
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
         </vueCropper>
         <div class="img-btn">
           <div class="btn-item" @click="cropImage">确定</div>
-          <div class="btn-item" @click="visible = false">取消</div>
+          <div class="btn-item" @click="cropImageCosle">取消</div>
         </div>
         <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="loading">
       </div>
@@ -81,7 +81,8 @@
         imageBig: '',
         name: '',
         avatar: '',
-        typeCode: ''
+        typeCode: '',
+        inputValue: ''
       }
     },
     created() {
@@ -126,6 +127,10 @@
           this.visible = false
           this.$refs.toast.show(res.message)
         })
+      },
+      cropImageCosle() {
+        this.visible = false
+        this.inputValue = ''
       },
       _fileChange(e, name) {
         this.typeCode = name

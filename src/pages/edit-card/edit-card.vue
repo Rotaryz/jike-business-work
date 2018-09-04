@@ -9,7 +9,7 @@
             <div class="header-mask">
               <div class="chang-header">
                 更换头像
-                <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
+                <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*" :value="inputValue">
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@
         </vueCropper>
         <div class="img-btn">
           <div class="btn-item" @click="cropImage">确定</div>
-          <div class="btn-item" @click="visible = false">取消</div>
+          <div class="btn-item" @click="cropImageCosle">取消</div>
         </div>
         <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="loading">
       </div>
@@ -128,7 +128,8 @@
         cropImg: '',
         loading: false,
         header: [1, 2, 3, 4, 5, 6, 7, 8],
-        address: ''
+        address: '',
+        inputValue: ''
       }
     },
     created () {
@@ -158,6 +159,10 @@
           this.visible = false
           this.$refs.toast.show(res.message)
         })
+      },
+      cropImageCosle() {
+        this.visible = false
+        this.inputValue = ''
       },
       getSign () {
         this.mine.signature = this.$store.state.signature
