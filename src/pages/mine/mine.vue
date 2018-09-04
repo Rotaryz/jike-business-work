@@ -22,6 +22,7 @@
       </div>
       <ul class="content-list">
         <router-link tag="li" :to="item.src" class="content-item" v-for="(item, index) in contentList" :key="index">
+          <span class="item-logo" :class="item.name"></span>
           <span class="text">{{item.title}}</span>
           <span class="icon"></span>
         </router-link>
@@ -33,30 +34,30 @@
 
 <script>
   import Scroll from 'components/scroll/scroll'
-  import { Business } from 'api'
-  import { ERR_OK } from '../../common/js/config'
+  import {Business} from 'api'
+  import {ERR_OK} from '../../common/js/config'
   // import storage from 'storage-controller'
 
-  const CONTENTLIST = [{title: '个人信息', src: 'mine/mine-info'}, {title: '查看名片', src: '/shareCard'}, {title: '我的产品', src: 'mine/goodList'}, {title: '我的动态', src: 'mine/dynamicList'}, {title: '我的报表', src: 'mine/my-data'}]
+  const CONTENTLIST = [{title: '个人信息', src: 'mine/mine-info', name: 'user'}, {title: '查看名片', src: '/shareCard', name: 'see-card'}, {title: '我的产品', src: 'mine/goodList', name: 'goods'}, {title: '我的动态', src: 'mine/dynamicList', name: 'dynamic'}, {title: '我的报表', src: 'mine/my-data', name: 'data'}]
 
   export default {
     name: 'Mine',
-    data () {
+    data() {
       return {
         contentList: CONTENTLIST,
         mine: {}
       }
     },
-    created () {
+    created() {
       this.$emit('tabChange', '我的')
       this.getMine()
     },
     methods: {
-      refresh () {
+      refresh() {
         this.getMine()
         // this.mine = storage.get('info', {})
       },
-      getMine () {
+      getMine() {
         // if (storage.get('info')) {
         //   this.mine = storage.get('info')
         //   console.log(this.mine)
@@ -171,6 +172,7 @@
       padding-right: 15px
       box-sizing: border-box
       justify-content: space-between
+      padding-left: 28px
       border-bottom-1px($color-row-line)
       &:last-child
         border-none()
@@ -178,4 +180,20 @@
         icon-image('icon-pressed')
         width: 5px
         height: 10px
+      .item-logo
+        position: absolute
+        left: 0
+        height: 18px
+        width: 18px
+      .user
+        icon-image('icon-perinfor')
+      .see-card
+        icon-image('icon-relaycard')
+      .goods
+        icon-image('icon-goods')
+      .dynamic
+        icon-image('icon-trends')
+      .data
+        icon-image('icon-myforms')
 </style>
+
