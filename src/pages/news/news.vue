@@ -44,6 +44,7 @@
         this.setNewsGetType(false)
         return
       }
+      this.setCustomCount('clear')
       Im.getLastGroupMsg().then(res => {
         if (res.error === ERR_OK) {
           let msg = {
