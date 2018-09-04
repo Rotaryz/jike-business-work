@@ -22,8 +22,7 @@
       </div>
       <ul class="content-list">
         <router-link tag="li" :to="item.src" class="content-item" v-for="(item, index) in contentList" :key="index">
-          <span class="item-logo" :class="item.name"></span>
-          <span class="text">{{item.title}}</span>
+          <span class="text"><span class="item-logo" :class="item.name"></span>{{item.title}}</span>
           <span class="icon"></span>
         </router-link>
       </ul>
@@ -172,7 +171,6 @@
       padding-right: 15px
       box-sizing: border-box
       justify-content: space-between
-      padding-left: 28px
       border-bottom-1px($color-row-line)
       &:last-child
         border-none()
@@ -180,12 +178,13 @@
         icon-image('icon-pressed')
         width: 5px
         height: 10px
+      .text
+        display: flex
+        align-items: center
       .item-logo
-        position: absolute
-        left: 0
+        margin-right: 10px
         height: 18px
         width: 18px
-        top: 18.5px
       .user
         icon-image('icon-perinfor')
       .see-card
