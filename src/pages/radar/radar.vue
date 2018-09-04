@@ -221,18 +221,6 @@
         name: '点赞动态',
         event_no: '30002',
         count_sum: 0
-      },
-      {
-        icon: 'pldt',
-        name: '评论动态',
-        event_no: '',
-        count_sum: 0
-      },
-      {
-        icon: 'zfdt',
-        name: '转发动态',
-        event_no: '',
-        count_sum: 0
       }
     ],
     [
