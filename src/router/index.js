@@ -97,7 +97,7 @@ const route = new Router({
           path: 'shareCard',
           component: ShareCard,
           meta: {
-            title: '分享名片'
+            title: '查看名片'
           }
         },
         {
@@ -411,7 +411,7 @@ const route = new Router({
       path: '/shareCard',
       component: ShareCard,
       meta: {
-        title: '分享名片'
+        title: '查看名片'
       }
     }
   ]

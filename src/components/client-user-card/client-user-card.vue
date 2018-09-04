@@ -117,6 +117,9 @@
             letter-spacing: 0.6px
             layout(row, block, nowrap)
             align-items: flex-start
+            .txt
+              max-width :30vw
+              no-wrap()
             .is-new
               width: 19px
               height: 13.5px
@@ -129,7 +132,7 @@
             no-wrap()
         .tags
           font-family: $font-family-regular
-          font-size: $font-size-12k
+          font-size: $font-size-12
           color: $color-56BA15
           layout(row, block, nowrap)
           justify-content: space-between

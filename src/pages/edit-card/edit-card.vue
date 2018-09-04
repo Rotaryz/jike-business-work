@@ -9,7 +9,7 @@
             <div class="header-mask">
               <div class="chang-header">
                 更换头像
-                <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*">
+                <input type="file" class="header-icon" id="header-logo" @change="_fileChange($event)" accept="image/*" :value="inputValue">
               </div>
             </div>
           </div>
@@ -62,13 +62,13 @@
                   <span class="item-text">邮箱</span>
                   <input class="item-detail" type="text" v-model="mine.email">
                 </li>
-                <router-link tag="span" to="editCard/addAdress" class="mine-detail-item mine-addres-item">
+                <li class="mine-detail-item mine-addres-item" @click="jumpAddress">
                   <span class="item-text">地址</span>
                   <div class="address-box">
                     <div class="text">{{address}}</div>
                     <img src="./icon-pressed@2x.png" alt="" class="address-img">
                   </div>
-                </router-link>
+                </li>
               </ul>
             </div>
           </div>
@@ -96,7 +96,7 @@
         </vueCropper>
         <div class="img-btn">
           <div class="btn-item" @click="cropImage">确定</div>
-          <div class="btn-item" @click="visible = false">取消</div>
+          <div class="btn-item" @click="cropImageCosle">取消</div>
         </div>
         <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="loading">
       </div>
@@ -128,7 +128,8 @@
         cropImg: '',
         loading: false,
         header: [1, 2, 3, 4, 5, 6, 7, 8],
-        address: ''
+        address: '',
+        inputValue: ''
       }
     },
     created () {
@@ -158,6 +159,10 @@
           this.visible = false
           this.$refs.toast.show(res.message)
         })
+      },
+      cropImageCosle() {
+        this.visible = false
+        this.inputValue = ''
       },
       getSign () {
         this.mine.signature = this.$store.state.signature
@@ -242,6 +247,10 @@
           array.push(binary.charCodeAt(i))
         }
         return new Blob([new Uint8Array(array)], {type: type})
+      },
+      jumpAddress() {
+        let path = `editCard/addAdress`
+        this.$router.push(path)
       }
     },
     computed: {

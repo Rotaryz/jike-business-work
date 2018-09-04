@@ -47,7 +47,6 @@
   import {ERR_OK} from '../../common/js/config'
   import Toast from 'components/toast/toast'
   import {mapGetters} from 'vuex'
-  import storage from 'storage-controller'
 
   export default {
     name: 'edit-dynamic',
@@ -61,10 +60,17 @@
       }
     },
     created() {
-      let info = storage.get('info', '')
-      this.isBoss = info ? info.is_boss : false
+      this._checkBoss()
     },
     methods: {
+      _checkBoss() {
+        Live.isBoss().then((res) => {
+          if (res.error !== ERR_OK) {
+            return
+          }
+          this.isBoss = res.data.is_boss
+        })
+      },
       _defaultCard() {
         this.share = !this.share
       },

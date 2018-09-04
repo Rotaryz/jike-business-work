@@ -1,7 +1,7 @@
 <template>
   <transition :name="slide">
-    <div class="data-all">
-      <scroll>
+    <div class="change-autograph">
+      <scroll ref="scroll">
         <div class="address-box">
           <div class="address-list" @click="selcetAddress">
             <div class="text">所在地区</div>
@@ -15,8 +15,9 @@
           </div>
         </div>
       </scroll>
-      <div id="allmap"></div>
-      <div class="save-btn" @click="saveAdress">确定</div>
+      <div class="btn">
+        <div class="btn-item btn-green" @click="saveAdress">确定</div>
+      </div>
       <awesome-picker
         ref="picker"
         :data="cityData"
@@ -27,19 +28,24 @@
     </div>
   </transition>
 </template>
-<script type="text/ecmascript-6">
+
+<script>
   import Scroll from 'components/scroll/scroll'
-  import {mapGetters} from 'vuex'
+  import { Mine } from 'api'
+  import { ERR_OK } from 'common/js/config'
+  import { mapGetters } from 'vuex'
   import {cityData} from 'common/js/utils'
   import Toast from 'components/toast/toast'
-  import {Mine} from 'api'
-  import {ERR_OK} from '../../common/js/config'
-  import AMap from 'AMap'
+  // import AMap from 'AMap'
+  import axios from 'axios'
+
+  const KEY = '206ec5511b39a51e02627ffbd8dfc16c'
 
   export default {
-    name: 'addAdress',
-    data() {
+    name: 'change-autograph',
+    data () {
       return {
+        title: '',
         cityData,
         province: '',
         city: '',
@@ -50,7 +56,7 @@
         longitude: 0
       }
     },
-    created() {
+    created () {
       Mine.getMyInfoAddress().then((res) => {
         if (res.error === ERR_OK) {
           this.province = res.message.province
@@ -62,8 +68,6 @@
           this.$refs.toast.show(res.message)
         }
       })
-    },
-    mounted() {
     },
     methods: {
       handlePickerCancel(e) {
@@ -96,14 +100,11 @@
       },
       getGeocoder(text) {
         let that = this
-        let geocoder
-        AMap.plugin('AMap.Geocoder', function() {
-          geocoder = new AMap.Geocoder()
-        })
-        geocoder.getLocation(text, function (status, result) {
-          if (status === 'complete' && result.info === 'OK') {
-            that.longitude = result.geocodes[0].location.lng
-            that.latitude = result.geocodes[0].location.lat
+        axios.get(`https://restapi.amap.com/v3/geocode/geo?address=${text}&key=${KEY}`)
+          .then(res => {
+            let location = res.data.geocodes[0].location.split(',')
+            that.longitude = location[0]
+            that.latitude = location[1]
             let data = {
               address: that.detailAdress,
               province: that.province,
@@ -120,8 +121,9 @@
                 that.$refs.toast.show(res.message)
               }
             })
-          }
-        })
+          }).catch(err => {
+            alert(JSON.stringify(err))
+          })
       }
     },
     computed: {
@@ -136,16 +138,10 @@
     }
   }
 </script>
-
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
-  *
-    box-sizing: border-box
-    -moz-box-sizing: border-box
-    -webkit-box-sizing: border-box
-
-  .data-all
+  .change-autograph
     position: fixed
     background: $color-background
     z-index: 10
@@ -153,7 +149,34 @@
     right: 0
     bottom: 45px
     top: 0
-
+    #autograph
+      outline: none
+      resize: none
+      margin: 4vw
+      border-radius: 2px
+      background: $color-white
+      height: 191px
+      width: 92vw
+      padding: 15px
+      border: none
+      box-sizing: border-box
+      font-family: $font-family-regular
+      font-size: $font-size-medium
+      border-1px($color-col-line, 2px)
+      &::-webkit-input-placeholder
+        font-family: $font-family-regular
+        font-size: $font-size-medium
+        color: #CCCCCC
+    .text-num
+      position: absolute
+      right: 30px
+      bottom: 30px
+      font-size: $font-size-small
+      font-family: $font-family-regular
+      .text-dark
+        color: $color-text
+      .text-light
+        color: #CCCCCC
   .address-box
     background: $color-white-fff
     padding: 0 15px
@@ -201,22 +224,20 @@
         color: #ccc
       .address-list:last-child
         border-none()
-
-  .save-btn
-    background: $color-20202E
-    position: fixed
-    bottom: 0
-    left: 0
+  .btn
+    position: relative
     z-index: 10
-    width: 100%
+    display: flex
     height: 45px
-    line-height: 45px
-    text-align: center
-    font-size: $font-size-14
-    font-family: $font-family-medium
-    color: $color-white
-
-  .z
-    width: 100%
-
+    .btn-item
+      font-family: $font-family-regular
+      font-size: $font-size-medium
+      color: $color-white
+      line-height: 45px
+      text-align: center
+      flex: 1
+    .btn-dark
+      background: $color-text
+    .btn-green
+      background: $color-text
 </style>

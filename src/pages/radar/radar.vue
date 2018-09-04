@@ -248,6 +248,7 @@
       if (!this.imIng) {
         this.$emit('login')
       }
+      this.setCustomCount('clear')
       Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
         if (res.error === ERR_OK) {
           this.list = res.data
