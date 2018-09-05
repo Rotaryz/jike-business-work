@@ -115,6 +115,7 @@
             this.visible = false
             this.imgUrl = res.data.url
             this.imgId = res.data.id
+            alert(this.imgUrl)
             Mine.updatePersonalQrcode(res.data.id).then((res) => {
               if (res.error === ERR_OK) {
                 this.$refs.toast.show('上传成功')
