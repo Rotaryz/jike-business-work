@@ -569,6 +569,7 @@
     top: 0
     right: 0
     bottom: 45px
+    font-family: $font-family-regular
     background: $color-background
     .tab-container
       height: 44.5px
@@ -588,7 +589,6 @@
           flex: 1
           height: 100%
           line-height: 44.5px
-          font-family: $font-family-regular
           font-size: $font-size-16
           color: $color-202020
           letter-spacing: 0.6px
@@ -684,14 +684,12 @@
             border-bottom-1px(#e5e5e5)
             .text
               font-size: $font-size-14
-              font-family: $font-family-medium
               color: $color-20202E
             .right-box
               layout(row)
               align-items: center
               .number
                 font-size: $font-size-14
-                font-family: $font-family-medium
                 color: $color-56BA15
               .msgs-rt
                 width: 7.5px
@@ -718,7 +716,6 @@
         text-align: center
         line-height: 30px
         background: $color-white-fff
-        font-family: $font-family-medium
         color: $color-20202E
         font-size: $font-size-14
         border-1px(#e5e5e5)
@@ -763,7 +760,6 @@
       .msgs-item
         margin-top: 18px
         .item-time
-          font-family: PingFangSC-Medium
           font-size: $font-size-18
           color: #20202E
           padding: 10px 0 15px
@@ -799,7 +795,6 @@
             align-items: center
             .msgs-p
               line-height: 18px
-              font-family: $font-family-medium
               font-size: $font-size-medium
               .green
                 color: $color-text-56
