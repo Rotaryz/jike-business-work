@@ -26,7 +26,8 @@
             <div class="info-right">
               <div class="info-btn" v-if="allImgUrl.length === 0">添加</div>
               <div class="info-img" v-if="allImgUrl.length !== 0">
-                <img :src="allImgUrl">
+                <img :src="allImgUrl"  v-if="allImgUrl" @load="imgAllSuccess">
+                <img class="loading" src="./loading.gif" v-if="imgAllSc">
               </div>
               <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')"
                      accept="image/*" :value="inputValue">
@@ -86,7 +87,8 @@
         avatar: '',
         typeCode: '',
         inputValue: '',
-        imgSc: true
+        imgSc: true,
+        imgAllSc: true
       }
     },
     created() {
@@ -108,6 +110,9 @@
       },
       imgSuccess() {
         this.imgSc = false
+      },
+      imgAllSuccess() {
+        this.imgAllSc = false
       },
       cropImageCosle() {
         this.visible = false
@@ -141,6 +146,8 @@
           if (res.error === ERR_OK) {
             this.loading = false
             this.visible = false
+            this.allImgUrl = ''
+            this.imgAllSc = true
             this.allImgUrl = res.data.url
             this.allImgId = res.data.id
             Mine.updateGroupQrcode(res.data.id).then((res) => {
@@ -310,6 +317,7 @@
             height: 100%
             display: block
           .loading
+            background: #fff
             width: 100%
             height: 100%
             position: absolute
