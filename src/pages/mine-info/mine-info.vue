@@ -14,8 +14,8 @@
             <div class="info-right">
               <div class="info-btn" v-if="imgUrl.length === 0">添加</div>
               <div class="info-img" v-if="imgUrl.length !== 0">
-                <img :src="imgUrl" v-if="imgUrl" @load="imgSuccess">
-                <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-if="imgSc">
+                <img :src="imgUrl" v-if="imgUrl && !imgSc" @load="imgSuccess">
+                <img class="loading" src="./loading.gif" width="30" height="30" v-if="imgSc">
               </div>
               <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')"
                      accept="image/*" :value="inputValue">
@@ -122,7 +122,6 @@
             this.imgSc = true
             this.imgUrl = res.data.url
             this.imgId = res.data.id
-            alert(this.imgUrl)
             Mine.updatePersonalQrcode(res.data.id).then((res) => {
               if (res.error === ERR_OK) {
                 this.$refs.toast.show('上传成功')
