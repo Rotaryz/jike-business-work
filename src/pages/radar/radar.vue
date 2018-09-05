@@ -243,15 +243,7 @@
         this.$emit('login')
       }
       this.setCustomCount('clear')
-      Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
-        if (res.error === ERR_OK) {
-          this.list = res.data
-          setTimeout(() => {
-            this.$refs.scroll.forceUpdate()
-          }, 20)
-        }
-      })
-      this.getAllData()
+      this.getRadarList()
     },
     data() {
       return {
@@ -298,7 +290,19 @@
         this.tabIndex = index
         if (index * 1 === 2 && this.firstGet) {
           this.getPeopleList()
+        } else if (index * 1 === 1 && this.firstGet) {
+          this.getAllData()
         }
+      },
+      getRadarList() {
+        Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
+          if (res.error === ERR_OK) {
+            this.list = res.data
+            setTimeout(() => {
+              this.$refs.scroll.forceUpdate()
+            }, 20)
+          }
+        })
       },
       peopleTab(index) {
         this.$refs.scrollPeople.scrollTo(0, 0)
