@@ -856,7 +856,7 @@
               .text
                 font-size: $font-size-12
                 color: $color-888888
-                font-family: $font-family-medium
+                font-family: $font-family-regular
           .detail-jump
             height: 45px
             width: 25px
@@ -1010,10 +1010,10 @@
     padding: 0 15px
     .box-list
       padding-top: 10px
+      font-family: $font-family-regular
       .time
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-regular
       .item-list
         layout(row)
         margin-top: 15px
@@ -1034,7 +1034,6 @@
           flex: 1
           font-size: $font-size-medium
           color: $color-text
-          font-family: $font-family-regular
           span
             color: #56BA15
 
@@ -1042,6 +1041,7 @@
     padding: 15px 15px 15px 35px
     position: relative
     overflow: hidden
+    font-family: $font-family-regular
     .follow-list
       background: #fff
       padding: 15px 10px
@@ -1050,13 +1050,11 @@
       .time
         font-size: $font-size-medium
         color: $color-text-88
-        font-family: $font-family-regular
       .text
         word-break: break-word
         margin-top: 10px
         font-size: $font-size-medium
         color: $color-text
-        font-family: $font-family-regular
         min-height: 10px
       .icon-cri
         position: absolute
@@ -1100,6 +1098,7 @@
 
   .ai-box
     padding: 15px
+    font-family: $font-family-regular
     .pie-box
       position: relative
       background: linear-gradient(rgba(255, 255, 255, .1) 0%, #fff 100%)
@@ -1129,12 +1128,10 @@
         .title
           font-size: $font-size-medium-x
           color: #202020
-          font-family: $font-family-regular
         .sub-title
           margin-top: 5px
           font-size: $font-size-small
           color: $color-text-88
-          font-family: $font-family-regular
       .pie-list
         layout(row)
         position: absolute
@@ -1160,7 +1157,6 @@
             line-height: 1
             font-size: $font-size-small
             color: #202020
-            font-family: $font-family-regular
 
     .line-box
       height: 270px
@@ -1207,7 +1203,6 @@
   .msgs-item
     margin-top: 18px
     .item-time
-      font-family: PingFangSC-Medium
       font-size: $font-size-18
       color: #20202E
       padding: 10px 0 15px
@@ -1243,7 +1238,6 @@
         align-items: center
         .msgs-p
           line-height: 18px
-          font-family: $font-family-medium
           font-size: $font-size-medium
           .green
             color: $color-text-56

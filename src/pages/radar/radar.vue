@@ -18,10 +18,10 @@
         <img src="./icon-news_up@3x.png" class="msg-arrow">
         <span class="msg-hint">{{customCount}}条信息</span>
       </span>
-      <div class="container" v-if="tabIndex * 1 === 0">
+      <div class="container" :class="tabIndex * 1 === 0 ? 'tabactive' : ''">
         <scroll ref="scroll"
                 :data="list"
-                :bcColor="'#f1f2f5'"
+                bcColor="#f1f2f5"
                 :pullUpLoad="pullUpLoadObj"
                 :showNoMore="showNoMore"
                 @pullingUp="onPullingUp"
@@ -60,10 +60,11 @@
           </div>
         </scroll>
       </div>
-      <div class="action-box"  v-if="tabIndex * 1 === 1">
+      <div class="action-box" :class="tabIndex * 1 === 1 ? 'tabactive' : ''">
         <div class="action-scroll">
           <scroll
-            ref="scrollAction">
+            ref="scrollAction"
+            bcColor="#f1f2f5">
             <ul class="action-tab">
               <li class="tab-item"  :class="actionIndex===index?'active':''"
                   v-for="(item,index) in actionList"
@@ -87,11 +88,11 @@
           </scroll>
         </div>
       </div>
-      <div class="people-box" v-if="tabIndex * 1 === 2">
+      <div class="people-box" :class="tabIndex * 1 === 2 ? 'tabactive' : ''">
         <div class="action-scroll">
           <scroll  ref="scrollPeople"
                    :data="peopleDataList"
-                   :bcColor="'#f1f2f5'"
+                   bcColor="#f1f2f5"
                    :pullUpLoad="pullUpPeoleLoadObj"
                    :showNoMore="false"
                    @pullingUp="onPeoplePullingUp">
@@ -568,6 +569,7 @@
     top: 0
     right: 0
     bottom: 45px
+    font-family: $font-family-regular
     background: $color-background
     .tab-container
       height: 44.5px
@@ -587,7 +589,6 @@
           flex: 1
           height: 100%
           line-height: 44.5px
-          font-family: $font-family-Medium
           font-size: $font-size-16
           color: $color-202020
           letter-spacing: 0.6px
@@ -683,14 +684,12 @@
             border-bottom-1px(#e5e5e5)
             .text
               font-size: $font-size-14
-              font-family: $font-family-medium
               color: $color-20202E
             .right-box
               layout(row)
               align-items: center
               .number
                 font-size: $font-size-14
-                font-family: $font-family-medium
                 color: $color-56BA15
               .msgs-rt
                 width: 7.5px
@@ -717,7 +716,6 @@
         text-align: center
         line-height: 30px
         background: $color-white-fff
-        font-family: $font-family-medium
         color: $color-20202E
         font-size: $font-size-14
         border-1px(#e5e5e5)
@@ -762,7 +760,6 @@
       .msgs-item
         margin-top: 18px
         .item-time
-          font-family: PingFangSC-Medium
           font-size: $font-size-18
           color: #20202E
           padding: 10px 0 15px
@@ -798,7 +795,6 @@
             align-items: center
             .msgs-p
               line-height: 18px
-              font-family: $font-family-medium
               font-size: $font-size-medium
               .green
                 color: $color-text-56
@@ -821,4 +817,6 @@
       width: 30px
       background: #20202e
       margin: 0 auto
+  .tabactive
+    z-index: 11
 </style>

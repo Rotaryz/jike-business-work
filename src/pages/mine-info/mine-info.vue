@@ -90,12 +90,12 @@
     },
     methods: {
       cropImage () {
+        if (this.loading) return
         this.loading = true
         let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
         let $Blob = this.getBlobBydataURI(src, 'image/png')
         let formData = new FormData()
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
-        // let data = {base_image: this.$refs.cropper.getCroppedCanvas().toDataURL()}
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
             this.loading = false
@@ -135,7 +135,6 @@
       _fileChange(e, name) {
         this.typeCode = name
         if (e.target) {
-          // let param = this._infoImage(e.target.files[0])
           const file = e.target.files[0]
           const reader = new FileReader()
           reader.onload = async (event) => {
@@ -145,42 +144,6 @@
           }
           reader.readAsDataURL(file)
         }
-      },
-      _fileAllChange(e) {
-        if (e.target) {
-          const file = e.target.files[0]
-          const reader = new FileReader()
-          reader.onload = async (event) => {
-            this.imageBig = event.target.result
-            let $Blob = this._getBlobBydataURI(this.imageBig, 'image/png')
-            let formData = new FormData()
-            formData.append('file', $Blob, 'file_' + Date.now() + '.png')
-            UpLoad.upLoadImage(formData).then((res) => {
-              if (res.error === ERR_OK) {
-                this.allImgUrl = res.data.url
-                Mine.updateGroupQrcode(res.data.id).then((res) => {
-                  if (res.error === ERR_OK) {
-                    this.$refs.toast.show('上传成功')
-                  } else {
-                    this.$refs.toast.show(res.message)
-                  }
-                })
-                return false
-              }
-              this.loading = false
-              this.$refs.toast.show(res.message)
-            })
-          }
-          reader.readAsDataURL(file)
-        }
-      },
-      _getBlobBydataURI(dataURI, type) {
-        let binary = atob(dataURI.split(',')[1])
-        let array = []
-        for (let i = 0; i < binary.length; i++) {
-          array.push(binary.charCodeAt(i))
-        }
-        return new Blob([new Uint8Array(array)], {type: type})
       },
       getCodeData() {
         Mine.getCodeInfo().then((res) => {
