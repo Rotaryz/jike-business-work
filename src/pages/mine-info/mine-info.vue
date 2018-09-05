@@ -14,7 +14,8 @@
             <div class="info-right">
               <div class="info-btn" v-if="imgUrl.length === 0">添加</div>
               <div class="info-img" v-if="imgUrl.length !== 0">
-                <img :src="imgUrl" @load="imgSuccess">
+                <img :src="imgUrl" v-if="imgUrl" @load="imgSuccess">
+                <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-if="imgSc">
               </div>
               <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')"
                      accept="image/*" :value="inputValue">
@@ -26,7 +27,6 @@
               <div class="info-btn" v-if="allImgUrl.length === 0">添加</div>
               <div class="info-img" v-if="allImgUrl.length !== 0">
                 <img :src="allImgUrl">
-                <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="imgSc">
               </div>
               <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')"
                      accept="image/*" :value="inputValue">
@@ -263,10 +263,15 @@
         width: 50px
         height: 50px
         margin-right: 10px
+        position: relative
         img
           width: 100%
           height: 100%
           display: block
+        .loading
+          position: absolute
+          left: 0
+          top: 0
       .info-text
         font-family: $font-family-medium
         font-size: $font-size-16
