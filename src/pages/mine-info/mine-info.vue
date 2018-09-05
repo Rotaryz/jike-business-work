@@ -14,7 +14,7 @@
             <div class="info-right">
               <div class="info-btn" v-if="imgUrl.length === 0">添加</div>
               <div class="info-img" v-if="imgUrl.length !== 0">
-                <img :src="imgUrl">
+                <img :src="imgUrl" @load="imgSuccess">
               </div>
               <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')"
                      accept="image/*" :value="inputValue">
@@ -26,6 +26,7 @@
               <div class="info-btn" v-if="allImgUrl.length === 0">添加</div>
               <div class="info-img" v-if="allImgUrl.length !== 0">
                 <img :src="allImgUrl">
+                <img class="loading" src="./loading.gif" alt="" width="30" height="30" v-show="imgSc">
               </div>
               <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')"
                      accept="image/*" :value="inputValue">
@@ -84,7 +85,8 @@
         name: '',
         avatar: '',
         typeCode: '',
-        inputValue: ''
+        inputValue: '',
+        imgSc: true
       }
     },
     created() {
@@ -104,6 +106,9 @@
           this.updateInfoAll(formData)
         }
       },
+      imgSuccess() {
+        this.imgSc = false
+      },
       cropImageCosle() {
         this.visible = false
         this.inputValue = ''
@@ -113,6 +118,8 @@
           if (res.error === ERR_OK) {
             this.loading = false
             this.visible = false
+            this.imgUrl = ''
+            this.imgSc = true
             this.imgUrl = res.data.url
             this.imgId = res.data.id
             alert(this.imgUrl)
