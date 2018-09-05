@@ -588,7 +588,7 @@
           flex: 1
           height: 100%
           line-height: 44.5px
-          font-family: $font-family-Medium
+          font-family: $font-family-regular
           font-size: $font-size-16
           color: $color-202020
           letter-spacing: 0.6px
