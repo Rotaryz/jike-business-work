@@ -27,7 +27,7 @@
                 @pullingUp="onPullingUp"
                 :pullDownRefresh="pullDownRefreshObj"
                 @pullingDown="onPullingDown">
-          <div class="msgs-list">
+          <div class="msgs-list" v-if="list.length !== 0">
             <div class="msgs-item" v-for="(item, index) in list" :key="index" @click="toDetail(item)">
               <div class="item-time" v-if="item.is_showtime">{{item.created_at | timeFormat}}</div>
               <div class="msg-item-content">
@@ -57,6 +57,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="null-time"  v-if="list.length === 0">
+            <exception errType="nodata"></exception>
           </div>
         </scroll>
       </div>
@@ -98,7 +101,7 @@
                    @pullingUp="onPeoplePullingUp">
             <ul class="action-tab">
               <li class="tab-item"  :class="tabPeopleIndex===index?'active':''"
-                  v-for="(item,index) in tapPeopleList"
+                  v-for="(item,index) in actionList"
                   :key="index"
                   @click="peopleTab(index)">{{item}}</li>
             </ul>
@@ -270,7 +273,6 @@
         showPeopleNoMore: false,
         tabList: ['时间', '行为', '人'],
         tabPeopleIndex: 0,
-        tapPeopleList: ['全部', '今天', '7天', '30天'],
         tabIndex: 0,
         actionList: ['全部', '今天', '7天', '30天'],
         actionIndex: 0,
@@ -278,7 +280,9 @@
         firstGet: true,
         peopleMore: false,
         actionListData: WORKLIST,
-        page: 0
+        page: 0,
+        tabTime: ['', 'today', 'week', 'month'],
+        tabContent: ['scroll', 'scrollAction', 'scrollPeople']
       }
     },
     methods: {
@@ -288,12 +292,8 @@
         'setImInfo'
       ]),
       changeTab(index) {
-        if (index * 1 === 0 && this.tabIndex * 1 === 0) {
-          this.$refs.scroll.scrollTo(0, 0)
-        } else if (index * 1 === 1 && this.tabIndex * 1 === 1) {
-          this.$refs.scrollAction.scrollTo(0, 0)
-        } else if (index * 1 === 2 && this.tabIndex * 1 === 2) {
-          this.$refs.scrollPeople.scrollTo(0, 0)
+        if (index * 1 === this.tabIndex * 1) {
+          this.$refs[this.tabContent[index]].scrollTo(0, 0)
         }
         this.tabIndex = index
         if (index * 1 === 2 && this.firstGet) {
@@ -303,38 +303,12 @@
       peopleTab(index) {
         this.$refs.scrollPeople.scrollTo(0, 0)
         this.tabPeopleIndex = index
-        switch (index * 1) {
-          case 0:
-            this.getPeopleList()
-            break
-          case 1:
-            this.getPeopleList('today')
-            break
-          case 2:
-            this.getPeopleList('week')
-            break
-          case 3:
-            this.getPeopleList('month')
-            break
-        }
+        this.getPeopleList(this.tabTime[index * 1])
       },
       actionTab(index) {
         this.$refs.scrollAction.scrollTo(0, 0)
         this.actionIndex = index
-        switch (index * 1) {
-          case 0:
-            this.getAllData()
-            break
-          case 1:
-            this.getAllData('today')
-            break
-          case 2:
-            this.getAllData('week')
-            break
-          case 3:
-            this.getAllData('month')
-            break
-        }
+        this.getAllData(this.tabTime[index * 1])
       },
       toDetail(item) {
         let url = '/radar/client-detail'
@@ -373,44 +347,19 @@
         })
       },
       onPullingDown() {
-        Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
-          if (res.error === ERR_OK) {
-            this.list = res.data
-            this.setCustomCount('clear')
-            setTimeout(() => {
-              this.$refs.scroll.forceUpdate()
-              this.$refs.scroll.scrollTo(0, 0, 300, ease[this.scrollToEasing])
-            }, 20)
-          }
-        })
-      },
-      onPeoplePullingDown() {
-        this.$refs.scrollPeople.forceUpdate()
+        this.clearNum()
       },
       onPeoplePullingUp() {
-        switch (this.tabPeopleIndex * 1) {
-          case 0:
-            this.getMorePeopleList()
-            break
-          case 1:
-            this.getMorePeopleList('today')
-            break
-          case 2:
-            this.getMorePeopleList('week')
-            break
-          case 3:
-            this.getMorePeopleList('month')
-            break
-        }
+        this.getMorePeopleList(this.tabTime[this.tabPeopleIndex * 1])
       },
       rebuildScroll() {
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
         })
       },
       rebuildPeopleScroll() {
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.$refs.scrollPeople.destroy()
           this.$refs.scrollPeople.initScroll()
         })
@@ -802,6 +751,8 @@
             width: 7.5px
             height: 11.5px
             margin-left: 33px
+    .null-time
+      padding-top: 120px
     .msgs-people
       padding-top: 0
       .msgs-item
