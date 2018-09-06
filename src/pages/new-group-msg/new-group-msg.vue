@@ -88,6 +88,10 @@
         this.$router.push(url)
       },
       toChat(item) {
+        if (this.groupMsgIng) {
+          this.$refs.toast.show('群发消息发送中，请稍后再发')
+          return
+        }
         this.setCurrentGroupMsg(item.groups)
         let url = '/news-chat-group'
         this.$router.push(url)
@@ -131,13 +135,18 @@
         }, 20)
       },
       newGroup() {
+        if (this.groupMsgIng) {
+          this.$refs.toast.show('群发消息发送中，请稍后再发')
+          return
+        }
         let url = '/news-add-group'
         this.$router.push(url)
       }
     },
     computed: {
       ...mapGetters([
-        'groupItem'
+        'groupItem',
+        'groupMsgIng'
       ]),
       pullUpLoadObj: function () {
         return this.pullUpLoad ? {
