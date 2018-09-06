@@ -10,7 +10,7 @@
     </article>
     <section class="custom-content" v-if="selectTab === 0">
       <ul class="custom-tab border-bottom-1px" v-if="dataArray.length">
-        <li v-for="(item, index) in groupList" :key="index" :class="item.isCheck?'active':''" @click="checkCustom(item)">{{item.name}}</li>
+        <li v-for="(item, index) in groupList" :key="index" class="tab-item" :class="item.isCheck?'active':''" @click="checkCustom(item)">{{item.name}}</li>
       </ul>
       <div class="custom-scroll" v-if="dataArray.length">
         <scroll bcColor="#fff"
@@ -144,10 +144,12 @@
         this.selectTab = index
       },
       checkCustom(item) {
+        if (item.isCheck) return
         this.groupList.forEach(item => { item.isCheck = false })
         item.isCheck = true
         this.pullUpLoad = true
         this.isAll = false
+        this.page = 1
         this.changeGroup()
       },
       refresh() {
@@ -359,7 +361,8 @@
       letter-spacing: 0.52px
       text-align: center
       line-height: 45px
-      transition: all 0.6s
+      .tab-item
+        transition: all 0.3s
       .active
         color: #56BA15
     .custom-scroll

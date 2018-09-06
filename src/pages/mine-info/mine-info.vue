@@ -14,9 +14,11 @@
             <div class="info-right">
               <div class="info-btn" v-if="imgUrl.length === 0">添加</div>
               <div class="info-img" v-if="imgUrl.length !== 0">
-                <img :src="imgUrl">
+                <img :src="imgUrl" v-if="imgUrl" @load="imgSuccess">
+                <img class="loading" src="./loading.gif" v-if="imgSc">
               </div>
-              <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')" accept="image/*" :value="inputValue">
+              <input type="file" class="avatar-input" id="header-logo" @change="_fileChange($event, 'self')"
+                     accept="image/*" :value="inputValue">
             </div>
           </div>
           <div class="info-list">
@@ -24,9 +26,11 @@
             <div class="info-right">
               <div class="info-btn" v-if="allImgUrl.length === 0">添加</div>
               <div class="info-img" v-if="allImgUrl.length !== 0">
-                <img :src="allImgUrl">
+                <img :src="allImgUrl"  v-if="allImgUrl" @load="imgAllSuccess">
+                <img class="loading" src="./loading.gif" v-if="imgAllSc">
               </div>
-              <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')" accept="image/*" :value="inputValue">
+              <input type="file" class="avatar-input" id="header-alllogo" @change="_fileChange($event, 'all')"
+                     accept="image/*" :value="inputValue">
             </div>
           </div>
         </div>
@@ -43,7 +47,7 @@
           :background="status"
           :cropBoxResizable="status"
           :aspectRatio="1"
-          :autoCropArea="1"
+          :autoCropArea="0.8"
           :dragMode="'move'"
           :checkCrossOrigin="false"
           :cropBoxMovable="false"
@@ -63,7 +67,7 @@
   import Scroll from 'components/scroll/scroll'
   import {mapGetters} from 'vuex'
   import {ERR_OK} from 'common/js/config'
-  import { UpLoad, Mine } from 'api'
+  import {UpLoad, Mine} from 'api'
   import Toast from 'components/toast/toast'
   import VueCropper from 'vue-cropperjs'
 
@@ -82,45 +86,54 @@
         name: '',
         avatar: '',
         typeCode: '',
-        inputValue: ''
+        inputValue: '',
+        imgSc: true,
+        imgAllSc: true
       }
     },
     created() {
       this.getCodeData()
     },
     methods: {
-      cropImage () {
+      cropImage() {
         if (this.loading) return
         this.loading = true
         let src = this.$refs.cropper.getCroppedCanvas().toDataURL()
         let $Blob = this.getBlobBydataURI(src, 'image/png')
         let formData = new FormData()
         formData.append('file', $Blob, 'file_' + Date.parse(new Date()) + '.png')
+        if (this.typeCode === 'self') {
+          this.updateInfoSelf(formData)
+        } else if (this.typeCode === 'all') {
+          this.updateInfoAll(formData)
+        }
+      },
+      imgSuccess() {
+        this.imgSc = false
+      },
+      imgAllSuccess() {
+        this.imgAllSc = false
+      },
+      cropImageCosle() {
+        this.visible = false
+        this.inputValue = ''
+      },
+      updateInfoSelf(formData) {
         UpLoad.upLoadImage(formData).then((res) => {
           if (res.error === ERR_OK) {
             this.loading = false
             this.visible = false
-            if (this.typeCode === 'self') {
-              this.imgUrl = res.data.url
-              this.imgId = res.data.id
-              Mine.updatePersonalQrcode(res.data.id).then((res) => {
-                if (res.error === ERR_OK) {
-                  this.$refs.toast.show('上传成功')
-                } else {
-                  this.$refs.toast.show(res.message)
-                }
-              })
-            } else if (this.typeCode === 'all') {
-              this.allImgUrl = res.data.url
-              this.allImgId = res.data.id
-              Mine.updateGroupQrcode(res.data.id).then((res) => {
-                if (res.error === ERR_OK) {
-                  this.$refs.toast.show('上传成功')
-                } else {
-                  this.$refs.toast.show(res.message)
-                }
-              })
-            }
+            this.imgUrl = ''
+            this.imgSc = true
+            this.imgUrl = res.data.url
+            this.imgId = res.data.id
+            Mine.updatePersonalQrcode(res.data.id).then((res) => {
+              if (res.error === ERR_OK) {
+                this.$refs.toast.show('上传成功')
+              } else {
+                this.$refs.toast.show(res.message)
+              }
+            })
             return false
           }
           this.loading = false
@@ -128,9 +141,28 @@
           this.$refs.toast.show(res.message)
         })
       },
-      cropImageCosle() {
-        this.visible = false
-        this.inputValue = ''
+      updateInfoAll(formData) {
+        UpLoad.upLoadImage(formData).then((res) => {
+          if (res.error === ERR_OK) {
+            this.loading = false
+            this.visible = false
+            this.allImgUrl = ''
+            this.imgAllSc = true
+            this.allImgUrl = res.data.url
+            this.allImgId = res.data.id
+            Mine.updateGroupQrcode(res.data.id).then((res) => {
+              if (res.error === ERR_OK) {
+                this.$refs.toast.show('上传成功')
+              } else {
+                this.$refs.toast.show(res.message)
+              }
+            })
+            return false
+          }
+          this.loading = false
+          this.visible = false
+          this.$refs.toast.show(res.message)
+        })
       },
       _fileChange(e, name) {
         this.typeCode = name
@@ -152,12 +184,22 @@
             this.allImgUrl = res.data.wx_group_image_url
             this.imgUrl = res.data.personal_qr_image_url
             this.avatar = res.data.image_url
+            this.judgeImg()
           } else {
+            this.judgeImg()
             this.$refs.toast.show(res.message)
           }
         })
       },
-      getBlobBydataURI (dataURI, type) {
+      judgeImg() {
+        if (this.imgUrl.length === 0) {
+          this.imgSc = false
+        }
+        if (this.allImgUrl.length === 0) {
+          this.imgAllSc = false
+        }
+      },
+      getBlobBydataURI(dataURI, type) {
         var binary = atob(dataURI.split(',')[1])
         var array = []
         for (var i = 0; i < binary.length; i++) {
@@ -221,6 +263,7 @@
   .data-all
     fill-box()
     z-index: 70
+
   .info-con
     background: $color-white-fff
     padding: 10px 15px 0
@@ -229,13 +272,14 @@
       margin-bottom: 17.5px
       layout(row)
       border-1px(#e5e5e5)
-      box-shadow: 0 4px 12px 0 rgba(32,32,46,0.08)
+      box-shadow: 0 4px 12px 0 rgba(32, 32, 46, 0.08)
       border-radius: 2px
       align-items: center
       .info-img-box
         width: 50px
         height: 50px
         margin-right: 10px
+        position: relative
         img
           width: 100%
           height: 100%
@@ -277,12 +321,22 @@
         .info-img
           width: 30px
           height: 30px
+          position: relative
           img
             width: 100%
             height: 100%
             display: block
+          .loading
+            background: #fff
+            width: 100%
+            height: 100%
+            position: absolute
+            left: 0
+            top: 0
+            z-index: 2
     .info-line
       border-bottom-1px(#e0e0e0)
+
   .z
     width: 100%
 

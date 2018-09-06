@@ -196,7 +196,7 @@
         })
       },
       rebuildScroll() {
-        this.nextTick(() => {
+        this.$nextTick(() => {
           this.$refs.scroll.destroy()
           this.$refs.scroll.initScroll()
         })
@@ -324,7 +324,7 @@
       font-size: $font-size-14
       color: $color-20202E
       font-family: $font-family-regular
-      transition: all 0.5s
+      transition: all 0.3s
     .active
       font-size: $font-size-14
       color: $color-56BA15
