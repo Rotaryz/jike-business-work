@@ -186,6 +186,7 @@
             this.avatar = res.data.image_url
             this.judgeImg()
           } else {
+            this.judgeImg()
             this.$refs.toast.show(res.message)
           }
         })
