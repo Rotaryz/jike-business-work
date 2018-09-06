@@ -228,6 +228,7 @@
         return param
       },
       _fileChange (e) {
+        this.loading = false
         // document.getElementById('header-logo').click()
         if (e.target) {
           // let param = this._infoImage(e.target.files[0])

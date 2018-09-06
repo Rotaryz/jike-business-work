@@ -165,6 +165,7 @@
         })
       },
       _fileChange(e, name) {
+        this.loading = false
         this.typeCode = name
         if (e.target) {
           const file = e.target.files[0]
