@@ -66,3 +66,7 @@ export const setCurrentGroupMsg = ({commit, state}, msg) => {
 export const setNewsGetType = ({commit, state}, boolean) => {
   commit(TYPES.SET_NEWS_GETTYPE, boolean)
 }
+
+export const setGroupMsgIng = ({commit, state}, boolean) => {
+  commit(TYPES.SET_GROUPMSG_ING, boolean)
+}

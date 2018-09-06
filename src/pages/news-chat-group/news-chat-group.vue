@@ -71,7 +71,6 @@
       }
     },
     created() {
-
     },
     mounted() {
       this.textareaDom = this.$refs.inputTxt
@@ -81,7 +80,8 @@
       ...mapActions([
         'setGroupItem',
         'addListMsg',
-        'setNewsGetType'
+        'setNewsGetType',
+        'setGroupMsgIng'
       ]),
       exceptionHandle(flag) {
         if (flag) {
@@ -89,6 +89,73 @@
           this.$router.go(-1)
           return true
         }
+      },
+      _splitArr(arr) {
+        let res = arr.map((item) => {
+          return item.customers || []
+        })
+        let res1 = [].concat.apply([], res)
+        let res2 = utils.breakArr(res1, 2)
+        return res2
+      },
+      _splitSendGroupMsg(arr, type, content) {
+        this.setGroupMsgIng(true)
+        Promise.all(arr.map((item, index) => {
+          return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+              await this._sendGroupMsg(item, type, content)
+              resolve()
+            }, index * 1000)
+          })
+        })).then(res => {
+          this.setGroupMsgIng(false)
+        })
+      },
+      async _sendGroupMsg(arr, type, content) {
+        await Promise.all(arr.map((item1) => {
+          return new Promise((resolve, reject) => {
+            if (type === 'custom') {
+              webimHandler.onSendCustomMsg(content, item1.account).then(res => {
+                let timeStamp = parseInt(Date.now() / 1000)
+                let addMsg = {
+                  text: '[图片信息]',
+                  time: timeStamp,
+                  msgTimeStamp: timeStamp,
+                  fromAccount: item1.account,
+                  sessionId: item1.account,
+                  unreadMsgCount: 0,
+                  avatar: item1.avatar,
+                  nickName: item1.nickname
+                }
+                this.addListMsg({msg: addMsg, type: 'mineAdd'})
+                resolve()
+              }, () => {
+                resolve()
+                // this.$refs.toast.show('网络异常, 请稍后重试')
+              })
+            } else if (type === 'chat') {
+              webimHandler.onSendMsg(content, item1.account).then(res => {
+                let timeStamp = parseInt(Date.now() / 1000)
+                let addMsg = {
+                  text: content,
+                  time: timeStamp,
+                  msgTimeStamp: timeStamp,
+                  fromAccount: item1.account,
+                  sessionId: item1.account,
+                  unreadMsgCount: 0,
+                  avatar: item1.avatar,
+                  nickName: item1.nickname
+                }
+                this.addListMsg({msg: addMsg, type: 'mineAdd'})
+                resolve()
+              }, () => {
+                resolve()
+                // this.$refs.toast.show('网络异常, 请稍后重试')
+              })
+            }
+          })
+        }))
+        return true
       },
       hideInput() {
         this.mortListShow = false
@@ -114,6 +181,10 @@
         }, 20)
       },
       _fileImage(e) {
+        if (this.groupMsgIng) {
+          this.$refs.toast.show('群发消息发送中，请稍后再发')
+          return
+        }
         let file = e.target.files[0]
         let params = new FormData()
         params.append('file', file, file.name)
@@ -151,7 +222,9 @@
             Im.setGroupList(reqData).then((res) => {
             })
             this.mortListShow = false
-            this.currentGroupMsg.map((item) => {
+            let reqArr = this._splitArr(this.currentGroupMsg)
+            this._splitSendGroupMsg(reqArr, 'custom', opt)
+            /** this.currentGroupMsg.map((item) => {
               item.customers.map((item1) => {
                 webimHandler.onSendCustomMsg(opt, item1.account).then(res => {
                   let timeStamp = parseInt(Date.now() / 1000)
@@ -170,7 +243,7 @@
                   // this.$refs.toast.show('网络异常, 请稍后重试')
                 })
               })
-            })
+            }) **/
           } else {
             this.$refs.toast.show('图片发送失败，请重新发送')
           }
@@ -195,6 +268,10 @@
         }
       },
       sendMsg() {
+        if (this.groupMsgIng) {
+          this.$refs.toast.show('群发消息发送中，请稍后再发')
+          return
+        }
         let value = this.inputMsg.trim()
         if (!value) {
           this.$refs.toast.show('发送消息不能为空')
@@ -221,7 +298,9 @@
         }
         Im.setGroupList(reqData).then((res) => {
         })
-        this.currentGroupMsg.map((item) => {
+        let reqArr = this._splitArr(this.currentGroupMsg)
+        this._splitSendGroupMsg(reqArr, 'chat', value)
+        /** this.currentGroupMsg.map((item) => {
           item.customers.map((item1) => {
             webimHandler.onSendMsg(value, item1.account).then(res => {
               let timeStamp = parseInt(Date.now() / 1000)
@@ -240,7 +319,7 @@
               // this.$refs.toast.show('网络异常, 请稍后重试')
             })
           })
-        })
+        }) **/
       }
     },
     components: {
@@ -264,7 +343,8 @@
       ...mapGetters([
         'currentGroupMsg',
         'ios',
-        'imInfo'
+        'imInfo',
+        'groupMsgIng'
       ]),
       userInfo() {
         return storage.get('info')

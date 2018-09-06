@@ -201,6 +201,9 @@ const mutations = {
   },
   [TYPES.SET_NEWS_GETTYPE] (state, boolean) {
     state.newsGetType = boolean
+  },
+  [TYPES.SET_GROUPMSG_ING] (state, boolean) {
+    state.groupMsgIng = boolean
   }
 }
 
