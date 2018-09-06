@@ -184,10 +184,19 @@
             this.allImgUrl = res.data.wx_group_image_url
             this.imgUrl = res.data.personal_qr_image_url
             this.avatar = res.data.image_url
+            this.judgeImg()
           } else {
             this.$refs.toast.show(res.message)
           }
         })
+      },
+      judgeImg() {
+        if (this.imgUrl.length === 0) {
+          this.imgSc = false
+        }
+        if (this.allImgUrl.length === 0) {
+          this.imgAllSc = false
+        }
       },
       getBlobBydataURI(dataURI, type) {
         var binary = atob(dataURI.split(',')[1])
