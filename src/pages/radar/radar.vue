@@ -58,8 +58,13 @@
               </div>
             </div>
           </div>
-          <div class="null-time"  v-if="list.length === 0">
+          <div class="null-data"  v-if="loaded && list.length === 0">
             <exception errType="nodata"></exception>
+          </div>
+          <div class="loading" v-if="loading">
+            <div class="load-bg">
+              <img src="./loading.gif" class="gif">
+            </div>
           </div>
         </scroll>
       </div>
@@ -124,6 +129,11 @@
             <section class="exception-box" v-if="peopleDataList.length === 0">
               <exception errType="nodata"></exception>
             </section>
+            <div class="loading" v-if="loading">
+              <div class="load-bg">
+                <img src="./loading.gif" class="gif">
+              </div>
+            </div>
           </scroll>
         </div>
       </div>
@@ -244,6 +254,7 @@
       }
       this.setCustomCount('clear')
       this.getRadarList()
+      this.getAllData()
     },
     data() {
       return {
@@ -274,7 +285,9 @@
         actionListData: WORKLIST,
         page: 0,
         tabTime: ['', 'today', 'week', 'month'],
-        tabContent: ['scroll', 'scrollAction', 'scrollPeople']
+        tabContent: ['scroll', 'scrollAction', 'scrollPeople'],
+        loading: false,
+        loaded: false
       }
     },
     methods: {
@@ -286,16 +299,19 @@
       changeTab(index) {
         if (index * 1 === this.tabIndex * 1) {
           this.$refs[this.tabContent[index]].scrollTo(0, 0)
+          return
         }
         this.tabIndex = index
         if (index * 1 === 2 && this.firstGet) {
           this.getPeopleList()
-        } else if (index * 1 === 1 && this.firstGet) {
-          this.getAllData()
         }
       },
       getRadarList() {
+        this.loading = true
+        this.loaded = false
         Im.getRadarList(0, 30, this.userInfo.id).then((res) => {
+          this.loading = false
+          this.loaded = true
           if (res.error === ERR_OK) {
             this.list = res.data
             setTimeout(() => {
@@ -388,7 +404,11 @@
         })
       },
       getPeopleList(time) {
+        this.loading = true
+        this.loaded = false
         Im.getActionList(0, 30, this.userInfo.id, 3, time).then((res) => {
+          this.loading = false
+          this.loaded = true
           if (res.error === ERR_OK) {
             this.peopleDataList = res.data
             this.firstGet = false
@@ -524,6 +544,25 @@
     bottom: 45px
     font-family: $font-family-regular
     background: $color-background
+    .loading
+      position: fixed
+      width: 100%
+      top: 45px
+      bottom: 45px
+      display: flex
+      justify-content: center
+      align-items: center
+      .load-bg
+        width: 60px
+        height: 60px
+        border-radius: 4px
+        background: rgba(0,0,0,0.3)
+        display: flex
+        justify-content: center
+        align-items: center
+      .gif
+        width: 30px
+        height: 30px
     .tab-container
       height: 44.5px
       width: 100vw
@@ -755,7 +794,7 @@
             width: 7.5px
             height: 11.5px
             margin-left: 33px
-    .null-time
+    .null-data
       padding-top: 120px
     .msgs-people
       padding-top: 0
