@@ -21,10 +21,10 @@
         </div>
       </div>
       <ul class="content-list">
-        <router-link tag="li" :to="item.src" class="content-item" v-for="(item, index) in contentList" :key="index">
+        <li @click="navTo(item.src)" class="content-item" v-for="(item, index) in contentList" :key="index">
           <span class="text"><span class="item-logo" :class="item.name"></span>{{item.title}}</span>
           <span class="icon"></span>
-        </router-link>
+        </li>
       </ul>
     </Scroll>
     <router-view @refresh="refresh"></router-view>
@@ -35,6 +35,7 @@
   import Scroll from 'components/scroll/scroll'
   import {Business} from 'api'
   import {ERR_OK} from '../../common/js/config'
+  import {mapGetters} from 'vuex'
   // import storage from 'storage-controller'
 
   const CONTENTLIST = [{title: '个人信息', src: 'mine/mine-info', name: 'user'}, {title: '查看名片', src: '/shareCard', name: 'see-card'}, {title: '我的产品', src: 'mine/goodList', name: 'goods'}, {title: '我的动态', src: 'mine/dynamicList', name: 'dynamic'}, {title: '我的报表', src: 'mine/my-data', name: 'data'}]
@@ -52,6 +53,19 @@
       this.getMine()
     },
     methods: {
+      navTo(src) {
+        if (src !== '/shareCard') {
+          this.$router.push(src)
+        } else {
+          this.$router.push(src)
+          if (this.ios) {
+            setTimeout(() => {
+              location.reload()
+              location.reload()
+            }, 200)
+          }
+        }
+      },
       refresh() {
         this.getMine()
         // this.mine = storage.get('info', {})
@@ -68,6 +82,11 @@
           }
         })
       }
+    },
+    computed: {
+      ...mapGetters([
+        'ios'
+      ])
     },
     components: {
       Scroll

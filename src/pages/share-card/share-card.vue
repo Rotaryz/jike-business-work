@@ -1,7 +1,6 @@
 <template>
   <transition :name="slide">
-
-    <div class="share-card">
+    <div class="share-card" v-if="show">
       <div class="share-box">
         <div class="share-con">
           <img class="share-top" :src="card.avatar" alt="">
@@ -43,7 +42,8 @@
       return {
         card: {},
         showPosition: true,
-        showMobile: true
+        showMobile: true,
+        show: false
       }
     },
     created () {
@@ -56,6 +56,13 @@
           this.showMobile = false
         }
       })
+      if (this.ios) {
+        setTimeout(() => {
+          this.show = true
+        }, 300)
+      } else {
+        this.show = true
+      }
     },
     computed: {
       ...mapGetters(['ios']),
