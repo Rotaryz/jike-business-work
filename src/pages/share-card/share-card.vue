@@ -72,7 +72,6 @@
   @import "~common/stylus/variable"
   @import '~common/stylus/mixin'
   .share-card
-    position: relative
     z-index: 100
     height: 100vh
     padding-top: 20px
@@ -143,4 +142,6 @@
     display :block
     width: 74px
     height: 74px
+    padding: 25px
+    margin: -25px
 </style>
