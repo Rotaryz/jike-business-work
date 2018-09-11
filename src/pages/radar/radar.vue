@@ -638,10 +638,12 @@
             .text
               font-size: $font-size-14
               color: $color-20202E
+              font-family: $font-family-medium
             .right-box
               layout(row)
               align-items: center
               .number
+                font-family: $font-family-medium
                 font-size: $font-size-14
                 color: $color-56BA15
               .msgs-rt
@@ -716,6 +718,7 @@
           font-size: $font-size-18
           color: #20202E
           padding: 10px 0 15px
+          font-family: $font-family-medium
         .msg-item-content
           width: 100%
           height: 70px
@@ -749,6 +752,7 @@
             .msgs-p
               line-height: 18px
               font-size: $font-size-medium
+              font-family: $font-family-medium
               .green
                 color: $color-text-56
           .msgs-rt
