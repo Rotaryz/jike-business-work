@@ -75,6 +75,7 @@
         this.share = !this.share
       },
       async _fileImage(e) {
+        alert(e, 888)
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
       },
