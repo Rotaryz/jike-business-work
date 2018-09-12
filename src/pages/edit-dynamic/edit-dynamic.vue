@@ -99,6 +99,7 @@
         // let sequence = Promise.resolve()
         for (let item of arr) {
           item = this._infoImage(item)
+          alert(item)
           await this._upLoad(item)
         }
         let els = document.querySelector('.image-file')
