@@ -75,7 +75,6 @@
         this.share = !this.share
       },
       async _fileImage(e) {
-        alert(e, 888)
         // let param = this._infoImage(e.target.files[0])
         await this._moreImage(e.target.files)
       },
@@ -100,7 +99,6 @@
         // let sequence = Promise.resolve()
         for (let item of arr) {
           item = this._infoImage(item)
-          alert(item)
           await this._upLoad(item)
         }
         let els = document.querySelector('.image-file')
