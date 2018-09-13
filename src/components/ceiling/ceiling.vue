@@ -100,6 +100,10 @@
                 let goodsRes = Object.assign({}, res, {url, title, goods_id: goodsId})
                 this.addNowChat(goodsRes)
               }
+              if (Number(res.ext) === 20005) {
+                this.addListCount(res)
+                this.addListMsg({msg: res, type: ''})
+              }
             } else {
               this.addListCount(res)
               this.addListMsg({msg: res, type: ''})
