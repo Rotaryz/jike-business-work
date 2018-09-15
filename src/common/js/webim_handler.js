@@ -427,7 +427,6 @@ export default class webimHandler {
           resTxt = nickName + '正在查看你的产品, 请把握商机'
           break
         case 20002:
-        case 20005:
           data = JSON.parse(msg.data)
           if (data.title.length > 8) {
             productName = data.title.slice(0, 8) + '···'
@@ -453,6 +452,14 @@ export default class webimHandler {
             productName = data.title
           }
           resTxt = `${nickName}转发了${productName}可能在咨询他人建议`
+          break
+        case 20005:
+          let desc = JSON.parse(msg.desc)
+          if (desc.log_type * 1 === 20) {
+            resTxt = `${nickName}给你发送了一条图片信息`
+          } else {
+            resTxt = `${nickName}给你发送了一条商品信息`
+          }
           break
         case 30001:
           resTxt = nickName + '正在查看你发布的动态'
